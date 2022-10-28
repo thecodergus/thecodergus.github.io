@@ -54,6 +54,11 @@
           "level": "75"
         },
         {
+          "name": "Java",
+          "class": "devicon-java-plain",
+          "level": "75"
+        },
+        {
           "name": "PHP",
           "class": "devicon-php-plain",
           "level": "75"
