@@ -1,7 +1,11 @@
 {
     "basic_info": {
       "name": "Gustavo Michels de Camargo",
-      "titles": [ "Backend Developer" ],
+      "titles": [ 
+        "Backend Developer", 
+        "Competitive Programmer", 
+        "Science Computer Student"
+      ],
       "social": [
         {
           "name": "github",

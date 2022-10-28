@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Icon } from "@iconify/react";
-import angularIcon from "@iconify/icons-logos/angular-icon";
-import reactIcon from "@iconify/icons-logos/react";
-import vueIcon from "@iconify/icons-logos/vue";
+import typescriptIcon from "@iconify/icons-logos/typescript-icon"
+import phpIcon from "@iconify/icons-logos/php"
+import postgreeIcon from "@iconify/icons-logos/postgresql"
+import dockerIcon from "@iconify/icons-logos/docker-icon"
 
 class About extends Component {
   render() {
@@ -31,15 +32,19 @@ class About extends Component {
                     alt="Avatar placeholder"
                   />
                   <Icon
-                    icon={angularIcon}
+                    icon={typescriptIcon}
                     style={{ fontSize: "400%", margin: "9% 5% 0 5%" }}
                   />
                   <Icon
-                    icon={reactIcon}
+                    icon={phpIcon}
                     style={{ fontSize: "400%", margin: "9% 5% 0 5%" }}
                   />
                   <Icon
-                    icon={vueIcon}
+                    icon={postgreeIcon}
+                    style={{ fontSize: "400%", margin: "9% 5% 0 5%" }}
+                  />
+                  <Icon
+                    icon={dockerIcon}
                     style={{ fontSize: "400%", margin: "9% 5% 0 5%" }}
                   />
                 </span>
