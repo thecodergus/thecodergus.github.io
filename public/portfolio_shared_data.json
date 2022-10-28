@@ -29,6 +29,11 @@
           "level": "65"
         },
         {
+          "name": "Julia",
+          "class": "devicon-julia-plain",
+          "level": "65"
+        },
+        {
           "name": "JavaScript",
           "class": "devicon-javascript-plain",
           "level": "70"
