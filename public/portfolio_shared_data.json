@@ -94,6 +94,11 @@
           "level": "75"
         },
         {
+          "name": "Bash",
+          "class": "devicon-bash-plain",
+          "level": "75"
+        },
+        {
           "name": "Git",
           "class": "devicon-git-plain",
           "level": "75"
