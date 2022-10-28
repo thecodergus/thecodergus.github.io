@@ -1,7 +1,11 @@
 {
     "basic_info": {
       "name": "Gustavo Michels de Camargo",
-      "titles": [ "Backend Developer" ],
+      "titles": [ 
+        "Backend Developer", 
+        "Competitive Programmer", 
+        "Science Computer Student"
+      ],
       "social": [
         {
           "name": "github",
@@ -29,6 +33,11 @@
           "level": "65"
         },
         {
+          "name": "Julia",
+          "class": "devicon-julia-plain",
+          "level": "65"
+        },
+        {
           "name": "JavaScript",
           "class": "devicon-javascript-plain",
           "level": "70"
@@ -51,6 +60,11 @@
         {
           "name": "Rust",
           "class": "devicon-rust-plain",
+          "level": "75"
+        },
+        {
+          "name": "Java",
+          "class": "devicon-java-plain",
           "level": "75"
         },
         {
@@ -81,6 +95,11 @@
         {
           "name": "Linux",
           "class": "devicon-linux-plain",
+          "level": "75"
+        },
+        {
+          "name": "Bash",
+          "class": "devicon-bash-plain",
           "level": "75"
         },
         {
