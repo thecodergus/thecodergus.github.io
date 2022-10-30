@@ -17,15 +17,18 @@ class Footer extends Component {
     return (
       <footer>
         <div className="col-md-12">
-          <div className="social-links">{networks}</div>
+          <h1 className="section-title" style={{ color: "white" }}>
+            <span>
+              {this.props.resumeBasicInfo ? this.props.resumeBasicInfo.section_name.contact : "???"}
+            </span>
+          </h1>
 
+          <div className="social-links">{networks}</div>
           <div className="copyright py-4 text-center">
             <div className="container">
               <small>
                 Copyright &copy;{" "}
-                {this.props.sharedBasicInfo
-                  ? this.props.sharedBasicInfo.name
-                  : "???"}
+                {this.props.sharedBasicInfo ? this.props.sharedBasicInfo.name : "???"}
               </small>
             </div>
           </div>
