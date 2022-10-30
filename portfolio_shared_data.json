@@ -11,6 +11,11 @@
           "name": "github",
           "url": "https://github.com/thelostgus",
           "class": "fab fa-github"
+        },
+        {
+          "name": "gmail",
+          "url": "mailto:gustavo.michels.de.camargo@gmail.com",
+          "class": "far fa-envelope"
         }
       ],
       "image": "myProfile.jpg"
