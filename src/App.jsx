@@ -13,158 +13,7 @@ import store from "./config/localStore";
 // Aplicar
 // https://tanstack.com/query/v4/docs/overview
 
-
-
-
-class App extends Component {
-
-  constructor(props) {
-    super();
-    this.state = {
-      foo: "bar",
-      resumeData: {},
-      sharedData: {},
-    };
-  }
-
-  applyPickedLanguage(pickedLanguage, oppositeLangIconId) {
-    this.swapCurrentlyActiveLanguage(oppositeLangIconId);
-    document.documentElement.lang = pickedLanguage;
-    var resumePath =
-      document.documentElement.lang === window.$primaryLanguage
-        ? `res_primaryLanguage.json`
-        : `res_secondaryLanguage.json`;
-    this.loadResumeFromPath(resumePath);
-  }
-
-  swapCurrentlyActiveLanguage(oppositeLangIconId) {
-    var pickedLangIconId =
-      oppositeLangIconId === window.$primaryLanguageIconId
-        ? window.$secondaryLanguageIconId
-        : window.$primaryLanguageIconId;
-    document
-      .getElementById(oppositeLangIconId)
-      .removeAttribute("filter", "brightness(40%)");
-    document
-      .getElementById(pickedLangIconId)
-      .setAttribute("filter", "brightness(40%)");
-  }
-
-  componentDidMount() {
-    this.loadSharedData();
-    this.applyPickedLanguage(
-      window.$primaryLanguage,
-      window.$secondaryLanguageIconId
-    );
-  }
-
-  loadResumeFromPath(path) {
-    axios(path)
-      .then(response => this.setState({ resumeData: response.data }))
-      .catch(err => alert(err))
-  }
-
-  loadSharedData() {
-    axios(`portfolio_shared_data.json`)
-      .then(response => this.setState({ sharedData: response.data }))
-      .catch(err => alert(err))
-  }
-
-  render() {
-    return (
-      <div>
-        <Header sharedData={this.state.sharedData.basic_info} />
-        <div className="col-md-12 mx-auto text-center language">
-          <div
-            onClick={() =>
-              this.applyPickedLanguage(
-                window.$primaryLanguage,
-                window.$secondaryLanguageIconId
-              )
-            }
-            style={{ display: "inline" }}
-          >
-            <span
-              className="iconify language-icon mr-5"
-              data-icon="twemoji-flag-for-flag-united-kingdom"
-              data-inline="false"
-              id={window.$primaryLanguageIconId}
-            ></span>
-          </div>
-          <div
-            onClick={() =>
-              this.applyPickedLanguage(
-                window.$secondaryLanguage,
-                window.$primaryLanguageIconId
-              )
-            }
-            style={{ display: "inline" }}
-          >
-            <span
-              className="iconify language-icon"
-              data-icon="twemoji-flag-for-flag-brazil"
-              data-inline="false"
-              id={window.$secondaryLanguageIconId}
-            ></span>
-          </div>
-        </div>
-        <About
-          resumeBasicInfo={this.state.resumeData.basic_info}
-          sharedBasicInfo={this.state.sharedData.basic_info}
-        />
-        <Projects
-          resumeProjects={this.state.resumeData.projects}
-          resumeBasicInfo={this.state.resumeData.basic_info}
-        />
-        <Skills
-          sharedSkills={this.state.sharedData.skills}
-          resumeBasicInfo={this.state.resumeData.basic_info}
-        />
-        <Experience
-          resumeExperience={this.state.resumeData.experience}
-          resumeBasicInfo={this.state.resumeData.basic_info}
-        />
-        <Contact
-          sharedData={this.state.sharedData.basic_info}
-          resumeBasicInfo={this.state.resumeData.basic_info}       
-        />
-        <Footer 
-          sharedBasicInfo={this.state.sharedData.basic_info} 
-        />
-      </div>
-    );
-  }
-}
-
-
-
-const Flags = ({ flags, applyPickedLanguage }) => {
-  const Flag = ({ language, classFlag }, i) => (
-    <div
-      onClick={() =>
-        applyPickedLanguage(language)
-      }
-      style={{ display: "inline" }}
-      key={i}
-    >
-      <span
-        className="iconify language-icon mr-5"
-        data-icon={classFlag}
-        data-inline="false"
-      ></span>
-    </div>
-  )
-  return (
-    <div className="col-md-12 mx-auto text-center language">
-      {
-        flags.map(Flag)
-      }
-    </div>
-  )
-}
-
-
-const App2 = () => {
+const App = () => {
   const [sharedData, setSharedData] = useState({})
   const [resumeData, setResumeData] = useState({})
   const [language, setLanguage] = store.useState("chose_language")
@@ -188,33 +37,44 @@ const App2 = () => {
   }, [])
 
   // // Language
-  const applyPickedLanguage = (language) => setLanguage(language) 
-  // const swapCurrentlyActiveLanguage = () => {
-  //   if(language === ""){
+  const applyPickedLanguage = (language) => {
+    setLanguage(language) 
+  }
 
-  //   }
-  // }
+  useEffect(() => {
+    loadResumeFromPath()
+  }, [language])
 
 
-  // swapCurrentlyActiveLanguage(oppositeLangIconId) {
-  //   var pickedLangIconId =
-  //     oppositeLangIconId === window.$primaryLanguageIconId
-  //       ? window.$secondaryLanguageIconId
-  //       : window.$primaryLanguageIconId;
-  //   document
-  //     .getElementById(oppositeLangIconId)
-  //     .removeAttribute("filter", "brightness(40%)");
-  //   document
-  //     .getElementById(pickedLangIconId)
-  //     .setAttribute("filter", "brightness(40%)");
-  // }
+  const Flags = ({ languages, applyPickedLanguage }) => {
+    const Flag = (lang, i) => (
+      <div
+        onClick={() =>
+          applyPickedLanguage(lang.language)
+        }
+        style={{ display: "inline" }}
+        key={i}
+      >
+        <span
+          className={lang.classItem}
+          data-icon={lang.flag}
+          data-inline="false"
+          style={{
+            filter: lang.language !== language ? "brightness(40%)" : null
+          }}
+        ></span>
+      </div>
+    )
+
+    return !!languages && languages.map(Flag)
+  }
 
   return (
     <div>
       <Header sharedData={sharedData.basic_info} />
       <div className="col-md-12 mx-auto text-center language">
         <Flags
-          flags={languages}
+          languages={languages}
           applyPickedLanguage={applyPickedLanguage}
         />
       </div>
@@ -246,4 +106,4 @@ const App2 = () => {
 
 }
 
-export default App2;
+export default App;

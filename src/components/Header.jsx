@@ -24,16 +24,13 @@ const Header = ({ sharedData }) => {
     }
   }
 
-  useEffect(() => {
-    document
-      .body
-      .setAttribute("data-theme", theme)
-  }, [theme])
-
   const onThemeSwitchChange = checked => {
     setChecked(checked)
     changeTheme()
   }
+  
+  // Aqui que o tema é mudado
+  useEffect(() => document.body.setAttribute("data-theme", theme), [theme])
 
   const HeaderTitleTypeAnimation = memo(() => (
     <Typical className="title-styles" steps={titles} loop={50} />
