@@ -1,17 +1,15 @@
 import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-const Contact = ({ sharedBasicInfo, resumeBasicInfo }) => {
+const Contact = ({ resumeBasicInfo, sharedData }) => {
 
     const renderSocialMedias = item => (
         <span key={item.name} className="m-4">
             <a href={item.url} className="fa-2x" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={item.class} />
+                <i className={item.class}></i>
             </a>
         </span>
     )
-
 
     return (
         <section id="contact">
@@ -24,7 +22,7 @@ const Contact = ({ sharedBasicInfo, resumeBasicInfo }) => {
             </div>
             <div className="social-links fa-3x">
                 {
-                    sharedBasicInfo.social.map(renderSocialMedias)
+                !!sharedData && sharedData.social.map(renderSocialMedias)
                 }
             </div>
         </section>

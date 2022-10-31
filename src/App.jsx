@@ -8,7 +8,8 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
-import "./iconFonts"
+import axios from "axios"
+
 
 class App extends Component {
 
@@ -53,32 +54,15 @@ class App extends Component {
   }
 
   loadResumeFromPath(path) {
-    $.ajax({
-      url: path,
-      dataType: "json",
-      cache: false,
-      success: function (data) {
-        this.setState({ resumeData: data });
-      }.bind(this),
-      error: function (xhr, status, err) {
-        alert(err);
-      },
-    });
+    axios(path)
+      .then(response => this.setState({ resumeData: response.data }))
+      .catch(err => alert(err))
   }
 
   loadSharedData() {
-    $.ajax({
-      url: `portfolio_shared_data.json`,
-      dataType: "json",
-      cache: false,
-      success: function (data) {
-        this.setState({ sharedData: data });
-        document.title = `${this.state.sharedData.basic_info.name}`;
-      }.bind(this),
-      error: function (xhr, status, err) {
-        alert(err);
-      },
-    });
+    axios(`portfolio_shared_data.json`)
+      .then(response => this.setState({ sharedData: response.data }))
+      .catch(err => alert(err))
   }
 
   render() {
@@ -136,7 +120,7 @@ class App extends Component {
           resumeBasicInfo={this.state.resumeData.basic_info}
         />
         <Contact
-          sharedBasicInfo={this.state.sharedData.basic_info}
+          sharedData={this.state.sharedData.basic_info}
           resumeBasicInfo={this.state.resumeData.basic_info}       
         />
         <Footer 
