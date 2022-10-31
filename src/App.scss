@@ -401,8 +401,20 @@ header h1 {
 	position: relative;
 }
 
-footer {
+#contact{
 	background: #1F1F1F;
+	min-height: 100px;
+	width: 100%;
+	overflow: hidden;
+	font-size: 14px;
+	color: white;
+	position: relative;
+	text-align: center;
+	padding-bottom: 5%;
+}
+
+footer {
+	background: #696969;
 	min-height: 100px;
 	width: 100%;
 	overflow: hidden;

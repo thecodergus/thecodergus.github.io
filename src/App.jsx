@@ -7,6 +7,8 @@ import About from "./components/About";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
+import Contact from "./components/Contact";
+import "./iconFonts"
 
 class App extends Component {
 
@@ -133,9 +135,12 @@ class App extends Component {
           resumeExperience={this.state.resumeData.experience}
           resumeBasicInfo={this.state.resumeData.basic_info}
         />
+        <Contact
+          sharedBasicInfo={this.state.sharedData.basic_info}
+          resumeBasicInfo={this.state.resumeData.basic_info}       
+        />
         <Footer 
           sharedBasicInfo={this.state.sharedData.basic_info} 
-          resumeBasicInfo={this.state.resumeData.basic_info}
         />
       </div>
     );
