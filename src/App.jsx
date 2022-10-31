@@ -9,7 +9,8 @@ import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import axios from "axios"
 
-
+// Aplicar
+// https://tanstack.com/query/v4/docs/overview
 class App extends Component {
 
   constructor(props) {
