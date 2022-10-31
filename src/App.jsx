@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,13 +10,41 @@ import Contact from "./components/Contact";
 import axios from "axios"
 import store from "./config/localStore";
 
-// Aplicar
-// https://tanstack.com/query/v4/docs/overview
+const Flags = ({ languages, applyPickedLanguage, language }) => {
+  const Flag = (lang, i) => (
+    <div
+      onClick={() =>
+        applyPickedLanguage(lang.language)
+      }
+      style={{ display: "inline" }}
+      key={i}
+    >
+      <span
+        className={lang.classItem}
+        data-icon={lang.flag}
+        data-inline="false"
+        style={{
+          filter: lang.language !== language ? "brightness(40%)" : null
+        }}
+      ></span>
+    </div>
+  )
+
+
+  return (
+    <div className="col-md-12 mx-auto text-center language">
+      {
+        languages.map(Flag)
+      }
+    </div>
+  )
+}
+
 
 const App = () => {
   const [sharedData, setSharedData] = useState({})
   const [resumeData, setResumeData] = useState({})
-  const [language, setLanguage] = store.useState("chose_language")
+  const [language, setLanguage] = store.useState("language")
   const [languages] = store.useState("languages")
 
   // // Data
@@ -46,38 +74,14 @@ const App = () => {
   }, [language])
 
 
-  const Flags = ({ languages, applyPickedLanguage }) => {
-    const Flag = (lang, i) => (
-      <div
-        onClick={() =>
-          applyPickedLanguage(lang.language)
-        }
-        style={{ display: "inline" }}
-        key={i}
-      >
-        <span
-          className={lang.classItem}
-          data-icon={lang.flag}
-          data-inline="false"
-          style={{
-            filter: lang.language !== language ? "brightness(40%)" : null
-          }}
-        ></span>
-      </div>
-    )
-
-    return !!languages && languages.map(Flag)
-  }
-
   return (
     <div>
       <Header sharedData={sharedData.basic_info} />
-      <div className="col-md-12 mx-auto text-center language">
         <Flags
+          language={language}
           languages={languages}
           applyPickedLanguage={applyPickedLanguage}
         />
-      </div>
       <About
         resumeBasicInfo={resumeData.basic_info}
         sharedBasicInfo={sharedData.basic_info}

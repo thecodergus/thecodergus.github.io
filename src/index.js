@@ -20,7 +20,7 @@ store.setState("languages", [
     }
 ])
 
-store.setState("chose_language", "en")
+store.setState("language", "en")
 store.setState("theme", "light")
 
 const container = document.getElementById('root')
