@@ -1,70 +1,71 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
+import { useObjectState } from "../hooks";
 import ProjectDetailsModal from "./ProjectDetailsModal";
 
-class Projects extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      deps: {},
-      detailsModalShow: false,
-    };
-  }
+const Projects = ({ resumeProjects, resumeBasicInfo }) => {
+  const [modal, setModal] = useObjectState({show: false, data: {}})
+  const [sectionName, setSectionName] = useState("")
+  const [projects, setProjects] = useState([])
 
-  render() {
-    let detailsModalShow = (data) => {
-      this.setState({ detailsModalShow: true, deps: data });
-    };
+  useEffect(() => {
+    if (!!resumeBasicInfo) setSectionName(resumeBasicInfo.section_name.projects)
 
-    let detailsModalClose = () => this.setState({ detailsModalShow: false });
-    if (this.props.resumeProjects && this.props.resumeBasicInfo) {
-      var sectionName = this.props.resumeBasicInfo.section_name.projects;
-      var projects = this.props.resumeProjects.map(function (projects) {
-        return (
-          <div
-            className="col-sm-12 col-md-6 col-lg-4"
-            key={projects.title}
-            style={{ cursor: "pointer" }}
-          >
-            <span className="portfolio-item d-block">
-              <div className="foto" onClick={() => detailsModalShow(projects)}>
-                <div>
-                  <img
-                    src={projects.images[0]}
-                    alt="projectImages"
-                    height="230"
-                    style={{marginBottom: 0, paddingBottom: 0, position: 'relative'}}
-                  />
-                  <span className="project-date">{projects.startDate}</span>
-                  <br />
-                  <p className="project-title-settings mt-3">
-                    {projects.title}
-                  </p>
-                </div>
-              </div>
-            </span>
+    if (!!resumeProjects) setProjects(resumeProjects)
+  }, [resumeProjects, resumeBasicInfo])
+
+  // Modal actions
+  const modalShow = (data) => setModal({show: true, data})
+  const modalClose = () => setModal({ show: false, data: {} })
+
+  const Project = (project, i) => (
+    <div
+      className="col-sm-12 col-md-6 col-lg-4"
+      key={project.title}
+      style={{ cursor: "pointer" }}
+    >
+      <span className="portfolio-item d-block">
+        <div className="foto" onClick={() => modalShow(project)}>
+          <div>
+            <img
+              src={project.images[0]}
+              alt="projectImages"
+              height="230"
+              style={{ marginBottom: 0, paddingBottom: 0, position: 'relative' }}
+            />
+            <span className="project-date">{project.startDate}</span>
+            <br />
+            <p className="project-title-settings mt-3">
+              {project.title}
+            </p>
           </div>
-        );
-      });
-    }
-
-    return (
-      <section id="portfolio">
-        <div className="col-md-12">
-          <h1 className="section-title" style={{ color: "black" }}>
-            <span>{sectionName}</span>
-          </h1>
-          <div className="col-md-12 mx-auto">
-            <div className="row mx-auto">{projects}</div>
-          </div>
-          <ProjectDetailsModal
-            show={this.state.detailsModalShow}
-            onHide={detailsModalClose}
-            data={this.state.deps}
-          />
         </div>
-      </section>
-    );
-  }
+      </span>
+    </div>
+  )
+
+  return (
+    <section id="portfolio">
+      <div className="col-md-12">
+        <h1 className="section-title" style={{ color: "black" }}>
+          <span>
+            {sectionName}
+          </span>
+        </h1>
+        <div className="col-md-12 mx-auto">
+          <div className="row mx-auto">
+            {
+              projects.map(Project)
+            }
+          </div>
+        </div>
+        <ProjectDetailsModal
+          show={modal.show}
+          onHide={modalClose}
+          data={modal.data}
+        />
+      </div>
+    </section>
+  )
 }
 
 export default Projects;
