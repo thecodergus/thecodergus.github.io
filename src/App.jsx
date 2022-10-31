@@ -8,7 +8,7 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import axios from "axios"
-import { useLocalState } from "./config/localStore";
+import store from "./config/localStore";
 
 // Aplicar
 // https://tanstack.com/query/v4/docs/overview
@@ -136,7 +136,7 @@ class App extends Component {
   }
 }
 
-export default App;
+
 
 const Flags = ({ flags, applyPickedLanguage }) => {
   const Flag = ({ language, classFlag }, i) => (
@@ -145,17 +145,15 @@ const Flags = ({ flags, applyPickedLanguage }) => {
         applyPickedLanguage(language)
       }
       style={{ display: "inline" }}
+      key={i}
     >
       <span
         className="iconify language-icon mr-5"
         data-icon={classFlag}
         data-inline="false"
-        id={i}
       ></span>
     </div>
   )
-
-
   return (
     <div className="col-md-12 mx-auto text-center language">
       {
@@ -167,35 +165,36 @@ const Flags = ({ flags, applyPickedLanguage }) => {
 
 
 const App2 = () => {
-  const [sharedData, setSharedData] = useState()
-  const [resumeData, setResumeData] = useState()
-  const [theme, setTheme] = useLocalState("theme")
-  const [language, setLanguage] = useLocalState("chose_language")
-  const [languages] = useLocalState("languages")
+  const [sharedData, setSharedData] = useState({})
+  const [resumeData, setResumeData] = useState({})
+  const [theme, setTheme] = store.useState("theme")
+  const [language, setLanguage] = store.useState("chose_language")
+  const [languages] = store.useState("languages")
 
-  // Data
-  const loadSharedData = async () => setSharedData(await axios(`portfolio_shared_data.json`).data)
-  const loadResumeFromPath = async () => setResumeData(await axios(`languages/${language}`).data)
+  // // Data
+  const loadSharedData = async () => {
+    const response = await axios(`portfolio_shared_data.json`)
+
+    if (!!response) setSharedData(response.data)
+  }
+  const loadResumeFromPath = async () => {
+    const response = await axios(`languages/${language}.json`)
+
+    if (!!response) setResumeData(response.data)
+  }
 
   useEffect(() => {
     loadSharedData()
     loadResumeFromPath()
   }, [])
 
-  // Language
-  const applyPickedLanguage = (language) => setLanguage(language)
+  // // Language
+  const applyPickedLanguage = (language) => setLanguage(language) 
   // const swapCurrentlyActiveLanguage = () => {
   //   if(language === ""){
 
   //   }
   // }
-  
-  useEffect(() => {
-    if (!!language){
-      loadResumeFromPath()
-      // swapCurrentlyActiveLanguage()
-    }
-  }, [applyPickedLanguage])
 
 
   // swapCurrentlyActiveLanguage(oppositeLangIconId) {
@@ -213,7 +212,7 @@ const App2 = () => {
 
   return (
     <div>
-      <Header sharedData={this.state.sharedData.basic_info} />
+      <Header sharedData={sharedData.basic_info} />
       <div className="col-md-12 mx-auto text-center language">
         <Flags
           flags={languages}
@@ -247,3 +246,5 @@ const App2 = () => {
   )
 
 }
+
+export default App2;
