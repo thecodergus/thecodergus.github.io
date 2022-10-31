@@ -4,22 +4,24 @@ import App from './App.jsx';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {createRoot} from "react-dom/client"
-import { createStore } from "state-pool"
+import store from "./config/localStore"
 
 /* GLOBAL VARIABLES */
-const store = createStore()
-store.setState("language", [
-    {
-        iconId: "primary-lang-icon",
-        language: "en",
-        classFlag: "twemoji-flag-for-flag-united-kingdom"
-    },
-    {
-        iconId: "secondary-lang-icon",
-        language: "pt-br",
-        classFlag: "twemoji-flag-for-flag-brazil"
-    }
-])
+
+// store.setState("language", [
+//     {
+//         iconId: "primary-lang-icon",
+//         language: "en",
+//         classFlag: "twemoji-flag-for-flag-united-kingdom"
+//     },
+//     {
+//         iconId: "secondary-lang-icon",
+//         language: "pt-br",
+//         classFlag: "twemoji-flag-for-flag-brazil"
+//     }
+// ])
+store.setState("language", "en")
+store.setState("theme", "light")
 
 window.$primaryLanguage = 'en';
 window.$secondaryLanguage = 'pt-br';
