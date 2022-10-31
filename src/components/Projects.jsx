@@ -11,7 +11,7 @@ const Projects = ({ resumeProjects, resumeBasicInfo }) => {
     if (!!resumeBasicInfo) setSectionName(resumeBasicInfo.section_name.projects)
 
     if (!!resumeProjects) setProjects(resumeProjects)
-  }, [resumeProjects, resumeBasicInfo])
+  }, [resumeProjects, resumeBasicInfo, setProjects])
 
   // Modal actions
   const modalShow = (data) => setModal({show: true, data})
