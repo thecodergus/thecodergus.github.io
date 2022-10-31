@@ -20,9 +20,15 @@ const Header = ({ sharedData }) => {
     if(theme === "dark"){
       setTheme("light")
     }else{
-      setTheme("light")
+      setTheme("dark")
     }
   }
+
+  useEffect(() => {
+    document
+      .body
+      .setAttribute("data-theme", theme)
+  }, [theme])
 
   const onThemeSwitchChange = checked => {
     setChecked(checked)

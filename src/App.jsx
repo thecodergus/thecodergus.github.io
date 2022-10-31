@@ -167,7 +167,6 @@ const Flags = ({ flags, applyPickedLanguage }) => {
 const App2 = () => {
   const [sharedData, setSharedData] = useState({})
   const [resumeData, setResumeData] = useState({})
-  const [theme, setTheme] = store.useState("theme")
   const [language, setLanguage] = store.useState("chose_language")
   const [languages] = store.useState("languages")
 
