@@ -11,24 +11,26 @@ import axios from "axios"
 import store from "./config/localStore";
 
 const Flags = ({ languages, applyPickedLanguage, language }) => {
-  const Flag = (lang, i) => (
-    <div
-      onClick={() =>
-        applyPickedLanguage(lang.language)
-      }
-      style={{ display: "inline" }}
-      key={i}
-    >
-      <span
-        className={lang.classItem}
-        data-icon={lang.flag}
-        data-inline="false"
-        style={{
-          filter: lang.language !== language ? "brightness(40%)" : null
-        }}
-      ></span>
-    </div>
-  )
+  const Flag = (lang, i) => {
+    const brightness = lang.language !== language ? { filter: "brightness(40%)" } : {}
+
+    return (
+      <div
+        onClick={() =>
+          applyPickedLanguage(lang.language)
+        }
+        style={{ display: "inline" }}
+        key={i}
+      >
+        <span
+          className={lang.classItem}
+          data-icon={lang.flag}
+          data-inline="false"
+          style={brightness}
+        ></span>
+      </div>
+    )
+  }
 
 
   return (
@@ -47,7 +49,7 @@ const App = () => {
   const [language, setLanguage] = store.useState("language")
   const [languages] = store.useState("languages")
 
-  // // Data
+  // Data
   const loadSharedData = async () => {
     const response = await axios(`portfolio_shared_data.json`)
 
