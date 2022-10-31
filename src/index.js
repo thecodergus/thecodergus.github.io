@@ -20,7 +20,8 @@ import store from "./config/localStore"
 //         classFlag: "twemoji-flag-for-flag-brazil"
 //     }
 // ])
-store.setState("language", "en")
+store.setState("languages", ["en", "pt-br"])
+store.setState("chose_language", "en")
 store.setState("theme", "light")
 
 window.$primaryLanguage = 'en';

@@ -117,7 +117,10 @@ const Header2 = ({ sharedData }) => {
     }
   }
 
-  const onThemeSwitchChange = checked => setChecked(checked)
+  const onThemeSwitchChange = checked => {
+    setChecked(checked)
+    changeTheme()
+  }
 
   const HeaderTitleTypeAnimation = memo(() => (
     <Typical className="title-styles" steps={titles} loop={50} />

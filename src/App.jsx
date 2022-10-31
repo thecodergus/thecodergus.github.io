@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import "./App.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -8,9 +8,14 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import axios from "axios"
+import { useLocalState } from "./config/localStore";
 
 // Aplicar
 // https://tanstack.com/query/v4/docs/overview
+
+
+
+
 class App extends Component {
 
   constructor(props) {
@@ -132,3 +137,113 @@ class App extends Component {
 }
 
 export default App;
+
+const Flags = ({ flags, applyPickedLanguage }) => {
+  const Flag = ({ language, classFlag }, i) => (
+    <div
+      onClick={() =>
+        applyPickedLanguage(language)
+      }
+      style={{ display: "inline" }}
+    >
+      <span
+        className="iconify language-icon mr-5"
+        data-icon={classFlag}
+        data-inline="false"
+        id={i}
+      ></span>
+    </div>
+  )
+
+
+  return (
+    <div className="col-md-12 mx-auto text-center language">
+      {
+        flags.map(Flag)
+      }
+    </div>
+  )
+}
+
+
+const App2 = () => {
+  const [sharedData, setSharedData] = useState()
+  const [resumeData, setResumeData] = useState()
+  const [theme, setTheme] = useLocalState("theme")
+  const [language, setLanguage] = useLocalState("chose_language")
+  const [languages] = useLocalState("languages")
+
+  // Data
+  const loadSharedData = async () => setSharedData(await axios(`portfolio_shared_data.json`).data)
+  const loadResumeFromPath = async () => setResumeData(await axios(`languages/${language}`).data)
+
+  useEffect(() => {
+    loadSharedData()
+    loadResumeFromPath()
+  }, [])
+
+  // Language
+  const applyPickedLanguage = (language) => setLanguage(language)
+  // const swapCurrentlyActiveLanguage = () => {
+  //   if(language === ""){
+
+  //   }
+  // }
+  
+  useEffect(() => {
+    if (!!language){
+      loadResumeFromPath()
+      // swapCurrentlyActiveLanguage()
+    }
+  }, [applyPickedLanguage])
+
+
+  // swapCurrentlyActiveLanguage(oppositeLangIconId) {
+  //   var pickedLangIconId =
+  //     oppositeLangIconId === window.$primaryLanguageIconId
+  //       ? window.$secondaryLanguageIconId
+  //       : window.$primaryLanguageIconId;
+  //   document
+  //     .getElementById(oppositeLangIconId)
+  //     .removeAttribute("filter", "brightness(40%)");
+  //   document
+  //     .getElementById(pickedLangIconId)
+  //     .setAttribute("filter", "brightness(40%)");
+  // }
+
+  return (
+    <div>
+      <Header sharedData={this.state.sharedData.basic_info} />
+      <div className="col-md-12 mx-auto text-center language">
+        <Flags
+          flags={languages}
+          applyPickedLanguage={applyPickedLanguage}
+        />
+      </div>
+      <About
+        resumeBasicInfo={resumeData.basic_info}
+        sharedBasicInfo={sharedData.basic_info}
+      />
+      <Projects
+        resumeProjects={resumeData.projects}
+        resumeBasicInfo={resumeData.basic_info}
+      />
+      <Skills
+        sharedSkills={sharedData.skills}
+        resumeBasicInfo={resumeData.basic_info}
+      />
+      <Experience
+        resumeExperience={resumeData.experience}
+        resumeBasicInfo={resumeData.basic_info}
+      />
+      <Contact
+        sharedData={sharedData.basic_info}
+        resumeBasicInfo={resumeData.basic_info}
+      />
+      <Footer
+        sharedBasicInfo={sharedData.basic_info}
+      />
+    </div>
+  )
+
+}
