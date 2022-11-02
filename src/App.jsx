@@ -14,8 +14,7 @@ import Flags from "./components/Flags";
 const App = () => {
   const [sharedData, setSharedData] = useState({})
   const [resumeData, setResumeData] = useState({})
-  const [language, setLanguage] = store.useState("language")
-  const [languages] = store.useState("languages")
+  const [language] = store.useState("language")
 
   // Data
   const loadSharedData = async () => {
@@ -34,11 +33,6 @@ const App = () => {
     loadResumeFromPath()
   }, [])
 
-  // // Language
-  const applyPickedLanguage = (language) => {
-    setLanguage(language) 
-  }
-
   useEffect(() => {
     loadResumeFromPath()
   }, [language])
@@ -46,11 +40,7 @@ const App = () => {
   return (
     <div>
       <Header sharedData={sharedData.basic_info} />
-      <Flags
-        language={language}
-        languages={languages}
-        applyPickedLanguage={applyPickedLanguage}
-      />
+      <Flags />
       <About
         resumeBasicInfo={resumeData.basic_info}
         sharedBasicInfo={sharedData.basic_info}
