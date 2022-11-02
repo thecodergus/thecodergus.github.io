@@ -1,9 +1,9 @@
-import React, { Component, useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo } from "react";
 import Typical from "react-typical";
 import Switch from "react-switch";
 import store from "../config/localStore"
 
-const Header = ({ sharedData }) => {
+function Header({ sharedData }){
   const [checked, setChecked] = useState(false)
   const [name, setName] = useState("")
   const [titles, setTitles] = useState([])

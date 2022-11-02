@@ -6,7 +6,7 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import Badge from "react-bootstrap/Badge";
 
-const Experience = (experience, i) => {
+function Experience(experience, i){
 
   const mainTechnology = (technology, i) => (
     <Badge pill className="experience-badge mr-2 mb-2" key={i}>

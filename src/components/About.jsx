@@ -6,7 +6,7 @@ import postgreeIcon from "@iconify/icons-logos/postgresql"
 import dockerIcon from "@iconify/icons-logos/docker-icon"
 import { useObjectState } from "../hooks";
 
-const About = ({ resumeBasicInfo, sharedBasicInfo }) => {
+function About({ resumeBasicInfo, sharedBasicInfo }){
   const [profilePic, setProfilePic] = useState("")
   const [{ sectionName, hello, about }, setResumeBasicInfo] = useObjectState({sectionName: "", hello: "", about: ""})
 

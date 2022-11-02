@@ -22,7 +22,7 @@ const technology = (icon, i) => (
 
 const image = (img, i) => <div key={i} data-src={img} />
 
-const ProjectDetailsModal = ({show, onHide, data}) => {
+function ProjectDetailsModal({show, onHide, data}){
   const [images, setImages] = useState([])
   const [technologies, setTecnologies] = useState([])
   const [basicInfos, setBasicInfos] = useObjectState({title: "", description: "", url: ""})

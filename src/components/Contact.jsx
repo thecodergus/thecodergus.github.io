@@ -1,7 +1,7 @@
 import React from "react"
 
 
-const Contact = ({ resumeBasicInfo, sharedData }) => {
+function Contact({ resumeBasicInfo, sharedData }){
 
     const renderSocialMedias = item => (
         <span key={item.name} className="m-4">

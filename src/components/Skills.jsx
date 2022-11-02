@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Skills = ({ sharedSkills, resumeBasicInfo }) => {
+function Skills({ sharedSkills, resumeBasicInfo }){
   const [sectionName, setSectionName] = useState("")
   const [skills, setSkills] = useState([])
 

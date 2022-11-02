@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useObjectState } from "../hooks";
 import ProjectDetailsModal from "./ProjectDetailsModal";
 
-const Projects = ({ resumeProjects, resumeBasicInfo }) => {
+function Projects({ resumeProjects, resumeBasicInfo }){
   const [modal, setModal] = useObjectState({show: false, data: {}})
   const [sectionName, setSectionName] = useState("")
   const [projects, setProjects] = useState([])

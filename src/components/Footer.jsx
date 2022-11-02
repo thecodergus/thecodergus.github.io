@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = ({ sharedBasicInfo }) => (
+function Footer({ sharedBasicInfo })(
   <footer>
     <div className="col-md-12">
       <div className="social-links fa-3x">
