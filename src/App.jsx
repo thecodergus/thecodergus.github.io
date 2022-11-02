@@ -9,39 +9,7 @@ import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import axios from "axios"
 import store from "./config/localStore";
-
-const Flags = ({ languages, applyPickedLanguage, language }) => {
-  const Flag = (lang, i) => {
-    const brightness = lang.language !== language ? { filter: "brightness(40%)" } : {}
-
-    return (
-      <div
-        onClick={() =>
-          applyPickedLanguage(lang.language)
-        }
-        style={{ display: "inline" }}
-        key={i}
-      >
-        <span
-          className={lang.classItem}
-          data-icon={lang.flag}
-          data-inline="false"
-          style={brightness}
-        ></span>
-      </div>
-    )
-  }
-
-
-  return (
-    <div className="col-md-12 mx-auto text-center language">
-      {
-        languages.map(Flag)
-      }
-    </div>
-  )
-}
-
+import Flags from "./components/Flags";
 
 const App = () => {
   const [sharedData, setSharedData] = useState({})
@@ -75,15 +43,16 @@ const App = () => {
     loadResumeFromPath()
   }, [language])
 
-
   return (
     <div>
       <Header sharedData={sharedData.basic_info} />
+      <div className="col-md-12 mx-auto text-center language">
         <Flags
           language={language}
           languages={languages}
           applyPickedLanguage={applyPickedLanguage}
         />
+      </div>
       <About
         resumeBasicInfo={resumeData.basic_info}
         sharedBasicInfo={sharedData.basic_info}
