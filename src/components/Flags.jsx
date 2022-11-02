@@ -1,19 +1,34 @@
 export default function Flags({language, languages, applyPickedLanguage}){
-    return languages.map((e, i) => (
+    return (
+        <div className="col-md-12 mx-auto text-center language">
+            {
+                languages.map((e, i) => <Flag item={e} index={i} choseLanguage={language} applyPickedLanguage={applyPickedLanguage} />)
+            }
+        </div>
+    )    
+}
+
+function Flag({ item, index, choseLanguage, applyPickedLanguage }) {
+    const {
+        language,
+        classItem,
+        flag
+    } = item
+
+    return (
         <div
             onClick={() =>
-                applyPickedLanguage(e.language)
+                applyPickedLanguage(language)
             }
             style={{ display: "inline" }}
-            key={i}
-            className={e.language !== language ? "chose-flag" : ""}
+            key={index}
+            className={language !== choseLanguage ? "chose-flag" : ""}
         >
             <span
-                className={e.classItem}
-                data-icon={e.flag}
+                className={classItem}
+                data-icon={flag}
                 data-inline="false"
             ></span>
         </div>
-    )
     )
 }

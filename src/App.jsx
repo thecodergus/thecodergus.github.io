@@ -46,13 +46,11 @@ const App = () => {
   return (
     <div>
       <Header sharedData={sharedData.basic_info} />
-      <div className="col-md-12 mx-auto text-center language">
-        <Flags
-          language={language}
-          languages={languages}
-          applyPickedLanguage={applyPickedLanguage}
-        />
-      </div>
+      <Flags
+        language={language}
+        languages={languages}
+        applyPickedLanguage={applyPickedLanguage}
+      />
       <About
         resumeBasicInfo={resumeData.basic_info}
         sharedBasicInfo={sharedData.basic_info}
