@@ -1,12 +1,11 @@
 import React from "react"
 
-
 function Contact({ resumeBasicInfo, sharedData }){
 
     const renderSocialMedias = item => (
         <span key={item.name} className="m-4">
             <a href={item.url} className="fa-2x" target="_blank" rel="noopener noreferrer">
-                <i className={item.class}></i>
+                <i className={`${item.class}`}></i>
             </a>
         </span>
     )
