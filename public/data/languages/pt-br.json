@@ -30,36 +30,52 @@
     ],
     "experience": [
         {
-            "company": "DefOpenSource",
-            "title": "Front-End Developer",
-            "years": "10.2019 - obecnie",
-            "mainTech": [
-                "Angular 8/9/10"
+            "company": "UDESC",
+            "title": "Monitor Teoria dos Grafos",
+            "years": "07.2022 - Atualmente",
+            "icon": "fa-solid fa-c",
+            "mainTech":[
+                "C"
             ],
-            "technologies": [
-                "REST API",
-                "RxJS",
-                "JavaScript",
-                "Bootstrap",
-                "MDBootstrap",
-                "EF Core",
-                "Angular Material"
+            "technologies":[
+                "Python",
+                "C",
+                "C++",
+                "Rust"
             ]
         },
         {
-            "company": "Serros Solutions",
-            "title": "Stażystka",
-            "years": "01.2018 - 09.2019",
+            "company": "Devellop Labs",
+            "title": "Desenvolvedor Full Stack Junior",
+            "years": "05.2021 - 11.2021",
+            "icon": "fab fa-php",
+            "mainTech":[
+                "Php 7.3/8.0"
+            ],
+            "technologies":[
+                "Magento 1/2",
+                "Openmange",
+                "Docker",
+                "Wordpress",
+                "MySQL",
+                "JavaScript",
+                "JQuery"
+            ]
+        },
+        {
+            "company": "UDESC",
+            "title": "Monitor Estrutura de Dados",
+            "years": "05.2019 - 05.2021",
+            "icon": "fab fa-angular",
             "mainTech": [
-                "Angular 7/8"
+                "C"
             ],
             "technologies": [
-                "REST API",
-                "RxJS",
-                "Swagger",
-                "JavaScript",
-                "DHTMLX Gantt"
+                "Python",
+                "C",
+                "C++"
             ]
+            
         }
     ]
 }
