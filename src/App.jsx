@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.scss";
+import "devicon/devicon.min.css"
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import About from "./components/About";
