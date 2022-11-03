@@ -30,37 +30,50 @@
     ],
     "experience": [
         {
-            "company": "DefOpenSource",
-            "title": "Front-End Developer",
-            "years": "10.2019 - present",
+            "company": "UDESC",
+            "title": "Graph Theory Monitor",
+            "years": "07.2022 - At the moment",
+            "icon": "devicon-cplusplus-plain",
             "mainTech": [
-                "Angular 8/9/10"
+                "C"
             ],
             "technologies": [
-                "REST API",
-                "RxJS",
-                "JavaScript",
-                "Bootstrap",
-                "MDBootstrap",
-                "EF Core",
-                ".NET Core",
-                "SignalR",
-                "Angular Material"
+                "Python",
+                "C",
+                "C++",
+                "Rust"
             ]
         },
         {
-            "company": "Serros Solutions",
-            "title": "Intern",
-            "years": "01.2018 - 09.2019",
+            "company": "Devellop Labs",
+            "title": "Junior Full Stack Developer",
+            "years": "05.2021 - 11.2021",
+            "icon": "fab fa-php",
             "mainTech": [
-                "Angular 7/8"
+                "Php 7.3/8.0"
             ],
             "technologies": [
-                "RxJS",
-                "Django",
-                "PHP",
+                "Magento 1/2",
+                "Openmange",
+                "Docker",
+                "Wordpress",
+                "MySQL",
                 "JavaScript",
-                "DHTMLX Gantt"
+                "JQuery"
+            ]
+        },
+        {
+            "company": "UDESC",
+            "title": "Data Structure Monitor",
+            "years": "05.2019 - 05.2021",
+            "icon": "devicon-cplusplus-plain",
+            "mainTech": [
+                "C"
+            ],
+            "technologies": [
+                "Python",
+                "C",
+                "C++"
             ]
         }
     ]
