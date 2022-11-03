@@ -33,7 +33,7 @@
             "company": "UDESC",
             "title": "Monitor Teoria dos Grafos",
             "years": "07.2022 - Atualmente",
-            "icon": "fa-solid fa-c",
+            "icon": "devicon-cplusplus-plain",
             "mainTech":[
                 "C"
             ],
@@ -66,7 +66,7 @@
             "company": "UDESC",
             "title": "Monitor Estrutura de Dados",
             "years": "05.2019 - 05.2021",
-            "icon": "fab fa-angular",
+            "icon": "devicon-cplusplus-plain",
             "mainTech": [
                 "C"
             ],
