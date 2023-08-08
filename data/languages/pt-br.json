@@ -26,9 +26,47 @@
                     "name": "Julia"
                 }
             ]
+        },
+        {
+    "title": "Implementação de Detecção de Borda Laplaciana no image-rs/imageproc",
+    "startDate": "2023",
+    "description": "Contribuí para o projeto image-rs/imageproc no GitHub, implementando duas novas estruturas de construtor, Laplacian e LaplacianEdgeDetector, para detecção de bordas Laplacianas em imagens em escala de cinza. A estrutura Laplacian permite aos usuários aplicar um filtro Laplaciano a uma imagem em escala de cinza, com a opção de usar o kernel Laplaciano padrão ou aplicar um ajuste diagonal para enfatizar as bordas diagonais. A estrutura LaplacianEdgeDetector expande a funcionalidade, fornecendo uma solução completa de detecção de borda, com personalizações para o processo, como o valor sigma para desfoque Gaussiano e o valor de limiar de borda. Essas adições tornam fácil para os usuários realizar detecção de borda Laplaciana com apenas algumas linhas de código, oferecendo flexibilidade e integração perfeita com as funções existentes no projeto. Acredito que essas melhorias são uma adição valiosa ao projeto e ajudarão os usuários a alcançar melhores resultados na detecção de bordas.",
+    "url": "https://github.com/image-rs/imageproc/pull/516",
+    "images": [
+                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.13.jpeg",
+                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12(1).jpeg",
+                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12.jpeg"
+            ],
+    "technologies": [
+        {
+            "class": "devicon-rust-plain",
+            "name": "Rust"
         }
+    ]
+}
+
     ],
     "experience": [
+        {
+            "company": "SENAI - Strokmatic",
+            "title": "Bolsista em Inteligência Artificial, Visão Computacional e Desenvolvimento de Software Industrial",
+            "years": "12.2022 - Atualmente",
+            "icon": "devicon-python-plain",
+            "mainTech":[
+                "Python"
+            ],
+            "technologies":[
+                "Python",
+                "C++",
+                "PostgresSQL",
+                "Redis",
+                "OpenCV",
+                "Tensorflow",
+                "Docker",
+                "Git",
+                "Linux"
+            ]
+        },
         {
             "company": "UDESC",
             "title": "Monitor Teoria dos Grafos",

@@ -26,9 +26,48 @@
                     "name": "Julia"
                 }
             ]
+        },
+        {
+    "title": "Implementation of Laplacian Edge Detection in image-rs/imageproc",
+    "startDate": "2023",
+    "description": "I contributed to the image-rs/imageproc project on GitHub by implementing two new builder structures, Laplacian and LaplacianEdgeDetector, for Laplacian edge detection on grayscale images. The Laplacian structure allows users to apply a Laplacian filter to a grayscale image, with the option to use the standard Laplacian kernel or apply a diagonal adjustment to emphasize diagonal edges. The LaplacianEdgeDetector structure expands on this functionality, providing a complete edge detection solution, with customizations for the process such as the sigma value for Gaussian blur and the edge threshold value. These additions make it easy for users to perform Laplacian edge detection with just a few lines of code, offering flexibility and seamless integration with existing functions within the project. I believe these enhancements are a valuable addition to the project and will help users achieve better edge detection results.",
+    "url": "https://github.com/image-rs/imageproc/pull/516",
+    "images": [
+                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.13.jpeg",
+                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12(1).jpeg",
+                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12.jpeg"
+            ],
+    "technologies": [
+        {
+            "class": "devicon-rust-plain",
+            "name": "Rust"
         }
+    ]
+}
+
     ],
     "experience": [
+        {
+    "company": "SENAI - Strokmatic",
+    "title": "Fellow in Artificial Intelligence, Computer Vision, and Industrial Software Development",
+    "years": "12.2022 - Present",
+    "icon": "devicon-python-plain",
+    "mainTech": [
+        "Python"
+    ],
+    "technologies": [
+        "Python",
+        "C++",
+        "PostgreSQL",
+        "Redis",
+        "OpenCV",
+        "Tensorflow",
+        "Docker",
+        "Git",
+        "Linux"
+    ]
+},
+
         {
             "company": "UDESC",
             "title": "Graph Theory Monitor",
