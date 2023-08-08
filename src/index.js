@@ -9,18 +9,18 @@ import store from "./config/localStore"
 /* GLOBAL VARIABLES */
 store.setState("languages", [
     {
-        language: "en",
-        classItem: "iconify language-icon mr-5",
-        flag: "twemoji-flag-for-flag-united-kingdom"
-    },
-    {
         language: "pt-br",
         classItem: "iconify language-icon",
         flag: "twemoji-flag-for-flag-brazil",
+    },
+    {
+        language: "en",
+        classItem: "iconify language-icon mr-5",
+        flag: "twemoji-flag-for-flag-united-kingdom"
     }
 ])
 
-store.setState("language", "en")
+store.setState("language", "pt-br")
 store.setState("theme", "light")
 
 const container = document.getElementById('root')
