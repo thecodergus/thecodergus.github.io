@@ -1,7 +1,7 @@
 {
     "basic_info": {
         "description_header": "Ola, muito Prazer",
-        "description": "👋 Sou Gustavo, tecnico em desenvolvimento web, estudante de Ciência em Computação, programador competitivo, desenvolvedor e estusiasta em tecnologia da informação e inteligencia artificial 🤖",
+        "description": "👋 Olá, sou Gustavo, técnico em desenvolvimento web e estudante de Ciência da Computação. Atualmente, trabalho como bolsista SENAI na startup Strokmatic, onde me envolvo com processamento de imagem, inteligência artificial e desenvolvimento de software industrial. Essa experiência tem me proporcionado a oportunidade de aplicar e expandir meus conhecimentos em áreas inovadoras e desafiadoras. No passado, atuei como programador competitivo, uma fase que me ajudou a desenvolver habilidades de resolução de problemas complexos. Meus interesses se estendem aos campos da tecnologia da informação e inteligência artificial 🤖, onde estou sempre ansioso para explorar novos conceitos e inovações. Seja desenvolvendo aplicações de ponta ou mergulhando nas últimas pesquisas de IA, estou comprometido em permanecer na vanguarda da indústria e contribuir para um futuro onde a tecnologia capacita e inspira.",
         "section_name": {
             "about": "Sobre mim",
             "projects": "Projetos",
@@ -33,9 +33,9 @@
     "description": "Contribuí para o projeto image-rs/imageproc no GitHub, implementando duas novas estruturas de construtor, Laplacian e LaplacianEdgeDetector, para detecção de bordas Laplacianas em imagens em escala de cinza. A estrutura Laplacian permite aos usuários aplicar um filtro Laplaciano a uma imagem em escala de cinza, com a opção de usar o kernel Laplaciano padrão ou aplicar um ajuste diagonal para enfatizar as bordas diagonais. A estrutura LaplacianEdgeDetector expande a funcionalidade, fornecendo uma solução completa de detecção de borda, com personalizações para o processo, como o valor sigma para desfoque Gaussiano e o valor de limiar de borda. Essas adições tornam fácil para os usuários realizar detecção de borda Laplaciana com apenas algumas linhas de código, oferecendo flexibilidade e integração perfeita com as funções existentes no projeto. Acredito que essas melhorias são uma adição valiosa ao projeto e ajudarão os usuários a alcançar melhores resultados na detecção de bordas.",
     "url": "https://github.com/image-rs/imageproc/pull/516",
     "images": [
-                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.13.jpeg",
-                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12(1).jpeg",
-                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12.jpeg"
+                "images/projects/laplacian-edge/ovo1.jpeg",
+                "images/projects/laplacian-edge/ovo2.jpeg",
+                "images/projects/laplacian-edge/ovo3.jpeg"
             ],
     "technologies": [
         {

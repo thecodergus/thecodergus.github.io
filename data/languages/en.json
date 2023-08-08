@@ -1,7 +1,7 @@
 {
     "basic_info": {
         "description_header": "Hi",
-        "description": "👋 I'm Gustavo, web development technician, Computer Science student, competitive programmer, developer and enthusiast in information technology and artificial intelligence 🤖",
+        "description": "👋 Hi, I'm Gustavo, a web development technician and Computer Science student. Currently, I'm working as a SENAI scholarship holder at the startup Strokmatic, where I engage in image processing, artificial intelligence, and industrial software development. This experience has provided me the opportunity to apply and expand my knowledge in innovative and challenging areas. In the past, I was a competitive programmer, a phase that helped me develop skills in solving complex problems. My interests extend to the fields of information technology and artificial intelligence 🤖, where I'm always eager to explore new concepts and innovations. Whether it's developing cutting-edge applications or diving into the latest AI research, I'm committed to staying at the forefront of the industry and contributing to a future where technology empowers and inspires.",
         "section_name": {
             "about": "About me",
             "projects": "Projects",
@@ -33,9 +33,9 @@
     "description": "I contributed to the image-rs/imageproc project on GitHub by implementing two new builder structures, Laplacian and LaplacianEdgeDetector, for Laplacian edge detection on grayscale images. The Laplacian structure allows users to apply a Laplacian filter to a grayscale image, with the option to use the standard Laplacian kernel or apply a diagonal adjustment to emphasize diagonal edges. The LaplacianEdgeDetector structure expands on this functionality, providing a complete edge detection solution, with customizations for the process such as the sigma value for Gaussian blur and the edge threshold value. These additions make it easy for users to perform Laplacian edge detection with just a few lines of code, offering flexibility and seamless integration with existing functions within the project. I believe these enhancements are a valuable addition to the project and will help users achieve better edge detection results.",
     "url": "https://github.com/image-rs/imageproc/pull/516",
     "images": [
-                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.13.jpeg",
-                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12(1).jpeg",
-                "public/images/projects/laplacian-edge/WhatsApp Image 2023-08-08 at 11.10.12.jpeg"
+                "images/projects/laplacian-edge/ovo1.jpeg",
+                "images/projects/laplacian-edge/ovo2.jpeg",
+                "images/projects/laplacian-edge/ovo3.jpeg"
             ],
     "technologies": [
         {
