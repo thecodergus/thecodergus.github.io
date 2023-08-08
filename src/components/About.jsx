@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import typescriptIcon from "@iconify/icons-logos/typescript-icon"
-import phpIcon from "@iconify/icons-logos/php"
+import pythonIcon from "@iconify/icons-logos/python";
+import dockerIcon from "@iconify/icons-logos/docker-icon";
+import cppIcon from "@iconify/icons-logos/c-plusplus";
 import postgreeIcon from "@iconify/icons-logos/postgresql"
-import dockerIcon from "@iconify/icons-logos/docker-icon"
 import { useObjectState } from "../hooks";
 
 function About({ resumeBasicInfo, sharedBasicInfo }){
@@ -39,11 +39,11 @@ function About({ resumeBasicInfo, sharedBasicInfo }){
                   alt="Avatar placeholder"
                 />
                 <Icon
-                  icon={typescriptIcon}
+                  icon={pythonIcon}
                   style={{ fontSize: "400%", margin: "9% 5% 0 5%" }}
                 />
                 <Icon
-                  icon={phpIcon}
+                  icon={cppIcon}
                   style={{ fontSize: "400%", margin: "9% 5% 0 5%" }}
                 />
                 <Icon
