@@ -1,7 +1,7 @@
 {
     "basic_info": {
         "description_header": "Ola, muito Prazer",
-        "description": "👋 Olá, sou Gustavo, técnico em desenvolvimento web e estudante de Ciência da Computação. Atualmente, trabalho como bolsista SENAI na startup Strokmatic, onde me envolvo com processamento de imagem, inteligência artificial e desenvolvimento de software industrial. Essa experiência tem me proporcionado a oportunidade de aplicar e expandir meus conhecimentos em áreas inovadoras e desafiadoras. No passado, atuei como programador competitivo, uma fase que me ajudou a desenvolver habilidades de resolução de problemas complexos. Meus interesses se estendem aos campos da tecnologia da informação e inteligência artificial 🤖, onde estou sempre ansioso para explorar novos conceitos e inovações. Seja desenvolvendo aplicações de ponta ou mergulhando nas últimas pesquisas de IA, estou comprometido em permanecer na vanguarda da indústria e contribuir para um futuro onde a tecnologia capacita e inspira.",
+        "description": "Sou Gustavo Michels de Camargo, graduando em Ciência da Computação pela Universidade do Estado de Santa Catarina (UDESC). Durante minha trajetória acadêmica e profissional, desenvolvi uma paixão por Inteligência Artificial, Processamento de Imagens e Desenvolvimento Industrial, áreas nas quais atuei como bolsista. Minha experiência prática é acentuada por projetos significativos nos quais tive a oportunidade de contribuir, como o 'Spark Eyes System' em colaboração com a General Motors, SENAI e Strokmatic, onde desenvolvi software de visão computacional para inspeção automatizada de pontos de solda na indústria automotiva. Minha jornada também me levou a contribuir para o campo de visão computacional através do desenvolvimento da Biblioteca SKM-GenICam, um sistema de gerenciamento de câmeras industriais, e através da contribuição para o projeto open-source imageproc, onde implementei funcionalidades para detecção de bordas Laplacianas. Além disso, atuei em projetos junto à Strokmatic para a Usiminas e Santista, desenvolvendo sistemas de recolhimento de dados para treinamento de redes neurais artificiais. Minha stack tecnológica inclui linguagens como C, C++, Python, Rust e TypeScript, e tecnologias como Docker, Redis e Postgres. Além do meu interesse profissional, sou um entusiasta da leitura, com um amor particular por história, literatura clássica, filosofia e psicologia. Estou sempre buscando expandir meu conhecimento e aplicar minhas habilidades em projetos desafiadores e inovadores que têm um impacto real na indústria e na comunidade.",
         "section_name": {
             "about": "Sobre mim",
             "projects": "Projetos",
@@ -12,9 +12,148 @@
     },
     "projects": [
         {
+            "title": "Spark Eyes System",
+            "startDate": "Outubro 2022",
+            "description": "Atuo ativamente no projeto 'Spark Eyes System', focado no desenvolvimento de uma solução avançada para inspeção de pontos de solda na indústria automotiva. A iniciativa objetivou a automatização da inspeção dessas uniões através de tecnologia baseada em Inteligência Artificial, com a criação de protótipos laboratoriais, industriais e multiplataforma. Dentro deste escopo, fui o autor único e responsável pelo software de visão computacional do projeto, além de liderar o desenvolvimento do módulo de comunicação com o ViewR. Também fui encarregado do desenvolvimento de versões de alto desempenho de determinados módulos confidenciais, contribuindo significativamente para a eficiência e precisão na inspeção de pontos de solda.",
+            "url": "",
+            "images": [
+                "images/projects/sparkeyes/spark1.png",
+                "images/projects/sparkeyes/spark2.png",
+                "images/projects/sparkeyes/spark3.png"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-cplusplus-plain",
+                    "name": "C++"
+                },
+                {
+                    "class": "devicon-python-plain",
+                    "name": "Python"
+                },
+                {
+                    "class": "devicon-typescript-plain",
+                    "name": "TypeScript"
+                },
+                {
+                    "class": "devicon-docker-plain",
+                    "name": "Docker"
+                },
+                {
+                    "class": "devicon-redis-plain",
+                    "name": "Redis"
+                },
+                {
+                    "class": "devicon-postgresql-plain",
+                    "name": "Postgres"
+                }
+            ]
+        },
+        {
+            "title": "Desenvolvimento da Biblioteca SKM-GenICam",
+            "startDate": "Março 2023",
+            "description": "Arquitetei e desenvolvi um sistema de gerenciamento de câmeras industriais baseado na interface de programação genérica Europeia GenICam. Esta implementação mostrou-se absolutamente mais eficiente em atender as demandas de visão computacional quando comparada às soluções fornecidas originalmente pelos fabricantes das câmeras e passou a ser o software padrão de uso dentro dos projetos de inovação baseado em em visão computacional.",
+            "url": "",
+            "images": [
+                "images/projects/genicam/genicam1.png",
+                "images/projects/genicam/genicam2.png",
+                "images/projects/genicam/genicam3.png"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-c-plain",
+                    "name": "C"
+                },
+                {
+                    "class": "devicon-cplusplus-plain",
+                    "name": "C++"
+                }
+            ]
+        },
+        {
+            "title": "Implementação de Detecção de Borda Laplaciana no image-rs/imageproc",
+            "startDate": "Abril 2023",
+            "description": "Contribuí para o projeto open source imageproc, que é uma biblioteca de processamento de imagem em Rust. Implementei estruturas de construtor Laplacian e LaplacianEdgeDetector para facilitar a detecção de bordas Laplacian em imagens em tons de cinza, conforme solicitado na Issue #505. O Pull Request foi submetido sob o título 'Implementing Laplacian and LaplacianEdgeDetector Builders for Laplacian Edge Detection'",
+            "url": "https://github.com/image-rs/imageproc/pull/516",
+            "images": [
+                "images/projects/laplacian-edge/ovo1.jpeg",
+                "images/projects/laplacian-edge/ovo2.jpeg",
+                "images/projects/laplacian-edge/ovo3.jpeg"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-rust-plain",
+                    "name": "Rust"
+                }
+            ]
+        },
+        {
+            "title": "Projeto Usiminas",
+            "startDate": "Março 2023",
+            "description": "Desenvolvi um sistema de recolhimento de dados para treinamento de redes neurais artificiais, com foco na detecção de corpos estranhos em aço. As atividades envolveram a coleta e processamento de dados, além do desenho e implementação do sistema que contribuiu para melhorar a qualidade e segurança dos produtos de aço da Usiminas.",
+            "url": "",
+            "images": [
+                "images/projects/usiminas/usiminas1.png",
+                "images/projects/usiminas/usminas2.png"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-python-plain",
+                    "name": "Python"
+                },
+                {
+                    "class": "devicon-docker-plain",
+                    "name": "Docker"
+                },
+                {
+                    "class": "devicon-redis-plain",
+                    "name": "Redis"
+                },
+                {
+                    "class": "devicon-mongodb-plain",
+                    "name": "MongoDB"
+                }
+            ]
+        },
+        {
+            "title": "Projeto Santista",
+            "startDate": "Dezembro 2022",
+            "description": "Desenvolvi um sistema de recolhimento de dados para treinamento de redes neurais artificiais, com foco na detecção de corpos estranhos em aço. As atividades envolveram a coleta e processamento de dados, além do desenho e implementação do sistema que contribuiu para melhorar a qualidade e segurança dos produtos de aço da Usiminas.",
+            "url": "",
+            "images": [
+                "images/projects/santista/santista1.png",
+                "images/projects/santista/santista2.jpeg"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-python-plain",
+                    "name": "Python"
+                },
+                {
+                    "class": "devicon-cplusplus-plain",
+                    "name": "C++"
+                },
+                {
+                    "class": "devicon-typescript-plain",
+                    "name": "TypeScript"
+                },
+                {
+                    "class": "devicon-docker-plain",
+                    "name": "Docker"
+                },
+                {
+                    "class": "devicon-redis-plain",
+                    "name": "Redis"
+                },
+                {
+                    "class": "devicon-postgresql-plain",
+                    "name": "Postgres"
+                }
+            ]
+        },
+        {
             "title": "Curso Linguagem Julia",
             "startDate": "2022",
-            "description": "Ministrei junto a um amigo do curso de Engenharia Mecanica um curso completo sobre a Linguagem de Programação Julia durante a Semana de Eventos Integrados na Universidade do Estado de Santa Catarina. O curso era aberto para todas as idades e para pessoas de dentro e fora da instituição.",
+            "description": "...",
             "images": [
                 "images/projects/julia-course/IMG_20221018_174932.jpg",
                 "images/projects/julia-course/IMG_20221019_183914.jpg"
@@ -26,94 +165,67 @@
                     "name": "Julia"
                 }
             ]
-        },
-        {
-    "title": "Implementação de Detecção de Borda Laplaciana no image-rs/imageproc",
-    "startDate": "2023",
-    "description": "Contribuí para o projeto image-rs/imageproc no GitHub, implementando duas novas estruturas de construtor, Laplacian e LaplacianEdgeDetector, para detecção de bordas Laplacianas em imagens em escala de cinza. A estrutura Laplacian permite aos usuários aplicar um filtro Laplaciano a uma imagem em escala de cinza, com a opção de usar o kernel Laplaciano padrão ou aplicar um ajuste diagonal para enfatizar as bordas diagonais. A estrutura LaplacianEdgeDetector expande a funcionalidade, fornecendo uma solução completa de detecção de borda, com personalizações para o processo, como o valor sigma para desfoque Gaussiano e o valor de limiar de borda. Essas adições tornam fácil para os usuários realizar detecção de borda Laplaciana com apenas algumas linhas de código, oferecendo flexibilidade e integração perfeita com as funções existentes no projeto. Acredito que essas melhorias são uma adição valiosa ao projeto e ajudarão os usuários a alcançar melhores resultados na detecção de bordas.",
-    "url": "https://github.com/image-rs/imageproc/pull/516",
-    "images": [
-                "images/projects/laplacian-edge/ovo1.jpeg",
-                "images/projects/laplacian-edge/ovo2.jpeg",
-                "images/projects/laplacian-edge/ovo3.jpeg"
-            ],
-    "technologies": [
-        {
-            "class": "devicon-rust-plain",
-            "name": "Rust"
         }
-    ]
-}
-
     ],
     "experience": [
-        {
-            "company": "SENAI - Strokmatic",
-            "title": "Bolsista em Inteligência Artificial, Visão Computacional e Desenvolvimento de Software Industrial",
-            "years": "12.2022 - Atualmente",
-            "icon": "devicon-python-plain",
-            "mainTech":[
-                "Python"
-            ],
-            "technologies":[
-                "Python",
-                "C++",
-                "PostgresSQL",
-                "Redis",
-                "OpenCV",
-                "Tensorflow",
-                "Docker",
-                "Git",
-                "Linux"
-            ]
-        },
-        {
-            "company": "UDESC",
-            "title": "Monitor Teoria dos Grafos",
-            "years": "07.2022 - 07-2023",
-            "icon": "devicon-cplusplus-plain",
-            "mainTech":[
-                "C"
-            ],
-            "technologies":[
-                "Python",
-                "C",
-                "C++",
-                "Rust"
-            ]
-        },
-        {
-            "company": "Devellop Labs",
-            "title": "Desenvolvedor Full Stack",
-            "years": "05.2021 - 12.2021",
-            "icon": "fab fa-php",
-            "mainTech":[
-                "Php 7.3/8.0"
-            ],
-            "technologies":[
-                "Magento 1/2",
-                "Openmange",
-                "Docker",
-                "Wordpress",
-                "MySQL",
-                "JavaScript",
-                "JQuery"
-            ]
-        },
-        {
-            "company": "UDESC",
-            "title": "Monitor Estrutura de Dados",
-            "years": "05.2019 - 05.2021",
-            "icon": "devicon-cplusplus-plain",
-            "mainTech": [
-                "C"
-            ],
-            "technologies": [
-                "Python",
-                "C",
-                "C++"
-            ]
-            
-        }
-    ]
+    {
+        "company": "SENAI",
+        "title": "Desenvolvedor de Software Industrial",
+        "years": "12.2022 - Atualmente",
+        "icon": "devicon-cplusplus-plain",
+        "mainTech": [
+            "C++"
+        ],
+        "technologies": [
+            "Python",
+            "C++",
+            "NodeJS",
+            "Docker",
+            "Bash"
+        ]
+    },
+    {
+        "company": "Udesc",
+        "title": "Monitor de Teoria dos Grafos",
+        "years": "07.2022 - 07.2023",
+        "icon": "devicon-c-plain",
+        "mainTech": [
+            "C++"
+        ],
+        "technologies": [
+            "Teoria dos Grafos",
+            "Algoritmos"
+        ]
+    },
+    {
+        "company": "Devellop Labs",
+        "title": "Desenvolvedor",
+        "years": "06.2021 - 12.2021",
+        "icon": "devicon-php-plain",
+        "mainTech": [
+            "Magento"
+        ],
+        "technologies": [
+            "Magento 1/2",
+            "RegEx",
+            "Bash",
+            "Cron",
+            "Docker"
+        ]
+    },
+    {
+        "company": "Udesc",
+        "title": "Monitor de Estrutura de Dados",
+        "years": "05.2019 - 05.2021",
+        "icon": "devicon-cplusplus-plain",
+        "mainTech": [
+            "C"
+        ],
+        "technologies": [
+            "Estruturas de Dados",
+            "Algoritmos"
+        ]
+    }
+]
+
 }
