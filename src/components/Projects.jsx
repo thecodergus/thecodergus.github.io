@@ -29,7 +29,6 @@ function Projects({ resumeProjects, resumeBasicInfo }){
             <img
               src={project.images[0]}
               alt="projectImages"
-              height="230"
               style={{ marginBottom: 0, paddingBottom: 0, position: 'relative' }}
             />
             <span className="project-date">{project.startDate}</span>

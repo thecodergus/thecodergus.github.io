@@ -124,6 +124,7 @@ header h1 {
 .foto img {
 	display: block;
 	width: 100%;
+	object-fit: cover;
 }
 
 .foto div {
@@ -168,6 +169,7 @@ header h1 {
 	letter-spacing: 3px;
 	color: black;
 	text-align: center;
+	word-wrap: break-word;
 }
 
 .polaroid img {
