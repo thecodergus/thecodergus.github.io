@@ -17,6 +17,9 @@ function Projects({ resumeProjects, resumeBasicInfo }){
   const modalShow = (data) => setModal({show: true, data})
   const modalClose = () => setModal({ show: false, data: {} })
 
+  const tamanho_proporcional = parseInt(window.innerWidth / projects.length)
+
+
   const Project = (project, i) => (
     <div
       className="col-sm-12 col-md-6 col-lg-4"
@@ -29,11 +32,21 @@ function Projects({ resumeProjects, resumeBasicInfo }){
             <img
               src={project.images[0]}
               alt="projectImages"
-              style={{ marginBottom: 0, paddingBottom: 0, position: 'relative' }}
+              style={{
+                maxWidth: `${tamanho_proporcional}px`,  // Define a largura máxima
+                marginBottom: 0,
+                paddingBottom: '10px', // Adiciona um espaço abaixo da imagem
+                position: 'relative'
+              }}
             />
             <span className="project-date">{project.startDate}</span>
             <br />
-            <p className="project-title-settings mt-3">
+            <p className="project-title-settings mt-3" style={{
+              wordWrap: 'break-word',  // Quebra as palavras conforme necessário
+              whiteSpace: 'normal',    // Permite quebras de linha
+              overflow: 'hidden',       // Oculta o conteúdo que ultrapassa o tamanho máximo
+               maxWidth: `${tamanho_proporcional}px`,  // Define a largura máxima
+            }}>
               {project.title}
             </p>
           </div>
