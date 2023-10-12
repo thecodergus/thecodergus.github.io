@@ -14,6 +14,7 @@
         {
             "title": "Spark Eyes System",
             "startDate": "Outubro 2022",
+            "endDate": "Atualmente",
             "description": "Atuo ativamente no projeto 'Spark Eyes System', focado no desenvolvimento de uma solução avançada para inspeção de pontos de solda na indústria automotiva. A iniciativa objetivou a automatização da inspeção dessas uniões através de tecnologia baseada em Inteligência Artificial, com a criação de protótipos laboratoriais, industriais e multiplataforma. Dentro deste escopo, fui o autor único e responsável pelo software de visão computacional do projeto, além de liderar o desenvolvimento do módulo de comunicação com o ViewR. Também fui encarregado do desenvolvimento de versões de alto desempenho de determinados módulos confidenciais, contribuindo significativamente para a eficiência e precisão na inspeção de pontos de solda.",
             "url": "",
             "images": [
@@ -51,6 +52,7 @@
         {
             "title": "Desenvolvimento da Biblioteca SKM-GenICam",
             "startDate": "Março 2023",
+            "endDate": "Atualmente",
             "description": "Arquitetei e desenvolvi um sistema de gerenciamento de câmeras industriais baseado na interface de programação genérica Europeia GenICam. Esta implementação mostrou-se absolutamente mais eficiente em atender as demandas de visão computacional quando comparada às soluções fornecidas originalmente pelos fabricantes das câmeras e passou a ser o software padrão de uso dentro dos projetos de inovação baseado em em visão computacional.",
             "url": "",
             "images": [
@@ -89,6 +91,7 @@
         {
             "title": "Projeto Usiminas",
             "startDate": "Março 2023",
+            "endDate": "Atualmente",
             "description": "Desenvolvi um sistema de recolhimento de dados para treinamento de redes neurais artificiais, com foco na detecção de corpos estranhos em aço. As atividades envolveram a coleta e processamento de dados, além do desenho e implementação do sistema que contribuiu para melhorar a qualidade e segurança dos produtos de aço da Usiminas.",
             "url": "",
             "images": [
@@ -117,6 +120,7 @@
         {
             "title": "Projeto Santista",
             "startDate": "Dezembro 2022",
+            "endDate": "Atualmente",
             "description": "Desenvolvi um sistema de recolhimento de dados para treinamento de redes neurais artificiais, com foco na detecção de corpos estranhos em aço. As atividades envolveram a coleta e processamento de dados, além do desenho e implementação do sistema que contribuiu para melhorar a qualidade e segurança dos produtos de aço da Usiminas.",
             "url": "",
             "images": [
@@ -152,7 +156,8 @@
         },
         {
             "title": "Curso Linguagem Julia",
-            "startDate": "2022",
+            "startDate": "Abril 2022",
+            "endDate": "Setembro 2022",
             "description": "...",
             "images": [
                 "images/projects/julia-course/IMG_20221018_174932.jpg",
