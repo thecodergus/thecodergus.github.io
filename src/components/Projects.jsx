@@ -39,7 +39,19 @@ function Projects({ resumeProjects, resumeBasicInfo }){
                 position: 'relative'
               }}
             />
-            <span className="project-date">{project.startDate}</span>
+            {
+              project.startDate && project.endDate && (
+                <span className="project-date">
+                  {project.startDate} - {project.endDate}
+                </span>
+              )
+              
+            }
+            {
+              project.startDate && !project.endDate && (
+                <span className="project-date">{project.startDate}</span>
+              )
+            }
             <br />
             <p className="project-title-settings mt-3" style={{
               wordWrap: 'break-word',  // Quebra as palavras conforme necessário
