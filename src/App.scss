@@ -93,6 +93,11 @@ header h1 {
 	border: 5px solid #D7CAAA;
 }
 
+.slider-image img {
+	object-fit: contain;
+	/* ou 'cover', dependendo de suas necessidades */
+}
+
 .slider-tab {
 	background-color: #D7CAAA;
 	height: 25px;

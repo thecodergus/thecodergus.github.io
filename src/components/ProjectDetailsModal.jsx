@@ -78,6 +78,10 @@ function ProjectDetailsModal({show, onHide, data}){
             cssModule={[AwesomeSliderStyles, AwesomeSliderStyles2]}
             animation="scaleOutAnimation"
             className="slider-image"
+            style={{ 
+              "--slider-height-percentage": "100%", 
+              "--slider-width-percentage": "100%" 
+            }}
           >
             {
               !!images && images.map(image)
