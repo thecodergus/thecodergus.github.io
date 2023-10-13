@@ -39,7 +39,7 @@ export default function Flags(){
     return (
         <div className="col-md-12 mx-auto text-center language">
             {
-                languages.map((e, i) => <Flag item={e} index={i} />)
+                languages.map((e, i) => <Flag key={i} item={e} index={i} />)
             }
         </div>
     )    
