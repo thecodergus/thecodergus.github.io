@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import "devicon/devicon.min.css"
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import About from "./components/About";
-import Experience from "./components/Experience";
-import Projects from "./components/Projects";
-import Skills from "./components/Skills";
-import Contact from "./components/Contact";
+import Header from "./components/home_page/Header";
+import Footer from "./components/home_page/Footer";
+import About from "./components/home_page/About";
+import Experience from "./components/home_page/Experience";
+import Projects from "./components/home_page/Projects";
+import Skills from "./components/home_page/Skills";
+import Contact from "./components/home_page/Contact";
 import axios from "axios"
 import store from "./config/localStore";
-import Flags from "./components/Flags";
+import Flags from "./components/home_page/Flags";
+import Doom1 from "./components/games/Doom1";
 
 const App = () => {
   const [sharedData, setSharedData] = useState({})
@@ -39,32 +41,44 @@ const App = () => {
   }, [language])
 
   return (
+    // <div>
+    
+    // </div>
     <div>
-      <Header sharedData={sharedData.basic_info} />
-      <Flags />
-      <About
-        resumeBasicInfo={resumeData.basic_info}
-        sharedBasicInfo={sharedData.basic_info}
-      />
-      <Projects
-        resumeProjects={resumeData.projects}
-        resumeBasicInfo={resumeData.basic_info}
-      />
-      <Skills
-        sharedSkills={sharedData.skills}
-        resumeBasicInfo={resumeData.basic_info}
-      />
-      <Experience
-        resumeExperience={resumeData.experience}
-        resumeBasicInfo={resumeData.basic_info}
-      />
-      <Contact
-        sharedData={sharedData.basic_info}
-        resumeBasicInfo={resumeData.basic_info}
-      />
-      <Footer
-        sharedBasicInfo={sharedData.basic_info}
-      />
+      <Router>
+          <Switch>
+            <Route path="/games/doom1" component={Doom1} />
+          </Switch>
+          <Switch>
+            <Route path="*">
+              <Header sharedData={sharedData.basic_info} />
+              <Flags />
+              <About
+                resumeBasicInfo={resumeData.basic_info}
+                sharedBasicInfo={sharedData.basic_info}
+              />
+              <Projects
+                resumeProjects={resumeData.projects}
+                resumeBasicInfo={resumeData.basic_info}
+              />
+              <Skills
+                sharedSkills={sharedData.skills}
+                resumeBasicInfo={resumeData.basic_info}
+              />
+              <Experience
+                resumeExperience={resumeData.experience}
+                resumeBasicInfo={resumeData.basic_info}
+              />
+              <Contact
+                sharedData={sharedData.basic_info}
+                resumeBasicInfo={resumeData.basic_info}
+              />
+              <Footer
+                sharedBasicInfo={sharedData.basic_info}
+              />
+            </Route>
+          </Switch>
+      </Router>
     </div>
   )
 
