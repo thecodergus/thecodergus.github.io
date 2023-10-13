@@ -47,7 +47,12 @@ const App = () => {
     <div>
       <Router>
           <Routes>
-            <Route path="/games/doom1" element={Doom1} />
+            <Route path="/games/doom1" element={<>
+                <div className="App" style={{ width: "640px", height: "400px" }}>
+                  
+              <Doom1 bundleUrl="digger.jsdos" />
+                </div>
+              </>} />
             <Route path="/" element={<>
             
             
