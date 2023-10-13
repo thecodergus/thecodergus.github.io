@@ -1,14 +1,15 @@
 {
     "basic_info": {
       "name": "Gustavo Michels de Camargo",
-      "titles": [ 
-        "Backend Developer", 
-        "Science Computer Student"
+      "titles": [
+        "Science Computer Student",
+        "Industrial Software Developer", 
+        "Backend Developer"
       ],
       "social": [
         {
           "name": "github",
-          "url": "https://github.com/thelostgus",
+          "url": "https://github.com/thecodergus",
           "class": "fab fa-github"
         },
         {
