@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import "devicon/devicon.min.css"
 import Header from "./components/home_page/Header";
@@ -12,7 +12,7 @@ import Contact from "./components/home_page/Contact";
 import axios from "axios"
 import store from "./config/localStore";
 import Flags from "./components/home_page/Flags";
-import Doom1 from "./components/games/Doom1";
+import Doom1 from "./components/games/doom1";
 
 const App = () => {
   const [sharedData, setSharedData] = useState({})
@@ -46,11 +46,11 @@ const App = () => {
     // </div>
     <div>
       <Router>
-          <Switch>
-            <Route path="/games/doom1" component={Doom1} />
-          </Switch>
-          <Switch>
-            <Route path="*">
+          <Routes>
+            <Route path="/games/doom1" element={Doom1} />
+            <Route path="/" element={<>
+            
+            
               <Header sharedData={sharedData.basic_info} />
               <Flags />
               <About
@@ -76,8 +76,10 @@ const App = () => {
               <Footer
                 sharedBasicInfo={sharedData.basic_info}
               />
-            </Route>
-          </Switch>
+            
+            </>} />
+            
+          </Routes>
       </Router>
     </div>
   )
