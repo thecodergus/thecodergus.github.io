@@ -11,6 +11,8 @@
     "axios": "^1.1.3",
     "bootstrap": "^4.6.2",
     "devicon": "^2.15.1",
+    "emulators-ui": "^0.73.9",
+    "js-dos": "^7.5.0",
     "react": "18.2.0",
     "react-awesome-slider": "^4.1.0",
     "react-bootstrap": "2.5.0",

@@ -449,3 +449,48 @@ footer a:focus {
 .chose-flag{
 	filter: brightness(40%);
 }
+
+ .icon-corner {
+ 	position: absolute;
+ 	top: 0;
+ 	right: 0;
+ 	z-index: 9999;
+ }
+
+ .icon-corner:hover .joystick path {
+ 	animation: joystick-move 1s ease-in-out infinite;
+ }
+
+ @keyframes joystick-move {
+
+ 	0%,
+ 	100% {
+ 		transform: translateY(0);
+ 	}
+
+ 	25% {
+ 		transform: translateY(-5px);
+ 	}
+
+ 	50% {
+ 		transform: translateY(5px);
+ 	}
+
+ 	75% {
+ 		transform: translateY(-5px);
+ 	}
+ }
+
+ .message-box {
+ 	position: absolute;
+ 	top: 10px;
+ 	/* ajuste conforme necessário */
+ 	left: 10px;
+ 	/* ajuste conforme necessário */
+ 	padding: 10px;
+ 	background-color: #fff;
+ 	border: 1px solid #000;
+ 	border-radius: 5px;
+ 	z-index: 1000;
+ 	/* para garantir que apareça acima de outros elementos */
+ }

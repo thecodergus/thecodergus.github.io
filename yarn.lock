@@ -4014,6 +4014,11 @@ emojis-list@^3.0.0:
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
   integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
 
+emulators-ui@^0.73.9:
+  version "0.73.9"
+  resolved "https://registry.yarnpkg.com/emulators-ui/-/emulators-ui-0.73.9.tgz#194bf4d7712c3e5b31c073826373b42d2c9200be"
+  integrity sha512-Zx1eD9yHt+QjMwU0ay9FQKhyvvKucL1bRsTlZdHZsBrU3rNsZm52XODXFLSHMmAksEUe5TRocopWduJF7R9+xw==
+
 encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
@@ -6085,6 +6090,13 @@ jest@^27.4.3:
     "@jest/core" "^27.5.1"
     import-local "^3.0.2"
     jest-cli "^27.5.1"
+
+js-dos@^7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/js-dos/-/js-dos-7.5.0.tgz#0e8b2f8e515f29edac213220e5135d6cebb0fad1"
+  integrity sha512-7vI5HqE9MNkytyTwFVjqU+HyIPCWhwc4SmCp/eba7UC7ZhtcG043TFcfB62qdVPwGmzLCV01nm/NJceEOTeFdA==
+  dependencies:
+    nanoid "^3.3.4"
 
 js-sdsl@^4.1.4:
   version "4.1.5"
