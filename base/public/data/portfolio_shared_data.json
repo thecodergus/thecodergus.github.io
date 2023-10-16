@@ -1,0 +1,97 @@
+{
+    "basic_info": {
+      "name": "Gustavo Michels de Camargo",
+      "titles": [
+        "Science Computer Student",
+        "Industrial Software Developer", 
+        "Backend Developer"
+      ],
+      "social": [
+        {
+          "name": "github",
+          "url": "https://github.com/thecodergus",
+          "class": "fab fa-github"
+        },
+        {
+          "name": "gmail",
+          "url": "mailto:gustavo.michels.de.camargo@gmail.com",
+          "class": "far fa-envelope"
+        }
+      ],
+      "image": "myProfile.jpg"
+    },
+    "skills": {
+      "icons": [
+        {
+          "name": "C++",
+          "class": "devicon-cplusplus-plain",
+          "level": "90"
+        },
+        {
+          "name": "Python",
+          "class": "devicon-python-plain",
+          "level": "100"
+        },
+        {
+          "name": "Julia",
+          "class": "devicon-julia-plain",
+          "level": "65"
+        },
+        {
+          "name": "TypeScript",
+          "class": "devicon-typescript-plain",
+          "level": "90"
+        },
+        {
+          "name": "Express.js",
+          "class": "devicon-express-original",
+          "level": "70"
+        },
+        {
+          "name": "React",
+          "class": "devicon-react-plain",
+          "level": "60"
+        },
+        {
+          "name": "Rust",
+          "class": "devicon-rust-plain",
+          "level": "75"
+        },
+        {
+          "name": "PHP",
+          "class": "devicon-php-plain",
+          "level": "50"
+        },
+        {
+          "name": "PostgreSQL",
+          "class": "devicon-postgresql-plain",
+          "level": "70"
+        },
+        {
+          "name": "MongoDB",
+          "class": "devicon-mongodb-plain",
+          "level": "60"
+        },
+        {
+          "name": "Linux",
+          "class": "devicon-linux-plain",
+          "level": "80"
+        },
+        {
+          "name": "Bash script",
+          "class": "devicon-bash-plain",
+          "level": "75"
+        },
+        {
+          "name": "Git",
+          "class": "devicon-git-plain",
+          "level": "90"
+        },
+        {
+          "name": "Docker",
+          "class": "devicon-docker-plain",
+          "level": "100"
+        }
+      ]
+    }
+  }

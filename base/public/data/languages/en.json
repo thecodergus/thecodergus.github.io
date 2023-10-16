@@ -1,0 +1,230 @@
+{
+    "basic_info": {
+        "description_header": "Hello, nice to meet you",
+        "description": "I am Gustavo Michels de Camargo, a Computer Science undergraduate at the State University of Santa Catarina (UDESC). Throughout my academic and professional journey, I have developed a passion for Artificial Intelligence, Image Processing, and Industrial Development, areas in which I have worked as a scholarship holder. My practical experience is accentuated by significant projects to which I have had the opportunity to contribute, such as the 'Spark Eyes System' in collaboration with General Motors, SENAI, and Strokmatic, where I developed computer vision software for automated inspection of welding points in the automotive industry. My journey has also led me to contribute to the field of computer vision through the development of the SKM-GenICam Library, an industrial camera management system, and through contributions to the open-source imageproc project, where I implemented features for Laplacian edge detection. In addition, I have worked on projects with Strokmatic for Usiminas and Santista, developing data collection systems for training artificial neural networks. My tech stack includes languages such as C, C++, Python, Rust, and TypeScript, and technologies like Docker, Redis, and Postgres. Beyond my professional interest, I am an avid reader with a particular love for history, classical literature, philosophy, and psychology. I am always looking to expand my knowledge and apply my skills in challenging and innovative projects that have a real impact on the industry and community.",
+        "section_name": {
+            "about": "About Me",
+            "projects": "Projects",
+            "skills": "Skills",
+            "experience": "Experience",
+            "contact": "Contact Me"
+        }
+    },
+    "projects": [
+        {
+            "title": "Spark Eyes System",
+            "startDate": "October 2022",
+            "description": "I am actively involved in the 'Spark Eyes System' project, focused on developing an advanced solution for the inspection of welding points in the automotive industry. The initiative aimed to automate the inspection of these joints through Artificial Intelligence-based technology, creating laboratory, industrial, and multi-platform prototypes. Within this scope, I was the sole author and responsible for the computer vision software of the project, as well as leading the development of the communication module with ViewR. I was also in charge of developing high-performance versions of certain confidential modules, contributing significantly to the efficiency and accuracy in the inspection of welding points.",
+            "url": "",
+            "images": [
+                "images/projects/sparkeyes/spark1.png",
+                "images/projects/sparkeyes/spark2.png",
+                "images/projects/sparkeyes/spark3.png"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-cplusplus-plain",
+                    "name": "C++"
+                },
+                {
+                    "class": "devicon-python-plain",
+                    "name": "Python"
+                },
+                {
+                    "class": "devicon-typescript-plain",
+                    "name": "TypeScript"
+                },
+                {
+                    "class": "devicon-docker-plain",
+                    "name": "Docker"
+                },
+                {
+                    "class": "devicon-redis-plain",
+                    "name": "Redis"
+                },
+                {
+                    "class": "devicon-postgresql-plain",
+                    "name": "Postgres"
+                }
+            ]
+        },
+        {
+            "title": "Development of SKM-GenICam Library",
+            "startDate": "March 2023",
+            "description": "I architected and developed an industrial camera management system based on the generic European GenICam programming interface. This implementation proved to be absolutely more efficient in meeting the demands of computer vision compared to the solutions originally provided by the camera manufacturers and became the standard software for use within computer vision-based innovation projects.",
+            "url": "",
+            "images": [
+                "images/projects/genicam/genicam1.png",
+                "images/projects/genicam/genicam2.png",
+                "images/projects/genicam/genicam3.png"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-c-plain",
+                    "name": "C"
+                },
+                {
+                    "class": "devicon-cplusplus-plain",
+                    "name": "C++"
+                }
+            ]
+        },
+        {
+            "title": "Implementation of Laplacian Edge Detection in image-rs/imageproc",
+            "startDate": "April 2023",
+            "description": "I contributed to the open-source imageproc project, which is an image processing library in Rust. I implemented Laplacian constructor structures and LaplacianEdgeDetector to facilitate Laplacian edge detection in grayscale images, as requested in Issue #505. The Pull Request was submitted under the title 'Implementing Laplacian and LaplacianEdgeDetector Builders for Laplacian Edge Detection'",
+            "url": "https://github.com/image-rs/imageproc/pull/516",
+            "images": [
+                "images/projects/laplacian-edge/ovo1.jpeg",
+                "images/projects/laplacian-edge/ovo2.jpeg",
+                "images/projects/laplacian-edge/ovo3.jpeg"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-rust-plain",
+                    "name": "Rust"
+                }
+            ]
+        },
+        {
+            "title": "Usiminas Project",
+            "startDate": "March 2023",
+            "description": "I developed a data collection system for training artificial neural networks, focusing on the detection of foreign bodies in steel. Activities involved data collection and processing, as well as the design and implementation of the system that contributed to improving the quality and safety of Usiminas steel products.",
+            "url": "",
+            "images": [
+                "images/projects/usiminas/usiminas1.png",
+                "images/projects/usiminas/usminas2.png"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-python-plain",
+                    "name": "Python"
+                },
+                {
+                    "class": "devicon-docker-plain",
+                    "name": "Docker"
+                },
+                {
+                    "class": "devicon-redis-plain",
+                    "name": "Redis"
+                },
+                {
+                    "class": "devicon-mongodb-plain",
+                    "name": "MongoDB"
+                }
+            ]
+        },
+        {
+            "title": "Santista Project",
+            "startDate": "December 2022",
+            "description": "I developed a data collection system for training artificial neural networks, focusing on the detection of foreign bodies in steel. Activities involved data collection and processing, as well as the design and implementation of the system that contributed to improving the quality and safety of Usiminas steel products.",
+            "url": "",
+            "images": [
+                "images/projects/santista/santista1.png",
+                "images/projects/santista/santista2.jpeg"
+            ],
+            "technologies": [
+                {
+                    "class": "devicon-python-plain",
+                    "name": "Python"
+                },
+                {
+                    "class": "devicon-cplusplus-plain",
+                    "name": "C++"
+                },
+                {
+                    "class": "devicon-typescript-plain",
+                    "name": "TypeScript"
+                },
+                {
+                    "class": "devicon-docker-plain",
+                    "name": "Docker"
+                },
+                {
+                    "class": "devicon-redis-plain",
+                    "name": "Redis"
+                },
+                {
+                    "class": "devicon-postgresql-plain",
+                    "name": "Postgres"
+                }
+            ]
+        },
+        {
+            "title": "Julia Language Course",
+            "startDate": "2022",
+            "description": "...",
+            "images": [
+                "images/projects/julia-course/IMG_20221018_174932.jpg",
+                "images/projects/julia-course/IMG_20221019_183914.jpg"
+            ],
+            "url": "https://github.com/thelostgus/curso-julia-sei-2022",
+            "technologies": [
+                {
+                    "class": "devicon-julia-plain",
+                    "name": "Julia"
+                }
+            ]
+        }
+    ],
+    "experience": [
+        {
+            "company": "SENAI",
+            "title": "Industrial Software Developer",
+            "years": "12.2022 - Present",
+            "icon": "devicon-cplusplus-plain",
+            "mainTech": [
+                "C++"
+            ],
+            "technologies": [
+                "Python",
+                "C++",
+                "NodeJS",
+                "Docker",
+                "Bash"
+            ]
+        },
+        {
+            "company": "Udesc",
+            "title": "Graph Theory Teaching Assistant",
+            "years": "07.2022 - 07.2023",
+            "icon": "devicon-c-plain",
+            "mainTech": [
+                "C++"
+            ],
+            "technologies": [
+                "Graph Theory",
+                "Algorithms"
+            ]
+        },
+        {
+            "company": "Devellop Labs",
+            "title": "Developer",
+            "years": "06.2021 - 12.2021",
+            "icon": "devicon-php-plain",
+            "mainTech": [
+                "Magento"
+            ],
+            "technologies": [
+                "Magento 1/2",
+                "RegEx",
+                "Bash",
+                "Cron",
+                "Docker"
+            ]
+        },
+        {
+            "company": "Udesc",
+            "title": "Data Structures Teaching Assistant",
+            "years": "05.2019 - 05.2021",
+            "icon": "devicon-cplusplus-plain",
+            "mainTech": [
+                "C"
+            ],
+            "technologies": [
+                "Data Structures",
+                "Algorithms"
+            ]
+        }
+    ]
+}
