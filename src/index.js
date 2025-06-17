@@ -15,7 +15,7 @@ store.setState("languages", [
     },
     {
         language: "en",
-        classItem: "iconify language-icon mr-5",
+        classItem: "iconify language-icon me-5",
         flag: "twemoji-flag-for-flag-united-kingdom"
     }
 ])

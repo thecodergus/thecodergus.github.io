@@ -9,13 +9,13 @@ import Badge from "react-bootstrap/Badge";
 function Experience(experience, i){
 
   const mainTechnology = (technology, i) => (
-    <Badge pill className="experience-badge mr-2 mb-2" key={i}>
+    <Badge pill className="experience-badge me-2 mb-2" key={i}>
       {technology}
     </Badge>
   )
 
   const technology = (technology, i) => (
-    <Badge pill className="main-badge mr-2 mb-2" key={i}>
+    <Badge pill className="main-badge me-2 mb-2" key={i}>
       {technology}
     </Badge>
   )
@@ -74,13 +74,9 @@ const Experiences = ({ resumeExperience, resumeBasicInfo }) => {
   return (
     <section id="resume" className="pb-5">
       <div className="col-md-12 mx-auto">
-        <div className="col-md-12">
-          <h1 className="section-title" style={{ color: "black" }}>
-            <span className="text-black" style={{ textAlign: "center" }}>
-              {sectionName}
-            </span>
-          </h1>
-        </div>
+        <h1 className="section-title text-dark text-center">
+          {sectionName}
+        </h1>
       </div>
       <div className="col-md-8 mx-auto">
         <VerticalTimeline>

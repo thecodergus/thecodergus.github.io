@@ -13,11 +13,9 @@ function Contact({ resumeBasicInfo, sharedData }){
     return (
         <section id="contact">
             <div className="col-md-12">
-                <h1 className="section-title" style={{ color: "white" }}>
-                    <span>
-                        {resumeBasicInfo ? resumeBasicInfo.section_name.contact : "???"}
-                    </span>
-                </h1>
+            <h1 className="section-title text-white">
+                {resumeBasicInfo ? resumeBasicInfo.section_name.contact : "???"}
+            </h1>
             </div>
             <div className="social-links fa-3x">
                 {
