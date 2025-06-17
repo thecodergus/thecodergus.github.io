@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import AwesomeSlider from "react-awesome-slider";
 import AwesomeSliderStyles from "../scss/light-slider.scss";
@@ -22,7 +22,7 @@ const technology = (icon, i) => (
 
 const image = (img, i) => <div key={i} data-src={img} />
 
-function ProjectDetailsModal({show, onHide, data}){
+function ProjectDetailsModal({ show, onHide, data }){
   const [images, setImages] = useState([])
   const [technologies, setTecnologies] = useState([])
   const [basicInfos, setBasicInfos] = useObjectState({title: "", description: "", url: ""})
@@ -37,7 +37,7 @@ function ProjectDetailsModal({show, onHide, data}){
         url: data.url
       })
     }
-  }, [data])
+  }, [data, setBasicInfos])
 
   return (
     <Modal

@@ -18,24 +18,20 @@ const App = () => {
   const [language] = store.useState("language")
 
   // Data
-  const loadSharedData = async () => {
-    const response = await axios(`data/portfolio_shared_data.json`)
-
-    if (!!response) setSharedData(response.data)
-  }
-  const loadResumeFromPath = async () => {
-    const response = await axios(`data/languages/${language}.json`)
-
-    if (!!response) setResumeData(response.data)
-  }
-
   useEffect(() => {
-    loadSharedData()
-    loadResumeFromPath()
+    const fetchSharedData = async () => {
+      const response = await axios(`data/portfolio_shared_data.json`)
+      if (response) setSharedData(response.data)
+    }
+    fetchSharedData()
   }, [])
 
   useEffect(() => {
-    loadResumeFromPath()
+    const fetchResumeData = async () => {
+      const response = await axios(`data/languages/${language}.json`)
+      if (response) setResumeData(response.data)
+    }
+    fetchResumeData()
   }, [language])
 
   return (
