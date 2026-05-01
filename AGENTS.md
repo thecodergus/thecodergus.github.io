@@ -32,5 +32,11 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - Strict TypeScript, no emit, bundler module resolution.
 - No configured test runner, linter, or formatter.
 
+### TypeScript strictness
+- **NEVER use `any`.** Prefer `unknown` and narrow with type guards. If a type is truly dynamic, use `Record<string, unknown>`.
+- **ALWAYS use `enum` for categorization.** Any set of discrete variants (phases, states, modes, themes, categories) MUST be an `enum`, never string unions or magic constants. `enum` provides a single source of truth and compiler-verified exhaustiveness.
+- Function parameters and return types must be explicitly typed — avoid implicit inference for public APIs.
+- Prefer `interface` for object shapes that may be extended; use `type` for unions, intersections, and primitives.
+
 ## Gotchas
 - `vite.config.ts` explicitly externalizes `react` and `react-dom` in Rollup options. Do not remove unless intentional.

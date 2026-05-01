@@ -1,46 +1,16 @@
-import { createSignal, createEffect, onCleanup } from "solid-js";
+import { Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import { theme, setTheme, THEMES, type ThemeId } from "~/stores/themeStore";
 import NeuralCanvas from "~/components/NeuralCanvas";
-import GlitchText from "~/components/GlitchText";
+import TypewriterText from "~/components/TypewriterText";
+import RotatingTypewriter from "~/components/RotatingTypewriter";
 import { ChevronDown, Github, Linkedin, Mail } from "lucide-solid";
 
 export default function Hero() {
   const { sharedData, messages } = useI18n();
-  const [displayText, setDisplayText] = createSignal("");
-  const [titleIndex, setTitleIndex] = createSignal(0);
-  const [isDeleting, setIsDeleting] = createSignal(false);
-
   const name = () => sharedData()?.basic_info?.name || "";
   const titles = () => sharedData()?.basic_info?.titles || [];
   const subtitle = () => messages()?.hero?.subtitle || "";
-
-  createEffect(() => {
-    const currentTitles = titles();
-    if (currentTitles.length === 0) return;
-
-    const currentTitle = currentTitles[titleIndex()].toUpperCase();
-    const speed = isDeleting() ? 40 : 80;
-
-    const timer = setTimeout(() => {
-      const currentText = displayText();
-
-      if (!isDeleting()) {
-        setDisplayText(currentTitle.substring(0, currentText.length + 1));
-        if (currentText.length + 1 === currentTitle.length) {
-          setTimeout(() => setIsDeleting(true), 2000);
-        }
-      } else {
-        setDisplayText(currentTitle.substring(0, currentText.length - 1));
-        if (currentText.length - 1 === 0) {
-          setIsDeleting(false);
-          setTitleIndex((prev) => (prev + 1) % currentTitles.length);
-        }
-      }
-    }, speed);
-
-    onCleanup(() => clearTimeout(timer));
-  });
 
   const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
@@ -61,14 +31,18 @@ export default function Hero() {
         </div>
 
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-display mb-4 tracking-tight">
-          <GlitchText text={name()} class="text-text" />
+          <Show when={name()}>
+            <TypewriterText text={name()} class="text-text" />
+          </Show>
         </h1>
 
         <div class="h-12 md:h-16 flex items-center justify-center mb-8">
-          <span class="font-mono text-lg md:text-2xl text-accent-cyan">
-            {displayText()}
-            <span class="animate-pulse">|</span>
-          </span>
+          <Show when={titles().length > 0}>
+            <RotatingTypewriter
+              titles={titles()}
+              class="font-mono text-lg md:text-2xl text-accent-cyan"
+            />
+          </Show>
         </div>
 
         <p class="text-text-secondary text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
