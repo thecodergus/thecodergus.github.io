@@ -354,19 +354,26 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   };
 
   const setOpacity = (t: number): void => {
+    const setMaterialOpacity = (mat: THREE.Material): void => {
+      const basicMat = mat as THREE.MeshBasicMaterial;
+      if (basicMat.userData._baseOpacity === undefined) {
+        basicMat.userData._baseOpacity = basicMat.opacity;
+      }
+      basicMat.opacity = (basicMat.userData._baseOpacity as number) * t;
+    };
     blocks.forEach((b) => {
       b.mesh.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          (child.material as THREE.MeshBasicMaterial).opacity = (child.material as THREE.MeshBasicMaterial).opacity * t;
+          setMaterialOpacity(child.material as THREE.MeshBasicMaterial);
         } else if (child instanceof THREE.Line || child instanceof THREE.LineSegments) {
-          (child.material as THREE.LineBasicMaterial).opacity = 0.3 * t;
+          setMaterialOpacity(child.material as THREE.LineBasicMaterial);
         }
       });
     });
     validators.forEach((v) => {
-      (v.material as THREE.MeshBasicMaterial).opacity = 0.5 * t;
+      setMaterialOpacity(v.material as THREE.MeshBasicMaterial);
     });
-    particleMat.opacity = 0.9 * t;
+    setMaterialOpacity(particleMat);
   };
 
   const dissolve = (progress: number): void => {

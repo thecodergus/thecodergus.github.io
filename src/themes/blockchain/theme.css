@@ -12,4 +12,7 @@
   --color-accent-cyan: #00BFA5;
   --color-accent-cyan-dim: #004D40;
   --color-accent-yellow: #F7931A;
+  --shadow-glow-green: 0 0 20px rgba(20, 241, 149, 0.3);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 191, 165, 0.3);
+  --shadow-glow-purple: 0 0 20px rgba(98, 126, 234, 0.4);
 }

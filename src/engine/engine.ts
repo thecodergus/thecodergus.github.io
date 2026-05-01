@@ -1,7 +1,7 @@
 // ── Engine: Three.js orchestrator — pure, scene-agnostic ──
 //
 // Manages: renderer, scene, camera, post-processing, animation loop,
-// camera orbit, mouse tracking, keyboard routing, resize, transitions.
+// camera orbit, keyboard routing, resize, transitions.
 // Receives ThemeModule objects to load/scene switch.
 
 import * as THREE from "three";
@@ -10,7 +10,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
-import type { SceneHandle, SceneConfig, Vec2, CameraPreset, PostProcessPreset } from "./types";
+import type { SceneHandle, SceneConfig, CameraPreset, PostProcessPreset } from "./types";
 import type { ThemeModule } from "./types";
 import { createTransitionManager } from "./transition";
 
@@ -137,13 +137,8 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
   let activePreset: CameraPreset | null = null;
 
   let orbitAngle = 0;
-  let mouseOverCanvas = false;
 
   const bloomTarget = { value: 0.8 };
-  const mixTarget = { x: 0, y: 0 };
-  let mousePos: Vec2 | null = null;
-
-  const transitionManager = createTransitionManager();
 
   // ── Scene helpers ──
 
@@ -165,6 +160,8 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
     handle.dispose();
   };
 
+  const transitionManager = createTransitionManager(disposeScene);
+
   // ── Apply post-processing preset ──
 
   const applyPostPreset = (preset: PostProcessPreset): void => {
@@ -185,18 +182,13 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
   const setTheme = (m: ThemeModule): void => {
     if (disposed) return;
 
-    // Avoid redundant switch to same kind while transitioning
-    if (
-      currentModule?.sceneKind === m.sceneKind &&
-      transitionManager.isTransitioning()
-    ) {
-      return;
-    }
+    if (currentModule?.sceneKind === m.sceneKind) return;
 
     currentModule = m;
 
-    // Update camera preset
+    // Update camera preset and reset orbit angle
     activePreset = m.cameraPreset;
+    orbitAngle = m.cameraPreset.initialAngle;
 
     // Update post-processing
     applyPostPreset(m.postPreset);
@@ -222,44 +214,18 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
 
     const p = activePreset;
 
-    const shouldPause = p.pauseOnHover && mouseOverCanvas;
-    if (p.autoRotate && !shouldPause) {
+    if (p.autoRotate) {
       orbitAngle += p.orbitSpeed * delta * 0.001;
     }
 
-    const orbitMouseOffset = mousePos ? mousePos.x * 0.26 : 0;
     const orbitH = Math.sin(orbitAngle * p.heightFrequency) * p.heightAmplitude;
-    const camAngle = orbitAngle + orbitMouseOffset;
 
-    const cx = Math.sin(camAngle) * p.orbitRadius;
-    const cz = Math.cos(camAngle) * p.orbitRadius;
+    const cx = Math.sin(orbitAngle) * p.orbitRadius;
+    const cz = Math.cos(orbitAngle) * p.orbitRadius;
 
     camera.position.lerp(new THREE.Vector3(cx, orbitH, cz), 0.03);
     camera.lookAt(0, 0, 0);
   };
-
-  // ── Mouse tracking ──
-
-  const onMouseMove = (e: MouseEvent): void => {
-    const rect = container.getBoundingClientRect();
-    mixTarget.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    mixTarget.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-    mouseOverCanvas = true;
-  };
-
-  const onMouseEnter = (): void => {
-    mouseOverCanvas = true;
-  };
-
-  const onMouseLeave = (): void => {
-    mixTarget.x = 0;
-    mixTarget.y = 0;
-    mouseOverCanvas = false;
-  };
-
-  container.addEventListener("mousemove", onMouseMove);
-  container.addEventListener("mouseenter", onMouseEnter);
-  container.addEventListener("mouseleave", onMouseLeave);
 
   // ── Keyboard routing (generic: routes to active scene) ──
 
@@ -295,12 +261,6 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
     const delta = lastTime === 0 ? 16 : Math.min(time - lastTime, 50);
     lastTime = time;
 
-    // Smooth mouse interpolation
-    mousePos = {
-      x: mousePos ? mousePos.x + (mixTarget.x - mousePos.x) * 0.05 : mixTarget.x,
-      y: mousePos ? mousePos.y + (mixTarget.y - mousePos.y) * 0.05 : mixTarget.y,
-    };
-
     // Camera orbit
     updateCamera(delta);
 
@@ -310,7 +270,7 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
     // Scene update
     const active = transitionManager.getActive();
     if (active) {
-      active.update(time * 0.001, delta * 0.001, mousePos);
+      active.update(time * 0.001, delta * 0.001, null);
 
       // Bloom breathing from scene density
       if (active.getDensity) {
@@ -342,9 +302,6 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
 
     window.removeEventListener("resize", resize);
     window.removeEventListener("keydown", onKeyDown);
-    container.removeEventListener("mousemove", onMouseMove);
-    container.removeEventListener("mouseenter", onMouseEnter);
-    container.removeEventListener("mouseleave", onMouseLeave);
 
     renderer.dispose();
     if (renderer.domElement.parentNode === container) {

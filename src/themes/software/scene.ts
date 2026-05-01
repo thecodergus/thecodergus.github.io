@@ -9,8 +9,6 @@ import type { PlaneConfig, Drop, PlaneState, GlitchState, FreezeState, KeySprite
 
 const GRID_WIDTH = 14;
 const GRID_HEIGHT = 8;
-const MOUSE_WAKE_RADIUS = 1.8;
-const MOUSE_WAKE_BOOST = 0.35;
 const GLITCH_INTERVAL_MIN = 12_000;
 const GLITCH_INTERVAL_MAX = 28_000;
 const GLITCH_FRAMES = 3;
@@ -123,27 +121,6 @@ const hexToRGB = (hex: string): { r: number; g: number; b: number } => ({
   g: parseInt(hex.slice(3, 5), 16) / 255,
   b: parseInt(hex.slice(5, 7), 16) / 255,
 });
-
-const createGradientTexture = (
-  colorTop: string,
-  colorBottom: string,
-  transparentBottom: boolean,
-): THREE.CanvasTexture => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1;
-  canvas.height = 64;
-  const ctx = canvas.getContext("2d")!;
-  const gradient = ctx.createLinearGradient(0, 0, 0, 64);
-  gradient.addColorStop(0, colorTop);
-  if (transparentBottom) {
-    gradient.addColorStop(1, "rgba(0,0,0,0)");
-  } else {
-    gradient.addColorStop(1, colorBottom);
-  }
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 1, 64);
-  return new THREE.CanvasTexture(canvas);
-};
 
 // ── Create a single plane of drops ──
 
@@ -286,7 +263,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   // ── Three rain planes ──
 
-  const planes: PlaneState[] = PLANE_CONFIGS.map((pc) => createPlane(pc, cs.secondary));
+  const planes: PlaneState[] = PLANE_CONFIGS.map((pc) => createPlane(pc, cs.primary));
   planes.forEach((p) => root.add(p.group));
 
   // ── Data packets (traveling dots on grid lines) ──
@@ -328,14 +305,32 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     });
   });
 
-  // ── Ground fog ──
+  // ── Ground fog (wide plane with horizontal fade) ──
 
-  const fogTex = createGradientTexture(cs.secondary, "#000000", true);
-  const fogGeo = new THREE.PlaneGeometry(GRID_WIDTH, FOG_HEIGHT);
+  const fogCanvas = document.createElement("canvas");
+  fogCanvas.width = 256;
+  fogCanvas.height = 64;
+  const fctx = fogCanvas.getContext("2d")!;
+  const vGrad = fctx.createLinearGradient(0, 0, 0, fogCanvas.height);
+  vGrad.addColorStop(0, cs.primary);
+  vGrad.addColorStop(0.45, cs.primary);
+  vGrad.addColorStop(1, "rgba(0,0,0,0)");
+  fctx.fillStyle = vGrad;
+  fctx.fillRect(0, 0, fogCanvas.width, fogCanvas.height);
+  const hMask = fctx.createLinearGradient(0, 0, fogCanvas.width, 0);
+  hMask.addColorStop(0, "rgba(0,0,0,0)");
+  hMask.addColorStop(0.15, "rgba(0,0,0,1)");
+  hMask.addColorStop(0.85, "rgba(0,0,0,1)");
+  hMask.addColorStop(1, "rgba(0,0,0,0)");
+  fctx.globalCompositeOperation = "destination-in";
+  fctx.fillStyle = hMask;
+  fctx.fillRect(0, 0, fogCanvas.width, fogCanvas.height);
+  const fogTex = new THREE.CanvasTexture(fogCanvas);
+  const fogGeo = new THREE.PlaneGeometry(GRID_WIDTH * 3, FOG_HEIGHT * 2);
   const fogMat = new THREE.MeshBasicMaterial({
     map: fogTex,
     transparent: true,
-    opacity: 0.12,
+    opacity: 0.02,
     depthWrite: false,
     side: THREE.DoubleSide,
   });
@@ -360,8 +355,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   // ── Scene-space mouse coordinate ──
 
-  const SCENE_HALF_WIDTH = 5.5;
-  const SCENE_HALF_HEIGHT = 3.2;
+
 
   // ── Entrance progress tracking ──
 
@@ -396,18 +390,9 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     const elapsedSinceCreation = now - (sceneStartTime ?? now);
     updateCascade(elapsedSinceCreation);
 
-    // Scene-space mouse
-    const sceneMouseX = mouse ? mouse.x * SCENE_HALF_WIDTH : 999;
-    const sceneMouseY = mouse ? mouse.y * SCENE_HALF_HEIGHT : 999;
-
     // ── Per-plane rain update ──
 
     planes.forEach((plane) => {
-      // Parallax offset from mouse
-      if (mouse) {
-        plane.group.position.x = mouse.x * plane.config.parallaxFactor * 2.5;
-        plane.group.position.y = mouse.y * plane.config.parallaxFactor * 1.5;
-      }
 
       plane.drops.forEach((d, i) => {
         if (d.opacity <= 0 || d.entranceFactor < 1) return;
@@ -417,24 +402,14 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
         const sprite = plane.sprites[i];
         if (!sprite) return;
 
-        // Position in local space (group is already offset for parallax)
         const localX = -GRID_WIDTH / 2 + d.column * plane.columnSpacing + plane.columnSpacing / 2;
         sprite.position.x = localX;
         sprite.position.y = d.row * plane.config.charSize;
 
-        // Mouse wake
-        const dx = localX - sceneMouseX;
-        const dy = sprite.position.y - sceneMouseY;
-        const distToMouse = Math.sqrt(dx * dx + dy * dy);
-        let wakeBoost = 0;
-        if (distToMouse < MOUSE_WAKE_RADIUS) {
-          wakeBoost = MOUSE_WAKE_BOOST * (1 - distToMouse / MOUSE_WAKE_RADIUS);
-        }
-
         // Head respawn
         if (d.isHead && d.row * plane.config.charSize < -GRID_HEIGHT / 2 - 1) {
           d.row = Math.round((GRID_HEIGHT / 2 + 1) / plane.config.charSize);
-          const newTex = createCharTexture(generateChar(), cs.secondary);
+          const newTex = createCharTexture(generateChar(), cs.primary);
           const mat = sprite.material as THREE.SpriteMaterial;
           mat.map?.dispose();
           mat.map = newTex;
@@ -445,17 +420,16 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
         if (!d.isHead && d.row * plane.config.charSize < -GRID_HEIGHT / 2 - 2) {
           d.row = Math.round((GRID_HEIGHT / 2 + Math.random() * 2) / plane.config.charSize);
           d.speed = randomRange(plane.config.speedMin, plane.config.speedMax);
-          const newTex = createCharTexture(generateChar(), cs.secondary);
+          const newTex = createCharTexture(generateChar(), cs.primary);
           const mat = sprite.material as THREE.SpriteMaterial;
           mat.map?.dispose();
           mat.map = newTex;
           mat.needsUpdate = true;
         }
 
-        // Final opacity: base + wake
         const baseOpacity = d.isHead ? 0.6 + Math.sin(time * 12 + i) * 0.15 : d.opacity * 0.55;
         const mat = sprite.material as THREE.SpriteMaterial;
-        mat.opacity = clamp01(baseOpacity + wakeBoost);
+        mat.opacity = clamp01(baseOpacity);
       });
     });
 
@@ -647,10 +621,10 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     let activeCount = 0;
     let totalCount = 0;
     planes.forEach((plane) => {
-      plane.drops.forEach((d) => {
+      plane.drops.forEach((d, i) => {
         totalCount++;
         if (d.opacity > 0 && d.entranceFactor >= 1 && !d.frozen) {
-          const sprite = plane.sprites[plane.drops.indexOf(d)];
+          const sprite = plane.sprites[i];
           if (sprite) {
             const y = sprite.position.y;
             if (y > -GRID_HEIGHT / 2 - 1 && y < GRID_HEIGHT / 2 + 1) {

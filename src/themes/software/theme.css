@@ -11,5 +11,8 @@
   --color-accent-purple-dim: #3A1E3A;
   --color-accent-cyan: #569CD6;
   --color-accent-cyan-dim: #1A3A5C;
-  --color-accent-yellow: #DE4C36;
+  --color-accent-yellow: #A0FF80;
+  --shadow-glow-green: 0 0 20px rgba(0, 255, 65, 0.3);
+  --shadow-glow-cyan: 0 0 20px rgba(86, 156, 214, 0.3);
+  --shadow-glow-purple: 0 0 20px rgba(197, 134, 192, 0.4);
 }

@@ -21,7 +21,7 @@
   --color-accent-cyan: #00E5FF;
   --color-accent-cyan-dim: #004D5C;
   --color-accent-yellow: #F5C842;
-  --color-accent-red: #FE4450;
+  --color-accent-red: #FE4450; /* universal — not theme-specific, used for semantic elements (heart, status dots) */
 
   /* Borders */
   --color-border: rgba(255, 255, 255, 0.08);
@@ -35,10 +35,6 @@
   /* Spacing */
   --spacing-section: clamp(4rem, 10vw, 8rem);
 
-  /* Shadows */
-  --shadow-glow-green: 0 0 20px rgba(16, 163, 127, 0.3);
-  --shadow-glow-cyan: 0 0 20px rgba(0, 229, 255, 0.3);
-  --shadow-glow-purple: 0 0 20px rgba(139, 92, 246, 0.4);
 }
 
 /* Custom scrollbar */

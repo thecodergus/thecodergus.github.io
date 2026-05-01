@@ -51,6 +51,7 @@ export interface CameraPreset {
   readonly orbitSpeed: number;
   readonly heightAmplitude: number;
   readonly heightFrequency: number;
+  readonly initialAngle: number;
   readonly pauseOnHover: boolean;
   readonly autoRotate: boolean;
   readonly fov: number;

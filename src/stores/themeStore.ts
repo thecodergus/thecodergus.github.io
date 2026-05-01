@@ -1,4 +1,4 @@
-import { createSignal, createEffect, onMount } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 
 const STORAGE_KEY = "portfolio-theme";
 
@@ -17,9 +17,6 @@ export const THEMES: ThemeMeta[] = [
 ];
 
 function getInitialTheme(): ThemeId {
-  if (typeof window === "undefined") return "ai";
-  const stored = localStorage.getItem(STORAGE_KEY) as ThemeId | null;
-  if (stored && THEMES.some((t) => t.id === stored)) return stored;
   return "ai";
 }
 
@@ -32,15 +29,6 @@ createEffect(() => {
   }
 });
 
-// Force AI theme on first visit after update (can be removed after deployment)
-onMount(() => {
-  if (typeof window === "undefined") return;
-  const visited = localStorage.getItem("portfolio-v3");
-  if (!visited) {
-    localStorage.setItem("portfolio-v3", "1");
-    setThemeSignal("ai" as ThemeId);
-  }
-});
 
 export function setTheme(id: ThemeId) {
   setThemeSignal(id);

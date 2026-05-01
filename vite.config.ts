@@ -8,8 +8,6 @@ export default defineConfig({
     extensions: [".tsx", ".ts", ".jsx", ".js"]
   },
   build: {
-    rollupOptions: {
-      external: ["react", "react-dom"]
-    }
+    rollupOptions: {}
   }
 });

@@ -8,9 +8,13 @@
 // neuron spike rings, weight color coding, gradient norm bar,
 // data manifold, slow camera orbit (managed by NeuralCanvas).
 //
-// Performance: 88 neurons via InstancedMesh (1 draw call),
-// 792 connections via LineSegments with vertex colors (1 draw call),
-// 330 particles via 2 Points objects (2 draw calls).
+// Tensor-based luminosity: sigmoid forward pass drives
+// neuron glow (activation-mapped) and edge brightness
+// (weight × source activation), refreshed every ~0.6s.
+//
+// Performance: 44 neurons via InstancedMesh (1 draw call),
+// 198 connections via LineSegments with vertex colors (1 draw call),
+// 165 particles via 2 Points objects (2 draw calls).
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
@@ -18,15 +22,15 @@ import { range, rangeBetween, randomRange, clamp01, easeInOutCubic, easeOutQuad 
 import type { LayerDef, FlowParticle, SpikeRing, DropoutState } from "./types";
 
 const LAYERS: readonly LayerDef[] = Object.freeze([
-  { count: 14, z: -10.5, radius: 7.5, color: "#8B5CF6", hasRipple: false },  // Input (purple)
-  { count: 12, z:  -6.6, radius: 6.3, color: "#00E5FF", hasRipple: false },  // H1 (cyan)
-  { count: 12, z:  -3.0, radius: 5.1, color: "#00E5FF", hasRipple: true  },  // H2 (cyan) ★ ripple
-  { count: 12, z:   0.3, radius: 3.9, color: "#00E5FF", hasRipple: false },  // H3 (cyan)
-  { count:  8, z:   3.0, radius: 3.0, color: "#F5C842", hasRipple: false },  // Attention (yellow)
-  { count:  8, z:   5.4, radius: 2.4, color: "#10A37F", hasRipple: true  },  // H4 (green) ★ ripple
-  { count:  8, z:   7.5, radius: 1.8, color: "#10A37F", hasRipple: false },  // H5 (green)
-  { count:  8, z:   9.3, radius: 1.5, color: "#10A37F", hasRipple: true  },  // H6 (green) ★ ripple
-  { count:  6, z:  11.1, radius: 0.9, color: "#8B5CF6", hasRipple: false },  // Output (purple)
+  { count:  7, z: -10.5, radius: 7.5, color: "#8B5CF6", hasRipple: false },  // Input (purple)
+  { count:  6, z:  -6.6, radius: 6.3, color: "#00E5FF", hasRipple: false },  // H1 (cyan)
+  { count:  6, z:  -3.0, radius: 5.1, color: "#00E5FF", hasRipple: true  },  // H2 (cyan) ★ ripple
+  { count:  6, z:   0.3, radius: 3.9, color: "#00E5FF", hasRipple: false },  // H3 (cyan)
+  { count:  4, z:   3.0, radius: 3.0, color: "#F5C842", hasRipple: false },  // Attention (yellow)
+  { count:  4, z:   5.4, radius: 2.4, color: "#10A37F", hasRipple: true  },  // H4 (green) ★ ripple
+  { count:  4, z:   7.5, radius: 1.8, color: "#10A37F", hasRipple: false },  // H5 (green)
+  { count:  4, z:   9.3, radius: 1.5, color: "#10A37F", hasRipple: true  },  // H6 (green) ★ ripple
+  { count:  3, z:  11.1, radius: 0.9, color: "#8B5CF6", hasRipple: false },  // Output (purple)
 ]);
 
 const TOTAL_LAYERS = LAYERS.length;
@@ -51,12 +55,25 @@ const TOTAL_EDGES = (() => {
   return e;
 })();
 
+// Pre-compute edge start indices per layer pair
+const EDGE_BASES: readonly number[] = Object.freeze(
+  (() => {
+    const arr: number[] = [];
+    let base = 0;
+    for (let l = 0; l < TOTAL_LAYERS - 1; l++) {
+      arr.push(base);
+      base += LAYERS[l].count * LAYERS[l + 1].count;
+    }
+    return arr;
+  })(),
+);
+
 // ── Particle constants ──
 
-const FORWARD_PARTICLES = 250;
-const BACKWARD_PARTICLES = 80;
+const FORWARD_PARTICLES = 125;
+const BACKWARD_PARTICLES = 40;
 const SPIKE_RING_POOL = 20;
-const ATTENTION_MATRIX_SIZE = 8;
+const ATTENTION_MATRIX_SIZE = 4;
 
 // ── Helper: compute neuron world position ──
 
@@ -65,6 +82,8 @@ const neuronPosition = (layerIdx: number, neuronIdx: number): readonly [number, 
   const angle = (neuronIdx / layer.count) * Math.PI * 2;
   return [Math.cos(angle) * layer.radius, Math.sin(angle) * layer.radius, layer.z];
 };
+
+const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x));
 
 // ── Factory ──
 
@@ -83,6 +102,34 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
       nPositions.push(new THREE.Vector3(x, y, z));
     }
   }
+
+  // ── Neuron activation state (tensor model) ──
+
+  const neuronActivations = new Float32Array(TOTAL_NEURONS);
+  const neuronBiases = new Float32Array(TOTAL_NEURONS);
+  for (let i = 0; i < TOTAL_NEURONS; i++) {
+    neuronActivations[i] = randomRange(0.1, 0.9);
+    neuronBiases[i] = randomRange(-0.3, 0.3);
+  }
+
+  const runForwardPass = (): void => {
+    for (let l = 1; l < TOTAL_LAYERS; l++) {
+      const fromStart = LAYER_STARTS[l - 1];
+      const toStart = LAYER_STARTS[l];
+      const fromCount = LAYERS[l - 1].count;
+      const toCount = LAYERS[l].count;
+      const edgeBase = EDGE_BASES[l - 1];
+
+      for (let t = 0; t < toCount; t++) {
+        let z = neuronBiases[toStart + t];
+        for (let f = 0; f < fromCount; f++) {
+          const ei = edgeBase + f * toCount + t;
+          z += edgeWeights[ei] * neuronActivations[fromStart + f];
+        }
+        neuronActivations[toStart + t] = sigmoid(z);
+      }
+    }
+  };
 
   // ═══════════════════════════════════════════
   // E1+E9: NEURONS (InstancedMesh) + Weight coding
@@ -153,8 +200,9 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         edgePositions[vi + 4] = toPos.y;
         edgePositions[vi + 5] = toPos.z;
 
-        // Brightness encodes weight (heavier = brighter = more bloom)
-        const brightness = 0.15 + weight * 0.25;
+        // Tensor brightness: weight × source activation (dot-product contribution)
+        const activation = neuronActivations[fromStart + f];
+        const brightness = 0.05 + activation * weight * 0.35;
         edgeColors[vi] = brightness;
         edgeColors[vi + 1] = brightness;
         edgeColors[vi + 2] = brightness;
@@ -536,6 +584,11 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
   let entranceOpacity = 1.0;
   const ENTRANCE_DURATION = 900; // ms for full cascade
 
+  // ── Tensor forward pass timer ──
+
+  let forwardPassTimer = 0.6;
+  const FORWARD_PASS_INTERVAL = 0.6;
+
   // ═══════════════════════════════════════════
   // UPDATE FUNCTION
   // ═══════════════════════════════════════════
@@ -547,6 +600,16 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     if (entranceTimer >= 0) {
       entranceTimer += _delta * 1000;
       entranceOpacity = clamp01(entranceTimer / 300);
+    }
+
+    // ── Tensor forward pass ──
+    forwardPassTimer -= _delta;
+    if (forwardPassTimer <= 0) {
+      forwardPassTimer = FORWARD_PASS_INTERVAL;
+      for (let n = 0; n < LAYERS[0].count; n++) {
+        neuronActivations[n] = randomRange(0.2, 0.8);
+      }
+      runForwardPass();
     }
 
     // ── E1: Forward pass particles ──
@@ -673,27 +736,40 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
       applyDropout();
     }
 
-    // Apply dropout + update edge colors for dropped neurons
+    // Apply dropout + update neuron glow (activation-mapped)
     const isDropped = (globalIdx: number): boolean => dropout.dropped.has(globalIdx);
 
     for (let i = 0; i < TOTAL_NEURONS; i++) {
+      const pos = nPositions[i];
+      dummy.position.copy(pos);
+
       if (isDropped(i)) {
-        const pos = nPositions[i];
-        dummy.position.copy(pos);
         dummy.scale.setScalar(0.05);
         dummy.updateMatrix();
         neurons.setMatrixAt(i, dummy.matrix);
+        nColor.setRGB(
+          neuronBaseColors[i * 3] * 0.06,
+          neuronBaseColors[i * 3 + 1] * 0.06,
+          neuronBaseColors[i * 3 + 2] * 0.06,
+        );
       } else {
-        const pos = nPositions[i];
-        dummy.position.copy(pos);
         dummy.scale.setScalar(1.0);
         dummy.updateMatrix();
         neurons.setMatrixAt(i, dummy.matrix);
+        const a = neuronActivations[i];
+        const glow = 0.4 + a * 0.6;
+        nColor.setRGB(
+          neuronBaseColors[i * 3] * glow,
+          neuronBaseColors[i * 3 + 1] * glow,
+          neuronBaseColors[i * 3 + 2] * glow,
+        );
       }
+      neurons.setColorAt(i, nColor);
     }
     neurons.instanceMatrix.needsUpdate = true;
+    if (neurons.instanceColor) neurons.instanceColor.needsUpdate = true;
 
-    // Dim edges connected to dropped neurons
+    // Tensor edge brightness: weight × source activation
     {
       let ei = 0;
       const eColorArr = edgeGeo.attributes.color.array as Float32Array;
@@ -703,9 +779,10 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         const fromCount = LAYERS[l].count;
         const toCount = LAYERS[l + 1].count;
         for (let f = 0; f < fromCount; f++) {
+          const sourceActivation = neuronActivations[fromStart + f];
           for (let t = 0; t < toCount; t++) {
             const weight = edgeWeights[ei];
-            let brightness = 0.15 + weight * 0.25;
+            let brightness = 0.05 + sourceActivation * weight * 0.35;
             if (isDropped(fromStart + f) || isDropped(toStart + t)) {
               brightness *= 0.08;
             }

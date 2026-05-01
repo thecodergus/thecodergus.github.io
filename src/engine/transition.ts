@@ -1,6 +1,7 @@
 // ── Transition manager for crossfade + pixel dissolve between scenes ──
 
 import type { SceneHandle } from "./types";
+import { easeInOutCubic } from "./math";
 
 // ── Enums ──
 
@@ -27,7 +28,9 @@ interface TransitionState {
 
 // ── Factory ──
 
-export const createTransitionManager = (): Readonly<{
+export const createTransitionManager = (
+  onDispose: (handle: SceneHandle) => void,
+): Readonly<{
   readonly transition: (from: SceneHandle | null, to: SceneHandle) => void;
   readonly update: (dt: number) => void;
   readonly isTransitioning: () => boolean;
@@ -44,7 +47,7 @@ export const createTransitionManager = (): Readonly<{
   const transition = (from: SceneHandle | null, to: SceneHandle): void => {
     if (state.phase !== TransitionPhase.Idle && state.next) {
       state.next.setOpacity(0);
-      state.next.dispose();
+      onDispose(state.next);
     }
 
     state.phase = TransitionPhase.FadingOut;
@@ -78,7 +81,7 @@ export const createTransitionManager = (): Readonly<{
 
       if (progress >= 1) {
         if (state.current) {
-          state.current.dispose();
+          onDispose(state.current);
         }
         state.current = state.next;
         state.next = null;
@@ -122,6 +125,3 @@ export const createTransitionManager = (): Readonly<{
 };
 
 // ── Pure easing ──
-
-const easeInOutCubic = (t: number): number =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
