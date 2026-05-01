@@ -1,41 +1,69 @@
-// ── Web Scene: 3D Network Topology — Hub + Satellites Mesh ──
+// ── Web Scene: HTTP Request/Response Cycle — Browser → DNS → CDN → Server ──
 
 import * as THREE from "three";
-import type { SceneHandle, SceneConfig, Vec2 } from "./types";
+import type { SceneHandle, SceneConfig } from "./types";
 import { range, randomRange, clamp01 } from "./math";
-
-const rangeBetween = (start: number, end: number): readonly number[] =>
-  Array.from({ length: end - start }, (_, i) => start + i);
 
 // ── Configuration ──
 
-const SATELLITE_COUNT = 70;
-const RING_COUNT = 4;
-const HUB_RADIUS = 0.6;
-const SATELLITE_RADIUS = 0.1;
-const MAX_RING_RADIUS = 6.0;
-const PARTICLE_COUNT = 80;
-const CONNECTION_DIST = 3.5;
+const PARTICLE_COUNT = 70;
+const BROWSER_X = -6;
+const DNS_X = -2;
+const CDN_X = 2;
+const SERVER_X = 6;
 
 // ── Internal types ──
 
-interface Satellite {
-  mesh: THREE.Mesh;
-  pos: THREE.Vector3;
-  ring: number;
-  angle: number;
-  speed: number;
-  radius: number;
-  height: number;
+interface Endpoint {
+  readonly mesh: THREE.Group;
+  readonly position: THREE.Vector3;
+  readonly kind: "browser" | "dns" | "cdn" | "server";
 }
 
-interface NetworkPacket {
-  origin: number;
-  target: number;
+interface Packet {
+  readonly from: THREE.Vector3;
+  readonly to: THREE.Vector3;
   progress: number;
-  speed: number;
-  isResponse: boolean;
+  readonly speed: number;
+  readonly kind: "request" | "response" | "dns_query" | "dns_response" | "websocket";
+  readonly phase: number;
 }
+
+// ── Create endpoint node ──
+
+const createEndpoint = (
+  x: number,
+  y: number,
+  z: number,
+  size: number,
+  primaryColor: string,
+  tertiaryColor: string,
+): THREE.Group => {
+  const g = new THREE.Group();
+  const geo = new THREE.SphereGeometry(size, 20, 20);
+  const mat = new THREE.MeshBasicMaterial({
+    color: primaryColor,
+    transparent: true,
+    opacity: 0.8,
+    depthWrite: true,
+  });
+  const sphere = new THREE.Mesh(geo, mat);
+  g.add(sphere);
+
+  // Ring
+  const ringGeo = new THREE.TorusGeometry(size + 0.15, 0.04, 8, 32);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: tertiaryColor,
+    transparent: true,
+    opacity: 0.4,
+    depthWrite: false,
+  });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  g.add(ring);
+
+  g.position.set(x, y, z);
+  return g;
+};
 
 // ── Factory ──
 
@@ -43,295 +71,287 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
   const group = new THREE.Group();
   let disposed = false;
 
-  // ── Central hub ──
+  // ── Endpoints ──
 
-  const hubGeo = new THREE.SphereGeometry(HUB_RADIUS, 32, 32);
-  const hubMat = new THREE.MeshBasicMaterial({
-    color: config.colorScheme.primary,
-    transparent: true,
-    opacity: 0.95,
-    depthWrite: true,
-  });
-  const hubMesh = new THREE.Mesh(hubGeo, hubMat);
-  group.add(hubMesh);
+  const endpoints: Endpoint[] = [
+    {
+      mesh: createEndpoint(BROWSER_X, 0, 0, 0.5, config.colorScheme.primary, config.colorScheme.tertiary),
+      position: new THREE.Vector3(BROWSER_X, 0, 0),
+      kind: "browser",
+    },
+    {
+      mesh: createEndpoint(DNS_X, 1.5, 0, 0.35, config.colorScheme.tertiary, config.colorScheme.secondary),
+      position: new THREE.Vector3(DNS_X, 1.5, 0),
+      kind: "dns",
+    },
+    {
+      mesh: createEndpoint(CDN_X, 0, 0, 0.4, config.colorScheme.secondary, config.colorScheme.primary),
+      position: new THREE.Vector3(CDN_X, 0, 0),
+      kind: "cdn",
+    },
+    {
+      mesh: createEndpoint(SERVER_X, 0, 0, 0.55, config.colorScheme.secondary, config.colorScheme.primary),
+      position: new THREE.Vector3(SERVER_X, 0, 0),
+      kind: "server",
+    },
+  ];
 
-  // Hub ring
-  const ringGeo = new THREE.TorusGeometry(HUB_RADIUS + 0.2, 0.03, 16, 64);
-  const ringMat = new THREE.MeshBasicMaterial({
-    color: config.colorScheme.primary,
-    transparent: true,
-    opacity: 0.4,
-    depthWrite: false,
-  });
-  const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-  ringMesh.rotation.x = Math.PI / 2;
-  group.add(ringMesh);
+  endpoints.forEach((e) => group.add(e.mesh));
 
-  // ── Satellites distributed across concentric rings ──
+  // ── API Gateway nodes (smaller, near server) ──
 
-  const satGeo = new THREE.SphereGeometry(SATELLITE_RADIUS, 12, 12);
-  const satBaseMat = new THREE.MeshBasicMaterial({
+  const gatewayGeo = new THREE.IcosahedronGeometry(0.15, 1);
+  const gatewayMat = new THREE.MeshBasicMaterial({
     color: config.colorScheme.tertiary,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.5,
     depthWrite: true,
   });
 
-  const satellites: Satellite[] = [];
-
-  range(SATELLITE_COUNT).forEach((i) => {
-    const ring = Math.floor(randomRange(0, RING_COUNT));
-    const ringRadius = ((ring + 1) / RING_COUNT) * MAX_RING_RADIUS + randomRange(-0.5, 0.5);
-    const angle = (i / SATELLITE_COUNT) * Math.PI * 2 + randomRange(-0.3, 0.3);
-    const height = randomRange(-2.0, 2.0) * (RING_COUNT - ring) / RING_COUNT;
-
-    const pos = new THREE.Vector3(
-      Math.cos(angle) * ringRadius,
-      height,
-      Math.sin(angle) * ringRadius,
+  const gateways: THREE.Mesh[] = [];
+  range(4).forEach((i) => {
+    const gw = new THREE.Mesh(gatewayGeo, gatewayMat.clone());
+    gw.position.set(
+      SERVER_X - 0.4,
+      (i - 1.5) * 0.3,
+      0,
     );
-
-    const mesh = new THREE.Mesh(satGeo, satBaseMat.clone());
-    mesh.position.copy(pos);
-    group.add(mesh);
-
-    satellites.push({
-      mesh,
-      pos,
-      ring,
-      angle,
-      speed: randomRange(0.0003, 0.001) * (RING_COUNT - ring),
-      radius: ringRadius,
-      height,
-    });
+    group.add(gw);
+    gateways.push(gw);
   });
 
-  // ── Connections between satellites ──
+  // ── Connection lines (infrastructure) ──
 
-  const connectionPairs: readonly (readonly [number, number])[] = (() => {
-    const pairs: [number, number][] = [];
-
-    // Hub to all satellites
-    range(SATELLITE_COUNT).forEach((i) => {
-      pairs.push([-1, i]); // -1 = hub
-    });
-
-    // Satellite to satellite within proximity
-    range(SATELLITE_COUNT).forEach((i) => {
-      rangeBetween(i + 1, SATELLITE_COUNT).forEach((j) => {
-        const dx = satellites[i].pos.x - satellites[j].pos.x;
-        const dy = satellites[i].pos.y - satellites[j].pos.y;
-        const dz = satellites[i].pos.z - satellites[j].pos.z;
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        if (dist < CONNECTION_DIST) {
-          pairs.push([i, j]);
-        }
-      });
-    });
-
-    return pairs;
-  })();
-
-  // ── Edge lines ──
-
-  const edgeGeom = new THREE.BufferGeometry();
-  const edgePositions = new Float32Array(connectionPairs.length * 6);
-  edgeGeom.setAttribute("position", new THREE.BufferAttribute(edgePositions, 3));
-
-  const updateEdgeGeometry = (): void => {
-    connectionPairs.forEach(([from, to], i) => {
-      const fromPos = from === -1 ? new THREE.Vector3(0, 0, 0) : satellites[from].pos;
-      const toPos = satellites[to].pos;
-
-      edgePositions[i * 6] = fromPos.x;
-      edgePositions[i * 6 + 1] = fromPos.y;
-      edgePositions[i * 6 + 2] = fromPos.z;
-      edgePositions[i * 6 + 3] = toPos.x;
-      edgePositions[i * 6 + 4] = toPos.y;
-      edgePositions[i * 6 + 5] = toPos.z;
-    });
-  };
-
-  updateEdgeGeometry();
-  edgeGeom.attributes.position.needsUpdate = true;
-
-  const edgeMat = new THREE.LineBasicMaterial({
+  const infraMat = new THREE.LineBasicMaterial({
     color: config.colorScheme.primary,
     transparent: true,
-    opacity: 0.15,
+    opacity: 0.12,
     depthWrite: false,
   });
 
-  const edgeLines = new THREE.LineSegments(edgeGeom, edgeMat);
-  group.add(edgeLines);
+  const connect = (a: THREE.Vector3, b: THREE.Vector3, opacity: number): void => {
+    const geo = new THREE.BufferGeometry().setFromPoints([a, b]);
+    const mat = new THREE.LineBasicMaterial({
+      color: config.colorScheme.primary,
+      transparent: true,
+      opacity,
+      depthWrite: false,
+    });
+    group.add(new THREE.Line(geo, mat));
+  };
+
+  // Browser → DNS
+  connect(endpoints[0].position, endpoints[1].position, 0.15);
+  // DNS → CDN
+  connect(endpoints[1].position, endpoints[2].position, 0.1);
+  // CDN → Server
+  connect(endpoints[2].position, endpoints[3].position, 0.12);
+  // Browser → CDN (direct)
+  connect(endpoints[0].position, endpoints[2].position, 0.08);
+  // Server ←→ Gateways
+  gateways.forEach((gw) => {
+    const gwPos = gw.position.clone();
+    connect(endpoints[3].position, gwPos, 0.08);
+  });
+
+  // WebSocket animation line (pulsing, bidirectional)
+  const wsGeo = new THREE.BufferGeometry().setFromPoints([
+    endpoints[0].position,
+    new THREE.Vector3(SERVER_X, -1.5, 0),
+    endpoints[3].position,
+  ]);
+  const wsLine = new THREE.Line(
+    wsGeo,
+    new THREE.LineBasicMaterial({
+      color: config.colorScheme.secondary,
+      transparent: true,
+      opacity: 0.15,
+      depthWrite: false,
+    }),
+  );
+  group.add(wsLine);
 
   // ── Data packets ──
 
-  const packetGeom = new THREE.BufferGeometry();
-  const packetPositions = new Float32Array(PARTICLE_COUNT * 3);
-  const packetColors = new Float32Array(PARTICLE_COUNT * 3);
-  packetGeom.setAttribute("position", new THREE.BufferAttribute(packetPositions, 3));
-  packetGeom.setAttribute("color", new THREE.BufferAttribute(packetColors, 3));
+  const pGeom = new THREE.BufferGeometry();
+  const pPositions = new Float32Array(PARTICLE_COUNT * 3);
+  const pColors = new Float32Array(PARTICLE_COUNT * 3);
+  pGeom.setAttribute("position", new THREE.BufferAttribute(pPositions, 3));
+  pGeom.setAttribute("color", new THREE.BufferAttribute(pColors, 3));
 
   range(PARTICLE_COUNT).forEach((i) => {
-    packetPositions[i * 3 + 1] = -999;
+    pPositions[i * 3 + 1] = -999;
   });
 
-  const packetMat = new THREE.PointsMaterial({
-    size: 0.12,
+  const pMat = new THREE.PointsMaterial({
+    size: 0.1,
     vertexColors: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     transparent: true,
-    opacity: 0.9,
+    opacity: 1,
   });
 
-  const packetPoints = new THREE.Points(packetGeom, packetMat);
-  group.add(packetPoints);
+  const pPoints = new THREE.Points(pGeom, pMat);
+  group.add(pPoints);
 
-  const packets: NetworkPacket[] = [];
+  const packets: Packet[] = [];
 
   const spawnPacket = (): void => {
-    if (disposed || satellites.length === 0) return;
-    const origin = Math.floor(Math.random() * satellites.length);
-    const target = Math.floor(Math.random() * satellites.length);
+    if (disposed) return;
 
-    if (origin === target) return;
+    const r = Math.random();
 
-    packets.push({
-      origin,
-      target,
-      progress: 0,
-      speed: randomRange(0.006, 0.016),
-      isResponse: Math.random() < 0.4,
-    });
+    if (r < 0.15) {
+      // DNS query: browser → DNS → back
+      packets.push({
+        from: endpoints[0].position,
+        to: endpoints[1].position,
+        progress: 0,
+        speed: randomRange(0.008, 0.018),
+        kind: "dns_query",
+        phase: 0,
+      });
+    } else if (r < 0.4) {
+      // Request: browser → CDN → server
+      packets.push({
+        from: endpoints[0].position,
+        to: endpoints[2].position,
+        progress: 0,
+        speed: randomRange(0.008, 0.02),
+        kind: "request",
+        phase: 0,
+      });
+    } else if (r < 0.55) {
+      // Response: server → browser
+      packets.push({
+        from: endpoints[3].position,
+        to: endpoints[0].position,
+        progress: 0,
+        speed: randomRange(0.01, 0.025),
+        kind: "response",
+        phase: 0,
+      });
+    } else if (r < 0.7) {
+      // WebSocket
+      packets.push({
+        from: endpoints[0].position,
+        to: endpoints[3].position,
+        progress: 0,
+        speed: randomRange(0.005, 0.012),
+        kind: "websocket",
+        phase: 0,
+      });
+    } else {
+      // CDN → server
+      packets.push({
+        from: endpoints[2].position,
+        to: endpoints[3].position,
+        progress: 0,
+        speed: randomRange(0.006, 0.015),
+        kind: "request",
+        phase: 0,
+      });
+    }
   };
 
   // ── Update ──
 
-  const update = (_time: number, _delta: number, _mouse: Vec2 | null): void => {
+  const update = (time: number, _delta: number, _mouse: import("./types").Vec2 | null): void => {
     if (disposed) return;
 
-    // Animate satellites orbiting
-    satellites.forEach((sat) => {
-      sat.angle += sat.speed;
-      sat.pos.x = Math.cos(sat.angle) * sat.radius;
-      sat.pos.z = Math.sin(sat.angle) * sat.radius;
-      sat.pos.y = sat.height + Math.sin(_time * 0.5 + sat.angle) * 0.3;
-      sat.mesh.position.copy(sat.pos);
+    // Pulse endpoints
+    endpoints.forEach((e, i) => {
+      const s = 1 + Math.sin(time * 2 + i) * 0.05;
+      e.mesh.scale.setScalar(s);
     });
 
-    // Update edge geometry
-    updateEdgeGeometry();
-    edgeGeom.attributes.position.needsUpdate = true;
+    // Pulse gateways
+    gateways.forEach((gw, i) => {
+      const s = 1 + Math.sin(time * 3 + i * 1.3) * 0.06;
+      gw.scale.setScalar(s);
+    });
 
-    // Hub pulse
-    const hubPulse = 1 + Math.sin(_time * 2) * 0.08;
-    hubMesh.scale.setScalar(hubPulse);
-    hubMat.opacity = 0.85 + Math.sin(_time * 3) * 0.1;
-
-    ringMesh.scale.setScalar(hubPulse);
-    ringMesh.rotation.z += 0.003;
+    // WebSocket line pulse
+    wsLine.material.opacity = 0.08 + Math.sin(time * 2) * 0.05;
 
     // Spawn packets
-    if (Math.random() < 0.25) {
-      spawnPacket();
-    }
+    if (Math.random() < 0.3) spawnPacket();
 
     // Update packets
     const toRemove: number[] = [];
-
     packets.forEach((p, idx) => {
       p.progress += p.speed;
       if (p.progress >= 1) toRemove.push(idx);
     });
-
     toRemove.reverse().forEach((idx) => packets.splice(idx, 1));
+    while (packets.length > PARTICLE_COUNT) packets.shift();
 
-    while (packets.length > PARTICLE_COUNT) {
-      packets.shift();
-    }
-
-    // Update packet positions
+    // Update particle buffer
     range(PARTICLE_COUNT).forEach((i) => {
       if (i < packets.length) {
         const p = packets[i];
-        const from = satellites[p.origin]?.pos;
-        const to = satellites[p.target]?.pos;
-
-        if (!from || !to) {
-          packetPositions[i * 3 + 1] = -999;
-          return;
-        }
-
         const t = p.progress;
-        // Route through hub for request
-        if (!p.isResponse && t < 0.5) {
-          // Sat → Hub
-          const localT = t * 2;
-          packetPositions[i * 3] = from.x * (1 - localT);
-          packetPositions[i * 3 + 1] = from.y * (1 - localT);
-          packetPositions[i * 3 + 2] = from.z * (1 - localT);
-        } else if (!p.isResponse) {
-          // Hub → Sat
-          const localT = (t - 0.5) * 2;
-          packetPositions[i * 3] = to.x * localT;
-          packetPositions[i * 3 + 1] = to.y * localT;
-          packetPositions[i * 3 + 2] = to.z * localT;
-        } else {
-          // Direct sat-to-sat (response)
-          packetPositions[i * 3] = from.x + (to.x - from.x) * t;
-          packetPositions[i * 3 + 1] = from.y + (to.y - from.y) * t;
-          packetPositions[i * 3 + 2] = from.z + (to.z - from.z) * t;
-        }
+        const arcHeight = Math.sin(t * Math.PI) * 0.8;
+
+        pPositions[i * 3] = p.from.x + (p.to.x - p.from.x) * t;
+        pPositions[i * 3 + 1] = p.from.y + (p.to.y - p.from.y) * t + arcHeight;
+        pPositions[i * 3 + 2] = p.from.z + (p.to.z - p.from.z) * t;
 
         const opacity = Math.sin(t * Math.PI);
-        const colorHex = p.isResponse ? config.colorScheme.secondary : config.colorScheme.primary;
-        const cr = parseInt(colorHex.slice(1, 3), 16) / 255;
-        const cg = parseInt(colorHex.slice(3, 5), 16) / 255;
-        const cb = parseInt(colorHex.slice(5, 7), 16) / 255;
+        const hex = p.kind === "request" || p.kind === "dns_query"
+          ? config.colorScheme.primary
+          : p.kind === "response" || p.kind === "dns_response"
+            ? config.colorScheme.secondary
+            : config.colorScheme.tertiary;
 
-        packetColors[i * 3] = cr * opacity;
-        packetColors[i * 3 + 1] = cg * opacity;
-        packetColors[i * 3 + 2] = cb * opacity;
+        pColors[i * 3] = (parseInt(hex.slice(1, 3), 16) / 255) * opacity;
+        pColors[i * 3 + 1] = (parseInt(hex.slice(3, 5), 16) / 255) * opacity;
+        pColors[i * 3 + 2] = (parseInt(hex.slice(5, 7), 16) / 255) * opacity;
       } else {
-        packetPositions[i * 3 + 1] = -999;
+        pPositions[i * 3 + 1] = -999;
       }
     });
 
-    packetGeom.attributes.position.needsUpdate = true;
-    packetGeom.attributes.color.needsUpdate = true;
+    pGeom.attributes.position.needsUpdate = true;
+    pGeom.attributes.color.needsUpdate = true;
 
-    void _mouse;
+    void time;
   };
 
   // ── Dispose ──
 
   const dispose = (): void => {
     disposed = true;
-    hubGeo.dispose();
-    hubMat.dispose();
-    ringGeo.dispose();
-    ringMat.dispose();
-    satGeo.dispose();
-    satBaseMat.dispose();
-    satellites.forEach((s) => (s.mesh.material as THREE.Material).dispose());
-    edgeGeom.dispose();
-    edgeMat.dispose();
-    packetGeom.dispose();
-    packetMat.dispose();
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose();
+        (child.material as THREE.Material).dispose();
+      } else if (child instanceof THREE.Line) {
+        child.geometry.dispose();
+        (child.material as THREE.Material).dispose();
+      }
+    });
+    gatewayGeo.dispose();
+    gatewayMat.dispose();
+    infraMat.dispose();
+    pGeom.dispose();
+    pMat.dispose();
     group.clear();
   };
 
   const setOpacity = (t: number): void => {
-    hubMat.opacity = 0.95 * t;
-    ringMat.opacity = 0.4 * t;
-    satellites.forEach((s) => {
-      (s.mesh.material as THREE.MeshBasicMaterial).opacity = 0.6 * t;
+    endpoints.forEach((e) => {
+      e.mesh.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          (child.material as THREE.MeshBasicMaterial).opacity = 0.6 * t;
+        }
+      });
     });
-    edgeMat.opacity = 0.15 * t;
-    packetMat.opacity = 0.9 * t;
+    gateways.forEach((gw) => {
+      (gw.material as THREE.MeshBasicMaterial).opacity = 0.5 * t;
+    });
+    pMat.opacity = t;
   };
 
   return {

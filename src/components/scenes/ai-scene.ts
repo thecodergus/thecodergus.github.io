@@ -1,338 +1,425 @@
-// ── AI Scene: 3D Neural Network with forward propagation ──
+// ── AI Scene: Transformer Architecture (Attention Is All You Need) ──
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "./types";
-import { range, randomRange, clamp01, smoothstep } from "./math";
+import { range, rangeBetween, randomRange, clamp01 } from "./math";
 
-// ── Pure configuration ──
+// ── Configuration ──
 
-const LAYERS = [6, 10, 12, 10, 6] as const;
-const LAYER_SPACING_X = 3.0;
-const NEURON_RADIUS = 0.18;
-const CONNECTION_COUNT = 8; // max connections per neuron to next layer
-const PARTICLE_COUNT = 80;
-const ACTIVATION_INTERVAL = 30; // frames between new activation waves
-const ACTIVATION_BATCH = 3;
+const TOKENS = 6;
+const ENC_BLOCKS = 4;
+const DEC_BLOCKS = 4;
+const BLOCK_HEIGHT = 1.0;
+const ENC_X = -4;
+const DEC_X = 4;
+const TOKEN_SPACING_Y = 0.9;
+const ATTENTION_PARTICLE_COUNT = 60;
 
-// ── Internal mutable state (mutable only during update, not exposed) ──
+// ── Internal mutable state ──
 
-interface NeuronState {
-  charge: number;
-  firing: boolean;
-  targetCharge: number;
+interface TokenState {
+  readonly mesh: THREE.Mesh;
+  readonly meta: Readonly<{ idx: number }>;
 }
+
+interface BlockState {
+  readonly group: THREE.Group;
+  readonly outline: THREE.Line;
+  readonly isEncoder: boolean;
+  readonly layer: number;
+}
+
+interface AttentionParticle {
+  readonly fromPos: THREE.Vector3;
+  readonly toPos: THREE.Vector3;
+  progress: number;
+  readonly speed: number;
+  readonly kind: number; // 0=self, 1=cross
+}
+
+// ── Build a single token sphere ──
+
+const createToken = (
+  x: number,
+  y: number,
+  idx: number,
+  color: string,
+): TokenState => {
+  const geo = new THREE.SphereGeometry(0.22, 16, 16);
+  const mat = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.85,
+    depthWrite: true,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(x, y, 0);
+  return { mesh, meta: Object.freeze({ idx }) };
+};
+
+// ── Build a transformer block outline ──
+
+const createBlock = (
+  x: number,
+  y: number,
+  layer: number,
+  isEncoder: boolean,
+  primaryColor: string,
+): BlockState => {
+  const group = new THREE.Group();
+  const h = BLOCK_HEIGHT * 0.7;
+  const w = 1.0;
+  const d = 0.4;
+
+  const outlineGeo = new THREE.BoxGeometry(w, h, d);
+  const edgesGeo = new THREE.EdgesGeometry(outlineGeo);
+  const line = new THREE.LineSegments(
+    edgesGeo,
+    new THREE.LineBasicMaterial({
+      color: isEncoder ? primaryColor : "#F5C842",
+      transparent: true,
+      opacity: 0.35,
+      depthWrite: false,
+    }),
+  );
+  line.position.set(x, y, 0);
+  group.add(line);
+
+  // Inner translucent fill
+  const fillGeo = new THREE.BoxGeometry(w * 0.9, h * 0.9, d * 0.8);
+  const fillMat = new THREE.MeshBasicMaterial({
+    color: isEncoder ? primaryColor : "#F5C842",
+    transparent: true,
+    opacity: 0.08,
+    depthWrite: false,
+  });
+  const fill = new THREE.Mesh(fillGeo, fillMat);
+  fill.position.set(x, y, 0);
+  group.add(fill);
+
+  return { group, outline: line, isEncoder, layer };
+};
 
 // ── Factory ──
 
 export const createAIScene = (config: SceneConfig): SceneHandle => {
   const group = new THREE.Group();
-  const neurons: THREE.Mesh[] = [];
-  const connections: THREE.Line[] = [];
-  const neuronStates: NeuronState[] = [];
-  let particles: THREE.Points | null = null;
-  let particlePositions: Float32Array | null = null;
-  let particleProgress: Float32Array | null = null;
-  let frameCount = 0;
   let disposed = false;
 
-  // ── Build neuron layers ──
+  // ── Token rows (encoder input side) ──
 
-  const neuronPositions: Readonly<{ x: number; y: number; z: number }>[] = [];
-  const neuronColors: string[] = [];
+  const tokensEnc: TokenState[] = [];
+  const tokensDec: TokenState[] = [];
+  const startY = ((TOKENS - 1) * TOKEN_SPACING_Y) / 2;
 
-  const neuronGeo = new THREE.SphereGeometry(NEURON_RADIUS, 16, 16);
-  const inactiveMat = new THREE.MeshBasicMaterial({
-    color: config.colorScheme.tertiary,
-    transparent: true,
-    opacity: 0.6,
+  range(TOKENS).forEach((i) => {
+    const y = startY - i * TOKEN_SPACING_Y;
+    tokensEnc.push(createToken(ENC_X - 1.5, y, i, config.colorScheme.tertiary));
+    tokensDec.push(createToken(DEC_X + 1.5, y, i, config.colorScheme.primary));
   });
 
-  LAYERS.forEach((count, layerIdx) => {
-    const x = (layerIdx - (LAYERS.length - 1) / 2) * LAYER_SPACING_X;
+  // ── Encoder blocks (left stack) ──
 
-    range(count).forEach(() => {
-      const y = randomRange(-2.5, 2.5);
-      const z = randomRange(-1.5, 1.5);
-      const pos = Object.freeze({ x, y, z });
-      neuronPositions.push(pos);
-      neuronColors.push(config.colorScheme.tertiary);
+  const encBlocks: BlockState[] = [];
+  const totalEncH = ENC_BLOCKS * BLOCK_HEIGHT;
+  const encStartY = totalEncH / 2 - BLOCK_HEIGHT / 2;
 
-      const mesh = new THREE.Mesh(neuronGeo, inactiveMat.clone());
-      mesh.position.set(x, y, z);
-      mesh.userData = { index: neurons.length };
-      neurons.push(mesh);
-      group.add(mesh);
-    });
+  range(ENC_BLOCKS).forEach((layer) => {
+    const y = encStartY - layer * BLOCK_HEIGHT;
+    const block = createBlock(ENC_X, y, layer, true, config.colorScheme.primary);
+    group.add(block.group);
+    encBlocks.push(block);
   });
 
-  // Initialize states
-  range(neurons.length).forEach(() => {
-    neuronStates.push({ charge: 0, firing: false, targetCharge: 0 });
+  // ── Decoder blocks (right stack) ──
+
+  const decBlocks: BlockState[] = [];
+  const totalDecH = DEC_BLOCKS * BLOCK_HEIGHT;
+  const decStartY = totalDecH / 2 - BLOCK_HEIGHT / 2;
+
+  range(DEC_BLOCKS).forEach((layer) => {
+    const y = decStartY - layer * BLOCK_HEIGHT;
+    const block = createBlock(DEC_X, y, layer, false, config.colorScheme.primary);
+    group.add(block.group);
+    decBlocks.push(block);
   });
 
-  // ── Build connections between adjacent layers ──
+  // ── Attention lines ──
 
-  const layerStartIndices: readonly number[] = (() => {
-    let offset = 0;
-    return LAYERS.map((c) => {
-      const start = offset;
-      offset += c;
-      return start;
-    });
-  })();
-
-  const connectionPairs: readonly (readonly [number, number])[] = (() => {
-    const pairs: [number, number][] = [];
-
-    range(LAYERS.length - 1).forEach((layerIdx) => {
-      const fromStart = layerStartIndices[layerIdx];
-      const fromEnd = layerStartIndices[layerIdx + 1];
-      const toStart = fromEnd;
-      const toEnd = layerStartIndices[layerIdx + 2] ?? layerStartIndices[layerIdx + 1] + LAYERS[layerIdx + 1];
-
-      const fromCount = fromEnd - fromStart;
-      const toCount = toEnd - toStart;
-
-      const fromIndices = range(fromCount).map((i) => fromStart + i);
-      const shuffledTo = range(toCount).map((i) => toStart + i).sort(() => Math.random() - 0.5);
-
-      fromIndices.forEach((fromIdx) => {
-        const connCount = Math.floor(randomRange(3, CONNECTION_COUNT));
-        const targets = shuffledTo.slice(0, connCount);
-        targets.forEach((toIdx) => {
-          pairs.push([fromIdx, toIdx] as const);
-        });
-      });
-    });
-
-    return pairs;
-  })();
-
-  const lineMaterial = new THREE.LineBasicMaterial({
+  const attentionLines: THREE.Line[] = [];
+  const attLineMat = new THREE.LineBasicMaterial({
     color: config.colorScheme.primary,
     transparent: true,
-    opacity: 0.15,
+    opacity: 0.1,
     depthWrite: false,
   });
 
-  connectionPairs.forEach(([fromIdx, toIdx]) => {
-    const from = neuronPositions[fromIdx];
-    const to = neuronPositions[toIdx];
-    const points = [new THREE.Vector3(from.x, from.y, from.z), new THREE.Vector3(to.x, to.y, to.z)];
-    const geo = new THREE.BufferGeometry().setFromPoints(points);
-    const line = new THREE.Line(geo, lineMaterial.clone());
-    connections.push(line);
+  // Self-attention: tokens to tokens within encoder/decoder (horizontal arcs)
+  const createCurvedLine = (from: THREE.Vector3, to: THREE.Vector3, curveOffset: number): THREE.Line => {
+    const mid = new THREE.Vector3(
+      (from.x + to.x) / 2,
+      (from.y + to.y) / 2,
+      (from.z + to.z) / 2 + curveOffset,
+    );
+    const curve = new THREE.QuadraticBezierCurve3(from.clone(), mid, to.clone());
+    const pts = curve.getPoints(20);
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    return new THREE.Line(geo, attLineMat.clone());
+  };
+
+  // Encoder self-attention lines (horizontal between tokens)
+  range(TOKENS).forEach((i) => {
+    rangeBetween(i + 1, TOKENS).forEach((j) => {
+      const from = tokensEnc[i].mesh.position.clone();
+      const to = tokensEnc[j].mesh.position.clone();
+      const line = createCurvedLine(from, to, randomRange(-0.3, 0.3));
+      attentionLines.push(line);
+      group.add(line);
+    });
+  });
+
+  // Decoder self-attention
+  range(TOKENS).forEach((i) => {
+    rangeBetween(i + 1, TOKENS).forEach((j) => {
+      const from = tokensDec[i].mesh.position.clone();
+      const to = tokensDec[j].mesh.position.clone();
+      const line = createCurvedLine(from, to, randomRange(-0.3, 0.3));
+      attentionLines.push(line);
+      group.add(line);
+    });
+  });
+
+  // Cross-attention lines (decoder → encoder)
+  const crossLineMat = new THREE.LineBasicMaterial({
+    color: "#F5C842",
+    transparent: true,
+    opacity: 0.08,
+    depthWrite: false,
+  });
+
+  range(TOKENS).forEach((i) => {
+    range(TOKENS).forEach((j) => {
+      if (Math.random() > 0.4) {
+        const from = tokensDec[i].mesh.position.clone();
+        const to = tokensEnc[j].mesh.position.clone();
+        const mid = new THREE.Vector3(
+          (from.x + to.x) / 2,
+          (from.y + to.y) / 2 + randomRange(-0.5, 0.5),
+          randomRange(-0.3, 0.3),
+        );
+        const curve = new THREE.QuadraticBezierCurve3(from.clone(), mid, to.clone());
+        const pts = curve.getPoints(30);
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        const line = new THREE.Line(geo, crossLineMat.clone());
+        attentionLines.push(line);
+        group.add(line);
+      }
+    });
+  });
+
+  // ── Residual lines (curved arrows around blocks) ──
+
+  range(ENC_BLOCKS - 1).forEach((layer) => {
+    const y = encStartY - layer * BLOCK_HEIGHT;
+    const nextY = encStartY - (layer + 1) * BLOCK_HEIGHT;
+    const x = ENC_X + 1.2;
+
+    const points = [
+      new THREE.Vector3(x, y, 0),
+      new THREE.Vector3(x + 0.6, y, 0),
+      new THREE.Vector3(x + 0.6, nextY, 0),
+      new THREE.Vector3(x, nextY, 0),
+    ];
+    const spline = new THREE.CatmullRomCurve3(points);
+    const splinePts = spline.getPoints(20);
+    const geo = new THREE.BufferGeometry().setFromPoints(splinePts);
+    const line = new THREE.Line(
+      geo,
+      new THREE.LineBasicMaterial({
+        color: config.colorScheme.secondary,
+        transparent: true,
+        opacity: 0.15,
+        depthWrite: false,
+      }),
+    );
     group.add(line);
   });
 
-  // ── Activation particles (Points + ShaderMaterial) ──
+  // ── Attention flow particles ──
 
-  const particleCount = PARTICLE_COUNT;
+  const particleCount = ATTENTION_PARTICLE_COUNT;
   const particleGeom = new THREE.BufferGeometry();
-  particlePositions = new Float32Array(particleCount * 3);
-  particleProgress = new Float32Array(particleCount);
-  const particleColors = new Float32Array(particleCount * 3);
+  const pPositions = new Float32Array(particleCount * 3);
+  const pColors = new Float32Array(particleCount * 3);
+  particleGeom.setAttribute("position", new THREE.BufferAttribute(pPositions, 3));
+  particleGeom.setAttribute("color", new THREE.BufferAttribute(pColors, 3));
 
-  // Initialize as invisible
   range(particleCount).forEach((i) => {
-    particlePositions![i * 3] = 0;
-    particlePositions![i * 3 + 1] = -999;
-    particlePositions![i * 3 + 2] = -999;
-    particleProgress![i] = -1;
-    particleColors[i * 3] = 0;
-    particleColors[i * 3 + 1] = 0;
-    particleColors[i * 3 + 2] = 0;
+    pPositions[i * 3 + 1] = -999;
   });
 
-  particleGeom.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-  particleGeom.setAttribute("color", new THREE.BufferAttribute(particleColors, 3));
-
   const particleMat = new THREE.PointsMaterial({
-    size: 0.12,
+    size: 0.1,
     vertexColors: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     transparent: true,
-    opacity: 1,
+    opacity: 0.9,
   });
 
-  particles = new THREE.Points(particleGeom, particleMat);
-  group.add(particles);
+  const particlePoints = new THREE.Points(particleGeom, particleMat);
+  group.add(particlePoints);
 
-  // ── Particle tracking ──
+  const flowParticles: AttentionParticle[] = [];
 
-  interface ParticleData {
-    connectionIdx: number;
-    progress: number;
-    speed: number;
-  }
-
-  const activeParticles: ParticleData[] = [];
-
-  const spawnActivationParticle = (): void => {
+  const spawn = (): void => {
     if (disposed) return;
+    const kind = Math.random() < 0.3 ? 1 : 0; // 30% cross-attention
 
-    // Pick random connection in first layer
-    const firstLayerConns = connectionPairs
-      .filter(([from]) => from < LAYERS[0])
-      .map((pair, idx) => ({ pair, globalIdx: idx }));
+    if (kind === 0) {
+      // Self-attention
+      const isDec = Math.random() < 0.5;
+      const pool = isDec ? tokensDec : tokensEnc;
+      if (pool.length < 2) return;
+      const ai = Math.floor(Math.random() * pool.length);
+      let bi = Math.floor(Math.random() * pool.length);
+      while (bi === ai) bi = Math.floor(Math.random() * pool.length);
 
-    if (firstLayerConns.length === 0) return;
+      flowParticles.push({
+        fromPos: pool[ai].mesh.position.clone(),
+        toPos: pool[bi].mesh.position.clone(),
+        progress: 0,
+        speed: randomRange(0.008, 0.02),
+        kind,
+      });
+    } else {
+      // Cross-attention: decoder → encoder
+      if (tokensDec.length === 0 || tokensEnc.length === 0) return;
+      const di = Math.floor(Math.random() * tokensDec.length);
+      const ei = Math.floor(Math.random() * tokensEnc.length);
 
-    const { pair, globalIdx } = firstLayerConns[Math.floor(Math.random() * firstLayerConns.length)];
-
-    activeParticles.push({
-      connectionIdx: globalIdx,
-      progress: 0,
-      speed: randomRange(0.008, 0.018),
-    });
+      flowParticles.push({
+        fromPos: tokensDec[di].mesh.position.clone(),
+        toPos: tokensEnc[ei].mesh.position.clone(),
+        progress: 0,
+        speed: randomRange(0.006, 0.014),
+        kind,
+      });
+    }
   };
 
   // ── Update ──
 
-  const update = (time: number, _delta: number, mouse: import("./types").Vec2 | null): void => {
+  const update = (time: number, _delta: number, _mouse: import("./types").Vec2 | null): void => {
     if (disposed) return;
 
-    frameCount++;
-
-    // Spawn activation waves periodically
-    if (frameCount % ACTIVATION_INTERVAL < ACTIVATION_BATCH) {
-      spawnActivationParticle();
+    // Spawn attention flow particles
+    if (Math.random() < 0.35) {
+      spawn();
     }
 
-    // Update neuron states (decay charge)
-    range(neurons.length).forEach((i) => {
-      const state = neuronStates[i];
-      state.charge = state.charge * 0.95 + state.targetCharge * 0.05;
-      state.targetCharge *= 0.9;
-      state.firing = state.charge > 0.3;
-
-      // Update color based on charge
-      const mat = neurons[i].material as THREE.MeshBasicMaterial;
-      const t = clamp01(state.charge);
-      const r = parseInt(config.colorScheme.tertiary.slice(1, 3), 16) / 255;
-      const g = parseInt(config.colorScheme.tertiary.slice(3, 5), 16) / 255;
-      const b = parseInt(config.colorScheme.tertiary.slice(5, 7), 16) / 255;
-      const sr = parseInt(config.colorScheme.secondary.slice(1, 3), 16) / 255;
-      const sg = parseInt(config.colorScheme.secondary.slice(3, 5), 16) / 255;
-      const sb = parseInt(config.colorScheme.secondary.slice(5, 7), 16) / 255;
-
-      mat.color.setRGB(
-        r + (sr - r) * t,
-        g + (sg - g) * t,
-        b + (sb - b) * t,
-      );
-      mat.opacity = 0.4 + t * 0.6;
+    // Animate token positions (subtle float)
+    range(TOKENS).forEach((i) => {
+      const offset = Math.sin(time * 2 + i * 0.8) * 0.08;
+      const enc = tokensEnc[i];
+      const dec = tokensDec[i];
+      if (enc) enc.mesh.position.z = offset;
+      if (dec) dec.mesh.position.z = offset * 1.3;
     });
 
-    // Update activation particles
+    // Block pulse
+    encBlocks.forEach((b, i) => {
+      const s = 1 + Math.sin(time * 3 + i * 0.5) * 0.03;
+      b.group.scale.setScalar(s);
+    });
+    decBlocks.forEach((b, i) => {
+      const s = 1 + Math.sin(time * 3 + i * 0.5 + 1) * 0.03;
+      b.group.scale.setScalar(s);
+    });
+
+    // Update flow particles
     const toRemove: number[] = [];
-
-    activeParticles.forEach((p, idx) => {
+    flowParticles.forEach((p, idx) => {
       p.progress += p.speed;
-
-      if (p.progress >= 1) {
-        toRemove.push(idx);
-        // Flash the target neuron
-        const [_, toIdx] = connectionPairs[p.connectionIdx];
-        if (toIdx < neuronStates.length) {
-          neuronStates[toIdx].targetCharge = 1;
-        }
-      }
+      if (p.progress >= 1) toRemove.push(idx);
     });
-
-    // Remove in reverse order
-    toRemove.reverse().forEach((idx) => activeParticles.splice(idx, 1));
-
-    // Cap active particles
-    while (activeParticles.length > PARTICLE_COUNT) {
-      activeParticles.shift();
-    }
+    toRemove.reverse().forEach((idx) => flowParticles.splice(idx, 1));
+    while (flowParticles.length > particleCount) flowParticles.shift();
 
     // Update particle buffer
     range(particleCount).forEach((i) => {
-      if (i < activeParticles.length) {
-        const p = activeParticles[i];
-        if (p.connectionIdx < connectionPairs.length) {
-          const [fromIdx, toIdx] = connectionPairs[p.connectionIdx];
-          const from = neuronPositions[fromIdx];
-          const to = neuronPositions[toIdx];
+      if (i < flowParticles.length) {
+        const p = flowParticles[i];
+        const t = p.progress;
+        const px = p.fromPos.x + (p.toPos.x - p.fromPos.x) * t;
+        const py = p.fromPos.y + (p.toPos.y - p.fromPos.y) * t;
+        // Arc path
+        const pz = Math.sin(t * Math.PI) * 1.5;
+        pPositions[i * 3] = px;
+        pPositions[i * 3 + 1] = py;
+        pPositions[i * 3 + 2] = pz;
 
-          const t = p.progress;
-          const glowT = smoothstep(0, 0.3, t) * (1 - smoothstep(0.7, 1, t));
-
-          particlePositions![i * 3] = from.x + (to.x - from.x) * t;
-          particlePositions![i * 3 + 1] = from.y + (to.y - from.y) * t;
-          particlePositions![i * 3 + 2] = from.z + (to.z - from.z) * t;
-          particleProgress![i] = t;
-
-          const pr = parseInt(config.colorScheme.primary.slice(1, 3), 16) / 255;
-          const pg = parseInt(config.colorScheme.primary.slice(3, 5), 16) / 255;
-          const pb = parseInt(config.colorScheme.primary.slice(5, 7), 16) / 255;
-          const sr = parseInt(config.colorScheme.secondary.slice(1, 3), 16) / 255;
-          const sg = parseInt(config.colorScheme.secondary.slice(3, 5), 16) / 255;
-          const sb = parseInt(config.colorScheme.secondary.slice(5, 7), 16) / 255;
-
-          const cr = pr + (sr - pr) * t;
-          const cg = pg + (sg - pg) * t;
-          const cb = pb + (sb - pb) * t;
-
-          const ci = i * 3;
-          (particleGeom.attributes.color as THREE.BufferAttribute).array[ci] = cr * glowT;
-          (particleGeom.attributes.color as THREE.BufferAttribute).array[ci + 1] = cg * glowT;
-          (particleGeom.attributes.color as THREE.BufferAttribute).array[ci + 2] = cb * glowT;
-        } else {
-          particlePositions![i * 3 + 1] = -999;
-        }
+        const opacity = Math.sin(t * Math.PI);
+        const colorHex = p.kind === 1 ? "#F5C842" : config.colorScheme.primary;
+        pColors[i * 3] = (parseInt(colorHex.slice(1, 3), 16) / 255) * opacity;
+        pColors[i * 3 + 1] = (parseInt(colorHex.slice(3, 5), 16) / 255) * opacity;
+        pColors[i * 3 + 2] = (parseInt(colorHex.slice(5, 7), 16) / 255) * opacity;
       } else {
-        particlePositions![i * 3 + 1] = -999;
+        pPositions[i * 3 + 1] = -999;
       }
     });
 
     particleGeom.attributes.position.needsUpdate = true;
     particleGeom.attributes.color.needsUpdate = true;
 
-    // Mouse parallax
-    if (mouse) {
-      group.rotation.y += (mouse.x * 0.3 - group.rotation.y) * 0.02;
-      group.rotation.x += (-mouse.y * 0.15 - group.rotation.x) * 0.02;
-    }
-
     void time;
   };
+
+  // ── Add all tokens to group ──
+
+  tokensEnc.forEach((t) => group.add(t.mesh));
+  tokensDec.forEach((t) => group.add(t.mesh));
 
   // ── Dispose ──
 
   const dispose = (): void => {
     disposed = true;
-    neurons.forEach((m) => {
-      (m.material as THREE.Material).dispose();
+    tokensEnc.forEach((t) => {
+      t.mesh.geometry.dispose();
+      (t.mesh.material as THREE.Material).dispose();
     });
-    connections.forEach((l) => {
+    tokensDec.forEach((t) => {
+      t.mesh.geometry.dispose();
+      (t.mesh.material as THREE.Material).dispose();
+    });
+    attentionLines.forEach((l) => {
       l.geometry.dispose();
       (l.material as THREE.Material).dispose();
     });
-    if (particles) {
-      particles.geometry.dispose();
-      (particles.material as THREE.Material).dispose();
-    }
-    neuronGeo.dispose();
-    lineMaterial.dispose();
+    attLineMat.dispose();
+    crossLineMat.dispose();
+    particleGeom.dispose();
+    particleMat.dispose();
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose();
+        (child.material as THREE.Material).dispose();
+      }
+    });
     group.clear();
   };
 
-  // ── Opacity ──
-
   const setOpacity = (t: number): void => {
-    neurons.forEach((m) => {
-      (m.material as THREE.MeshBasicMaterial).opacity = 0.6 * t;
+    tokensEnc.forEach((tok) => {
+      (tok.mesh.material as THREE.MeshBasicMaterial).opacity = 0.85 * t;
     });
-    connections.forEach((l) => {
-      (l.material as THREE.LineBasicMaterial).opacity = 0.15 * t;
+    tokensDec.forEach((tok) => {
+      (tok.mesh.material as THREE.MeshBasicMaterial).opacity = 0.85 * t;
     });
-    if (particles) {
-      (particles.material as THREE.PointsMaterial).opacity = t;
-    }
+    attentionLines.forEach((l) => {
+      (l.material as THREE.LineBasicMaterial).opacity = 0.12 * t;
+    });
+    particleMat.opacity = 0.9 * t;
   };
 
   return {

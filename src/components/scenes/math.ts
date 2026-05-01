@@ -148,6 +148,9 @@ export const radToDeg = (rad: number): number => rad * 180 / Math.PI;
 export const range = (n: number): readonly number[] =>
   Array.from({ length: n }, (_, i) => i);
 
+export const rangeBetween = (start: number, end: number): readonly number[] =>
+  Array.from({ length: end - start }, (_, i) => start + i);
+
 export const choose = <T>(arr: readonly T[]): T =>
   arr[randomInt(0, arr.length - 1)];
 
