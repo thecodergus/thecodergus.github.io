@@ -14,6 +14,6 @@
 - Títulos: ciclo contínuo de digitar → pausa → apagar → próximo título → repetir
 - Cursor: `|` com `animate-pulse` durante digitação ativa
 
-**Dados**: Name vem de `sharedData()?.basic_info?.name` ("Gustavo Michels de Camargo"). Titles vêm de `sharedData()?.basic_info?.titles` (array de 5 strings em português).
+**Dados**: Name vem de `sharedData()?.basic_info?.name` ("Gustavo M Camargo"). Titles vêm de `sharedData()?.basic_info?.titles` (array de 5 strings em português).
 
 **Referência de estilo**: Charmbracelet Crush — terminal typing effect: caracteres aparecem um por um, suave, com cursor piscante.

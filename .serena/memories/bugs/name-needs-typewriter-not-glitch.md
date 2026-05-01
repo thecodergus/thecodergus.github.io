@@ -2,7 +2,7 @@
 
 **Arquivo**: `src/components/Hero.tsx` (linha 64)
 
-**Problema**: O nome "Gustavo Michels de Camargo" é renderizado com `<GlitchText>` que faz efeito de scrambling aleatório (Matrix-style), não animação de digitação (typewriter).
+**Problema**: O nome "Gustavo M Camargo" é renderizado com `<GlitchText>` que faz efeito de scrambling aleatório (Matrix-style), não animação de digitação (typewriter).
 
 **Desejado**: Animação de digitação caractere-por-caractere estilo Charmbracelet Crush (terminal typing effect). O nome deve ser digitado uma vez ao carregar a página, com cursor piscante durante a digitação, e permanecer visível depois.
 

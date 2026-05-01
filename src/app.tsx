@@ -29,7 +29,7 @@ export default function App() {
     <Router
       root={(props) => (
         <MetaProvider>
-          <Title>Gustavo Michels de Camargo | AI & Software Engineer</Title>
+          <Title>Gustavo M Camargo | AI & Software Engineer</Title>
           <script innerHTML={THEME_SCRIPT} />
           <script innerHTML={LANG_SCRIPT} />
           <Link rel="preconnect" href="https://fonts.googleapis.com" />
