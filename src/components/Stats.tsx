@@ -16,7 +16,7 @@ export default function Stats() {
 
   const statsLabels = () => messages()?.stats;
   const STATS = (): Stat[] => [
-    { label: statsLabels()?.projects || "Projects", value: 12, suffix: "+" },
+    { label: statsLabels()?.projects || "Projects", value: 10, suffix: "+" },
     { label: statsLabels()?.years || "Years Exp.", value: 5, suffix: "" },
     { label: statsLabels()?.languages || "Languages", value: 8, suffix: "" },
     { label: statsLabels()?.deploys || "Deploys", value: 50, suffix: "+" },

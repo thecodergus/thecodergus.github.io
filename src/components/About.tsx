@@ -52,7 +52,7 @@ export default function About() {
             >
               <img
                 src={profilePic()}
-                alt="Gustavo M Camargo"
+                alt="Gustavo Michels de Camargo"
                 class="w-64 h-64 object-cover rounded-xl mb-4"
                 loading="lazy"
               />

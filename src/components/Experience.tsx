@@ -1,4 +1,4 @@
-import { createSignal, createEffect, For } from "solid-js";
+import { createSignal, createEffect, For, Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import type { Experience as ExperienceType, Messages } from "~/types";
 
@@ -66,6 +66,18 @@ export default function Experience() {
                       </div>
                     </div>
                     <p class="text-xs font-mono text-text-muted mb-3">{exp.years}</p>
+                    <Show when={exp.highlights}>
+                      <ul class="mb-3 space-y-1">
+                        <For each={exp.highlights}>
+                          {(item) => (
+                            <li class="text-xs text-text-secondary leading-relaxed flex items-start gap-1.5">
+                              <span class="text-accent-green mt-0.5 shrink-0">▹</span>
+                              <span>{item}</span>
+                            </li>
+                          )}
+                        </For>
+                      </ul>
+                    </Show>
                     <div class="flex flex-wrap gap-2">
                       <For each={exp.mainTech}>
                         {(tech) => (

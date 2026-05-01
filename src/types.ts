@@ -42,6 +42,7 @@ export interface Experience {
   years: string;
   icon: string;
   mainTech: string[];
+  highlights?: string[];
   technologies: string[];
 }
 

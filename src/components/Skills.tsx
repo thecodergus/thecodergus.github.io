@@ -33,19 +33,19 @@ export default function Skills() {
     {
       name: catNames()?.languages || "Languages",
       skills: skills().filter((s) =>
-        ["Python", "C++", "Rust", "TypeScript", "Haskell", "Java", "C", "Bash"].includes(s.name)
+        ["Python", "C++", "Rust", "TypeScript", "JavaScript", "Haskell", "Java", "C", "Bash"].includes(s.name)
       ),
     },
     {
       name: catNames()?.frameworks || "Frameworks & Tools",
       skills: skills().filter((s) =>
-        ["React", "FastAPI", "Angular", "Git", "Docker", "Linux", "TensorFlow", "OpenCV"].includes(s.name)
+        ["React", "FastAPI", "Angular", "Git", "Docker", "Linux", "TensorFlow", "OpenCV", "LangGraph", "LangChain", "RabbitMQ"].includes(s.name)
       ),
     },
     {
       name: catNames()?.data || "Data & Databases",
       skills: skills().filter((s) =>
-        ["PostgreSQL", "MongoDB"].includes(s.name)
+        ["PostgreSQL", "MongoDB", "MySQL"].includes(s.name)
       ),
     },
   ];

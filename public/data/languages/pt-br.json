@@ -19,7 +19,7 @@
         "language": "Idioma"
     },
     "hero": {
-        "subtitle": "Especialista em Automação com IA. Full-Stack Developer com expertise em Python, Rust, C++ e visão computacional. Construindo o futuro, linha por linha.",
+        "subtitle": "Especialista em Automação com IA com LangGraph e Agentes de IA. Full-Stack Developer com expertise em Python, React, C++ e visão computacional. Construindo o futuro, linha por linha.",
         "themes_label": "Explore os temas",
         "themes_ai": "Motor Neural",
         "themes_blockchain": "Rede em Cadeia",
@@ -27,7 +27,7 @@
         "themes_web": "Web Retrô"
     },
     "contact_message": {
-        "paragraph": "Tem um projeto interessante ou uma oportunidade? Vamos conversar. Estou sempre aberto a novos desafios em IA, sistemas e visão computacional."
+        "paragraph": "Tem um projeto interessante ou uma oportunidade? Estou aberto a trabalho remoto e novos desafios em IA, engenharia de software e visão computacional. Vamos conversar."
     },
     "footer": {
         "made_with": "Feito com",
@@ -154,6 +154,29 @@
             "technologies": [
                 { "class": "devicon-rust-plain", "name": "Rust" }
             ]
+        },
+        {
+            "title": "Sistema de Detecção de Defeitos em Aço",
+            "startDate": "2023",
+            "description": "Sistema de coleta e análise de dados em tempo real para detectar corpos estranhos em chapas de aço. Aplicando redes neurais treinadas em Python e integrando processamento paralelo em C++, a solução aumentou a precisão da detecção em 35% e reduziu falhas de produção não planejadas.",
+            "url": "",
+            "images": ["images/projects/steel/steel1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" }
+            ]
+        },
+        {
+            "title": "Sistemas para Indústria Têxtil",
+            "startDate": "2023",
+            "description": "Dois sistemas interconectados que revolucionaram a eficiência no processo produtivo: um Sistema de Coleta de Dados com captura automatizada de imagens para treinar redes neurais (reduzindo defeitos em 20%), e um Sistema de Inferência Neural em C++ e Qt para detectar falhas em tempo real (aumentando a produtividade em 25%).",
+            "url": "",
+            "images": ["images/projects/textile/textile1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" },
+                { "class": "devicon-qt-plain", "name": "Qt" }
+            ]
         }
     ],
     "experience": [
@@ -163,6 +186,10 @@
             "years": "Fev 2026 - Mar 2026",
             "icon": "devicon-python-plain",
             "mainTech": ["Python", "IA Generativa"],
+            "highlights": [
+                "Automatizei o processo de leitura de extratos bancários em PDF utilizando Modelos de Visão-Linguagem (VLMs) por meio da biblioteca Docling, entregando uma solução definitiva para um problema de extração de dados que persistia há 10 anos.",
+                "Projetei e implementei um sistema automático de Net Promoter Score (NPS) com Modelos de Linguagem de Grande Escala (LLMs), viabilizando a coleta, análise e monitoramento automatizados das métricas de satisfação dos clientes."
+            ],
             "technologies": ["Docling", "VLM", "LLM", "FastAPI", "PostgreSQL", "Docker"]
         },
         {
@@ -171,6 +198,13 @@
             "years": "Set 2024 - Ago 2025",
             "icon": "devicon-solidity-plain",
             "mainTech": ["Blockchain", "React"],
+            "highlights": [
+                "Líder no desenvolvimento de uma arquitetura blockchain para rastreabilidade na cadeia de suprimentos do agronegócio, utilizando Hyperledger Besu com consenso QBFT.",
+                "Desenvolvi o protótipo completo, incluindo rede com múltiplos nós validadores, smart contracts em Solidity para gestão de transações, e uma API RESTful com 25 endpoints para integração.",
+                "Criei um sistema de indexação de dados off-chain para otimizar consultas complexas e superar as limitações de performance da blockchain, tratando grandes volumes de dados reais de grandes empresas do agronegócio nacional.",
+                "Projetei e implementei uma arquitetura de privacidade multicamadas para proteger dados comerciais sensíveis em um ambiente transparente e imutável.",
+                "Desenvolvi um frontend em React para interação e visualização do grafo de transações, facilitando a usabilidade da solução pelos diferentes elos da cadeia produtiva."
+            ],
             "technologies": ["Hyperledger Besu", "Solidity", "TypeScript", "PostgreSQL", "Python"]
         },
         {
@@ -179,6 +213,12 @@
             "years": "Dez 2022 - Nov 2023",
             "icon": "devicon-cplusplus-plain",
             "mainTech": ["C++", "Visão Computacional"],
+            "highlights": [
+                "Criei soluções de inspeção industrial automatizadas com IA no projeto Spark Eyes System com monitoramento em tempo real.",
+                "Criei uma solução para gerenciamento de câmeras baseadas no protocolo Genicam (SKM-Genicam), substituindo padrões ruins do mercado com algoritmos customizáveis, seguros e eficientes.",
+                "Desenvolvi bibliotecas em C++, com wrapper para Python, memory-safe utilizando ponteiros inteligentes.",
+                "Desenvolvi módulos de integração de outros dispositivos com o Spark Eyes, otimizando a precisão e eficiência da inspeção em 30%."
+            ],
             "technologies": ["Python", "TensorFlow", "OpenCV", "Docker", "TypeScript"]
         },
         {
@@ -187,6 +227,10 @@
             "years": "Jun 2021 - Dez 2021",
             "icon": "devicon-php-plain",
             "mainTech": ["PHP", "Magento"],
+            "highlights": [
+                "Implementei soluções e otimizações para e-commerce (Magento).",
+                "Configurei ambientes Docker otimizados reduzindo o setup em 70%."
+            ],
             "technologies": ["Docker", "Bash", "MySQL"]
         }
     ]

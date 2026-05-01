@@ -19,7 +19,7 @@
         "language": "Language"
     },
     "hero": {
-        "subtitle": "AI Automation Specialist. Full-Stack Developer with expertise in Python, Rust, C++ and computer vision. Building the future, line by line.",
+        "subtitle": "AI Automation Specialist with LangGraph and AI Agents. Full-Stack Developer with expertise in Python, React, C++ and computer vision. Building the future, line by line.",
         "themes_label": "Explore themes",
         "themes_ai": "Neural Engine",
         "themes_blockchain": "Chain Network",
@@ -27,7 +27,7 @@
         "themes_web": "Retro Web"
     },
     "contact_message": {
-        "paragraph": "Have an interesting project or opportunity? Let's talk. I'm always open to new challenges in AI, systems and computer vision."
+        "paragraph": "Have an interesting project or opportunity? I'm open to remote work and new challenges in AI, software engineering, and computer vision. Let's talk."
     },
     "footer": {
         "made_with": "Made with",
@@ -154,6 +154,29 @@
             "technologies": [
                 { "class": "devicon-rust-plain", "name": "Rust" }
             ]
+        },
+        {
+            "title": "Steel Defect Detection System",
+            "startDate": "2023",
+            "description": "Real-time data collection and analysis system to detect foreign bodies in steel plates. Applied trained neural networks in Python with parallel processing in C++, increasing detection precision by 35% and reducing unplanned production failures.",
+            "url": "",
+            "images": ["images/projects/steel/steel1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" }
+            ]
+        },
+        {
+            "title": "Textile Industry Systems",
+            "startDate": "2023",
+            "description": "Two interconnected systems that revolutionized production efficiency: a Data Collection System for automated image capture to train neural networks (reducing defects by 20%), and a Neural Inference System in C++ and Qt for real-time defect detection (increasing productivity by 25%).",
+            "url": "",
+            "images": ["images/projects/textile/textile1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" },
+                { "class": "devicon-qt-plain", "name": "Qt" }
+            ]
         }
     ],
     "experience": [
@@ -163,6 +186,10 @@
             "years": "Feb 2026 - Mar 2026",
             "icon": "devicon-python-plain",
             "mainTech": ["Python", "Generative AI"],
+            "highlights": [
+                "Automated bank statement PDF reading using Vision-Language Models (VLMs) via Docling, delivering a definitive solution for a decade-old data extraction problem.",
+                "Designed and implemented an automatic Net Promoter Score (NPS) system with Large Language Models (LLMs), enabling automated collection and analysis of customer satisfaction metrics."
+            ],
             "technologies": ["Docling", "VLM", "LLM", "FastAPI", "PostgreSQL", "Docker"]
         },
         {
@@ -171,6 +198,13 @@
             "years": "Sep 2024 - Aug 2025",
             "icon": "devicon-solidity-plain",
             "mainTech": ["Blockchain", "React"],
+            "highlights": [
+                "Led the development of a blockchain architecture for agribusiness supply chain traceability using Hyperledger Besu with QBFT consensus.",
+                "Developed a complete prototype including multi-node validator network, Solidity smart contracts for transaction management, and a REST API with 25 endpoints for integration.",
+                "Created an off-chain data indexing system to optimize complex queries for large-scale real data from major Brazilian agribusiness companies.",
+                "Designed and implemented a multi-layer privacy architecture to protect sensitive commercial data in a transparent and immutable environment.",
+                "Developed a React frontend for transaction graph interaction and visualization, improving usability across the supply chain."
+            ],
             "technologies": ["Hyperledger Besu", "Solidity", "TypeScript", "PostgreSQL", "Python"]
         },
         {
@@ -179,6 +213,12 @@
             "years": "Dec 2022 - Nov 2023",
             "icon": "devicon-cplusplus-plain",
             "mainTech": ["C++", "Computer Vision"],
+            "highlights": [
+                "Created automated industrial inspection solutions with AI in the Spark Eyes System featuring real-time monitoring of weld points in the automotive industry.",
+                "Developed a camera management solution based on the Genicam protocol (SKM-Genicam), replacing poor market standards with customizable, safe, and efficient algorithms.",
+                "Built memory-safe C++ libraries with Python wrappers using smart pointers.",
+                "Developed integration modules for additional devices with Spark Eyes, improving inspection precision and efficiency by 30%."
+            ],
             "technologies": ["Python", "TensorFlow", "OpenCV", "Docker", "TypeScript"]
         },
         {
@@ -187,6 +227,10 @@
             "years": "Jun 2021 - Dec 2021",
             "icon": "devicon-php-plain",
             "mainTech": ["PHP", "Magento"],
+            "highlights": [
+                "Implemented e-commerce solutions and optimizations (Magento).",
+                "Configured optimized Docker environments, reducing setup time by 70%."
+            ],
             "technologies": ["Docker", "Bash", "MySQL"]
         }
     ]
