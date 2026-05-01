@@ -24,7 +24,7 @@ const aiModule: ThemeModule = Object.freeze({
     fov: 55,
   }),
   postPreset: Object.freeze({
-    bloomStrength: 0.8,
+    bloomStrength: 0.4,
     bloomRadius: 0.4,
     bloomThreshold: 0.1,
     scanlineIntensity: 0.15,

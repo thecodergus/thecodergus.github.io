@@ -7,10 +7,10 @@ import { createSoftwareScene } from "./scene";
 const softwareModule: ThemeModule = Object.freeze({
   sceneKind: SceneKind.Software,
   colorScheme: Object.freeze({
-    primary: "#569CD6",
-    secondary: "#00FF41",
-    tertiary: "#C586C0",
-    background: "#0A0A0A",
+    primary: "#00FF41",
+    secondary: "#006622",
+    tertiary: "#FFFFFF",
+    background: "#000000",
   }),
   createScene: createSoftwareScene,
   cameraPreset: Object.freeze({
@@ -24,7 +24,7 @@ const softwareModule: ThemeModule = Object.freeze({
     fov: 55,
   }),
   postPreset: Object.freeze({
-    bloomStrength: 0.6,
+    bloomStrength: 1.0,
     bloomRadius: 0.5,
     bloomThreshold: 0.2,
     scanlineIntensity: 0.18,

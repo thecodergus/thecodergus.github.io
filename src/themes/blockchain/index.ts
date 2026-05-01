@@ -18,7 +18,7 @@ const blockchainModule: ThemeModule = Object.freeze({
     orbitSpeed: 0.02,
     heightAmplitude: 3,
     heightFrequency: 0.5,
-    initialAngle: 0,
+    initialAngle: Math.PI / 4,
     pauseOnHover: false,
     autoRotate: true,
     fov: 55,

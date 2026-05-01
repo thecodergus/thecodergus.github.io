@@ -1,4 +1,4 @@
-// ── Software Scene: Matrix Digital Rain (multi-plane, interactive, glitch, code freeze) ──
+// ── Software Scene: Matrix Digital Rain (multi-plane, glitch, code freeze) ──
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
@@ -17,8 +17,6 @@ const FREEZE_INTERVAL_MAX = 14_000;
 const FREEZE_DURATION = 2_800;
 const KEY_CHAR_MAX = 10;
 const KEY_CHAR_DURATION = 2_000;
-const GRID_LINE_COUNT = 20;
-const PACKETS_PER_LINE = 2;
 const CASCADE_DURATION = 900;
 const FOG_HEIGHT = 1.5;
 
@@ -26,33 +24,33 @@ const FOG_HEIGHT = 1.5;
 
 const PLANE_CONFIGS: readonly PlaneConfig[] = Object.freeze([
   Object.freeze({
-    columns: 9,
-    maxDropsPerColumn: 10,
+    columns: 14,
+    maxDropsPerColumn: 14,
     charSize: 0.42,
-    speedMin: 0.04,
-    speedMax: 0.09,
+    speedMin: 0.05,
+    speedMax: 0.12,
     opacityMin: 0.25,
     opacityMax: 0.85,
     zOffset: 2.5,
     parallaxFactor: 0.6,
   }),
   Object.freeze({
-    columns: 14,
-    maxDropsPerColumn: 8,
+    columns: 20,
+    maxDropsPerColumn: 12,
     charSize: 0.28,
-    speedMin: 0.018,
-    speedMax: 0.05,
+    speedMin: 0.025,
+    speedMax: 0.07,
     opacityMin: 0.12,
     opacityMax: 0.55,
     zOffset: 0,
     parallaxFactor: 0.3,
   }),
   Object.freeze({
-    columns: 7,
-    maxDropsPerColumn: 6,
+    columns: 10,
+    maxDropsPerColumn: 8,
     charSize: 0.18,
-    speedMin: 0.008,
-    speedMax: 0.028,
+    speedMin: 0.01,
+    speedMax: 0.035,
     opacityMin: 0.04,
     opacityMax: 0.22,
     zOffset: -2,
@@ -108,19 +106,10 @@ const createCharTexture = (char: string, color: string): THREE.CanvasTexture => 
   return new THREE.CanvasTexture(canvas);
 };
 
-const generateChar = (): string => {
-  const r = Math.random();
-  if (r < 0.35) return String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96));
-  if (r < 0.65) return Math.random() > 0.5 ? "0" : "1";
-  if (r < 0.85) return String.fromCharCode(0x4E00 + Math.floor(Math.random() * 100));
-  return String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96));
-};
+const MATRIX_CHARS = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍABCDEFGHIJKLMNOPQRSTUVWXYZ012345789日";
 
-const hexToRGB = (hex: string): { r: number; g: number; b: number } => ({
-  r: parseInt(hex.slice(1, 3), 16) / 255,
-  g: parseInt(hex.slice(3, 5), 16) / 255,
-  b: parseInt(hex.slice(5, 7), 16) / 255,
-});
+const generateChar = (): string => MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+
 
 // ── Create a single plane of drops ──
 
@@ -136,8 +125,8 @@ const createPlane = (
   const sprites: THREE.Sprite[] = [];
 
   const activeColumns = new Set<number>();
-  range(Math.floor(config.columns * 0.65)).forEach(() => {
-    activeColumns.add(Math.floor(Math.random() * config.columns));
+  range(config.columns).forEach((i) => {
+    activeColumns.add(i);
   });
 
   range(totalDrops).forEach(() => {
@@ -205,105 +194,10 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const { colorScheme: cs } = config;
 
-  // ── Background grid ──
-
-  const gridGroup = new THREE.Group();
-  const gridLineMat = new THREE.LineBasicMaterial({
-    color: cs.primary,
-    transparent: true,
-    opacity: 0.04,
-    depthWrite: false,
-  });
-
-  range(GRID_LINE_COUNT).forEach((i) => {
-    const y = -GRID_HEIGHT / 2 + (i / (GRID_LINE_COUNT - 1)) * GRID_HEIGHT;
-    const pts = [new THREE.Vector3(-GRID_WIDTH / 2, y, 0), new THREE.Vector3(GRID_WIDTH / 2, y, 0)];
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    gridGroup.add(new THREE.Line(geo, gridLineMat.clone()));
-  });
-
-  root.add(gridGroup);
-
-  // ── Circuit/trace decoration ──
-
-  const circuitGroup = new THREE.Group();
-  const circuitMat = new THREE.LineBasicMaterial({
-    color: cs.primary,
-    transparent: true,
-    opacity: 0.05,
-    depthWrite: false,
-  });
-
-  range(6).forEach(() => {
-    const x1 = randomRange(-GRID_WIDTH / 2, GRID_WIDTH / 2);
-    const y1 = randomRange(-GRID_HEIGHT / 2, GRID_HEIGHT / 2);
-    const x2 = x1 + randomRange(-2, 2);
-    const y2 = y1;
-    const x3 = x2;
-    const y3 = y2 + randomRange(-2, 2);
-
-    const pts = [new THREE.Vector3(x1, y1, 0), new THREE.Vector3(x2, y2, 0), new THREE.Vector3(x3, y3, 0)];
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    circuitGroup.add(new THREE.Line(geo, circuitMat.clone()));
-
-    const nodeGeo = new THREE.RingGeometry(0.06, 0.1, 16, 1);
-    const nodeMat = new THREE.MeshBasicMaterial({
-      color: cs.primary,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.12,
-      depthWrite: false,
-    });
-    const node = new THREE.Mesh(nodeGeo, nodeMat);
-    node.position.set(x1, y1, 0.01);
-    circuitGroup.add(node);
-  });
-
-  root.add(circuitGroup);
-
   // ── Three rain planes ──
 
   const planes: PlaneState[] = PLANE_CONFIGS.map((pc) => createPlane(pc, cs.primary));
   planes.forEach((p) => root.add(p.group));
-
-  // ── Data packets (traveling dots on grid lines) ──
-
-  const totalPackets = GRID_LINE_COUNT * PACKETS_PER_LINE;
-  const pktGeom = new THREE.BufferGeometry();
-  const pktPositions = new Float32Array(totalPackets * 3);
-  const pktColors = new Float32Array(totalPackets * 3);
-  pktGeom.setAttribute("position", new THREE.BufferAttribute(pktPositions, 3));
-  pktGeom.setAttribute("color", new THREE.BufferAttribute(pktColors, 3));
-
-  const pktMat = new THREE.PointsMaterial({
-    size: 0.08,
-    vertexColors: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    transparent: true,
-  });
-
-  const pktPoints = new THREE.Points(pktGeom, pktMat);
-  root.add(pktPoints);
-
-  interface Packet {
-    lineIndex: number;
-    y: number;
-    x: number;
-    speed: number;
-  }
-
-  const packets: Packet[] = [];
-  range(totalPackets).forEach((i) => {
-    const lineIndex = Math.floor(i / PACKETS_PER_LINE);
-    const y = -GRID_HEIGHT / 2 + (lineIndex / (GRID_LINE_COUNT - 1)) * GRID_HEIGHT;
-    packets.push({
-      lineIndex,
-      y,
-      x: randomRange(-GRID_WIDTH / 2, GRID_WIDTH / 2),
-      speed: randomRange(0.02, 0.06),
-    });
-  });
 
   // ── Ground fog (wide plane with horizontal fade) ──
 
@@ -330,7 +224,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
   const fogMat = new THREE.MeshBasicMaterial({
     map: fogTex,
     transparent: true,
-    opacity: 0.02,
+    opacity: 0.04,
     depthWrite: false,
     side: THREE.DoubleSide,
   });
@@ -432,29 +326,6 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
         mat.opacity = clamp01(baseOpacity);
       });
     });
-
-    // ── Data packets ──
-
-    packets.forEach((p, i) => {
-      p.x += p.speed;
-      if (p.x > GRID_WIDTH / 2) {
-        p.x = -GRID_WIDTH / 2;
-        p.speed = randomRange(0.02, 0.06);
-      }
-
-      pktPositions[i * 3] = p.x;
-      pktPositions[i * 3 + 1] = p.y;
-      pktPositions[i * 3 + 2] = 0;
-
-      const opacity = 0.3 + Math.sin(time * 8 + i * 0.7) * 0.2;
-      const c = hexToRGB(cs.primary);
-      pktColors[i * 3] = c.r * opacity;
-      pktColors[i * 3 + 1] = c.g * opacity;
-      pktColors[i * 3 + 2] = c.b * opacity;
-    });
-
-    pktGeom.attributes.position.needsUpdate = true;
-    pktGeom.attributes.color.needsUpdate = true;
 
     // ── Glitch ──
 
@@ -571,7 +442,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
       }
     }
 
-    void time;
+    void mouse;
   };
 
   // ── onKeyPress (keyboard easter egg) ──
@@ -655,13 +526,8 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
       });
     });
 
-    // Dissolve data packets
-    pktMat.opacity = 1 - progress;
     // Dissolve fog
     fogMat.opacity = 0.12 * (1 - progress);
-    // Dissolve grid
-    gridLineMat.opacity = 0.04 * (1 - progress);
-    circuitMat.opacity = 0.05 * (1 - progress);
   };
 
   // ── entrance ──
@@ -685,10 +551,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
       });
     });
 
-    gridLineMat.opacity = 0.04 * t;
-    circuitMat.opacity = 0.05 * t;
     fogMat.opacity = 0.12 * t;
-    pktMat.opacity = t;
   };
 
   // ── dispose ──
@@ -719,12 +582,8 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
     root.traverse(disposeChild);
 
-    gridLineMat.dispose();
-    circuitMat.dispose();
     fogMat.dispose();
     fogTex.dispose();
-    pktGeom.dispose();
-    pktMat.dispose();
 
     // Clear key sprites
     keySprites.forEach((ks) => {
