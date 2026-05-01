@@ -24,10 +24,10 @@ const blockchainModule: ThemeModule = Object.freeze({
     fov: 55,
   }),
   postPreset: Object.freeze({
-    bloomStrength: 1.0,
+    bloomStrength: 0.5,
     bloomRadius: 0.5,
-    bloomThreshold: 0.15,
-    scanlineIntensity: 0.12,
+    bloomThreshold: 0.2,
+    scanlineIntensity: 0.08,
     vignetteStrength: 0.35,
     chromaticStrength: 0.003,
   }),

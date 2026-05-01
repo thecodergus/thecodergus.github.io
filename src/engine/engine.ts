@@ -212,6 +212,16 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
   const updateCamera = (delta: number): void => {
     if (!activePreset) return;
 
+    const activeScene = transitionManager.getActive();
+    const camState = activeScene?.getCameraState?.();
+
+    if (camState) {
+      const lf = Math.min(camState.lerpFactor * delta * 0.06, 1);
+      camera.position.lerp(camState.position, lf);
+      camera.lookAt(camState.lookAt);
+      return;
+    }
+
     const p = activePreset;
 
     if (p.autoRotate) {

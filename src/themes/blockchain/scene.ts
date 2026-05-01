@@ -1,195 +1,260 @@
-// ── Blockchain Scene: Block Chain + Merkle Tree + Mining ──
+// ── Blockchain Scene: dynamic chain + consensus checking ──
 
 import * as THREE from "three";
-import type { SceneHandle, SceneConfig } from "../../engine/types";
-import { range, rangeBetween, randomRange, clamp01 } from "../../engine/math";
-import type { BlockData, MerkleNode, HashParticle } from "./types";
+import type { SceneHandle, SceneConfig, CameraState } from "../../engine/types";
+import { range, randomRange, clamp01 } from "../../engine/math";
+import { ChainPhase } from "./types";
+import type { BlockData, ChainLink, HashParticle } from "./types";
 
 // ── Configuration ──
 
-const BLOCK_COUNT = 7;
 const BLOCK_SIZE = 1.2;
-const CHAIN_Z_OFFSET_START = -4;
+const CHAIN_Z_START = -4;
 const CHAIN_Z_STEP = 1.6;
 const VALIDATOR_COUNT = 12;
 const PARTICLE_COUNT = 50;
-const HASH_PARTICLES_PER_BLOCK = 3;
 
-// ── Factory ──
+const INITIAL_BLOCKS = 3;
+const MAX_BLOCKS = 12;
+const STARTUP_ORBIT_MS = 3000;
+const CHECK_PER_BLOCK_MS = 1200;
+const TRANSITION_MS = 400;
+const WAIT_MS = 5000;
+const BLOCK_ADD_MS = 800;
+const GLOW_RADIUS = 1.4;
+const CHECK_RADIUS = 7.0;
+const CHECK_HEIGHT = 1.5;
+const INITIAL_ANGLE = Math.PI / 4;
 
-export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
+// ── Canvas glow texture ──
+
+const createGlowTexture = (): THREE.CanvasTexture => {
+  const size = 256;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+
+  const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  gradient.addColorStop(0, "rgba(255, 179, 71, 1)");
+  gradient.addColorStop(0.12, "rgba(255, 179, 71, 0.7)");
+  gradient.addColorStop(0.35, "rgba(255, 160, 30, 0.25)");
+  gradient.addColorStop(0.7, "rgba(247, 147, 26, 0.04)");
+  gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+
+  return new THREE.CanvasTexture(canvas);
+};
+
+// ── Merkle tree factory ──
+
+const createMerkleTree = (colorScheme: { readonly secondary: string }): THREE.Group => {
   const group = new THREE.Group();
-  let disposed = false;
-  let miningIdx = 0;
-  let miningTimer = 0;
-  let mining = false;
+  const leafCount = 4;
+  const merkleGeo = new THREE.SphereGeometry(0.08, 8, 8);
+  const merkleMat = new THREE.MeshBasicMaterial({
+    color: colorScheme.secondary,
+    transparent: true,
+    opacity: 0.7,
+  });
 
-  // ── Create block geometry (cube with edges) ──
+  const nodes: { mesh: THREE.Mesh; position: THREE.Vector3 }[] = [];
 
+  range(leafCount).forEach((leaf) => {
+    const leafX = (leaf - leafCount / 2 + 0.5) * (BLOCK_SIZE * 0.25);
+    const mesh = new THREE.Mesh(merkleGeo, merkleMat.clone());
+    mesh.position.set(leafX, -BLOCK_SIZE * 0.28, 0);
+    group.add(mesh);
+    nodes.push({ mesh, position: mesh.position.clone() });
+  });
+
+  range(2).forEach((mid) => {
+    const mesh = new THREE.Mesh(merkleGeo, merkleMat.clone());
+    mesh.position.set((mid - 0.5) * BLOCK_SIZE * 0.35, 0, 0);
+    group.add(mesh);
+    nodes.push({ mesh, position: mesh.position.clone() });
+  });
+
+  const root = new THREE.Mesh(
+    new THREE.SphereGeometry(0.12, 8, 8),
+    new THREE.MeshBasicMaterial({
+      color: colorScheme.secondary,
+      transparent: true,
+      opacity: 0.9,
+    }),
+  );
+  root.position.set(0, BLOCK_SIZE * 0.28, 0);
+  group.add(root);
+  nodes.push({ mesh: root, position: root.position.clone() });
+
+  // Connecting lines
+  const lineMat = new THREE.LineBasicMaterial({
+    color: colorScheme.secondary,
+    transparent: true,
+    opacity: 0.25,
+    depthWrite: false,
+  });
+
+  range(leafCount).forEach((leaf) => {
+    const midIdx = leafCount + Math.floor(leaf / 2);
+    if (midIdx < nodes.length) {
+      const geo = new THREE.BufferGeometry().setFromPoints([
+        nodes[leaf].position,
+        nodes[midIdx].position,
+      ]);
+      group.add(new THREE.Line(geo, lineMat.clone()));
+    }
+  });
+
+  range(2).forEach((mid) => {
+    const midIdx = leafCount + mid;
+    const rootIdx = nodes.length - 1;
+    if (midIdx < nodes.length) {
+      const geo = new THREE.BufferGeometry().setFromPoints([
+        nodes[midIdx].position,
+        nodes[rootIdx].position,
+      ]);
+      group.add(new THREE.Line(geo, lineMat.clone()));
+    }
+  });
+
+  return group;
+};
+
+// ── Block factory ──
+
+const createBlock = (
+  index: number,
+  z: number,
+  cs: { readonly primary: string; readonly secondary: string },
+): { block: THREE.Group; fillMat: THREE.MeshBasicMaterial; edgeMat: THREE.LineBasicMaterial } => {
   const blockGeo = new THREE.BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
   const blockEdgeGeo = new THREE.EdgesGeometry(blockGeo);
 
-  const blockMat = new THREE.MeshBasicMaterial({
-    color: config.colorScheme.primary,
+  const blockGroup = new THREE.Group();
+
+  const edgeMat = new THREE.LineBasicMaterial({
+    color: cs.primary,
+    transparent: true,
+    opacity: 0.5,
+    depthWrite: false,
+  });
+  blockGroup.add(new THREE.LineSegments(blockEdgeGeo, edgeMat));
+
+  const fillMat = new THREE.MeshBasicMaterial({
+    color: cs.primary,
     transparent: true,
     opacity: 0.12,
     depthWrite: false,
   });
+  blockGroup.add(new THREE.Mesh(blockGeo, fillMat));
 
-  // ── Blocks in chain ──
+  const merkleTree = createMerkleTree(cs);
+  blockGroup.add(merkleTree);
 
-  const blocks: BlockData[] = [];
-  const chainStartX = 0;
+  blockGroup.position.set(0, 0, z);
 
-  range(BLOCK_COUNT).forEach((i) => {
-    const blockGroup = new THREE.Group();
-    const z = CHAIN_Z_OFFSET_START + i * CHAIN_Z_STEP;
+  return { block: blockGroup, fillMat, edgeMat };
+};
 
-    // Block outline
-    const edges = new THREE.LineSegments(
-      blockEdgeGeo,
-      new THREE.LineBasicMaterial({
-        color: config.colorScheme.primary,
-        transparent: true,
-        opacity: 0.5,
-        depthWrite: false,
-      }),
-    );
-    blockGroup.add(edges);
+// ── Chain link factory ──
 
-    // Block fill
-    const fill = new THREE.Mesh(blockGeo, blockMat.clone());
-    blockGroup.add(fill);
+const createChainLink = (
+  from: THREE.Vector3,
+  to: THREE.Vector3,
+  color: string,
+): { line: THREE.Line; material: THREE.LineBasicMaterial } => {
+  const f = from.clone();
+  f.x += BLOCK_SIZE * 0.55;
+  const t = to.clone();
+  t.x -= BLOCK_SIZE * 0.55;
 
-    // ── Merkle tree inside block ──
-
-    const merkleLevels = 3;
-    const merkleNodes: MerkleNode[] = [];
-    const merkleGeo = new THREE.SphereGeometry(0.08, 8, 8);
-    const merkleMat = new THREE.MeshBasicMaterial({
-      color: config.colorScheme.secondary,
-      transparent: true,
-      opacity: 0.7,
-    });
-
-    // Leaf nodes at bottom (level 0)
-    const leafCount = 4;
-    range(leafCount).forEach((leaf) => {
-      const leafX = (leaf - leafCount / 2 + 0.5) * (BLOCK_SIZE * 0.25);
-      const mesh = new THREE.Mesh(merkleGeo, merkleMat.clone());
-      mesh.position.set(leafX, -BLOCK_SIZE * 0.28, 0);
-      blockGroup.add(mesh);
-      merkleNodes.push({ mesh, parent: leafCount + Math.floor(leaf / 2), level: 0 });
-    });
-
-    // Mid level (2 nodes)
-    range(2).forEach((mid) => {
-      const mesh = new THREE.Mesh(merkleGeo, merkleMat.clone());
-      mesh.position.set((mid - 0.5) * BLOCK_SIZE * 0.35, 0, 0);
-      blockGroup.add(mesh);
-      merkleNodes.push({ mesh, parent: leafCount + 2, level: 1 });
-    });
-
-    // Root
-    const root = new THREE.Mesh(
-      new THREE.SphereGeometry(0.12, 8, 8),
-      new THREE.MeshBasicMaterial({
-        color: config.colorScheme.secondary,
-        transparent: true,
-        opacity: 0.9,
-      }),
-    );
-    root.position.set(0, BLOCK_SIZE * 0.28, 0);
-    blockGroup.add(root);
-    merkleNodes.push({ mesh: root, parent: -1, level: 2 });
-
-    // Merkle connecting lines
-    range(leafCount).forEach((leaf) => {
-      const midIdx = leafCount + Math.floor(leaf / 2);
-      if (midIdx < merkleNodes.length) {
-        const pts = [
-          merkleNodes[leaf].mesh.position.clone(),
-          merkleNodes[midIdx].mesh.position.clone(),
-        ];
-        const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
-        const line = new THREE.Line(
-          lineGeo,
-          new THREE.LineBasicMaterial({
-            color: config.colorScheme.secondary,
-            transparent: true,
-            opacity: 0.25,
-            depthWrite: false,
-          }),
-        );
-        blockGroup.add(line);
-      }
-    });
-
-    range(2).forEach((mid) => {
-      const midIdx = leafCount + mid;
-      if (midIdx < merkleNodes.length) {
-        const pts = [
-          merkleNodes[midIdx].mesh.position.clone(),
-          root.position.clone(),
-        ];
-        const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
-        const line = new THREE.Line(
-          lineGeo,
-          new THREE.LineBasicMaterial({
-            color: config.colorScheme.secondary,
-            transparent: true,
-            opacity: 0.25,
-            depthWrite: false,
-          }),
-        );
-        blockGroup.add(line);
-      }
-    });
-
-    blockGroup.position.set(chainStartX, 0, z);
-    const pos = new THREE.Vector3(chainStartX, 0, z);
-    group.add(blockGroup);
-    blocks.push({
-      mesh: blockGroup,
-      position: pos,
-      index: i,
-    });
-  });
-
-  // ── Chain links between blocks (hash connections) ──
-
-  const hashLineMat = new THREE.LineBasicMaterial({
-    color: config.colorScheme.primary,
+  const material = new THREE.LineBasicMaterial({
+    color,
     transparent: true,
     opacity: 0.3,
     depthWrite: false,
   });
 
-  range(BLOCK_COUNT - 1).forEach((i) => {
-    const from = blocks[i].position.clone();
-    const to = blocks[i + 1].position.clone();
-    from.x += BLOCK_SIZE * 0.55;
-    to.x -= BLOCK_SIZE * 0.55;
+  const geo = new THREE.BufferGeometry().setFromPoints([f, t]);
+  const line = new THREE.Line(geo, material);
 
-    const linkGeo = new THREE.BufferGeometry().setFromPoints([from, to]);
-    const linkLine = new THREE.Line(linkGeo, hashLineMat.clone());
-    group.add(linkLine);
+  return { line, material };
+};
+
+// ── Scene factory ──
+
+export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
+  const group = new THREE.Group();
+  const cs = config.colorScheme;
+  let disposed = false;
+
+  // ── Shared geometry ──
+
+  const validatorGeo = new THREE.SphereGeometry(0.12, 12, 12);
+  const validatorMat = new THREE.MeshBasicMaterial({
+    color: cs.tertiary,
+    transparent: true,
+    opacity: 0.5,
+    depthWrite: true,
   });
 
-  // ── Validator nodes (spheres orbiting the chain) ──
+  // ── Glow sprite ──
+
+  const glowTex = createGlowTexture();
+  const glowMat = new THREE.SpriteMaterial({
+    map: glowTex,
+    blending: THREE.AdditiveBlending,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    depthTest: false,
+  });
+  const glowSprite = new THREE.Sprite(glowMat);
+  glowSprite.scale.set(GLOW_RADIUS, GLOW_RADIUS, 1);
+  glowSprite.position.set(-999, -999, -999);
+  group.add(glowSprite);
+
+  // ── Blocks (dynamic) ──
+
+  const blocks: BlockData[] = [];
+  const chainLinks: ChainLink[] = [];
+
+  const addBlock = (index: number, z: number): BlockData => {
+    const { block, fillMat, edgeMat } = createBlock(index, z, cs);
+    group.add(block);
+
+    const pos = new THREE.Vector3(0, 0, z);
+    const bd: BlockData = {
+      mesh: block,
+      fillMaterial: fillMat,
+      edgeMaterial: edgeMat,
+      position: pos,
+      index,
+    };
+    blocks.push(bd);
+
+    if (index > 0 && blocks[index - 1]) {
+      const { line, material } = createChainLink(blocks[index - 1].position, pos, cs.primary);
+      chainLinks.push({ line, material, fromIdx: index - 1, toIdx: index });
+      group.add(line);
+    }
+
+    return bd;
+  };
+
+  range(INITIAL_BLOCKS).forEach((i) => {
+    addBlock(i, CHAIN_Z_START + i * CHAIN_Z_STEP);
+  });
+
+  // ── Validators ──
 
   const validators: THREE.Mesh[] = [];
   const validatorAngles: number[] = [];
   const validatorDists: number[] = [];
   const validatorHeights: number[] = [];
   const validatorSpeeds: number[] = [];
-  const validatorGeo = new THREE.SphereGeometry(0.12, 12, 12);
-  const validatorMat = new THREE.MeshBasicMaterial({
-    color: config.colorScheme.tertiary,
-    transparent: true,
-    opacity: 0.5,
-    depthWrite: true,
-  });
 
   range(VALIDATOR_COUNT).forEach(() => {
     const mesh = new THREE.Mesh(validatorGeo, validatorMat.clone());
@@ -201,7 +266,7 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     group.add(mesh);
   });
 
-  // ── Hash particles traveling along chain ──
+  // ── Hash particles ──
 
   const particleGeom = new THREE.BufferGeometry();
   const pPositions = new Float32Array(PARTICLE_COUNT * 3);
@@ -234,7 +299,6 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     from.x += BLOCK_SIZE * 0.55;
     const to = blocks[fromBlock + 1].position.clone();
     to.x -= BLOCK_SIZE * 0.55;
-
     hashParticles.push({
       from,
       to,
@@ -243,60 +307,63 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     });
   };
 
+  // ── State machine ──
+
+  let phase: ChainPhase = ChainPhase.Orbiting;
+  let checkIndex = 0;
+  let phaseTimer = 0; // ms
+  let totalElapsed = 0; // ms
+  let nextBlockZ = CHAIN_Z_START + INITIAL_BLOCKS * CHAIN_Z_STEP;
+  let nextBlockIndex = INITIAL_BLOCKS;
+
+  // ── Camera state getter ──
+
+  const getCameraState = (): CameraState | null => {
+    if (phase !== ChainPhase.Checking) return null;
+    const block = blocks[checkIndex];
+    if (!block) return null;
+    const pos = block.position.clone();
+    pos.y += 0;
+    const cameraPos = new THREE.Vector3(
+      Math.sin(INITIAL_ANGLE) * CHECK_RADIUS,
+      CHECK_HEIGHT,
+      pos.z + Math.cos(INITIAL_ANGLE) * CHECK_RADIUS,
+    );
+    return { position: cameraPos, lookAt: pos.clone(), lerpFactor: 4 };
+  };
+
   // ── Update ──
 
-  const update = (time: number, _delta: number, _mouse: import("../../engine/types").Vec2 | null): void => {
+  const update = (time: number, _deltaRaw: number, _mouse: unknown): void => {
     if (disposed) return;
 
-    // Chain wobble
+    const deltaMs = Math.min(_deltaRaw * 1000, 50);
+    totalElapsed += deltaMs;
+    phaseTimer += deltaMs;
+
+    // ── Chain wobble ──
+
     blocks.forEach((b, i) => {
       b.mesh.position.y = Math.sin(time * 0.8 + i * 0.5) * 0.2;
       b.mesh.rotation.y = Math.sin(time * 0.5 + i * 0.3) * 0.05;
       b.mesh.rotation.x = Math.cos(time * 0.6 + i * 0.4) * 0.03;
     });
 
-    // Mining animation
-    miningTimer++;
-    if (!mining && miningTimer > 200) {
-      mining = true;
-      miningTimer = 0;
-      miningIdx++;
-    }
+    // ── Validators orbit ──
 
-    if (mining) {
-      const idx = miningIdx % BLOCK_COUNT;
-      if (blocks[idx]) {
-        const flash = Math.sin(miningTimer * 0.4) * clamp01((15 - miningTimer) / 15);
-        blocks[idx].mesh.scale.setScalar(1 + flash * 0.15);
-        const child0 = blocks[idx].mesh.children[0] as THREE.LineSegments;
-        const child0mat = child0.material as THREE.LineBasicMaterial;
-        child0mat.opacity = 0.5 + flash * 0.5;
-      }
-      if (miningTimer > 15) {
-        mining = false;
-        miningTimer = 0;
-        if (blocks[miningIdx % BLOCK_COUNT]) {
-          blocks[miningIdx % BLOCK_COUNT].mesh.scale.setScalar(1);
-        }
-      }
-    }
-
-    // Validators orbit
     validators.forEach((v, i) => {
       validatorAngles[i] += validatorSpeeds[i];
       v.position.set(
         Math.cos(validatorAngles[i]) * validatorDists[i],
         validatorHeights[i] + Math.sin(time * 0.7 + i) * 0.5,
-        CHAIN_Z_OFFSET_START + (validatorAngles[i] / (Math.PI * 2)) * BLOCK_COUNT * CHAIN_Z_STEP,
+        CHAIN_Z_START + (validatorAngles[i] / (Math.PI * 2)) * blocks.length * CHAIN_Z_STEP,
       );
     });
 
-    // Spawn hash particles
-    if (Math.random() < 0.15) {
-      spawnHash();
-    }
+    // ── Hash particles ──
 
-    // Update hash particles
+    if (Math.random() < 0.15) spawnHash();
+
     const toRemove: number[] = [];
     hashParticles.forEach((p, idx) => {
       p.progress += p.speed;
@@ -312,9 +379,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
         pPositions[i * 3] = p.from.x + (p.to.x - p.from.x) * t;
         pPositions[i * 3 + 1] = p.from.y + (p.to.y - p.from.y) * t;
         pPositions[i * 3 + 2] = p.from.z + (p.to.z - p.from.z) * t;
-
         const opacity = Math.sin(t * Math.PI);
-        const hex = t < 0.5 ? config.colorScheme.primary : config.colorScheme.secondary;
+        const hex = t < 0.5 ? cs.primary : cs.secondary;
         pColors[i * 3] = (parseInt(hex.slice(1, 3), 16) / 255) * opacity;
         pColors[i * 3 + 1] = (parseInt(hex.slice(3, 5), 16) / 255) * opacity;
         pColors[i * 3 + 2] = (parseInt(hex.slice(5, 7), 16) / 255) * opacity;
@@ -326,7 +392,147 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     particleGeom.attributes.position.needsUpdate = true;
     particleGeom.attributes.color.needsUpdate = true;
 
-    void time;
+    // ── Phase machine ──
+
+    const transitionTo = (next: ChainPhase): void => {
+      // Exit current phase
+      if (phase === ChainPhase.Checking) {
+        glowMat.opacity = 0;
+        const prev = blocks[checkIndex];
+        if (prev) {
+          prev.fillMaterial.opacity = 0.12;
+          prev.edgeMaterial.opacity = 0.5;
+          prev.mesh.scale.setScalar(1);
+        }
+      }
+      phase = next;
+      phaseTimer = 0;
+    };
+
+    switch (phase) {
+      case ChainPhase.Orbiting: {
+        if (phaseTimer >= STARTUP_ORBIT_MS || totalElapsed >= STARTUP_ORBIT_MS) {
+          checkIndex = 0;
+          transitionTo(ChainPhase.Checking);
+        }
+        break;
+      }
+
+      case ChainPhase.Checking: {
+        const block = blocks[checkIndex];
+        if (!block) {
+          transitionTo(ChainPhase.Waiting);
+          break;
+        }
+
+        const localT = phaseTimer;
+        const totalPerBlock = CHECK_PER_BLOCK_MS + TRANSITION_MS;
+
+        // Glow and scale animation
+        const brighten = clamp01(localT / 200); // 0→1 over 200ms
+        const sustain = localT > 200 && localT < CHECK_PER_BLOCK_MS;
+        const dim = localT >= CHECK_PER_BLOCK_MS && localT < totalPerBlock;
+        const dimT = dim ? 1 - clamp01((localT - CHECK_PER_BLOCK_MS) / TRANSITION_MS) : 0;
+        const glowF = sustain ? 1 : brighten * (1 - dimT);
+
+        block.fillMaterial.opacity = 0.12 + glowF * 0.38;
+        block.edgeMaterial.opacity = 0.5 + glowF * 0.5;
+        block.mesh.scale.setScalar(1 + glowF * 0.15);
+
+        // Glow sprite follows block
+        const blockWorldPos = new THREE.Vector3();
+        block.mesh.getWorldPosition(blockWorldPos);
+        glowSprite.position.set(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z);
+        glowSprite.position.z += 0.1;
+        glowMat.opacity = glowF * 0.35;
+
+        // Transition to next block
+        if (localT >= totalPerBlock) {
+          block.fillMaterial.opacity = 0.12;
+          block.edgeMaterial.opacity = 0.5;
+          block.mesh.scale.setScalar(1);
+
+          checkIndex++;
+          phaseTimer = 0;
+
+          if (checkIndex >= blocks.length) {
+            glowMat.opacity = 0;
+            transitionTo(ChainPhase.Waiting);
+          } else {
+            glowMat.opacity = 0;
+          }
+        }
+        break;
+      }
+
+      case ChainPhase.Waiting: {
+        glowMat.opacity = 0;
+        if (phaseTimer >= WAIT_MS) {
+          transitionTo(ChainPhase.AddingBlock);
+        }
+        break;
+      }
+
+      case ChainPhase.AddingBlock: {
+        if (nextBlockIndex >= MAX_BLOCKS) {
+          // Reset cycle
+          nextBlockIndex = INITIAL_BLOCKS;
+          nextBlockZ = CHAIN_Z_START + INITIAL_BLOCKS * CHAIN_Z_STEP;
+
+          // Remove blocks beyond initial
+          while (blocks.length > INITIAL_BLOCKS) {
+            const removed = blocks.pop()!;
+            group.remove(removed.mesh);
+            removed.mesh.traverse((child) => {
+              if (child instanceof THREE.Mesh || child instanceof THREE.Line) {
+                child.geometry.dispose();
+                (child.material as THREE.Material).dispose();
+              }
+            });
+          }
+
+          // Remove extra chain links
+          while (chainLinks.length > INITIAL_BLOCKS - 1) {
+            const removed = chainLinks.pop()!;
+            group.remove(removed.line);
+            removed.line.geometry.dispose();
+            removed.material.dispose();
+          }
+
+          transitionTo(ChainPhase.Orbiting);
+          break;
+        }
+
+        // Animate new block scaling up
+        const addT = clamp01(phaseTimer / BLOCK_ADD_MS);
+
+        // Create block at start of phase timer
+        if (phaseTimer <= deltaMs + 5) {
+          addBlock(nextBlockIndex, nextBlockZ);
+          const newest = blocks[blocks.length - 1];
+          newest.mesh.scale.setScalar(0.01);
+          newest.fillMaterial.opacity = 0;
+          newest.edgeMaterial.opacity = 0;
+        }
+
+        const newest = blocks[blocks.length - 1];
+        if (newest && newest.index === nextBlockIndex) {
+          newest.mesh.scale.setScalar(clamp01(addT));
+          newest.fillMaterial.opacity = clamp01(addT) * 0.12;
+          newest.edgeMaterial.opacity = clamp01(addT) * 0.5;
+        }
+
+        if (phaseTimer >= BLOCK_ADD_MS) {
+          nextBlockIndex++;
+          nextBlockZ += CHAIN_Z_STEP;
+          checkIndex = 0;
+          transitionTo(ChainPhase.Checking);
+        }
+        break;
+      }
+    }
+
+    void _mouse;
   };
 
   // ── Dispose ──
@@ -340,18 +546,22 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
       } else if (child instanceof THREE.Line || child instanceof THREE.LineSegments) {
         child.geometry.dispose();
         (child.material as THREE.Material).dispose();
+      } else if (child instanceof THREE.Sprite) {
+        const m = child.material as THREE.SpriteMaterial;
+        if (m.map) m.map.dispose();
+        m.dispose();
       }
     });
-    blockGeo.dispose();
-    blockEdgeGeo.dispose();
-    blockMat.dispose();
-    hashLineMat.dispose();
     validatorGeo.dispose();
     validatorMat.dispose();
     particleGeom.dispose();
     particleMat.dispose();
+    glowTex.dispose();
+    glowMat.dispose();
     group.clear();
   };
+
+  // ── SetOpacity ──
 
   const setOpacity = (t: number): void => {
     const setMaterialOpacity = (mat: THREE.Material): void => {
@@ -373,37 +583,16 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     validators.forEach((v) => {
       setMaterialOpacity(v.material as THREE.MeshBasicMaterial);
     });
+    chainLinks.forEach((cl) => {
+      setMaterialOpacity(cl.material);
+    });
     setMaterialOpacity(particleMat);
   };
 
-  const dissolve = (progress: number): void => {
-    const objs: THREE.Object3D[] = [];
-    group.traverse((child) => {
-      if (child instanceof THREE.Mesh || child instanceof THREE.Line || child instanceof THREE.Points) {
-        objs.push(child);
-      }
-    });
-    objs.forEach((obj, i) => {
-      const seed = i / (objs.length - 1 + 0.001);
-      if (progress > seed) {
-        const localP = clamp01((progress - seed) / (1 - seed + 0.001));
-        obj.scale.setScalar(1 - localP);
-        const applyFade = (mat: THREE.Material): void => {
-          mat.transparent = true;
-          mat.depthWrite = false;
-          (mat as THREE.MeshBasicMaterial).opacity = 1 - localP;
-        };
-        if (obj instanceof THREE.Mesh) {
-          const mats = obj.material;
-          if (Array.isArray(mats)) mats.forEach(applyFade);
-          else applyFade(mats);
-        } else {
-          const mats = (obj as THREE.Line | THREE.Points).material;
-          if (Array.isArray(mats)) mats.forEach(applyFade);
-          else applyFade(mats);
-        }
-      }
-    });
+  // ── Dissolve ──
+
+  const dissolve = (_progress: number): void => {
+    setOpacity(1 - clamp01(_progress));
   };
 
   return {
@@ -411,6 +600,7 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     dispose,
     setOpacity,
     getObjects: () => [group],
+    getCameraState,
     dissolve,
   };
 };

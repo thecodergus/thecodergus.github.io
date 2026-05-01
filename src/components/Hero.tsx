@@ -23,7 +23,7 @@ export default function Hero() {
     >
       <NeuralCanvas />
 
-      <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+      <div class="relative z-10 text-center px-6 max-w-4xl mx-auto bg-bg/25 backdrop-blur-[2px] rounded-2xl py-8">
         <div class="mb-6 inline-block">
           <span class="font-mono text-xs text-accent-green border border-accent-green/30 px-3 py-1 rounded-full bg-accent-green/5">
             &lt;AI_Engineer /&gt;

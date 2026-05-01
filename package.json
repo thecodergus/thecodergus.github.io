@@ -1,7 +1,7 @@
 {
   "name": "thecodergus.github.io",
   "version": "2.0.0",
-  "description": "Portfolio pessoal - Gustavo Michels de Camargo",
+  "description": "Portfolio pessoal - Gustavo M Camargo",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",

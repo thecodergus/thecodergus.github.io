@@ -27,6 +27,12 @@ export interface ColorScheme {
 
 // ── Scene contract (every theme factory returns this) ──
 
+export interface CameraState {
+  readonly position: THREE.Vector3;
+  readonly lookAt: THREE.Vector3;
+  readonly lerpFactor: number;
+}
+
 export interface SceneConfig {
   readonly width: number;
   readonly height: number;
@@ -42,6 +48,7 @@ export interface SceneHandle {
   readonly getDensity?: () => number;
   readonly dissolve?: (progress: number) => void;
   readonly entrance?: (elapsed: number) => void;
+  readonly getCameraState?: () => CameraState | null;
 }
 
 // ── Camera preset (per theme) ──
