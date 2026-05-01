@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
 import { theme } from "~/stores/themeStore";
 import type { ThemeId } from "~/stores/themeStore";
@@ -76,10 +77,13 @@ export default function NeuralCanvas() {
   let camera: THREE.PerspectiveCamera | undefined;
   let composer: EffectComposer | undefined;
   let bloomPass: UnrealBloomPass | undefined;
+  let scanlinePass: ShaderPass | undefined;
   let animationId = 0;
   let lastTime = 0;
   let currentKind: SceneKind | null = null;
   let mousePos: Vec2 | null = null;
+
+  const bloomTarget = { value: 0.8 };
 
   const mixTarget = { x: 0, y: 0 };
 
@@ -167,6 +171,49 @@ export default function NeuralCanvas() {
     composer.addPass(renderScene);
     composer.addPass(bloomPass);
 
+    // ── Scanline post-processing ──
+
+    const scanlineShader = {
+      uniforms: {
+        tDiffuse: { value: null },
+        uTime: { value: 0 },
+        uResolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) },
+      },
+      vertexShader: `varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`,
+      fragmentShader: `varying vec2 vUv;
+uniform sampler2D tDiffuse;
+uniform float uTime;
+uniform vec2 uResolution;
+
+void main() {
+  vec4 tex = texture2D(tDiffuse, vUv);
+
+  // Scanlines: dark line every 3px with subtle pulse
+  float scanlineY = gl_FragCoord.y - uTime * 30.0;
+  float scanline = sin(scanlineY * 1.0) * 0.045 + 0.955;
+
+  // Vignette: darken corners
+  vec2 uvCenter = vUv - 0.5;
+  float vignette = 1.0 - length(uvCenter) * 0.35;
+
+  // Subtle chromatic aberration at edges (shift R channel)
+  float edgeDist = length(uvCenter) * 2.0;
+  float chromaShift = edgeDist * 0.003;
+  float r = texture2D(tDiffuse, vUv + vec2(chromaShift, 0.0)).r;
+
+  vec3 result = vec3(r, tex.g, tex.b) * scanline * vignette;
+  gl_FragColor = vec4(result, tex.a);
+}`,
+    };
+
+    scanlinePass = new ShaderPass(scanlineShader as unknown as { uniforms: Record<string, THREE.IUniform>; vertexShader: string; fragmentShader: string });
+    scanlinePass.renderToScreen = true;
+    composer.addPass(scanlinePass);
+
     // Start with current theme
     const initialKind = themeToSceneKind(theme());
     const initialScene = buildScene(initialKind);
@@ -192,6 +239,18 @@ export default function NeuralCanvas() {
     container.addEventListener("mousemove", onMouseMove);
     container.addEventListener("mouseleave", onMouseLeave);
 
+    // Keyboard easter egg (theme-aware)
+    const onKeyDown = (e: KeyboardEvent): void => {
+      if (theme() !== "software") return;
+      if (e.key.length !== 1) return;
+      const active = transitionManager.getActive();
+      if (active?.onKeyPress) {
+        active.onKeyPress(e.key);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
     // Resize handler
     const onResize = (): void => {
       if (!renderer || !camera || !composer || !bloomPass) return;
@@ -202,6 +261,9 @@ export default function NeuralCanvas() {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       composer.setSize(w, h);
+      if (scanlinePass) {
+        scanlinePass.uniforms.uResolution.value.set(w, h);
+      }
     };
 
     window.addEventListener("resize", onResize);
@@ -237,6 +299,19 @@ export default function NeuralCanvas() {
       const active = transitionManager.getActive();
       if (active) {
         active.update(time * 0.001, delta * 0.001, mousePos);
+
+        // Bloom breathing from scene density
+        if (active.getDensity && bloomPass) {
+          const density = active.getDensity();
+          const targetStrength = 0.5 + density * 0.8;
+          bloomTarget.value += (targetStrength - bloomTarget.value) * 0.03;
+          bloomPass.strength = bloomTarget.value;
+        }
+      }
+
+      // Scanline time
+      if (scanlinePass) {
+        scanlinePass.uniforms.uTime.value = time * 0.001;
       }
 
       // Render
@@ -254,6 +329,7 @@ export default function NeuralCanvas() {
       if (active) disposeScene(active);
 
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("keydown", onKeyDown);
       container.removeEventListener("mousemove", onMouseMove);
       container.removeEventListener("mouseleave", onMouseLeave);
 

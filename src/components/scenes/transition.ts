@@ -1,4 +1,4 @@
-// ── Transition manager for crossfade between scenes ──
+// ── Transition manager for crossfade + pixel dissolve between scenes ──
 
 import type { SceneHandle } from "./types";
 
@@ -12,8 +12,8 @@ enum TransitionPhase {
 
 // ── Configuration ──
 
-const FADE_DURATION = 800; // ms
-const FADE_STEPS = 16; // number of steps
+const FADE_DURATION = 800; // ms total
+const FADE_HALF = FADE_DURATION / 2;
 
 // ── Internal state (mutable, encapsulated) ──
 
@@ -21,8 +21,8 @@ interface TransitionState {
   phase: TransitionPhase;
   current: SceneHandle | null;
   next: SceneHandle | null;
-  opacity: number;
   timer: number;
+  transitionStart: number;
 }
 
 // ── Factory ──
@@ -37,12 +37,11 @@ export const createTransitionManager = (): Readonly<{
     phase: TransitionPhase.Idle,
     current: null,
     next: null,
-    opacity: 1,
     timer: 0,
+    transitionStart: 0,
   };
 
   const transition = (from: SceneHandle | null, to: SceneHandle): void => {
-    // If transitioning, force-complete current
     if (state.phase !== TransitionPhase.Idle && state.next) {
       state.next.setOpacity(0);
       state.next.dispose();
@@ -51,8 +50,8 @@ export const createTransitionManager = (): Readonly<{
     state.phase = TransitionPhase.FadingOut;
     state.next = to;
     state.timer = 0;
+    state.transitionStart = 0;
 
-    // Pre-set next at 0 opacity
     to.setOpacity(0);
 
     if (from) {
@@ -63,19 +62,21 @@ export const createTransitionManager = (): Readonly<{
   const update = (dt: number): void => {
     if (state.phase === TransitionPhase.Idle) return;
 
-    const step = dt / FADE_DURATION;
     state.timer += dt;
+    state.transitionStart += dt;
 
     if (state.phase === TransitionPhase.FadingOut) {
-      const progress = Math.min(state.timer / (FADE_DURATION / 2), 1);
+      const progress = Math.min(state.timer / FADE_HALF, 1);
       const eased = easeInOutCubic(progress);
 
       if (state.current) {
         state.current.setOpacity(1 - eased);
+        if (state.current.dissolve) {
+          state.current.dissolve(eased);
+        }
       }
 
       if (progress >= 1) {
-        // Dispose old
         if (state.current) {
           state.current.dispose();
         }
@@ -83,13 +84,20 @@ export const createTransitionManager = (): Readonly<{
         state.next = null;
         state.phase = TransitionPhase.FadingIn;
         state.timer = 0;
+
+        if (state.current) {
+          state.current.setOpacity(0);
+        }
       }
     } else if (state.phase === TransitionPhase.FadingIn) {
-      const progress = Math.min(state.timer / (FADE_DURATION / 2), 1);
+      const progress = Math.min(state.timer / FADE_HALF, 1);
       const eased = easeInOutCubic(progress);
 
       if (state.current) {
         state.current.setOpacity(eased);
+        if (state.current.entrance) {
+          state.current.entrance(state.timer);
+        }
       }
 
       if (progress >= 1) {

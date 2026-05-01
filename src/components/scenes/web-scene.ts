@@ -354,10 +354,41 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     pMat.opacity = t;
   };
 
+  const dissolve = (progress: number): void => {
+    const objs: THREE.Object3D[] = [];
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh || child instanceof THREE.Line || child instanceof THREE.Points) {
+        objs.push(child);
+      }
+    });
+    objs.forEach((obj, i) => {
+      const seed = i / (objs.length - 1 + 0.001);
+      if (progress > seed) {
+        const localP = clamp01((progress - seed) / (1 - seed + 0.001));
+        obj.scale.setScalar(1 - localP);
+        const applyFade = (mat: THREE.Material): void => {
+          mat.transparent = true;
+          mat.depthWrite = false;
+          (mat as THREE.MeshBasicMaterial).opacity = 1 - localP;
+        };
+        if (obj instanceof THREE.Mesh) {
+          const mats = obj.material;
+          if (Array.isArray(mats)) mats.forEach(applyFade);
+          else applyFade(mats);
+        } else {
+          const mats = (obj as THREE.Line | THREE.Points).material;
+          if (Array.isArray(mats)) mats.forEach(applyFade);
+          else applyFade(mats);
+        }
+      }
+    });
+  };
+
   return {
     update,
     dispose,
     setOpacity,
     getObjects: () => [group],
+    dissolve,
   };
 };

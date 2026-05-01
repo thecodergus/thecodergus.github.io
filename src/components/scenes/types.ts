@@ -62,6 +62,10 @@ export interface SceneHandle {
   readonly dispose: () => void;
   readonly setOpacity: (t: number) => void;
   readonly getObjects: () => readonly THREE.Object3D[];
+  readonly onKeyPress?: (key: string) => void;
+  readonly getDensity?: () => number;
+  readonly dissolve?: (progress: number) => void;
+  readonly entrance?: (elapsed: number) => void;
 }
 
 export interface AnimHandle {
