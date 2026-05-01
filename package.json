@@ -1,58 +1,32 @@
 {
-  "name": "thelostgus.github.io",
-  "homepage": "https://thelostgus.github.io",
-  "version": "0.3.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "6.6.3",
-    "@testing-library/react": "16.3.0",
-    "@testing-library/user-event": "14.6.1",
-    "add": "^2.0.6",
-    "axios": "^1.10.0",
-    "bootstrap": "^5.3.7",
-    "devicon": "^2.16.0",
-    "emulators-ui": "^0.73.9",
-    "js-dos": "^8.3.20",
-    "react": "19.1.0",
-    "react-awesome-slider": "^4.1.0",
-    "react-bootstrap": "2.10.10",
-    "react-dom": "19.1.0",
-    "react-ga": "^3.3.1",
-    "react-scripts": "5.0.1",
-    "react-switch": "^7.1.0",
-    "react-typical": "^0.1.3",
-    "react-vertical-timeline-component": "^3.5.3",
-    "state-pool": "^0.10.1",
-    "yarn": "^1.22.22"
-  },
+  "name": "thecodergus.github.io",
+  "version": "2.0.0",
+  "description": "Portfolio pessoal - Gustavo Michels de Camargo",
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts build && serve -s build",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "version": "vinxi version"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@kobalte/core": "0.13.11",
+    "@solidjs/meta": "0.29.4",
+    "@solidjs/router": "0.16.1",
+    "@solidjs/start": "1.3.2",
+    "@tailwindcss/vite": "^4.2.4",
+    "devicon": "2.16.0",
+    "gsap": "3.15.0",
+    "lucide-solid": "0.562.0",
+    "solid-js": "1.9.12",
+    "tailwindcss": "^4.2.4",
+    "vinxi": "0.5.11"
   },
   "devDependencies": {
-    "@iconify/icons-logos": "1.2.36",
-    "@iconify/react": "6.0.0",
-    "gh-pages": "6.3.0",
-    "sass": "1.89.2",
-    "serve": "^14.2.4"
+    "typescript": "6.0.3",
+    "vite": "8.0.10"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

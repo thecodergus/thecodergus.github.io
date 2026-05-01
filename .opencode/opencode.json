@@ -1,0 +1,76 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "lsp": {
+    "vtsls": {
+      "command": ["vtsls", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    },
+    "eslint": {
+      "command": ["vscode-eslint-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    },
+    "ganko": {
+      "command": ["ganko-lsp"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    }
+  },
+  "mcp": {
+    "eslint": {
+      "type": "local",
+      "command": ["npx", "-y", "@eslint/mcp@latest", "-p", "jiti", "-c", "mcp"],
+      "enabled": true
+    },
+    "testing": {
+      "type": "local",
+      "command": ["npx", "-y", "testing-mcp-vitest"],
+      "enabled": true
+    },
+    "shadcn": {
+      "type": "local",
+      "command": ["npx", "-y", "@jpisnice/shadcn-ui-mcp-server"],
+      "enabled": true
+    },
+    "radix": {
+      "type": "local",
+      "command": ["npx", "-y", "@gianpieropuleo/radix-mcp-server"],
+      "enabled": true
+    }
+  },
+  "permission": {
+    "bash": {
+      "uv": "allow",
+      "ls*": "allow",
+      "cat*": "allow",
+      "head*": "allow",
+      "tail*": "allow",
+      "grep*": "allow",
+      "find*": "allow",
+      "wc*": "allow",
+      "jq*": "allow",
+      "pwd": "allow",
+      "echo*": "allow",
+      "date*": "allow",
+      "du*": "allow",
+      "df*": "allow",
+      "whoami": "allow",
+      "env": "allow",
+      "git status*": "allow",
+      "git log*": "allow",
+      "git diff*": "allow",
+      "stat*": "allow",
+      "tree*": "allow",
+      "rg*": "allow",
+      "uname*": "allow",
+      "mkdir*": "ask",
+      "touch*": "ask",
+      "cp*": "allow",
+      "mv*": "allow",
+      "git add*": "ask",
+      "git commit*": "ask",
+      "pip install*": "allow",
+      "npm install*": "allow",
+      "rm*": "ask",
+      "rmdir*": "ask"
+    }
+  }
+}
