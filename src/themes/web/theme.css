@@ -1,15 +1,14 @@
 [data-theme="web"] {
-  --color-bg: #0F1117;
-  --color-surface: #161B22;
-  --color-surface-elevated: #1C212A;
-  --color-text: #E6EDF3;
-  --color-text-secondary: #8B949E;
-  --color-text-muted: #484F58;
-  --color-accent-green: #3FB950;
-  --color-accent-green-dim: #2D4A2D;
-  --color-accent-purple: #8B5CF6;
-  --color-accent-purple-dim: #2A1078;
-  --color-accent-cyan: #58C4DC;
-  --color-accent-cyan-dim: #1A4A5C;
-  --color-accent-yellow: #F7DF1E;
+  --color-bg: #F8F9FA;
+  --color-surface: #EAECEE;
+  --color-surface-elevated: #DEE0E3;
+  --color-text: #1A1A2E;
+  --color-text-secondary: #4A4A5A;
+  --color-text-muted: #8B8B9E;
+  --color-accent-blue: #0000EE;
+  --color-accent-blue-dim: #000088;
+  --color-accent-purple: #551A8B;
+  --color-accent-purple-dim: #2E0B59;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.15);
 }

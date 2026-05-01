@@ -1,18 +1,34 @@
-// ── Web theme: internal types ──
+// ── Web theme: hyperlink spiderweb types ──
 
-export interface Endpoint {
-  readonly mesh: THREE.Group;
+export interface CardNode {
+  readonly group: THREE.Group;
+  readonly planeMat: THREE.MeshBasicMaterial;
+  readonly edgeMat: THREE.LineBasicMaterial;
   readonly position: THREE.Vector3;
-  readonly kind: "browser" | "dns" | "cdn" | "server";
+  readonly spokeIndex: number;
+  readonly ringIndex: number;
 }
 
-export interface Packet {
-  readonly from: THREE.Vector3;
-  readonly to: THREE.Vector3;
+export interface Thread {
+  readonly line: THREE.Line;
+  readonly mat: THREE.LineBasicMaterial;
+  readonly baseOpacity: number;
+  readonly kind: "spoke" | "ring";
+}
+
+export interface Traveler {
+  readonly sprite: THREE.Sprite;
+  spokeIndex: number;
   progress: number;
-  readonly speed: number;
-  readonly kind: "request" | "response" | "dns_query" | "dns_response" | "websocket";
+  speed: number;
+}
+
+export interface FloatingSprite {
+  readonly sprite: THREE.Sprite;
+  readonly mat: THREE.SpriteMaterial;
+  readonly baseY: number;
   readonly phase: number;
+  readonly speed: number;
 }
 
 import type * as THREE from "three";
