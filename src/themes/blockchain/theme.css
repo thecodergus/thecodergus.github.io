@@ -1,0 +1,15 @@
+[data-theme="blockchain"] {
+  --color-bg: #0D1117;
+  --color-surface: #121A23;
+  --color-surface-elevated: #182230;
+  --color-text: #E6EDF3;
+  --color-text-secondary: #8B949E;
+  --color-text-muted: #484F58;
+  --color-accent-green: #14F195;
+  --color-accent-green-dim: #0A6E42;
+  --color-accent-purple: #627EEA;
+  --color-accent-purple-dim: #1E2A6E;
+  --color-accent-cyan: #00BFA5;
+  --color-accent-cyan-dim: #004D40;
+  --color-accent-yellow: #F7931A;
+}

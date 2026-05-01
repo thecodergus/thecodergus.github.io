@@ -32,7 +32,15 @@ createEffect(() => {
   }
 });
 
-onMount(() => {});
+// Force AI theme on first visit after update (can be removed after deployment)
+onMount(() => {
+  if (typeof window === "undefined") return;
+  const visited = localStorage.getItem("portfolio-v3");
+  if (!visited) {
+    localStorage.setItem("portfolio-v3", "1");
+    setThemeSignal("ai" as ThemeId);
+  }
+});
 
 export function setTheme(id: ThemeId) {
   setThemeSignal(id);

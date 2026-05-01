@@ -1,0 +1,15 @@
+[data-theme="web"] {
+  --color-bg: #0F1117;
+  --color-surface: #161B22;
+  --color-surface-elevated: #1C212A;
+  --color-text: #E6EDF3;
+  --color-text-secondary: #8B949E;
+  --color-text-muted: #484F58;
+  --color-accent-green: #68A063;
+  --color-accent-green-dim: #2D4A2D;
+  --color-accent-purple: #8B5CF6;
+  --color-accent-purple-dim: #2A1078;
+  --color-accent-cyan: #58C4DC;
+  --color-accent-cyan-dim: #1A4A5C;
+  --color-accent-yellow: #F7DF1E;
+}

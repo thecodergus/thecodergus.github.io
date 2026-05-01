@@ -1,0 +1,15 @@
+[data-theme="ai"] {
+  --color-bg: #080012;
+  --color-surface: #0F0024;
+  --color-surface-elevated: #140033;
+  --color-text: #E4D9FF;
+  --color-text-secondary: #B8A9D4;
+  --color-text-muted: #7C6B9E;
+  --color-accent-green: #10A37F;
+  --color-accent-green-dim: #0B5E4A;
+  --color-accent-purple: #8B5CF6;
+  --color-accent-purple-dim: #2A1078;
+  --color-accent-cyan: #00E5FF;
+  --color-accent-cyan-dim: #004D5C;
+  --color-accent-yellow: #F5C842;
+}

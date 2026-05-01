@@ -1,345 +1,38 @@
-// ── NeuralCanvas — Three.js 3D background with 4 theme-aware scenes ──
+// ── NeuralCanvas — thin SolidJS wrapper around the scene-agnostic engine ──
 
-import { onMount, onCleanup } from "solid-js";
-import * as THREE from "three";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { onMount, onCleanup, createEffect } from "solid-js";
+
+import { createEngine } from "~/engine/engine";
+import type { EngineHandle } from "~/engine/engine";
 
 import { theme } from "~/stores/themeStore";
-import type { ThemeId } from "~/stores/themeStore";
-import type { SceneHandle, SceneConfig, ColorScheme, Vec2 } from "./scenes/types";
-import { SceneKind } from "./scenes/types";
-import { createAIScene } from "./scenes/ai-scene";
-import { createBlockchainScene } from "./scenes/blockchain-scene";
-import { createSoftwareScene } from "./scenes/software-scene";
-import { createWebScene } from "./scenes/web-scene";
-import { createTransitionManager } from "./scenes/transition";
 
-// ── Color schemes per theme (from app.css) ──
-
-const COLOR_SCHEMES: Readonly<Record<ThemeId, ColorScheme>> = Object.freeze({
-  ai: Object.freeze({
-    primary: "#00E5FF",
-    secondary: "#10A37F",
-    tertiary: "#8B5CF6",
-    background: "#080012",
-  }),
-  blockchain: Object.freeze({
-    primary: "#F7931A",
-    secondary: "#00BFA5",
-    tertiary: "#627EEA",
-    background: "#0D1117",
-  }),
-  software: Object.freeze({
-    primary: "#569CD6",
-    secondary: "#00FF41",
-    tertiary: "#C586C0",
-    background: "#0A0A0A",
-  }),
-  web: Object.freeze({
-    primary: "#F7DF1E",
-    secondary: "#58C4DC",
-    tertiary: "#8B5CF6",
-    background: "#0F1117",
-  }),
-});
-
-// ── Scene factory map ──
-
-type SceneCreator = (config: SceneConfig) => SceneHandle;
-
-const SCENE_CREATORS: Readonly<Record<SceneKind, SceneCreator>> = Object.freeze({
-  [SceneKind.AI]: createAIScene as SceneCreator,
-  [SceneKind.Blockchain]: createBlockchainScene as SceneCreator,
-  [SceneKind.Software]: createSoftwareScene as SceneCreator,
-  [SceneKind.Web]: createWebScene as SceneCreator,
-});
-
-// ── ThemeId → SceneKind mapping ──
-
-const themeToSceneKind = (t: ThemeId): SceneKind => {
-  switch (t) {
-    case "ai": return SceneKind.AI;
-    case "blockchain": return SceneKind.Blockchain;
-    case "software": return SceneKind.Software;
-    case "web": return SceneKind.Web;
-  }
-};
-
-// ── Component ──
+import { REGISTRY } from "~/themes/registry";
 
 export default function NeuralCanvas() {
   let containerRef: HTMLDivElement | undefined;
-  let renderer: THREE.WebGLRenderer | undefined;
-  let mainScene: THREE.Scene | undefined;
-  let camera: THREE.PerspectiveCamera | undefined;
-  let composer: EffectComposer | undefined;
-  let bloomPass: UnrealBloomPass | undefined;
-  let scanlinePass: ShaderPass | undefined;
-  let animationId = 0;
-  let lastTime = 0;
-  let currentKind: SceneKind | null = null;
-  let mousePos: Vec2 | null = null;
-
-  const bloomTarget = { value: 0.8 };
-
-  const mixTarget = { x: 0, y: 0 };
-
-  const transitionManager = createTransitionManager();
-
-  // ── Create scene for a given kind ──
-
-  const buildScene = (kind: SceneKind): SceneHandle | null => {
-    if (!mainScene || !composer || !renderer) return null;
-
-    const colorScheme = COLOR_SCHEMES[kind as unknown as ThemeId] ?? COLOR_SCHEMES.ai;
-    const config: SceneConfig = {
-      width: renderer.domElement.clientWidth,
-      height: renderer.domElement.clientHeight,
-      colorScheme,
-    };
-
-    const creator = SCENE_CREATORS[kind];
-    if (!creator) return null;
-
-    const handle = creator(config);
-    const objects = handle.getObjects();
-
-    // Add objects to scene
-    objects.forEach((obj: THREE.Object3D) => mainScene!.add(obj));
-
-    return handle;
-  };
-
-  // ── Dispose current scene ──
-
-  const disposeScene = (handle: SceneHandle): void => {
-    if (!mainScene) return;
-    const scene = mainScene;
-    handle.getObjects().forEach((obj) => scene.remove(obj));
-    handle.dispose();
-  };
-
-  // ── Initialize Three.js ──
+  let engine: EngineHandle | undefined;
 
   onMount(() => {
     const container = containerRef;
     if (!container) return;
 
-    // Renderer
-    renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
-    container.appendChild(renderer.domElement);
+    engine = createEngine(container);
 
-    // Scene
-    mainScene = new THREE.Scene();
-    mainScene.background = null; // transparent, CSS background shows through
+    // Load initial theme
+    const initial = theme();
+    engine.setTheme(REGISTRY[initial]);
+  });
 
-    // Camera
-    camera = new THREE.PerspectiveCamera(
-      55,
-      container.clientWidth / container.clientHeight,
-      0.1,
-      100,
-    );
-    camera.position.set(0, 0, 12);
-    camera.lookAt(0, 0, 0);
+  // React to theme changes
+  createEffect(() => {
+    const t = theme();
+    engine?.setTheme(REGISTRY[t]);
+  });
 
-    // Post-processing
-    const renderScene = new RenderPass(mainScene, camera);
-
-    bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(container.clientWidth, container.clientHeight),
-      1.0,
-      0.4,
-      0.85,
-    );
-    bloomPass.threshold = 0.1;
-    bloomPass.strength = 0.8;
-    bloomPass.radius = 0.5;
-
-    composer = new EffectComposer(renderer);
-    composer.addPass(renderScene);
-    composer.addPass(bloomPass);
-
-    // ── Scanline post-processing ──
-
-    const scanlineShader = {
-      uniforms: {
-        tDiffuse: { value: null },
-        uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) },
-      },
-      vertexShader: `varying vec2 vUv;
-void main() {
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}`,
-      fragmentShader: `varying vec2 vUv;
-uniform sampler2D tDiffuse;
-uniform float uTime;
-uniform vec2 uResolution;
-
-void main() {
-  vec4 tex = texture2D(tDiffuse, vUv);
-
-  // Scanlines: dark line every 3px with subtle pulse
-  float scanlineY = gl_FragCoord.y - uTime * 30.0;
-  float scanline = sin(scanlineY * 1.0) * 0.045 + 0.955;
-
-  // Vignette: darken corners
-  vec2 uvCenter = vUv - 0.5;
-  float vignette = 1.0 - length(uvCenter) * 0.35;
-
-  // Subtle chromatic aberration at edges (shift R channel)
-  float edgeDist = length(uvCenter) * 2.0;
-  float chromaShift = edgeDist * 0.003;
-  float r = texture2D(tDiffuse, vUv + vec2(chromaShift, 0.0)).r;
-
-  vec3 result = vec3(r, tex.g, tex.b) * scanline * vignette;
-  gl_FragColor = vec4(result, tex.a);
-}`,
-    };
-
-    scanlinePass = new ShaderPass(scanlineShader as unknown as { uniforms: Record<string, THREE.IUniform>; vertexShader: string; fragmentShader: string });
-    scanlinePass.renderToScreen = true;
-    composer.addPass(scanlinePass);
-
-    // Start with current theme
-    const initialKind = themeToSceneKind(theme());
-    const initialScene = buildScene(initialKind);
-    if (initialScene) {
-      transitionManager.transition(null, initialScene);
-    }
-    currentKind = initialKind;
-
-    // Mouse tracking
-    const onMouseMove = (e: MouseEvent): void => {
-      const rect = container.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      mixTarget.x = x;
-      mixTarget.y = y;
-    };
-
-    const onMouseLeave = (): void => {
-      mixTarget.x = 0;
-      mixTarget.y = 0;
-    };
-
-    container.addEventListener("mousemove", onMouseMove);
-    container.addEventListener("mouseleave", onMouseLeave);
-
-    // Keyboard easter egg (theme-aware)
-    const onKeyDown = (e: KeyboardEvent): void => {
-      if (theme() !== "software") return;
-      if (e.key.length !== 1) return;
-      const active = transitionManager.getActive();
-      if (active?.onKeyPress) {
-        active.onKeyPress(e.key);
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-
-    // Resize handler
-    const onResize = (): void => {
-      if (!renderer || !camera || !composer || !bloomPass) return;
-
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      renderer.setSize(w, h);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      composer.setSize(w, h);
-      if (scanlinePass) {
-        scanlinePass.uniforms.uResolution.value.set(w, h);
-      }
-    };
-
-    window.addEventListener("resize", onResize);
-
-    // Animation loop
-    const animate = (time: number): void => {
-      animationId = requestAnimationFrame(animate);
-
-      const delta = lastTime === 0 ? 16 : Math.min(time - lastTime, 50);
-      lastTime = time;
-
-      // Smooth mouse interpolation
-      mousePos = {
-        x: mousePos ? mousePos.x + (mixTarget.x - mousePos.x) * 0.05 : mixTarget.x,
-        y: mousePos ? mousePos.y + (mixTarget.y - mousePos.y) * 0.05 : mixTarget.y,
-      };
-
-      // Theme change detection
-      const newKind = themeToSceneKind(theme());
-      if (newKind !== currentKind && !transitionManager.isTransitioning()) {
-        const newScene = buildScene(newKind);
-        if (newScene) {
-          const active = transitionManager.getActive();
-          transitionManager.transition(active, newScene);
-          currentKind = newKind;
-        }
-      }
-
-      // Transition update
-      transitionManager.update(delta);
-
-      // Scene update
-      const active = transitionManager.getActive();
-      if (active) {
-        active.update(time * 0.001, delta * 0.001, mousePos);
-
-        // Bloom breathing from scene density
-        if (active.getDensity && bloomPass) {
-          const density = active.getDensity();
-          const targetStrength = 0.5 + density * 0.8;
-          bloomTarget.value += (targetStrength - bloomTarget.value) * 0.03;
-          bloomPass.strength = bloomTarget.value;
-        }
-      }
-
-      // Scanline time
-      if (scanlinePass) {
-        scanlinePass.uniforms.uTime.value = time * 0.001;
-      }
-
-      // Render
-      if (composer && renderer) {
-        composer.render();
-      }
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    onCleanup(() => {
-      cancelAnimationFrame(animationId);
-
-      const active = transitionManager.getActive();
-      if (active) disposeScene(active);
-
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("keydown", onKeyDown);
-      container.removeEventListener("mousemove", onMouseMove);
-      container.removeEventListener("mouseleave", onMouseLeave);
-
-      if (renderer) {
-        renderer.dispose();
-        if (renderer.domElement.parentNode === container) {
-          container.removeChild(renderer.domElement);
-        }
-      }
-    });
+  onCleanup(() => {
+    engine?.dispose();
+    engine = undefined;
   });
 
   return (
