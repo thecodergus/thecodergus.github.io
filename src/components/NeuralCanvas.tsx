@@ -1,209 +1,276 @@
+// ── NeuralCanvas — Three.js 3D background with 4 theme-aware scenes ──
+
 import { onMount, onCleanup } from "solid-js";
+import * as THREE from "three";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
-interface Node {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  radius: number;
-}
+import { theme } from "~/stores/themeStore";
+import type { ThemeId } from "~/stores/themeStore";
+import type { SceneHandle, SceneConfig, ColorScheme, Vec2 } from "./scenes/types";
+import { SceneKind } from "./scenes/types";
+import { createAIScene } from "./scenes/ai-scene";
+import { createBlockchainScene } from "./scenes/blockchain-scene";
+import { createSoftwareScene } from "./scenes/software-scene";
+import { createWebScene } from "./scenes/web-scene";
+import { createTransitionManager } from "./scenes/transition";
 
-interface Pulse {
-  from: number;
-  to: number;
-  progress: number;
-  speed: number;
-}
+// ── Color schemes per theme (from app.css) ──
+
+const COLOR_SCHEMES: Readonly<Record<ThemeId, ColorScheme>> = Object.freeze({
+  ai: Object.freeze({
+    primary: "#00E5FF",
+    secondary: "#10A37F",
+    tertiary: "#8B5CF6",
+    background: "#080012",
+  }),
+  blockchain: Object.freeze({
+    primary: "#F7931A",
+    secondary: "#00BFA5",
+    tertiary: "#627EEA",
+    background: "#0D1117",
+  }),
+  software: Object.freeze({
+    primary: "#569CD6",
+    secondary: "#00FF41",
+    tertiary: "#C586C0",
+    background: "#0A0A0A",
+  }),
+  web: Object.freeze({
+    primary: "#F7DF1E",
+    secondary: "#58C4DC",
+    tertiary: "#8B5CF6",
+    background: "#0F1117",
+  }),
+});
+
+// ── Scene factory map ──
+
+type SceneCreator = (config: SceneConfig) => SceneHandle;
+
+const SCENE_CREATORS: Readonly<Record<SceneKind, SceneCreator>> = Object.freeze({
+  [SceneKind.AI]: createAIScene as SceneCreator,
+  [SceneKind.Blockchain]: createBlockchainScene as SceneCreator,
+  [SceneKind.Software]: createSoftwareScene as SceneCreator,
+  [SceneKind.Web]: createWebScene as SceneCreator,
+});
+
+// ── ThemeId → SceneKind mapping ──
+
+const themeToSceneKind = (t: ThemeId): SceneKind => {
+  switch (t) {
+    case "ai": return SceneKind.AI;
+    case "blockchain": return SceneKind.Blockchain;
+    case "software": return SceneKind.Software;
+    case "web": return SceneKind.Web;
+  }
+};
+
+// ── Component ──
 
 export default function NeuralCanvas() {
-  let canvasRef: HTMLCanvasElement | undefined;
+  let containerRef: HTMLDivElement | undefined;
+  let renderer: THREE.WebGLRenderer | undefined;
+  let mainScene: THREE.Scene | undefined;
+  let camera: THREE.PerspectiveCamera | undefined;
+  let composer: EffectComposer | undefined;
+  let bloomPass: UnrealBloomPass | undefined;
+  let animationId = 0;
+  let lastTime = 0;
+  let currentKind: SceneKind | null = null;
+  let mousePos: Vec2 | null = null;
+
+  const mixTarget = { x: 0, y: 0 };
+
+  const transitionManager = createTransitionManager();
+
+  // ── Create scene for a given kind ──
+
+  const buildScene = (kind: SceneKind): SceneHandle | null => {
+    if (!mainScene || !composer || !renderer) return null;
+
+    const colorScheme = COLOR_SCHEMES[kind as unknown as ThemeId] ?? COLOR_SCHEMES.ai;
+    const config: SceneConfig = {
+      width: renderer.domElement.clientWidth,
+      height: renderer.domElement.clientHeight,
+      colorScheme,
+    };
+
+    const creator = SCENE_CREATORS[kind];
+    if (!creator) return null;
+
+    const handle = creator(config);
+    const objects = handle.getObjects();
+
+    // Add objects to scene
+    objects.forEach((obj: THREE.Object3D) => mainScene!.add(obj));
+
+    return handle;
+  };
+
+  // ── Dispose current scene ──
+
+  const disposeScene = (handle: SceneHandle): void => {
+    if (!mainScene) return;
+    const scene = mainScene;
+    handle.getObjects().forEach((obj) => scene.remove(obj));
+    handle.dispose();
+  };
+
+  // ── Initialize Three.js ──
 
   onMount(() => {
-    const canvas = canvasRef;
-    if (!canvas) return;
+    const container = containerRef;
+    if (!container) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    // Renderer
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    container.appendChild(renderer.domElement);
 
-    let animationId: number;
-    let nodes: Node[] = [];
-    let pulses: Pulse[] = [];
-    let mouseX = -1000;
-    let mouseY = -1000;
+    // Scene
+    mainScene = new THREE.Scene();
+    mainScene.background = null; // transparent, CSS background shows through
 
-    const NODE_COUNT = 80;
-    const CONNECTION_DIST = 140;
-    const MOUSE_RADIUS = 180;
-    const PULSE_INTERVAL = 60; // frames between pulse spawns
-    let frameCount = 0;
+    // Camera
+    camera = new THREE.PerspectiveCamera(
+      55,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100,
+    );
+    camera.position.set(0, 0, 12);
+    camera.lookAt(0, 0, 0);
 
-    const initNodes = (w: number, h: number) => {
-      nodes = [];
-      for (let i = 0; i < NODE_COUNT; i++) {
-        nodes.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 2 + 1.5,
-        });
-      }
+    // Post-processing
+    const renderScene = new RenderPass(mainScene, camera);
+
+    bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      1.0,
+      0.4,
+      0.85,
+    );
+    bloomPass.threshold = 0.1;
+    bloomPass.strength = 0.8;
+    bloomPass.radius = 0.5;
+
+    composer = new EffectComposer(renderer);
+    composer.addPass(renderScene);
+    composer.addPass(bloomPass);
+
+    // Start with current theme
+    const initialKind = themeToSceneKind(theme());
+    const initialScene = buildScene(initialKind);
+    if (initialScene) {
+      transitionManager.transition(null, initialScene);
+    }
+    currentKind = initialKind;
+
+    // Mouse tracking
+    const onMouseMove = (e: MouseEvent): void => {
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      mixTarget.x = x;
+      mixTarget.y = y;
     };
 
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      initNodes(rect.width, rect.height);
+    const onMouseLeave = (): void => {
+      mixTarget.x = 0;
+      mixTarget.y = 0;
     };
 
-    resize();
-    window.addEventListener("resize", resize);
+    container.addEventListener("mousemove", onMouseMove);
+    container.addEventListener("mouseleave", onMouseLeave);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
+    // Resize handler
+    const onResize = (): void => {
+      if (!renderer || !camera || !composer || !bloomPass) return;
+
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      composer.setSize(w, h);
     };
 
-    const handleMouseLeave = () => {
-      mouseX = -1000;
-      mouseY = -1000;
-    };
+    window.addEventListener("resize", onResize);
 
-    canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("mouseleave", handleMouseLeave);
-
-    const getNeighbors = (nodeIdx: number): number[] => {
-      const neighbors: number[] = [];
-      const n = nodes[nodeIdx];
-      for (let i = 0; i < nodes.length; i++) {
-        if (i === nodeIdx) continue;
-        const dx = n.x - nodes[i].x;
-        const dy = n.y - nodes[i].y;
-        if (dx * dx + dy * dy < CONNECTION_DIST * CONNECTION_DIST) {
-          neighbors.push(i);
-        }
-      }
-      return neighbors;
-    };
-
-    const spawnPulse = () => {
-      if (nodes.length < 2) return;
-      const from = Math.floor(Math.random() * nodes.length);
-      const neighbors = getNeighbors(from);
-      if (neighbors.length === 0) return;
-      const to = neighbors[Math.floor(Math.random() * neighbors.length)];
-      pulses.push({ from, to, progress: 0, speed: 0.008 + Math.random() * 0.012 });
-    };
-
-    const animate = () => {
-      const width = canvas.width / (window.devicePixelRatio || 1);
-      const height = canvas.height / (window.devicePixelRatio || 1);
-
-      ctx.clearRect(0, 0, width, height);
-
-      // Update nodes
-      nodes.forEach((node) => {
-        // Mouse interaction
-        const dx = node.x - mouseX;
-        const dy = node.y - mouseY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MOUSE_RADIUS && dist > 0) {
-          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
-          node.vx += (dx / dist) * force * 0.3;
-          node.vy += (dy / dist) * force * 0.3;
-        }
-
-        node.x += node.vx;
-        node.y += node.vy;
-        node.vx *= 0.99;
-        node.vy *= 0.99;
-
-        // Boundaries
-        if (node.x < 0) { node.x = 0; node.vx *= -1; }
-        if (node.x > width) { node.x = width; node.vx *= -1; }
-        if (node.y < 0) { node.y = 0; node.vy *= -1; }
-        if (node.y > height) { node.y = height; node.vy *= -1; }
-      });
-
-      // Spawn pulses
-      frameCount++;
-      if (frameCount % PULSE_INTERVAL === 0) {
-        spawnPulse();
-      }
-
-      // Draw connections
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < CONNECTION_DIST) {
-            const opacity = (1 - dist / CONNECTION_DIST) * 0.25;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(0, 255, 255, ${opacity})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw pulses
-      pulses = pulses.filter((p) => p.progress < 1);
-      pulses.forEach((p) => {
-        const from = nodes[p.from];
-        const to = nodes[p.to];
-        if (!from || !to) return;
-
-        const x = from.x + (to.x - from.x) * p.progress;
-        const y = from.y + (to.y - from.y) * p.progress;
-
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = "#73E65A";
-        ctx.shadowColor = "#73E65A";
-        ctx.shadowBlur = 10;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-
-        p.progress += p.speed;
-      });
-
-      // Draw nodes
-      nodes.forEach((node) => {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "#00FFFF";
-        ctx.shadowColor = "#00FFFF";
-        ctx.shadowBlur = 6;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      });
-
+    // Animation loop
+    const animate = (time: number): void => {
       animationId = requestAnimationFrame(animate);
+
+      const delta = lastTime === 0 ? 16 : Math.min(time - lastTime, 50);
+      lastTime = time;
+
+      // Smooth mouse interpolation
+      mousePos = {
+        x: mousePos ? mousePos.x + (mixTarget.x - mousePos.x) * 0.05 : mixTarget.x,
+        y: mousePos ? mousePos.y + (mixTarget.y - mousePos.y) * 0.05 : mixTarget.y,
+      };
+
+      // Theme change detection
+      const newKind = themeToSceneKind(theme());
+      if (newKind !== currentKind && !transitionManager.isTransitioning()) {
+        const newScene = buildScene(newKind);
+        if (newScene) {
+          const active = transitionManager.getActive();
+          transitionManager.transition(active, newScene);
+          currentKind = newKind;
+        }
+      }
+
+      // Transition update
+      transitionManager.update(delta);
+
+      // Scene update
+      const active = transitionManager.getActive();
+      if (active) {
+        active.update(time * 0.001, delta * 0.001, mousePos);
+      }
+
+      // Render
+      if (composer && renderer) {
+        composer.render();
+      }
     };
 
-    animate();
+    animationId = requestAnimationFrame(animate);
 
     onCleanup(() => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", resize);
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("mouseleave", handleMouseLeave);
+
+      const active = transitionManager.getActive();
+      if (active) disposeScene(active);
+
+      window.removeEventListener("resize", onResize);
+      container.removeEventListener("mousemove", onMouseMove);
+      container.removeEventListener("mouseleave", onMouseLeave);
+
+      if (renderer) {
+        renderer.dispose();
+        if (renderer.domElement.parentNode === container) {
+          container.removeChild(renderer.domElement);
+        }
+      }
     });
   });
 
   return (
-    <canvas
-      ref={canvasRef}
-      class="absolute inset-0 w-full h-full"
-      style={{ "z-index": "1" }}
+    <div
+      ref={containerRef}
+      class="absolute inset-0 w-full h-full overflow-hidden"
+      style={{ position: "absolute", top: "0", left: "0", "z-index": "1" }}
     />
   );
 }
