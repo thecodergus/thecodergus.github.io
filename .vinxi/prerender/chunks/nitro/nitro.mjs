@@ -873,7 +873,7 @@ async function errorHandler(error, event) {
 }
 
 const appConfig = {"name":"vinxi","routers":[{"name":"public","type":"static","base":"/","dir":"./public","root":"/home/gus/thecodergus.github.io","order":0,"outDir":"/home/gus/thecodergus.github.io/.vinxi/build/public"},{"name":"ssr","type":"http","link":{"client":"client"},"handler":"src/entry-server.tsx","extensions":["js","jsx","ts","tsx"],"target":"server","root":"/home/gus/thecodergus.github.io","base":"/","outDir":"/home/gus/thecodergus.github.io/.vinxi/build/ssr","order":1},{"name":"client","type":"client","base":"/_build","handler":"src/entry-client.tsx","extensions":["js","jsx","ts","tsx"],"target":"browser","root":"/home/gus/thecodergus.github.io","outDir":"/home/gus/thecodergus.github.io/.vinxi/build/client","order":2},{"name":"server-fns","type":"http","base":"/_server","handler":"node_modules/@solidjs/start/dist/runtime/server-handler.js","target":"server","root":"/home/gus/thecodergus.github.io","outDir":"/home/gus/thecodergus.github.io/.vinxi/build/server-fns","order":3}],"server":{"compressPublicAssets":{"brotli":true},"routeRules":{"/_build/assets/**":{"headers":{"cache-control":"public, immutable, max-age=31536000"}}},"experimental":{"asyncContext":true},"preset":"static","prerender":{"crawlLinks":true}},"root":"/home/gus/thecodergus.github.io"};
-					const buildManifest = {"ssr":{"_Icon-ByGfEAaX.js":{"file":"assets/Icon-ByGfEAaX.js","name":"Icon"},"_i18nStore-t0lkA1Uv.js":{"file":"assets/i18nStore-t0lkA1Uv.js","name":"i18nStore"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Icon-ByGfEAaX.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_i18nStore-t0lkA1Uv.js","_Icon-ByGfEAaX.js"]},"virtual:$vinxi/handler/ssr":{"file":"ssr.js","name":"ssr","src":"virtual:$vinxi/handler/ssr","isEntry":true,"imports":["_i18nStore-t0lkA1Uv.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/ssr-DMKoDkFc.css"]}},"client":{"_Icon-CUfPr7EP.js":{"file":"assets/Icon-CUfPr7EP.js","name":"Icon","imports":["_web-B70XeL33.js"]},"_i18nStore-pcdiE20B.js":{"file":"assets/i18nStore-pcdiE20B.js","name":"i18nStore","imports":["_web-B70XeL33.js"]},"_web-B70XeL33.js":{"file":"assets/web-B70XeL33.js","name":"web"},"node_modules/devicon/fonts/devicon.svg":{"file":"assets/devicon-DBhpxM3S.svg","src":"node_modules/devicon/fonts/devicon.svg"},"node_modules/devicon/fonts/devicon.ttf":{"file":"assets/devicon-BwTrXM5G.ttf","src":"node_modules/devicon/fonts/devicon.ttf"},"node_modules/devicon/fonts/devicon.woff":{"file":"assets/devicon-D0iwJE0M.woff","src":"node_modules/devicon/fonts/devicon.woff"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"assets/doom-CYb3UizC.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_web-B70XeL33.js","_Icon-CUfPr7EP.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"assets/index-DBa_E2eI.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_web-B70XeL33.js","_i18nStore-pcdiE20B.js","_Icon-CUfPr7EP.js"]},"virtual:$vinxi/handler/client":{"file":"assets/client-B2bGNenX.js","name":"client","src":"virtual:$vinxi/handler/client","isEntry":true,"imports":["_web-B70XeL33.js","_i18nStore-pcdiE20B.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/client-BjXEo4Al.css"],"assets":["assets/devicon-BwTrXM5G.ttf","assets/devicon-D0iwJE0M.woff","assets/devicon-DBhpxM3S.svg"]}},"server-fns":{"_Icon-ByGfEAaX.js":{"file":"assets/Icon-ByGfEAaX.js","name":"Icon"},"_server-fns-zTaf3Qq0.js":{"file":"assets/server-fns-zTaf3Qq0.js","name":"server-fns","dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/app.tsx"]},"_themeStore-C5iR5ycA.js":{"file":"assets/themeStore-C5iR5ycA.js","name":"themeStore"},"src/app.tsx":{"file":"assets/app-NYzFfw72.js","name":"app","src":"src/app.tsx","isDynamicEntry":true,"imports":["_server-fns-zTaf3Qq0.js","_themeStore-C5iR5ycA.js"],"css":["assets/app-DMKoDkFc.css"]},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Icon-ByGfEAaX.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_themeStore-C5iR5ycA.js","_Icon-ByGfEAaX.js"]},"virtual:$vinxi/handler/server-fns":{"file":"server-fns.js","name":"server-fns","src":"virtual:$vinxi/handler/server-fns","isEntry":true,"imports":["_server-fns-zTaf3Qq0.js"]}}};
+					const buildManifest = {"ssr":{"_Icon-ByGfEAaX.js":{"file":"assets/Icon-ByGfEAaX.js","name":"Icon"},"_i18nStore-t0lkA1Uv.js":{"file":"assets/i18nStore-t0lkA1Uv.js","name":"i18nStore"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Icon-ByGfEAaX.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_i18nStore-t0lkA1Uv.js","_Icon-ByGfEAaX.js"]},"virtual:$vinxi/handler/ssr":{"file":"ssr.js","name":"ssr","src":"virtual:$vinxi/handler/ssr","isEntry":true,"imports":["_i18nStore-t0lkA1Uv.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/ssr-Y1PnvD3I.css"]}},"client":{"_Icon-DgOwbl39.js":{"file":"assets/Icon-DgOwbl39.js","name":"Icon","imports":["_web-Jk5OU5WA.js"]},"_i18nStore-BVyym-E4.js":{"file":"assets/i18nStore-BVyym-E4.js","name":"i18nStore","imports":["_web-Jk5OU5WA.js"]},"_web-Jk5OU5WA.js":{"file":"assets/web-Jk5OU5WA.js","name":"web"},"node_modules/devicon/fonts/devicon.svg":{"file":"assets/devicon-DBhpxM3S.svg","src":"node_modules/devicon/fonts/devicon.svg"},"node_modules/devicon/fonts/devicon.ttf":{"file":"assets/devicon-BwTrXM5G.ttf","src":"node_modules/devicon/fonts/devicon.ttf"},"node_modules/devicon/fonts/devicon.woff":{"file":"assets/devicon-D0iwJE0M.woff","src":"node_modules/devicon/fonts/devicon.woff"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"assets/doom-CXjgKczi.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_web-Jk5OU5WA.js","_Icon-DgOwbl39.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"assets/index-CrSjn1mR.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_web-Jk5OU5WA.js","_i18nStore-BVyym-E4.js","_Icon-DgOwbl39.js"]},"virtual:$vinxi/handler/client":{"file":"assets/client-KIc2DHuW.js","name":"client","src":"virtual:$vinxi/handler/client","isEntry":true,"imports":["_web-Jk5OU5WA.js","_i18nStore-BVyym-E4.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/client-Yay47AnY.css"],"assets":["assets/devicon-BwTrXM5G.ttf","assets/devicon-D0iwJE0M.woff","assets/devicon-DBhpxM3S.svg"]}},"server-fns":{"_Icon-ByGfEAaX.js":{"file":"assets/Icon-ByGfEAaX.js","name":"Icon"},"_server-fns-CEuUHmaq.js":{"file":"assets/server-fns-CEuUHmaq.js","name":"server-fns","dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/app.tsx"]},"_themeStore-C5iR5ycA.js":{"file":"assets/themeStore-C5iR5ycA.js","name":"themeStore"},"src/app.tsx":{"file":"assets/app-DPjGwVqF.js","name":"app","src":"src/app.tsx","isDynamicEntry":true,"imports":["_server-fns-CEuUHmaq.js","_themeStore-C5iR5ycA.js"],"css":["assets/app-Y1PnvD3I.css"]},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Icon-ByGfEAaX.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_themeStore-C5iR5ycA.js","_Icon-ByGfEAaX.js"]},"virtual:$vinxi/handler/server-fns":{"file":"server-fns.js","name":"server-fns","src":"virtual:$vinxi/handler/server-fns","isEntry":true,"imports":["_server-fns-CEuUHmaq.js"]}}};
 
 					const routeManifest = {"ssr":{},"client":{},"server-fns":{}};
 
@@ -911,285 +911,277 @@ const assets = {
   "/dos.html": {
     "type": "text/html; charset=utf-8",
     "etag": "\"398-L7Ke0K/FAcHU9es2FHrTbi5ozgc\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
+    "mtime": "2026-05-01T22:01:19.882Z",
     "size": 920,
     "path": "../../.output/public/dos.html"
   },
   "/manifest.json": {
     "type": "application/json",
     "etag": "\"126-XEXoBFGkSmNpoii0OzgRKRX7CJA\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
+    "mtime": "2026-05-01T22:01:19.887Z",
     "size": 294,
     "path": "../../.output/public/manifest.json"
   },
   "/robots.txt": {
     "type": "text/plain; charset=utf-8",
     "etag": "\"43-BEzmj4PuhUNHX+oW9uOnPSihxtU\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
+    "mtime": "2026-05-01T22:01:19.882Z",
     "size": 67,
     "path": "../../.output/public/robots.txt"
   },
-  "/assets/ssr-DMKoDkFc.css": {
+  "/assets/ssr-Y1PnvD3I.css": {
     "type": "text/css; charset=utf-8",
     "encoding": null,
-    "etag": "\"847c-I6ckRASHN3joqAe6ZtDu1T7guq8\"",
-    "mtime": "2026-05-01T21:26:36.310Z",
-    "size": 33916,
-    "path": "../../.output/public/assets/ssr-DMKoDkFc.css"
+    "etag": "\"850a-jHg15rSn8DnZJsZhulCZL+hDHYc\"",
+    "mtime": "2026-05-01T22:01:19.995Z",
+    "size": 34058,
+    "path": "../../.output/public/assets/ssr-Y1PnvD3I.css"
   },
   "/data/portfolio_shared_data.json": {
     "type": "application/json",
     "encoding": null,
     "etag": "\"898-EMBGd+o77fZ9yOo/Uovx1EUNQkc\"",
-    "mtime": "2026-05-01T21:26:36.212Z",
+    "mtime": "2026-05-01T22:01:19.882Z",
     "size": 2200,
     "path": "../../.output/public/data/portfolio_shared_data.json"
   },
-  "/assets/ssr-DMKoDkFc.css.br": {
+  "/assets/ssr-Y1PnvD3I.css.br": {
     "type": "text/css; charset=utf-8",
     "encoding": "br",
-    "etag": "\"16d2-dZ5Tf7pZ8zb9j/aIWXwD+ocHJyI\"",
-    "mtime": "2026-05-01T21:26:36.363Z",
-    "size": 5842,
-    "path": "../../.output/public/assets/ssr-DMKoDkFc.css.br"
+    "etag": "\"16dc-F4GyxqPVt8yO3IdSNJWYi2n6QPo\"",
+    "mtime": "2026-05-01T22:01:20.047Z",
+    "size": 5852,
+    "path": "../../.output/public/assets/ssr-Y1PnvD3I.css.br"
   },
-  "/assets/ssr-DMKoDkFc.css.gz": {
+  "/assets/ssr-Y1PnvD3I.css.gz": {
     "type": "text/css; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"1a5a-CsrDwmx1/m4ZexTqu8NOLPTowis\"",
-    "mtime": "2026-05-01T21:26:36.337Z",
-    "size": 6746,
-    "path": "../../.output/public/assets/ssr-DMKoDkFc.css.gz"
+    "etag": "\"1a64-qsUokrikjrV4W+XxbkiG3Rof/YU\"",
+    "mtime": "2026-05-01T22:01:20.023Z",
+    "size": 6756,
+    "path": "../../.output/public/assets/ssr-Y1PnvD3I.css.gz"
+  },
+  "/data/portfolio_shared_data.json.br": {
+    "type": "application/json",
+    "encoding": "br",
+    "etag": "\"225-oYanQqECzu0hVbGgPMQBcWDlLm0\"",
+    "mtime": "2026-05-01T22:01:20.023Z",
+    "size": 549,
+    "path": "../../.output/public/data/portfolio_shared_data.json.br"
   },
   "/data/portfolio_shared_data.json.gz": {
     "type": "application/json",
     "encoding": "gzip",
     "etag": "\"26b-TAKsd6nL5ClZdWDNDdAHS7QHks0\"",
-    "mtime": "2026-05-01T21:26:36.337Z",
+    "mtime": "2026-05-01T22:01:20.023Z",
     "size": 619,
     "path": "../../.output/public/data/portfolio_shared_data.json.gz"
   },
   "/_build/.vite/manifest.json": {
     "type": "application/json",
     "encoding": null,
-    "etag": "\"7e1-lmGObpFJDIg114XXZB8fgtEvYzs\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
+    "etag": "\"7e1-4qYS+Mj6ikZliKN6dDhy8zrKOuA\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
     "size": 2017,
     "path": "../../.output/public/_build/.vite/manifest.json"
-  },
-  "/data/portfolio_shared_data.json.br": {
-    "type": "application/json",
-    "encoding": "br",
-    "etag": "\"225-oYanQqECzu0hVbGgPMQBcWDlLm0\"",
-    "mtime": "2026-05-01T21:26:36.337Z",
-    "size": 549,
-    "path": "../../.output/public/data/portfolio_shared_data.json.br"
   },
   "/_build/.vite/manifest.json.br": {
     "type": "application/json",
     "encoding": "br",
-    "etag": "\"1a8-kKv/4BDq8v8PZJuWvc1sz8pNStc\"",
-    "mtime": "2026-05-01T21:26:36.344Z",
-    "size": 424,
+    "etag": "\"1a9-1V1gzYFXWs1hwRFZoJjQ/1p9nj0\"",
+    "mtime": "2026-05-01T22:01:20.029Z",
+    "size": 425,
     "path": "../../.output/public/_build/.vite/manifest.json.br"
   },
   "/_build/.vite/manifest.json.gz": {
     "type": "application/json",
     "encoding": "gzip",
-    "etag": "\"1dc-ViQsCimIeHgXC/dCkHLN064H8fo\"",
-    "mtime": "2026-05-01T21:26:36.337Z",
-    "size": 476,
+    "etag": "\"1e0-sKXCVC0Qdw1DZuNb+CMGJBf1AD8\"",
+    "mtime": "2026-05-01T22:01:20.023Z",
+    "size": 480,
     "path": "../../.output/public/_build/.vite/manifest.json.gz"
+  },
+  "/_server/assets/app-Y1PnvD3I.css": {
+    "type": "text/css; charset=utf-8",
+    "encoding": null,
+    "etag": "\"850a-jHg15rSn8DnZJsZhulCZL+hDHYc\"",
+    "mtime": "2026-05-01T22:01:20.015Z",
+    "size": 34058,
+    "path": "../../.output/public/_server/assets/app-Y1PnvD3I.css"
+  },
+  "/_server/assets/app-Y1PnvD3I.css.gz": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"1a64-qsUokrikjrV4W+XxbkiG3Rof/YU\"",
+    "mtime": "2026-05-01T22:01:20.132Z",
+    "size": 6756,
+    "path": "../../.output/public/_server/assets/app-Y1PnvD3I.css.gz"
+  },
+  "/_server/assets/app-Y1PnvD3I.css.br": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"16dc-F4GyxqPVt8yO3IdSNJWYi2n6QPo\"",
+    "mtime": "2026-05-01T22:01:20.132Z",
+    "size": 5852,
+    "path": "../../.output/public/_server/assets/app-Y1PnvD3I.css.br"
+  },
+  "/_build/assets/Icon-DgOwbl39.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"5af-CNe73KEMtS204lFF9B+XZ9SPiRc\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
+    "size": 1455,
+    "path": "../../.output/public/_build/assets/Icon-DgOwbl39.js"
+  },
+  "/_build/assets/Icon-DgOwbl39.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"2c7-8FzViyiAvmh6KIvllTyXXSd/THk\"",
+    "mtime": "2026-05-01T22:01:20.043Z",
+    "size": 711,
+    "path": "../../.output/public/_build/assets/Icon-DgOwbl39.js.br"
   },
   "/favicon.ico": {
     "type": "image/vnd.microsoft.icon",
     "etag": "\"28f5b-+HJ/8feXwjqDwG8zs4HR07QMTCM\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
+    "mtime": "2026-05-01T22:01:19.882Z",
     "size": 167771,
     "path": "../../.output/public/favicon.ico"
   },
-  "/_server/assets/app-DMKoDkFc.css.gz": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"1a5a-CsrDwmx1/m4ZexTqu8NOLPTowis\"",
-    "mtime": "2026-05-01T21:26:36.424Z",
-    "size": 6746,
-    "path": "../../.output/public/_server/assets/app-DMKoDkFc.css.gz"
-  },
-  "/_server/assets/app-DMKoDkFc.css.br": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"16d2-dZ5Tf7pZ8zb9j/aIWXwD+ocHJyI\"",
-    "mtime": "2026-05-01T21:26:36.424Z",
-    "size": 5842,
-    "path": "../../.output/public/_server/assets/app-DMKoDkFc.css.br"
-  },
-  "/_build/assets/Icon-CUfPr7EP.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"5af-MpMtsjeMQXM1uXxFgKcdJNkWkNY\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
-    "size": 1455,
-    "path": "../../.output/public/_build/assets/Icon-CUfPr7EP.js"
-  },
-  "/_build/assets/Icon-CUfPr7EP.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"2cd-6+sB3CJazNls0HpOfvI4a/5P1Fs\"",
-    "mtime": "2026-05-01T21:26:36.357Z",
-    "size": 717,
-    "path": "../../.output/public/_build/assets/Icon-CUfPr7EP.js.br"
-  },
-  "/_server/assets/app-DMKoDkFc.css": {
-    "type": "text/css; charset=utf-8",
-    "encoding": null,
-    "etag": "\"847c-I6ckRASHN3joqAe6ZtDu1T7guq8\"",
-    "mtime": "2026-05-01T21:26:36.329Z",
-    "size": 33916,
-    "path": "../../.output/public/_server/assets/app-DMKoDkFc.css"
-  },
-  "/_build/assets/Icon-CUfPr7EP.js.gz": {
+  "/_build/assets/Icon-DgOwbl39.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"334-xMexFLo/FDBzl0srFMXyrsGL9ME\"",
-    "mtime": "2026-05-01T21:26:36.344Z",
+    "etag": "\"334-h6y3fSv2ELSVaSRUy7Q6Mu/Io38\"",
+    "mtime": "2026-05-01T22:01:20.029Z",
     "size": 820,
-    "path": "../../.output/public/_build/assets/Icon-CUfPr7EP.js.gz"
+    "path": "../../.output/public/_build/assets/Icon-DgOwbl39.js.gz"
   },
-  "/_build/assets/client-B2bGNenX.js": {
+  "/_build/assets/client-KIc2DHuW.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"5f37-sO88bivsPbzR+sSIXLyQEy1OBdA\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
-    "size": 24375,
-    "path": "../../.output/public/_build/assets/client-B2bGNenX.js"
+    "etag": "\"6025-ehOuqNSj8OwnoIBHgg5dvbLNdlQ\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
+    "size": 24613,
+    "path": "../../.output/public/_build/assets/client-KIc2DHuW.js"
   },
-  "/_build/assets/client-B2bGNenX.js.br": {
+  "/_build/assets/client-KIc2DHuW.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"22de-K1NX4Pu3wdKE2ihRtZHyyHzETO0\"",
-    "mtime": "2026-05-01T21:26:36.360Z",
-    "size": 8926,
-    "path": "../../.output/public/_build/assets/client-B2bGNenX.js.br"
+    "etag": "\"2301-CIxR1Ue4HrlqnYWl7xFYDLrCE0A\"",
+    "mtime": "2026-05-01T22:01:20.045Z",
+    "size": 8961,
+    "path": "../../.output/public/_build/assets/client-KIc2DHuW.js.br"
   },
-  "/_build/assets/client-B2bGNenX.js.gz": {
+  "/_build/assets/client-KIc2DHuW.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"268b-uiFmDWkMK7hU0kYWA4bKZSLceRw\"",
-    "mtime": "2026-05-01T21:26:36.357Z",
-    "size": 9867,
-    "path": "../../.output/public/_build/assets/client-B2bGNenX.js.gz"
+    "etag": "\"26bd-LEeNyYdNabtnyTRde3uaTSczp78\"",
+    "mtime": "2026-05-01T22:01:20.043Z",
+    "size": 9917,
+    "path": "../../.output/public/_build/assets/client-KIc2DHuW.js.gz"
   },
-  "/_build/assets/client-BjXEo4Al.css.br": {
+  "/_build/assets/client-Yay47AnY.css.br": {
     "type": "text/css; charset=utf-8",
     "encoding": "br",
-    "etag": "\"44d8-1YkS7MgJ7foy3bXAvPEzzDm8ios\"",
-    "mtime": "2026-05-01T21:26:36.477Z",
-    "size": 17624,
-    "path": "../../.output/public/_build/assets/client-BjXEo4Al.css.br"
+    "etag": "\"44f2-epdJbxofUgiUJ8zN86W5wUT0aA4\"",
+    "mtime": "2026-05-01T22:01:20.169Z",
+    "size": 17650,
+    "path": "../../.output/public/_build/assets/client-Yay47AnY.css.br"
   },
-  "/_build/assets/client-BjXEo4Al.css": {
+  "/_build/assets/client-Yay47AnY.css": {
     "type": "text/css; charset=utf-8",
     "encoding": null,
-    "etag": "\"21873-9P7ZsTxYpBgQU1WqjLc52npezT4\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
-    "size": 137331,
-    "path": "../../.output/public/_build/assets/client-BjXEo4Al.css"
+    "etag": "\"21901-wgSpJFTF/zfjMZZp/1RM1JoideQ\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
+    "size": 137473,
+    "path": "../../.output/public/_build/assets/client-Yay47AnY.css"
   },
   "/images/myProfile.jpg": {
     "type": "image/jpeg",
     "etag": "\"85959-iF5M3WpBNfzVmCJclZFaL3uP+oM\"",
-    "mtime": "2026-05-01T21:26:36.212Z",
+    "mtime": "2026-05-01T22:01:19.882Z",
     "size": 547161,
     "path": "../../.output/public/images/myProfile.jpg"
   },
-  "/_build/assets/client-BjXEo4Al.css.gz": {
+  "/_build/assets/client-Yay47AnY.css.gz": {
     "type": "text/css; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"57d7-YEQc7jD+EqE5ksbebU5vQZNuGvQ\"",
-    "mtime": "2026-05-01T21:26:36.360Z",
-    "size": 22487,
-    "path": "../../.output/public/_build/assets/client-BjXEo4Al.css.gz"
+    "etag": "\"57e1-DeK02oIWLXjfB8MkqyZDzFYqZYY\"",
+    "mtime": "2026-05-01T22:01:20.045Z",
+    "size": 22497,
+    "path": "../../.output/public/_build/assets/client-Yay47AnY.css.gz"
   },
-  "/_build/assets/doom-CYb3UizC.js": {
+  "/_build/assets/doom-CXjgKczi.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"475-VcBkRXznuKkOduaDSXVFOMWL3xg\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
+    "etag": "\"475-bAV5L0MuGaPIgSMn/nOKKNUNJQw\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
     "size": 1141,
-    "path": "../../.output/public/_build/assets/doom-CYb3UizC.js"
+    "path": "../../.output/public/_build/assets/doom-CXjgKczi.js"
   },
-  "/_build/assets/doom-CYb3UizC.js.br": {
+  "/_build/assets/doom-CXjgKczi.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"262-1Psczj/NRNtVMVIr2ElTjRL5QAQ\"",
-    "mtime": "2026-05-01T21:26:36.364Z",
-    "size": 610,
-    "path": "../../.output/public/_build/assets/doom-CYb3UizC.js.br"
+    "etag": "\"25c-SibwsAcr5joYf2OQj6t44jO7ZZ8\"",
+    "mtime": "2026-05-01T22:01:20.050Z",
+    "size": 604,
+    "path": "../../.output/public/_build/assets/doom-CXjgKczi.js.br"
   },
-  "/_build/assets/doom-CYb3UizC.js.gz": {
+  "/_build/assets/doom-CXjgKczi.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"2c2-IHpzu6WP354k9pxFExNWr7llTtk\"",
-    "mtime": "2026-05-01T21:26:36.364Z",
+    "etag": "\"2c2-GGlUyS79ZTIV3NDVhJFaok8TlH8\"",
+    "mtime": "2026-05-01T22:01:20.049Z",
     "size": 706,
-    "path": "../../.output/public/_build/assets/doom-CYb3UizC.js.gz"
+    "path": "../../.output/public/_build/assets/doom-CXjgKczi.js.gz"
   },
-  "/_build/assets/i18nStore-pcdiE20B.js": {
+  "/_build/assets/i18nStore-BVyym-E4.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"76a-83YlHKRkIWJkqQoVW6E8BDUfpTk\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
+    "etag": "\"76a-8PQOBr4C0VFu2MHPWJPRaMGVC8w\"",
+    "mtime": "2026-05-01T22:01:19.997Z",
     "size": 1898,
-    "path": "../../.output/public/_build/assets/i18nStore-pcdiE20B.js"
+    "path": "../../.output/public/_build/assets/i18nStore-BVyym-E4.js"
   },
-  "/_build/assets/i18nStore-pcdiE20B.js.br": {
+  "/_build/assets/i18nStore-BVyym-E4.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"344-evjprYcAIrdNo8DvfexikiXFn6g\"",
-    "mtime": "2026-05-01T21:26:36.365Z",
-    "size": 836,
-    "path": "../../.output/public/_build/assets/i18nStore-pcdiE20B.js.br"
+    "etag": "\"335-TOcrR3rCyxLv4LUQflaxx8IYWOI\"",
+    "mtime": "2026-05-01T22:01:20.050Z",
+    "size": 821,
+    "path": "../../.output/public/_build/assets/i18nStore-BVyym-E4.js.br"
   },
-  "/_build/assets/i18nStore-pcdiE20B.js.gz": {
+  "/_build/assets/i18nStore-BVyym-E4.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"3b9-+fxWbdzJ3sYC6yU0WXes9lXMOTg\"",
-    "mtime": "2026-05-01T21:26:36.364Z",
-    "size": 953,
-    "path": "../../.output/public/_build/assets/i18nStore-pcdiE20B.js.gz"
+    "etag": "\"3bb-Fn3UtHPhkWo5Sm3566Si1ku9+yk\"",
+    "mtime": "2026-05-01T22:01:20.050Z",
+    "size": 955,
+    "path": "../../.output/public/_build/assets/i18nStore-BVyym-E4.js.gz"
   },
-  "/_build/assets/index-DBa_E2eI.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"21e87-/D62W8hkgEPfmk1NAfUJ6DS7Rzw\"",
-    "mtime": "2026-05-01T21:26:37.471Z",
-    "size": 138887,
-    "path": "../../.output/public/_build/assets/index-DBa_E2eI.js.br"
-  },
-  "/_build/assets/web-B70XeL33.js": {
+  "/_build/assets/web-Jk5OU5WA.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"7105-H5fg9/GTye14tAdRJ7Kbmn5BmHU\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
+    "etag": "\"7105-j2qCZZDqLMEFyu3XlxJk7LTkf1M\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
     "size": 28933,
-    "path": "../../.output/public/_build/assets/web-B70XeL33.js"
+    "path": "../../.output/public/_build/assets/web-Jk5OU5WA.js"
   },
-  "/_build/assets/web-B70XeL33.js.br": {
+  "/_build/assets/web-Jk5OU5WA.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"27c5-swUyDg6Bd1AhR/jDS/MsHzTbniA\"",
-    "mtime": "2026-05-01T21:26:36.423Z",
-    "size": 10181,
-    "path": "../../.output/public/_build/assets/web-B70XeL33.js.br"
+    "etag": "\"27c0-RMWmIYdo9elqeFMWyPjme3StqcE\"",
+    "mtime": "2026-05-01T22:01:20.086Z",
+    "size": 10176,
+    "path": "../../.output/public/_build/assets/web-Jk5OU5WA.js.br"
   },
-  "/_build/assets/index-DBa_E2eI.js.gz": {
+  "/_build/assets/index-CrSjn1mR.js.br": {
     "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"28e25-LYyJbHxFxhHeAMP92iOmrSkJq6U\"",
-    "mtime": "2026-05-01T21:26:36.506Z",
-    "size": 167461,
-    "path": "../../.output/public/_build/assets/index-DBa_E2eI.js.gz"
+    "encoding": "br",
+    "etag": "\"22015-dGRGagAintJ9mFQ6UL0VbIqdT8U\"",
+    "mtime": "2026-05-01T22:01:21.126Z",
+    "size": 139285,
+    "path": "../../.output/public/_build/assets/index-CrSjn1mR.js.br"
   },
   "/dos/files/.gitkeep": {
     "type": "text/plain; charset=utf-8",
@@ -1198,19 +1190,19 @@ const assets = {
     "size": 0,
     "path": "../../.output/public/dos/files/.gitkeep"
   },
-  "/_build/assets/web-B70XeL33.js.gz": {
+  "/_build/assets/web-Jk5OU5WA.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"2ba4-UQmWqYmiKhemwihLmiY9RoAp544\"",
-    "mtime": "2026-05-01T21:26:36.423Z",
+    "etag": "\"2ba4-2EuFJnqc7IlF/AlTye7ETTEiBFQ\"",
+    "mtime": "2026-05-01T22:01:20.099Z",
     "size": 11172,
-    "path": "../../.output/public/_build/assets/web-B70XeL33.js.gz"
+    "path": "../../.output/public/_build/assets/web-Jk5OU5WA.js.gz"
   },
   "/dos/files/digger.jsdos": {
     "type": "text/plain; charset=utf-8",
     "encoding": null,
     "etag": "\"713a-mKZ7VpZRDpj2ITd+FxpRCoX4H6g\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
+    "mtime": "2026-05-01T22:01:19.890Z",
     "size": 28986,
     "path": "../../.output/public/dos/files/digger.jsdos"
   },
@@ -1218,15 +1210,23 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "br",
     "etag": "\"6ec7-Zp6KSxb8tnsI7gNJLBCwZS33AYQ\"",
-    "mtime": "2026-05-01T21:26:36.761Z",
+    "mtime": "2026-05-01T22:01:20.294Z",
     "size": 28359,
     "path": "../../.output/public/dos/files/digger.jsdos.br"
+  },
+  "/_build/assets/index-CrSjn1mR.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"28fdd-uQUn75vUm1lVF1+qi9RloSx4YIQ\"",
+    "mtime": "2026-05-01T22:01:20.179Z",
+    "size": 167901,
+    "path": "../../.output/public/_build/assets/index-CrSjn1mR.js.gz"
   },
   "/dos/files/digger.jsdos.gz": {
     "type": "text/plain; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"6f77-8K4rugXg8bfFWJzTwx1BJcwajAw\"",
-    "mtime": "2026-05-01T21:26:36.761Z",
+    "mtime": "2026-05-01T22:01:20.294Z",
     "size": 28535,
     "path": "../../.output/public/dos/files/digger.jsdos.gz"
   },
@@ -1234,7 +1234,7 @@ const assets = {
     "type": "font/ttf",
     "encoding": "br",
     "etag": "\"8cfc2-FfNDvPo63iszzpwL46oeloozxwA\"",
-    "mtime": "2026-05-01T21:26:38.768Z",
+    "mtime": "2026-05-01T22:01:22.389Z",
     "size": 577474,
     "path": "../../.output/public/_build/assets/devicon-BwTrXM5G.ttf.br"
   },
@@ -1242,53 +1242,53 @@ const assets = {
     "type": "font/ttf",
     "encoding": "gzip",
     "etag": "\"9f957-OEUXjdkHP/AZqbES8Nt6de58uLU\"",
-    "mtime": "2026-05-01T21:26:37.509Z",
+    "mtime": "2026-05-01T22:01:21.737Z",
     "size": 653655,
     "path": "../../.output/public/_build/assets/devicon-BwTrXM5G.ttf.gz"
   },
-  "/_build/assets/index-DBa_E2eI.js": {
+  "/_build/assets/index-CrSjn1mR.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"9ac90-thmsOL4gUOMARqr26m08twvWnmc\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
-    "size": 634000,
-    "path": "../../.output/public/_build/assets/index-DBa_E2eI.js"
+    "etag": "\"9afbf-9ZxrsaDpgxKnCxDu+yrMCpvIrYA\"",
+    "mtime": "2026-05-01T22:01:19.996Z",
+    "size": 634815,
+    "path": "../../.output/public/_build/assets/index-CrSjn1mR.js"
   },
   "/_build/assets/devicon-BwTrXM5G.ttf": {
     "type": "font/ttf",
     "encoding": null,
     "etag": "\"12d594-QLLCGd5h5vxXD2lm47ERHhlQ7YE\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
+    "mtime": "2026-05-01T22:01:19.996Z",
     "size": 1234324,
     "path": "../../.output/public/_build/assets/devicon-BwTrXM5G.ttf"
   },
   "/_build/assets/devicon-D0iwJE0M.woff": {
     "type": "font/woff",
     "etag": "\"12d5e0-+k9k5/b7tqusPwZyqOnNnwL+Aqw\"",
-    "mtime": "2026-05-01T21:26:36.312Z",
+    "mtime": "2026-05-01T22:01:19.997Z",
     "size": 1234400,
     "path": "../../.output/public/_build/assets/devicon-D0iwJE0M.woff"
+  },
+  "/dos/js-dos/emulators-ui-loader.png": {
+    "type": "image/png",
+    "etag": "\"e3e-jhsY+CUyGvQjta2ZSHYCnq6ERso\"",
+    "mtime": "2026-05-01T22:01:19.898Z",
+    "size": 3646,
+    "path": "../../.output/public/dos/js-dos/emulators-ui-loader.png"
   },
   "/_build/assets/devicon-DBhpxM3S.svg.br": {
     "type": "image/svg+xml",
     "encoding": "br",
     "etag": "\"1c5b14-3muxeNrnPy7YUeXUCm6d0JUjYMk\"",
-    "mtime": "2026-05-01T21:26:44.517Z",
+    "mtime": "2026-05-01T22:01:28.245Z",
     "size": 1858324,
     "path": "../../.output/public/_build/assets/devicon-DBhpxM3S.svg.br"
-  },
-  "/dos/js-dos/emulators-ui-loader.png": {
-    "type": "image/png",
-    "etag": "\"e3e-jhsY+CUyGvQjta2ZSHYCnq6ERso\"",
-    "mtime": "2026-05-01T21:26:36.221Z",
-    "size": 3646,
-    "path": "../../.output/public/dos/js-dos/emulators-ui-loader.png"
   },
   "/dos/js-dos/js-dos.css": {
     "type": "text/css; charset=utf-8",
     "encoding": null,
     "etag": "\"9390-HHcXYBvRBOSY7kdKiJw95q1ni1Y\"",
-    "mtime": "2026-05-01T21:26:36.230Z",
+    "mtime": "2026-05-01T22:01:19.898Z",
     "size": 37776,
     "path": "../../.output/public/dos/js-dos/js-dos.css"
   },
@@ -1296,7 +1296,7 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": "br",
     "etag": "\"1f69-espehF7fD0j+rbwxOIOfJmefTd8\"",
-    "mtime": "2026-05-01T21:26:37.035Z",
+    "mtime": "2026-05-01T22:01:20.708Z",
     "size": 8041,
     "path": "../../.output/public/dos/js-dos/js-dos.css.br"
   },
@@ -1304,7 +1304,7 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"24ad-ig2GXHjdTrrGuk2RKNhxlVpCkB4\"",
-    "mtime": "2026-05-01T21:26:37.034Z",
+    "mtime": "2026-05-01T22:01:20.708Z",
     "size": 9389,
     "path": "../../.output/public/dos/js-dos/js-dos.css.gz"
   },
@@ -1312,31 +1312,15 @@ const assets = {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
     "etag": "\"1cfe7-DM/vb+CiNIRbCnoTpMFPHwySbO8\"",
-    "mtime": "2026-05-01T21:26:37.472Z",
+    "mtime": "2026-05-01T22:01:21.130Z",
     "size": 118759,
     "path": "../../.output/public/dos/js-dos/js-dos.js.br"
-  },
-  "/dos/js-dos/wdosbox.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"1ec0a-sdbAYwKl3+RPs4a37WerQYLszNk\"",
-    "mtime": "2026-05-01T21:26:36.230Z",
-    "size": 125962,
-    "path": "../../.output/public/dos/js-dos/wdosbox.js"
-  },
-  "/dos/js-dos/wdosbox.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"819a-atb5t3ZzN9uOWqyV+swl7ESNjiM\"",
-    "mtime": "2026-05-01T21:26:37.327Z",
-    "size": 33178,
-    "path": "../../.output/public/dos/js-dos/wdosbox.js.gz"
   },
   "/dos/js-dos/wdosbox.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
     "etag": "\"714b-s1NOOboxedot9QSUm91WvEkOeOU\"",
-    "mtime": "2026-05-01T21:26:37.327Z",
+    "mtime": "2026-05-01T22:01:21.104Z",
     "size": 29003,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.br"
   },
@@ -1344,15 +1328,31 @@ const assets = {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"26e2a-Am20jIzZArxx+uAALQb4YC6f0XI\"",
-    "mtime": "2026-05-01T21:26:37.471Z",
+    "mtime": "2026-05-01T22:01:21.126Z",
     "size": 159274,
     "path": "../../.output/public/dos/js-dos/js-dos.js.gz"
+  },
+  "/dos/js-dos/wdosbox.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"1ec0a-sdbAYwKl3+RPs4a37WerQYLszNk\"",
+    "mtime": "2026-05-01T22:01:19.905Z",
+    "size": 125962,
+    "path": "../../.output/public/dos/js-dos/wdosbox.js"
+  },
+  "/dos/js-dos/wdosbox.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"819a-atb5t3ZzN9uOWqyV+swl7ESNjiM\"",
+    "mtime": "2026-05-01T22:01:21.105Z",
+    "size": 33178,
+    "path": "../../.output/public/dos/js-dos/wdosbox.js.gz"
   },
   "/dos/js-dos/wdosbox.js.symbols.br": {
     "type": "text/plain; charset=utf-8",
     "encoding": "br",
     "etag": "\"723a-6PmYCH4jRsN7igSd1L4zNogc0rE\"",
-    "mtime": "2026-05-01T21:26:37.467Z",
+    "mtime": "2026-05-01T22:01:21.106Z",
     "size": 29242,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols.br"
   },
@@ -1360,7 +1360,7 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": null,
     "etag": "\"3a7c1-HPfp6OFcRif11/E5oHXZJ1m+9Tw\"",
-    "mtime": "2026-05-01T21:26:36.237Z",
+    "mtime": "2026-05-01T22:01:19.905Z",
     "size": 239553,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols"
   },
@@ -1368,23 +1368,15 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"92ee-D+SH4kY8DOfwdIaX/utznt6tGo4\"",
-    "mtime": "2026-05-01T21:26:37.332Z",
+    "mtime": "2026-05-01T22:01:21.106Z",
     "size": 37614,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols.gz"
-  },
-  "/dos/js-dos/wdosbox.wasm.br": {
-    "type": "application/wasm",
-    "encoding": "br",
-    "etag": "\"618e2-3/r1TSyCxN9mxbNPYDPVkPA5cTQ\"",
-    "mtime": "2026-05-01T21:26:39.531Z",
-    "size": 399586,
-    "path": "../../.output/public/dos/js-dos/wdosbox.wasm.br"
   },
   "/dos/js-dos/js-dos.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
     "etag": "\"88b59-jUIV2DJizVWNO4XqpyUkmPbosAI\"",
-    "mtime": "2026-05-01T21:26:36.230Z",
+    "mtime": "2026-05-01T22:01:19.898Z",
     "size": 559961,
     "path": "../../.output/public/dos/js-dos/js-dos.js"
   },
@@ -1392,457 +1384,465 @@ const assets = {
     "type": "image/svg+xml",
     "encoding": "gzip",
     "etag": "\"200376-rY3IYTSWkRYQs7z6p/0cavV2HkQ\"",
-    "mtime": "2026-05-01T21:26:38.761Z",
+    "mtime": "2026-05-01T22:01:22.384Z",
     "size": 2098038,
     "path": "../../.output/public/_build/assets/devicon-DBhpxM3S.svg.gz"
+  },
+  "/dos/js-dos/wdosbox.wasm.br": {
+    "type": "application/wasm",
+    "encoding": "br",
+    "etag": "\"618e2-3/r1TSyCxN9mxbNPYDPVkPA5cTQ\"",
+    "mtime": "2026-05-01T22:01:23.285Z",
+    "size": 399586,
+    "path": "../../.output/public/dos/js-dos/wdosbox.wasm.br"
   },
   "/dos/js-dos/wdosbox.wasm.gz": {
     "type": "application/wasm",
     "encoding": "gzip",
     "etag": "\"7abfe-+CSl07PpWMe4dF/nM7vykhxPByk\"",
-    "mtime": "2026-05-01T21:26:38.125Z",
+    "mtime": "2026-05-01T22:01:21.779Z",
     "size": 502782,
     "path": "../../.output/public/dos/js-dos/wdosbox.wasm.gz"
   },
   "/data/languages/en.json": {
     "type": "application/json",
     "encoding": null,
-    "etag": "\"24aa-jtm6AubVptpMpHv/Jf6fJr77qU8\"",
-    "mtime": "2026-05-01T21:26:36.212Z",
-    "size": 9386,
+    "etag": "\"24de-m4KiWbLEZLKUPvev84WtEkQvzoY\"",
+    "mtime": "2026-05-01T22:01:19.882Z",
+    "size": 9438,
     "path": "../../.output/public/data/languages/en.json"
   },
   "/data/languages/en.json.br": {
     "type": "application/json",
     "encoding": "br",
-    "etag": "\"884-ZgZ4wS+2syPMo99kthC20e+u8cY\"",
-    "mtime": "2026-05-01T21:26:36.499Z",
-    "size": 2180,
+    "etag": "\"893-Pvf7FrP5lBgqFzn/BfV4EdJSs04\"",
+    "mtime": "2026-05-01T22:01:20.175Z",
+    "size": 2195,
     "path": "../../.output/public/data/languages/en.json.br"
   },
   "/dos/js-dos/wdosbox.wasm": {
     "type": "application/wasm",
     "encoding": null,
     "etag": "\"1650d5-/eSIYkIAgIEtn5MVjcOQSw2Yfug\"",
-    "mtime": "2026-05-01T21:26:36.237Z",
+    "mtime": "2026-05-01T22:01:19.915Z",
     "size": 1462485,
     "path": "../../.output/public/dos/js-dos/wdosbox.wasm"
   },
   "/data/languages/en.json.gz": {
     "type": "application/json",
     "encoding": "gzip",
-    "etag": "\"a7e-wFFfuaPFDz5TfpAccm8SNJT+cXk\"",
-    "mtime": "2026-05-01T21:26:36.499Z",
-    "size": 2686,
+    "etag": "\"a8d-Tc6gJID4O9R3QtMSg96qNLiHC5g\"",
+    "mtime": "2026-05-01T22:01:20.175Z",
+    "size": 2701,
     "path": "../../.output/public/data/languages/en.json.gz"
   },
   "/data/languages/pt-br.json": {
     "type": "application/json",
     "encoding": null,
-    "etag": "\"2649-EFs1Ba3ThL0FvkI2oE703DfnMF4\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
-    "size": 9801,
+    "etag": "\"267c-0KUtZ6in5UxxIfhTqwf0tsBQIOY\"",
+    "mtime": "2026-05-01T22:01:19.882Z",
+    "size": 9852,
     "path": "../../.output/public/data/languages/pt-br.json"
-  },
-  "/data/languages/pt-br.json.br": {
-    "type": "application/json",
-    "encoding": "br",
-    "etag": "\"9fb-BMmM9FZXnXR/IfvTxrg0Awtd48o\"",
-    "mtime": "2026-05-01T21:26:36.499Z",
-    "size": 2555,
-    "path": "../../.output/public/data/languages/pt-br.json.br"
   },
   "/data/languages/pt-br.json.gz": {
     "type": "application/json",
     "encoding": "gzip",
-    "etag": "\"b42-gkmFXCICRo3LTYt8fSstE6nNV04\"",
-    "mtime": "2026-05-01T21:26:36.499Z",
-    "size": 2882,
+    "etag": "\"b57-hoVv7KRVwsMcG0/QX0bH4gA3Rm0\"",
+    "mtime": "2026-05-01T22:01:20.175Z",
+    "size": 2903,
     "path": "../../.output/public/data/languages/pt-br.json.gz"
   },
-  "/dos/js-dos/js-dos.js.map": {
+  "/data/languages/pt-br.json.br": {
     "type": "application/json",
-    "etag": "\"1c1f43-8EePJwNs7LUus35iC4CVXGbcSRs\"",
-    "mtime": "2026-05-01T21:26:36.230Z",
-    "size": 1843011,
-    "path": "../../.output/public/dos/js-dos/js-dos.js.map"
-  },
-  "/images/projects/animal-shelter/p2.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"4dc5f-z/Rsf2aegwTuLZhfzhp0IElq/dQ\"",
-    "mtime": "2026-05-01T21:26:36.237Z",
-    "size": 318559,
-    "path": "../../.output/public/images/projects/animal-shelter/p2.jpg"
-  },
-  "/images/projects/adventure/p1.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"42acb-bepxaxsEwaHUwmzr5xiUa0rEGKw\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
-    "size": 273099,
-    "path": "../../.output/public/images/projects/adventure/p1.jpg"
+    "encoding": "br",
+    "etag": "\"a11-qSh1PJMQm3KvFZ8ePKgeO15sh0o\"",
+    "mtime": "2026-05-01T22:01:20.175Z",
+    "size": 2577,
+    "path": "../../.output/public/data/languages/pt-br.json.br"
   },
   "/images/projects/adventure/p2.jpg": {
     "type": "image/jpeg",
     "etag": "\"44b32-9K3UBSZ8fMyukMzJPJ7avodJhlw\"",
-    "mtime": "2026-05-01T21:26:36.237Z",
+    "mtime": "2026-05-01T22:01:19.915Z",
     "size": 281394,
     "path": "../../.output/public/images/projects/adventure/p2.jpg"
   },
-  "/images/projects/julia-course/IMG_20221018_174932.jpg": {
+  "/images/projects/adventure/p1.jpg": {
     "type": "image/jpeg",
-    "etag": "\"62eea-rqPhg/0XA2a7+eIEZloFVmCqop8\"",
-    "mtime": "2026-05-01T21:26:36.218Z",
-    "size": 405226,
-    "path": "../../.output/public/images/projects/julia-course/IMG_20221018_174932.jpg"
+    "etag": "\"42acb-bepxaxsEwaHUwmzr5xiUa0rEGKw\"",
+    "mtime": "2026-05-01T22:01:19.882Z",
+    "size": 273099,
+    "path": "../../.output/public/images/projects/adventure/p1.jpg"
   },
-  "/images/projects/julia-course/IMG_20221019_183914.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"6318a-sRgzm3yMhLEEmxAUFzJuimnPIE0\"",
-    "mtime": "2026-05-01T21:26:36.243Z",
-    "size": 405898,
-    "path": "../../.output/public/images/projects/julia-course/IMG_20221019_183914.jpg"
+  "/dos/js-dos/js-dos.js.map": {
+    "type": "application/json",
+    "etag": "\"1c1f43-8EePJwNs7LUus35iC4CVXGbcSRs\"",
+    "mtime": "2026-05-01T22:01:19.905Z",
+    "size": 1843011,
+    "path": "../../.output/public/dos/js-dos/js-dos.js.map"
   },
   "/images/projects/laplacian-edge/ovo1.jpeg": {
     "type": "image/jpeg",
     "etag": "\"8079-ss8hOG6fFU+5xzWd+QqTIbKf82c\"",
-    "mtime": "2026-05-01T21:26:36.255Z",
+    "mtime": "2026-05-01T22:01:19.887Z",
     "size": 32889,
     "path": "../../.output/public/images/projects/laplacian-edge/ovo1.jpeg"
   },
   "/images/projects/laplacian-edge/ovo2.jpeg": {
     "type": "image/jpeg",
     "etag": "\"3390-nbPBzQyX/GR7lPm+d5PqQp8ouCA\"",
-    "mtime": "2026-05-01T21:26:36.218Z",
+    "mtime": "2026-05-01T22:01:19.942Z",
     "size": 13200,
     "path": "../../.output/public/images/projects/laplacian-edge/ovo2.jpeg"
   },
   "/images/projects/laplacian-edge/ovo3.jpeg": {
     "type": "image/jpeg",
     "etag": "\"cd8a-q8oYFcYhqIKBdQLt2pvS0pwD0Mg\"",
-    "mtime": "2026-05-01T21:26:36.255Z",
+    "mtime": "2026-05-01T22:01:19.942Z",
     "size": 52618,
     "path": "../../.output/public/images/projects/laplacian-edge/ovo3.jpeg"
+  },
+  "/images/projects/animal-shelter/p2.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"4dc5f-z/Rsf2aegwTuLZhfzhp0IElq/dQ\"",
+    "mtime": "2026-05-01T22:01:19.915Z",
+    "size": 318559,
+    "path": "../../.output/public/images/projects/animal-shelter/p2.jpg"
+  },
+  "/images/projects/julia-course/IMG_20221018_174932.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"62eea-rqPhg/0XA2a7+eIEZloFVmCqop8\"",
+    "mtime": "2026-05-01T22:01:19.887Z",
+    "size": 405226,
+    "path": "../../.output/public/images/projects/julia-course/IMG_20221018_174932.jpg"
+  },
+  "/images/projects/julia-course/IMG_20221019_183914.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"6318a-sRgzm3yMhLEEmxAUFzJuimnPIE0\"",
+    "mtime": "2026-05-01T22:01:19.928Z",
+    "size": 405898,
+    "path": "../../.output/public/images/projects/julia-course/IMG_20221019_183914.jpg"
   },
   "/images/projects/animal-shelter/p1.jpg": {
     "type": "image/jpeg",
     "etag": "\"96f8a-iVY3NYceNfom2eeBtQb5GGux/zs\"",
-    "mtime": "2026-05-01T21:26:36.213Z",
+    "mtime": "2026-05-01T22:01:19.887Z",
     "size": 618378,
     "path": "../../.output/public/images/projects/animal-shelter/p1.jpg"
   },
   "/images/projects/photography/p1.jpg": {
     "type": "image/jpeg",
     "etag": "\"38a0f-c73zM5JUqgYdjhkUn7y8Amnomfk\"",
-    "mtime": "2026-05-01T21:26:36.218Z",
+    "mtime": "2026-05-01T22:01:19.887Z",
     "size": 231951,
     "path": "../../.output/public/images/projects/photography/p1.jpg"
   },
   "/images/projects/photography/p2.jpg": {
     "type": "image/jpeg",
     "etag": "\"6db39-t+wV8xn5xJs+dqrU/jUr92khl04\"",
-    "mtime": "2026-05-01T21:26:36.255Z",
+    "mtime": "2026-05-01T22:01:19.942Z",
     "size": 449337,
     "path": "../../.output/public/images/projects/photography/p2.jpg"
   },
   "/images/projects/genicam/genicam1.png": {
     "type": "image/png",
     "etag": "\"1357db-EUw22SI72VqfwIpSKz44qqH6RVo\"",
-    "mtime": "2026-05-01T21:26:36.243Z",
+    "mtime": "2026-05-01T22:01:19.887Z",
     "size": 1267675,
     "path": "../../.output/public/images/projects/genicam/genicam1.png"
   },
-  "/images/projects/genicam/genicam2.png": {
-    "type": "image/png",
-    "etag": "\"1cfbf4-CsId1Y60wV3ly/1CdURylLc1H0Q\"",
-    "mtime": "2026-05-01T21:26:36.218Z",
-    "size": 1899508,
-    "path": "../../.output/public/images/projects/genicam/genicam2.png"
-  },
-  "/images/projects/genicam/genicam3.png": {
-    "type": "image/png",
-    "etag": "\"1ded45-TuhQqz7CiXPhDA75zQHWdH7aQfM\"",
-    "mtime": "2026-05-01T21:26:36.243Z",
-    "size": 1961285,
-    "path": "../../.output/public/images/projects/genicam/genicam3.png"
+  "/_build/assets/devicon-DBhpxM3S.svg": {
+    "type": "image/svg+xml",
+    "encoding": null,
+    "etag": "\"53e688-6audWvp5ZxP3TDZ16BRQ2F8JZec\"",
+    "mtime": "2026-05-01T22:01:19.997Z",
+    "size": 5498504,
+    "path": "../../.output/public/_build/assets/devicon-DBhpxM3S.svg"
   },
   "/images/projects/santista/santista2.jpeg": {
     "type": "image/jpeg",
     "etag": "\"4a582-DTCW740hJ/tsMloSNNcCLIoFOAQ\"",
-    "mtime": "2026-05-01T21:26:36.280Z",
+    "mtime": "2026-05-01T22:01:19.942Z",
     "size": 304514,
     "path": "../../.output/public/images/projects/santista/santista2.jpeg"
   },
   "/dos/js-dos/types/src/dom.d.ts": {
     "type": "video/mp2t",
     "etag": "\"2b0-PFL63ySFIrRIxEPpz6sQNYtTUoM\"",
-    "mtime": "2026-05-01T21:26:36.306Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 688,
     "path": "../../.output/public/dos/js-dos/types/src/dom.d.ts"
   },
   "/dos/js-dos/types/src/hardware-transport-layer.d.ts": {
     "type": "video/mp2t",
     "etag": "\"300-Yy5ftkj3E3DSV5axsnmwPXOnSIE\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 768,
     "path": "../../.output/public/dos/js-dos/types/src/hardware-transport-layer.d.ts"
   },
   "/dos/js-dos/types/src/icons.d.ts": {
     "type": "video/mp2t",
     "etag": "\"e9d-9kUnkzEIcyscmgfDv1Cy12OQmSc\"",
-    "mtime": "2026-05-01T21:26:36.306Z",
+    "mtime": "2026-05-01T22:01:19.980Z",
     "size": 3741,
     "path": "../../.output/public/dos/js-dos/types/src/icons.d.ts"
+  },
+  "/images/projects/genicam/genicam2.png": {
+    "type": "image/png",
+    "etag": "\"1cfbf4-CsId1Y60wV3ly/1CdURylLc1H0Q\"",
+    "mtime": "2026-05-01T22:01:19.928Z",
+    "size": 1899508,
+    "path": "../../.output/public/images/projects/genicam/genicam2.png"
   },
   "/dos/js-dos/types/src/player-app.d.ts": {
     "type": "video/mp2t",
     "etag": "\"84e-9QJiXOKMw0g8ojvzpDAaRLrA6sA\"",
-    "mtime": "2026-05-01T21:26:36.306Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 2126,
     "path": "../../.output/public/dos/js-dos/types/src/player-app.d.ts"
   },
   "/dos/js-dos/types/src/player.d.ts": {
     "type": "video/mp2t",
     "etag": "\"48e-wVh33zUR6qN5hj7FzXWGtDuEQPw\"",
-    "mtime": "2026-05-01T21:26:36.306Z",
+    "mtime": "2026-05-01T22:01:19.992Z",
     "size": 1166,
     "path": "../../.output/public/dos/js-dos/types/src/player.d.ts"
   },
-  "/_build/assets/devicon-DBhpxM3S.svg": {
-    "type": "image/svg+xml",
-    "encoding": null,
-    "etag": "\"53e688-6audWvp5ZxP3TDZ16BRQ2F8JZec\"",
-    "mtime": "2026-05-01T21:26:36.313Z",
-    "size": 5498504,
-    "path": "../../.output/public/_build/assets/devicon-DBhpxM3S.svg"
+  "/images/projects/genicam/genicam3.png": {
+    "type": "image/png",
+    "etag": "\"1ded45-TuhQqz7CiXPhDA75zQHWdH7aQfM\"",
+    "mtime": "2026-05-01T22:01:19.928Z",
+    "size": 1961285,
+    "path": "../../.output/public/images/projects/genicam/genicam3.png"
   },
   "/dos/js-dos/types/src/request.d.ts": {
     "type": "video/mp2t",
     "etag": "\"6a-PcNO+FOpms3wshqYgk2gOpoMZ/s\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.992Z",
     "size": 106,
     "path": "../../.output/public/dos/js-dos/types/src/request.d.ts"
   },
   "/dos/js-dos/types/src/xhr.d.ts": {
     "type": "video/mp2t",
     "etag": "\"239-ioKyqCLZSuoID1j70IjjRQjDQrI\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.992Z",
     "size": 569,
     "path": "../../.output/public/dos/js-dos/types/src/xhr.d.ts"
   },
   "/dos/js-dos/types/src/components/action-bar.d.ts": {
     "type": "video/mp2t",
     "etag": "\"95-VOf8qZ9ePt8l8ufFdSlJgHNqqqQ\"",
-    "mtime": "2026-05-01T21:26:36.306Z",
+    "mtime": "2026-05-01T22:01:19.992Z",
     "size": 149,
     "path": "../../.output/public/dos/js-dos/types/src/components/action-bar.d.ts"
   },
   "/dos/js-dos/types/src/components/action-hide.d.ts": {
     "type": "video/mp2t",
     "etag": "\"af-iH5Z/2DAv/76BeXUqz/my9+Xf64\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 175,
     "path": "../../.output/public/dos/js-dos/types/src/components/action-hide.d.ts"
-  },
-  "/images/projects/sparkeyes/spark1.png": {
-    "type": "image/png",
-    "etag": "\"18f649-iBlThjLEqgwEmLPWlPC4QlT4dvk\"",
-    "mtime": "2026-05-01T21:26:36.221Z",
-    "size": 1635913,
-    "path": "../../.output/public/images/projects/sparkeyes/spark1.png"
   },
   "/dos/js-dos/types/src/components/action-save-or-exit.d.ts": {
     "type": "video/mp2t",
     "etag": "\"b5-MtPGAUDHxY6rFaMiYTEnDTdPezo\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 181,
     "path": "../../.output/public/dos/js-dos/types/src/components/action-save-or-exit.d.ts"
-  },
-  "/dos/js-dos/types/src/components/client.d.ts": {
-    "type": "video/mp2t",
-    "etag": "\"df-peTt0KuJBzE54HhdyKmsHinEs9s\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
-    "size": 223,
-    "path": "../../.output/public/dos/js-dos/types/src/components/client.d.ts"
-  },
-  "/dos/js-dos/types/src/components/controls.d.ts": {
-    "type": "video/mp2t",
-    "etag": "\"110-n/W6GtWUZC3rbadG6VBN8xtmti4\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
-    "size": 272,
-    "path": "../../.output/public/dos/js-dos/types/src/components/controls.d.ts"
-  },
-  "/images/projects/usiminas/usminas2.png": {
-    "type": "image/png",
-    "etag": "\"151a4c-lYF0+qUb7JTaPSB7oyiilVvDA8w\"",
-    "mtime": "2026-05-01T21:26:36.293Z",
-    "size": 1382988,
-    "path": "../../.output/public/images/projects/usiminas/usminas2.png"
   },
   "/images/projects/usiminas/usiminas1.png": {
     "type": "image/png",
     "etag": "\"134c05-aK5mfEf7zJogvwdqslFRAxX5q3w\"",
-    "mtime": "2026-05-01T21:26:36.221Z",
+    "mtime": "2026-05-01T22:01:19.890Z",
     "size": 1264645,
     "path": "../../.output/public/images/projects/usiminas/usiminas1.png"
   },
-  "/images/projects/sparkeyes/spark2.png": {
+  "/dos/js-dos/types/src/components/client.d.ts": {
+    "type": "video/mp2t",
+    "etag": "\"df-peTt0KuJBzE54HhdyKmsHinEs9s\"",
+    "mtime": "2026-05-01T22:01:19.993Z",
+    "size": 223,
+    "path": "../../.output/public/dos/js-dos/types/src/components/client.d.ts"
+  },
+  "/images/projects/usiminas/usminas2.png": {
     "type": "image/png",
-    "etag": "\"1cc3c9-U3z7PmDAA7z0CD9llLvzLWTlTkg\"",
-    "mtime": "2026-05-01T21:26:36.280Z",
-    "size": 1885129,
-    "path": "../../.output/public/images/projects/sparkeyes/spark2.png"
+    "etag": "\"151a4c-lYF0+qUb7JTaPSB7oyiilVvDA8w\"",
+    "mtime": "2026-05-01T22:01:19.968Z",
+    "size": 1382988,
+    "path": "../../.output/public/images/projects/usiminas/usminas2.png"
+  },
+  "/dos/js-dos/types/src/components/controls.d.ts": {
+    "type": "video/mp2t",
+    "etag": "\"110-n/W6GtWUZC3rbadG6VBN8xtmti4\"",
+    "mtime": "2026-05-01T22:01:19.993Z",
+    "size": 272,
+    "path": "../../.output/public/dos/js-dos/types/src/components/controls.d.ts"
+  },
+  "/images/projects/santista/santista1.png": {
+    "type": "image/png",
+    "etag": "\"25ec90-ii1O2TNbaqWKyGLU42p7Sq7NGtM\"",
+    "mtime": "2026-05-01T22:01:19.887Z",
+    "size": 2485392,
+    "path": "../../.output/public/images/projects/santista/santista1.png"
   },
   "/dos/js-dos/types/src/components/cpu-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9d-tS598h6CGMe+CxJ+sS4V+sX2zRo\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 157,
     "path": "../../.output/public/dos/js-dos/types/src/components/cpu-control.d.ts"
+  },
+  "/images/projects/sparkeyes/spark1.png": {
+    "type": "image/png",
+    "etag": "\"18f649-iBlThjLEqgwEmLPWlPC4QlT4dvk\"",
+    "mtime": "2026-05-01T22:01:19.968Z",
+    "size": 1635913,
+    "path": "../../.output/public/images/projects/sparkeyes/spark1.png"
+  },
+  "/images/projects/sparkeyes/spark2.png": {
+    "type": "image/png",
+    "etag": "\"1cc3c9-U3z7PmDAA7z0CD9llLvzLWTlTkg\"",
+    "mtime": "2026-05-01T22:01:19.890Z",
+    "size": 1885129,
+    "path": "../../.output/public/images/projects/sparkeyes/spark2.png"
   },
   "/dos/js-dos/types/src/components/horizontal-slider.d.ts": {
     "type": "video/mp2t",
     "etag": "\"1f4-9VDnlq23FycSu3msxrSyM8peqkM\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 500,
     "path": "../../.output/public/dos/js-dos/types/src/components/horizontal-slider.d.ts"
   },
   "/dos/js-dos/types/src/components/region.d.ts": {
     "type": "video/mp2t",
     "etag": "\"df-weJkEGh27ziqbiLBdj1oA6Ieevo\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 223,
     "path": "../../.output/public/dos/js-dos/types/src/components/region.d.ts"
   },
   "/dos/js-dos/types/src/components/scale-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"119-8W1vDJ3kBcTmvbt0QJ0+sR07VSw\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 281,
     "path": "../../.output/public/dos/js-dos/types/src/components/scale-control.d.ts"
   },
   "/dos/js-dos/types/src/components/sensitivity-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"125-aLj8c0nTcaz3BA2CR88LOymtOmg\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 293,
     "path": "../../.output/public/dos/js-dos/types/src/components/sensitivity-control.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar.d.ts": {
     "type": "video/mp2t",
     "etag": "\"93-gC0SL3stv9ikRvCGl+QoMpx5hg8\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 147,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar.d.ts"
-  },
-  "/images/projects/sparkeyes/spark3.png": {
-    "type": "image/png",
-    "etag": "\"221ee6-iYBYfZODalHbNJmIfpryqy4D2WQ\"",
-    "mtime": "2026-05-01T21:26:36.280Z",
-    "size": 2236134,
-    "path": "../../.output/public/images/projects/sparkeyes/spark3.png"
   },
   "/dos/js-dos/types/src/components/sync-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9c-JJ0GGLl5L+U42cy74ghlsLxvKM4\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 156,
     "path": "../../.output/public/dos/js-dos/types/src/components/sync-control.d.ts"
   },
   "/dos/js-dos/types/src/components/tip.d.ts": {
     "type": "video/mp2t",
     "etag": "\"90-k/2A23wIwvvw12SciX9tFZk7x+k\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 144,
     "path": "../../.output/public/dos/js-dos/types/src/components/tip.d.ts"
   },
   "/dos/js-dos/types/src/components/vertical-slider.d.ts": {
     "type": "video/mp2t",
     "etag": "\"1d7-abnLFIBfBdhrx9jusMPXZSgi95k\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 471,
     "path": "../../.output/public/dos/js-dos/types/src/components/vertical-slider.d.ts"
-  },
-  "/images/projects/santista/santista1.png": {
-    "type": "image/png",
-    "etag": "\"25ec90-ii1O2TNbaqWKyGLU42p7Sq7NGtM\"",
-    "mtime": "2026-05-01T21:26:36.218Z",
-    "size": 2485392,
-    "path": "../../.output/public/images/projects/santista/santista1.png"
   },
   "/dos/js-dos/types/src/components/volume-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"11b-0YevICNiQcVb8YTYGL1e1C69rqc\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 283,
     "path": "../../.output/public/dos/js-dos/types/src/components/volume-control.d.ts"
   },
   "/dos/js-dos/types/v7-services/src/personal.d.ts": {
     "type": "video/mp2t",
     "etag": "\"14e-TKNQtwJ2xnbH9+/Q21Kz4fbI0bo\"",
-    "mtime": "2026-05-01T21:26:36.305Z",
+    "mtime": "2026-05-01T22:01:19.980Z",
     "size": 334,
     "path": "../../.output/public/dos/js-dos/types/v7-services/src/personal.d.ts"
   },
   "/dos/js-dos/types/src/backend/v7/latency.d.ts": {
     "type": "video/mp2t",
     "etag": "\"f5-lCzD2ZWr5bwof0LRU9OWrT5JBe8\"",
-    "mtime": "2026-05-01T21:26:36.293Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 245,
     "path": "../../.output/public/dos/js-dos/types/src/backend/v7/latency.d.ts"
+  },
+  "/images/projects/sparkeyes/spark3.png": {
+    "type": "image/png",
+    "etag": "\"221ee6-iYBYfZODalHbNJmIfpryqy4D2WQ\"",
+    "mtime": "2026-05-01T22:01:19.968Z",
+    "size": 2236134,
+    "path": "../../.output/public/images/projects/sparkeyes/spark3.png"
   },
   "/dos/js-dos/types/src/backend/v7/personal.d.ts": {
     "type": "video/mp2t",
     "etag": "\"e6-KrG0AvI/Gn7pFOgS6UacN8GKexs\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.980Z",
     "size": 230,
     "path": "../../.output/public/dos/js-dos/types/src/backend/v7/personal.d.ts"
   },
   "/dos/js-dos/types/src/backend/v7/v7-config.d.ts": {
     "type": "video/mp2t",
     "etag": "\"2ae-3IcV+f+Mg/b9DioAyhsZEmtOvdc\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.994Z",
     "size": 686,
     "path": "../../.output/public/dos/js-dos/types/src/backend/v7/v7-config.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/latency-info.d.ts": {
     "type": "video/mp2t",
     "etag": "\"109-eMwAlRuR60nxALpalD7df/+nbfA\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.993Z",
     "size": 265,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/latency-info.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/main.d.ts": {
     "type": "video/mp2t",
     "etag": "\"93-wqsXz+bL9+yFodtN5zMCEq6I0ug\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.994Z",
     "size": 147,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/main.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/networking.d.ts": {
     "type": "video/mp2t",
     "etag": "\"99-cSlzdDypYBn3ZXnUMXaIuLI1RsI\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.994Z",
     "size": 153,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/networking.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/token/token-add-time.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9c-5WESNrInkZZXzFv8D/uHdKr0aUk\"",
-    "mtime": "2026-05-01T21:26:36.293Z",
+    "mtime": "2026-05-01T22:01:19.968Z",
     "size": 156,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/token/token-add-time.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/token/token-select.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9b-7hnfnWeTg2aRA47KtRNeVRhy5hc\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.994Z",
     "size": 155,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/token/token-select.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/token/token.d.ts": {
     "type": "video/mp2t",
     "etag": "\"265-KmAJJGcEFeqFRQQJbXyPXfWqrtY\"",
-    "mtime": "2026-05-01T21:26:36.309Z",
+    "mtime": "2026-05-01T22:01:19.994Z",
     "size": 613,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/token/token.d.ts"
   },
@@ -1850,7 +1850,7 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": null,
     "etag": "\"ce38d8-R5ULl/ZX8gS8nly1++g8RcdZIlM\"",
-    "mtime": "2026-05-01T21:26:36.239Z",
+    "mtime": "2026-05-01T22:01:19.900Z",
     "size": 13514968,
     "path": "../../.output/public/dos/files/doom.jsdos"
   },
@@ -1858,7 +1858,7 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "br",
     "etag": "\"cab44c-DRbrj1jhmyo79opfi2w58GB28+U\"",
-    "mtime": "2026-05-01T21:26:57.650Z",
+    "mtime": "2026-05-01T22:01:41.311Z",
     "size": 13284428,
     "path": "../../.output/public/dos/files/doom.jsdos.br"
   },
@@ -1866,7 +1866,7 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"cd3169-8zzZ8h3NeOw+CdWOk6WHEtp+2TM\"",
-    "mtime": "2026-05-01T21:26:38.989Z",
+    "mtime": "2026-05-01T22:01:22.595Z",
     "size": 13447529,
     "path": "../../.output/public/dos/files/doom.jsdos.gz"
   }
@@ -1993,7 +1993,7 @@ function u$1(e) {
     return e(...n);
   };
 }
-const _ = u$1(getRequestURL$1), De$1 = u$1(getRequestIP), S$2 = u$1(setResponseStatus$1), q$1 = u$1(getResponseStatus), We$1 = u$1(getResponseStatusText), y = u$1(getResponseHeaders), H = u$1(getResponseHeader$1), Be$1 = u$1(setResponseHeader$1), N = u$1(appendResponseHeader$1), ze$1 = u$1(parseCookies), Je$1 = u$1(getCookie), Xe = u$1(setCookie), h = u$1(setHeader), Ge$1 = u$1(getRequestWebStream), Ke$1 = u$1(removeResponseHeader$1), Ve$1 = u$1(Ne$1);
+const _ = u$1(getRequestURL$1), De$1 = u$1(getRequestIP), S$2 = u$1(setResponseStatus$1), q$1 = u$1(getResponseStatus), We$1 = u$1(getResponseStatusText), y = u$1(getResponseHeaders), H = u$1(getResponseHeader$1), Be$1 = u$1(setResponseHeader$1), N = u$1(appendResponseHeader$1), ze$1 = u$1(parseCookies), Je$1 = u$1(getCookie), Xe$1 = u$1(setCookie), h = u$1(setHeader), Ge$1 = u$1(getRequestWebStream), Ke$1 = u$1(removeResponseHeader$1), Ve$1 = u$1(Ne$1);
 function Ze() {
   var _a;
   return getContext("nitro-app", { asyncContext: !!((_a = globalThis.app.config.server.experimental) == null ? void 0 : _a.asyncContext), AsyncLocalStorage: AsyncLocalStorage });
@@ -2137,7 +2137,7 @@ function ht(e) {
   } catch (t) {
     console.error(t);
   } finally {
-    Xe(e.nativeEvent, "flash", "", { maxAge: 0 });
+    Xe$1(e.nativeEvent, "flash", "", { maxAge: 0 });
   }
 }
 async function gt(e) {
@@ -2250,7 +2250,7 @@ async function L(e, n) {
   n instanceof Response && (n.headers.has("X-Revalidate") && (t = n.headers.get("X-Revalidate").split(",")), n.headers.has("Location") && (s = new URL(n.headers.get("Location"), new URL(e.request.url).origin + "").toString()));
   const o = nt(e);
   return o.request = new Request(s, { headers: $t(e) }), await provideRequestEvent(o, async () => {
-    await gt(o), v$1 || (v$1 = (await import('../build/app-NYzFfw72.mjs')).default), o.router.dataOnly = t || true, o.router.previousUrl = e.request.headers.get("referer");
+    await gt(o), v$1 || (v$1 = (await import('../build/app-DPjGwVqF.mjs')).default), o.router.dataOnly = t || true, o.router.previousUrl = e.request.headers.get("referer");
     try {
       renderToString(() => {
         sharedConfig.context.event = o, v$1();
@@ -2320,55 +2320,55 @@ function D(e) {
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, key + "" , value);
-function Mt(e) {
+function jt(e) {
   let t;
-  const n = He(e), r = { duplex: "half", method: e.method, headers: e.headers };
+  const n = Oe(e), r = { duplex: "half", method: e.method, headers: e.headers };
   return e.node.req.body instanceof ArrayBuffer ? new Request(n, { ...r, body: e.node.req.body }) : new Request(n, { ...r, get body() {
-    return t || (t = Xt(e), t);
+    return t || (t = Yt(e), t);
   } });
 }
-function jt(e) {
+function Ut(e) {
   var _a;
-  return (_a = e.web) != null ? _a : e.web = { request: Mt(e), url: He(e) }, e.web.request;
+  return (_a = e.web) != null ? _a : e.web = { request: jt(e), url: Oe(e) }, e.web.request;
 }
-function Ut() {
-  return en();
+function Bt() {
+  return tn();
 }
-const qe = /* @__PURE__ */ Symbol("$HTTPEvent");
-function Bt(e) {
-  return typeof e == "object" && (e instanceof H3Event || (e == null ? void 0 : e[qe]) instanceof H3Event || (e == null ? void 0 : e.__is_event__) === true);
+const He = /* @__PURE__ */ Symbol("$HTTPEvent");
+function Wt(e) {
+  return typeof e == "object" && (e instanceof H3Event || (e == null ? void 0 : e[He]) instanceof H3Event || (e == null ? void 0 : e.__is_event__) === true);
 }
 function S(e) {
   return function(...t) {
     var _a;
     let n = t[0];
-    if (Bt(n)) t[0] = n instanceof H3Event || n.__is_event__ ? n : n[qe];
+    if (Wt(n)) t[0] = n instanceof H3Event || n.__is_event__ ? n : n[He];
     else {
       if (!((_a = globalThis.app.config.server.experimental) == null ? void 0 : _a.asyncContext)) throw new Error("AsyncLocalStorage was not enabled. Use the `server.experimental.asyncContext: true` option in your app configuration to enable it. Or, pass the instance of HTTPEvent that you have as the first argument to the function.");
-      if (n = Ut(), !n) throw new Error("No HTTPEvent found in AsyncLocalStorage. Make sure you are using the function within the server runtime.");
+      if (n = Bt(), !n) throw new Error("No HTTPEvent found in AsyncLocalStorage. Make sure you are using the function within the server runtime.");
       t.unshift(n);
     }
     return e(...t);
   };
 }
-const He = S(getRequestURL$1), Wt = S(getRequestIP), te = S(setResponseStatus$1), me = S(getResponseStatus), Dt = S(getResponseStatusText), J = S(getResponseHeaders), ge = S(getResponseHeader$1), Kt = S(setResponseHeader$1), Gt = S(appendResponseHeader$1), ye = S(sendRedirect$1), Jt = S(getCookie), zt = S(setCookie), Vt = S(setHeader), Xt = S(getRequestWebStream), Yt = S(removeResponseHeader$1), Qt = S(jt);
-function Zt() {
+const Oe = S(getRequestURL$1), Dt = S(getRequestIP), te = S(setResponseStatus$1), me = S(getResponseStatus), Kt = S(getResponseStatusText), J = S(getResponseHeaders), ge = S(getResponseHeader$1), Gt = S(setResponseHeader$1), Jt = S(appendResponseHeader$1), ye = S(sendRedirect$1), zt = S(getCookie), Vt = S(setCookie), Xt = S(setHeader), Yt = S(getRequestWebStream), Qt = S(removeResponseHeader$1), Zt = S(Ut);
+function en() {
   var _a;
   return getContext("nitro-app", { asyncContext: !!((_a = globalThis.app.config.server.experimental) == null ? void 0 : _a.asyncContext), AsyncLocalStorage: AsyncLocalStorage });
 }
-function en() {
-  return Zt().use().event;
+function tn() {
+  return en().use().event;
 }
-const Oe = [{ page: true, $component: { src: "src/routes/doom.tsx?pick=default&pick=$css", build: () => import('../build/doom2.mjs'), import: () => import('../build/doom2.mjs') }, path: "/doom", filePath: "/home/gus/thecodergus.github.io/src/routes/doom.tsx" }, { page: true, $component: { src: "src/routes/index.tsx?pick=default&pick=$css", build: () => import('../build/index2.mjs'), import: () => import('../build/index2.mjs') }, path: "/", filePath: "/home/gus/thecodergus.github.io/src/routes/index.tsx" }], tn = nn(Oe.filter((e) => e.page));
-function nn(e) {
+const Ie = [{ page: true, $component: { src: "src/routes/doom.tsx?pick=default&pick=$css", build: () => import('../build/doom2.mjs'), import: () => import('../build/doom2.mjs') }, path: "/doom", filePath: "/home/gus/thecodergus.github.io/src/routes/doom.tsx" }, { page: true, $component: { src: "src/routes/index.tsx?pick=default&pick=$css", build: () => import('../build/index2.mjs'), import: () => import('../build/index2.mjs') }, path: "/", filePath: "/home/gus/thecodergus.github.io/src/routes/index.tsx" }], nn = rn(Ie.filter((e) => e.page));
+function rn(e) {
   function t(n, r, o, s) {
     const a = Object.values(n).find((i) => o.startsWith(i.id + "/"));
     return a ? (t(a.children || (a.children = []), r, o.slice(a.id.length)), n) : (n.push({ ...r, id: o, path: o.replace(/\([^)/]+\)/g, "").replace(/\/+/g, "/") }), n);
   }
   return e.sort((n, r) => n.path.length - r.path.length).reduce((n, r) => t(n, r, r.path, r.path), []);
 }
-function rn(e, t) {
-  const n = sn.lookup(e);
+function on(e, t) {
+  const n = an.lookup(e);
   if (n && n.route) {
     const r = n.route, o = t === "HEAD" ? r.$HEAD || r.$GET : r[`$${t}`];
     if (o === void 0) return;
@@ -2376,27 +2376,27 @@ function rn(e, t) {
     return { handler: o, params: n.params, isPage: s };
   }
 }
-function on(e) {
+function sn(e) {
   return e.$HEAD || e.$GET || e.$POST || e.$PUT || e.$PATCH || e.$DELETE;
 }
-const sn = createRouter({ routes: Oe.reduce((e, t) => {
-  if (!on(t)) return e;
+const an = createRouter({ routes: Ie.reduce((e, t) => {
+  if (!sn(t)) return e;
   let n = t.path.replace(/\([^)/]+\)/g, "").replace(/\/+/g, "/").replace(/\*([^/]*)/g, (r, o) => `**:${o}`).split("/").map((r) => r.startsWith(":") || r.startsWith("*") ? r : encodeURIComponent(r)).join("/");
   if (/:[^/]*\?/g.test(n)) throw new Error(`Optional parameters are not supported in API routes: ${n}`);
   if (e[n]) throw new Error(`Duplicate API routes for "${n}" found at "${e[n].route.path}" and "${t.path}"`);
   return e[n] = { route: t }, e;
 }, {}) }), Y = "solidFetchEvent";
-function an(e) {
-  return { request: Qt(e), response: un(e), clientAddress: Wt(e), locals: {}, nativeEvent: e };
-}
 function cn(e) {
+  return { request: Zt(e), response: dn(e), clientAddress: Dt(e), locals: {}, nativeEvent: e };
+}
+function ln(e) {
   if (!e.context[Y]) {
-    const t = an(e);
+    const t = cn(e);
     e.context[Y] = t;
   }
   return e.context[Y];
 }
-class ln {
+class un {
   constructor(t) {
     __publicField(this, "event");
     this.event = t;
@@ -2409,13 +2409,13 @@ class ln {
     return this.get(t) !== null;
   }
   set(t, n) {
-    return Kt(this.event, t, n);
+    return Gt(this.event, t, n);
   }
   delete(t) {
-    return Yt(this.event, t);
+    return Qt(this.event, t);
   }
   append(t, n) {
-    Gt(this.event, t, n);
+    Jt(this.event, t, n);
   }
   getSetCookie() {
     const t = ge(this.event, "Set-Cookie");
@@ -2437,26 +2437,26 @@ class ln {
     return this.entries()[Symbol.iterator]();
   }
 }
-function un(e) {
+function dn(e) {
   return { get status() {
     return me(e);
   }, set status(t) {
     te(e, t);
   }, get statusText() {
-    return Dt(e);
+    return Kt(e);
   }, set statusText(t) {
     te(e, me(e), t);
-  }, headers: new ln(e) };
+  }, headers: new un(e) };
 }
-var hn = " ";
-const fn = { style: (e) => ssrElement("style", e.attrs, () => e.children, true), link: (e) => ssrElement("link", e.attrs, void 0, true), script: (e) => e.attrs.src ? ssrElement("script", mergeProps(() => e.attrs, { get id() {
+var fn = " ";
+const pn = { style: (e) => ssrElement("style", e.attrs, () => e.children, true), link: (e) => ssrElement("link", e.attrs, void 0, true), script: (e) => e.attrs.src ? ssrElement("script", mergeProps(() => e.attrs, { get id() {
   return e.key;
-} }), () => ssr(hn), true) : null, noscript: (e) => ssrElement("noscript", e.attrs, () => escape(e.children), true) };
+} }), () => ssr(fn), true) : null, noscript: (e) => ssrElement("noscript", e.attrs, () => escape(e.children), true) };
 function ne(e, t) {
   let { tag: n, attrs: { key: r, ...o } = { key: void 0 }, children: s } = e;
-  return fn[n]({ attrs: { ...o, nonce: t }, key: r, children: s });
+  return pn[n]({ attrs: { ...o, nonce: t }, key: r, children: s });
 }
-function pn(e, t, n, r = "default") {
+function mn(e, t, n, r = "default") {
   return lazy(async () => {
     var _a;
     {
@@ -2465,16 +2465,16 @@ function pn(e, t, n, r = "default") {
     }
   });
 }
-function Ie() {
+function _e() {
   function e(n) {
-    return { ...n, ...n.$$route ? n.$$route.require().route : void 0, info: { ...n.$$route ? n.$$route.require().route.info : {}, filesystem: true }, component: n.$component && pn(n.$component, globalThis.MANIFEST.client, globalThis.MANIFEST.ssr), children: n.children ? n.children.map(e) : void 0 };
+    return { ...n, ...n.$$route ? n.$$route.require().route : void 0, info: { ...n.$$route ? n.$$route.require().route.info : {}, filesystem: true }, component: n.$component && mn(n.$component, globalThis.MANIFEST.client, globalThis.MANIFEST.ssr), children: n.children ? n.children.map(e) : void 0 };
   }
-  return tn.map(e);
+  return nn.map(e);
 }
 let we;
-const mn = isServer ? () => getRequestEvent().routes : () => we || (we = Ie());
-function gn(e) {
-  const t = Jt(e.nativeEvent, "flash");
+const gn = isServer ? () => getRequestEvent().routes : () => we || (we = _e());
+function yn(e) {
+  const t = zt(e.nativeEvent, "flash");
   if (t) try {
     let n = JSON.parse(t);
     if (!n || !n.result) return;
@@ -2483,22 +2483,22 @@ function gn(e) {
   } catch (n) {
     console.error(n);
   } finally {
-    zt(e.nativeEvent, "flash", "", { maxAge: 0 });
+    Vt(e.nativeEvent, "flash", "", { maxAge: 0 });
   }
 }
-async function yn(e) {
+async function wn(e) {
   const t = globalThis.MANIFEST.client;
-  return globalThis.MANIFEST.ssr, e.response.headers.set("Content-Type", "text/html"), Object.assign(e, { manifest: await t.json(), assets: [...await t.inputs[t.handler].assets()], router: { submission: gn(e) }, routes: Ie(), complete: false, $islands: /* @__PURE__ */ new Set() });
+  return globalThis.MANIFEST.ssr, e.response.headers.set("Content-Type", "text/html"), Object.assign(e, { manifest: await t.json(), assets: [...await t.inputs[t.handler].assets()], router: { submission: yn(e) }, routes: _e(), complete: false, $islands: /* @__PURE__ */ new Set() });
 }
-const wn = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
+const vn = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
 function re(e) {
-  return e.status && wn.has(e.status) ? e.status : 302;
+  return e.status && vn.has(e.status) ? e.status : 302;
 }
-function vn(e, t, n = {}, r) {
+function bn(e, t, n = {}, r) {
   return eventHandler$1({ handler: (o) => {
-    const s = cn(o);
+    const s = ln(o);
     return provideRequestEvent(s, async () => {
-      const a = rn(new URL(s.request.url).pathname, s.request.method);
+      const a = on(new URL(s.request.url).pathname, s.request.method);
       if (a) {
         const h = await a.handler.import(), y = s.request.method === "HEAD" ? h.HEAD || h.GET : h[s.request.method];
         s.params = a.params || {}, sharedConfig.context = { event: s };
@@ -2543,7 +2543,7 @@ function ve(e, t) {
   return () => {
     if (e.response && e.response.headers.get("Location")) {
       const n = re(e.response);
-      te(t, n), Vt(t, "Location", e.response.headers.get("Location"));
+      te(t, n), Xt(t, "Location", e.response.headers.get("Location"));
     }
   };
 }
@@ -2554,14 +2554,14 @@ function be(e) {
     n && t(`<script>window.location="${n}"<\/script>`);
   };
 }
-function bn(e, t, n) {
-  return vn(e, yn, t);
+function Rn(e, t, n) {
+  return bn(e, wn, t);
 }
-const _e = createContext(), Ne = ["title", "meta"], oe = [], se = ["name", "http-equiv", "content", "charset", "media"].concat(["property"]), V = (e, t) => {
+const Ne = createContext(), Fe = ["title", "meta"], oe = [], se = ["name", "http-equiv", "content", "charset", "media"].concat(["property"]), V = (e, t) => {
   const n = Object.fromEntries(Object.entries(e.props).filter(([r]) => t.includes(r)).sort());
   return (Object.hasOwn(n, "name") || Object.hasOwn(n, "property")) && (n.name = n.name || n.property, delete n.property), e.tag + JSON.stringify(n);
 };
-function Rn() {
+function Sn() {
   if (!sharedConfig.context) {
     const n = document.head.querySelectorAll("[data-sm]");
     Array.prototype.forEach.call(n, (r) => r.parentNode.removeChild(r));
@@ -2573,7 +2573,7 @@ function Rn() {
     return r ? (r.tagName.toLowerCase() !== n.tag && (r.parentNode && r.parentNode.removeChild(r), r = document.createElement(n.tag)), r.removeAttribute("data-sm")) : r = document.createElement(n.tag), r;
   }
   return { addTag(n) {
-    if (Ne.indexOf(n.tag) !== -1) {
+    if (Fe.indexOf(n.tag) !== -1) {
       const s = n.tag === "title" ? oe : se, a = V(n, s);
       e.has(a) || e.set(a, []);
       let i = e.get(a), c = i.length;
@@ -2603,10 +2603,10 @@ function Rn() {
     }
   } };
 }
-function Sn() {
+function En() {
   const e = [];
-  return useAssets(() => ssr(An(e))), { addTag(t) {
-    if (Ne.indexOf(t.tag) !== -1) {
+  return useAssets(() => ssr(Tn(e))), { addTag(t) {
+    if (Fe.indexOf(t.tag) !== -1) {
       const n = t.tag === "title" ? oe : se, r = V(t, n), o = e.findIndex((s) => s.tag === t.tag && V(s, n) === r);
       o !== -1 && e.splice(o, 1);
     }
@@ -2614,23 +2614,23 @@ function Sn() {
   }, removeTag(t, n) {
   } };
 }
-const En = (e) => {
-  const t = isServer ? Sn() : Rn();
-  return createComponent$1(_e.Provider, { value: t, get children() {
+const $n = (e) => {
+  const t = isServer ? En() : Sn();
+  return createComponent$1(Ne.Provider, { value: t, get children() {
     return e.children;
   } });
-}, Fe = (e, t, n) => ($n({ tag: e, props: t, setting: n, id: createUniqueId(), get name() {
+}, Me = (e, t, n) => (An({ tag: e, props: t, setting: n, id: createUniqueId(), get name() {
   return t.name || t.property;
 } }), null);
-function $n(e) {
-  const t = useContext(_e);
+function An(e) {
+  const t = useContext(Ne);
   if (!t) throw new Error("<MetaProvider /> should be in the tree");
   createRenderEffect(() => {
     const n = t.addTag(e);
     onCleanup(() => t.removeTag(e, n));
   });
 }
-function An(e) {
+function Tn(e) {
   return e.map((t) => {
     var _a, _b;
     const r = Object.keys(t.props).map((s) => s === "children" ? "" : ` ${s}="${escape(t.props[s], true)}"`).join("");
@@ -2638,8 +2638,8 @@ function An(e) {
     return Array.isArray(o) && (o = o.join("")), ((_a = t.setting) == null ? void 0 : _a.close) ? `<${t.tag} data-sm="${t.id}"${r}>${((_b = t.setting) == null ? void 0 : _b.escape) ? escape(o) : o || ""}</${t.tag}>` : `<${t.tag} data-sm="${t.id}"${r}/>`;
   }).join("");
 }
-const Tn = (e) => Fe("title", e, { escape: true, close: true }), Q = (e) => Fe("link", e);
-function Me() {
+const Pn = (e) => Me("title", e, { escape: true, close: true }), Q = (e) => Me("link", e);
+function je() {
   let e = /* @__PURE__ */ new Set();
   function t(o) {
     return e.add(o), () => e.delete(o);
@@ -2660,10 +2660,10 @@ function le() {
   (!window.history.state || window.history.state._depth == null) && window.history.replaceState({ ...window.history.state, _depth: window.history.length - 1 }, ""), ae = window.history.state._depth;
 }
 isServer || le();
-function Pn(e) {
+function Cn(e) {
   return { ...e, _depth: window.history.state && window.history.state._depth };
 }
-function Cn(e, t) {
+function xn(e, t) {
   let n = false;
   return () => {
     const r = ae;
@@ -2676,27 +2676,27 @@ function Cn(e, t) {
     o && t(o) ? (n = true, window.history.go(-o)) : e();
   };
 }
-const xn = /^(?:[a-z0-9]+:)?\/\//i, Ln = /^\/+|(\/)\/+$/g, je = "http://sr";
+const Ln = /^(?:[a-z0-9]+:)?\/\//i, kn = /^\/+|(\/)\/+$/g, Ue = "http://sr";
 function U(e, t = false) {
-  const n = e.replace(Ln, "$1");
+  const n = e.replace(kn, "$1");
   return n ? t || /^[?#]/.test(n) ? n : "/" + n : "";
 }
 function z(e, t, n) {
-  if (xn.test(t)) return;
+  if (Ln.test(t)) return;
   const r = U(e), o = n && U(n);
   let s = "";
   return !o || t.startsWith("/") ? s = r : o.toLowerCase().indexOf(r.toLowerCase()) !== 0 ? s = r + o : s = o, (s || "/") + U(t, !s);
 }
-function kn(e, t) {
+function qn(e, t) {
   return U(e).replace(/\/*(\*.*)?$/g, "") + U(t);
 }
-function Ue(e) {
+function Be(e) {
   const t = {};
   return e.searchParams.forEach((n, r) => {
     r in t ? Array.isArray(t[r]) ? t[r].push(n) : t[r] = [t[r], n] : t[r] = n;
   }), t;
 }
-function qn(e, t, n) {
+function Hn(e, t, n) {
   const [r, o] = e.split("/*", 2), s = r.split("/").filter(Boolean), a = s.length;
   return (i) => {
     const c = i.split("/").filter(Boolean), l = c.length - a;
@@ -2720,11 +2720,11 @@ function Z(e, t) {
   const n = (r) => r === e;
   return t === void 0 ? true : typeof t == "string" ? n(t) : typeof t == "function" ? t(e) : Array.isArray(t) ? t.some(n) : t instanceof RegExp ? t.test(e) : false;
 }
-function Hn(e) {
+function On(e) {
   const [t, n] = e.pattern.split("/*", 2), r = t.split("/").filter(Boolean);
   return r.reduce((o, s) => o + (s.startsWith(":") ? 2 : 3), r.length - (n === void 0 ? 0 : 1));
 }
-function Be(e) {
+function We(e) {
   const t = /* @__PURE__ */ new Map(), n = getOwner();
   return new Proxy({}, { get(r, o) {
     return t.has(o) || runWithOwner(n, () => t.set(o, createMemo(() => e()[o]))), t.get(o)();
@@ -2736,28 +2736,28 @@ function Be(e) {
     return o in e();
   } });
 }
-function We(e) {
+function De(e) {
   let t = /(\/?\:[^\/]+)\?/.exec(e);
   if (!t) return [e];
   let n = e.slice(0, t.index), r = e.slice(t.index + t[0].length);
   const o = [n, n += t[1]];
   for (; t = /^(\/\:[^\/]+)\?/.exec(r); ) o.push(n += t[1]), r = r.slice(t[0].length);
-  return We(r).reduce((s, a) => [...s, ...o.map((i) => i + a)], []);
+  return De(r).reduce((s, a) => [...s, ...o.map((i) => i + a)], []);
 }
-const On = 100, In = createContext(), De = createContext();
-function _n(e, t = "") {
+const In = 100, _n = createContext(), Ke = createContext();
+function Nn(e, t = "") {
   const { component: n, preload: r, load: o, children: s, info: a } = e, i = !s || Array.isArray(s) && !s.length, c = { key: e, component: n, preload: r || o, info: a };
-  return Ke(e.path).reduce((l, u) => {
-    for (const v of We(u)) {
-      const g = kn(t, v);
+  return Ge(e.path).reduce((l, u) => {
+    for (const v of De(u)) {
+      const g = qn(t, v);
       let h = i ? g : g.split("/*", 1)[0];
-      h = h.split("/").map((y) => y.startsWith(":") || y.startsWith("*") ? y : encodeURIComponent(y)).join("/"), l.push({ ...c, originalPath: u, pattern: h, matcher: qn(h, !i, e.matchFilters) });
+      h = h.split("/").map((y) => y.startsWith(":") || y.startsWith("*") ? y : encodeURIComponent(y)).join("/"), l.push({ ...c, originalPath: u, pattern: h, matcher: Hn(h, !i, e.matchFilters) });
     }
     return l;
   }, []);
 }
-function Nn(e, t = 0) {
-  return { routes: e, score: Hn(e[e.length - 1]) * 1e4 - t, matcher(n) {
+function Fn(e, t = 0) {
+  return { routes: e, score: On(e[e.length - 1]) * 1e4 - t, matcher(n) {
     const r = [];
     for (let o = e.length - 1; o >= 0; o--) {
       const s = e[o], a = s.matcher(n);
@@ -2767,22 +2767,22 @@ function Nn(e, t = 0) {
     return r;
   } };
 }
-function Ke(e) {
+function Ge(e) {
   return Array.isArray(e) ? e : [e];
 }
-function Ge(e, t = "", n = [], r = []) {
-  const o = Ke(e);
+function Je(e, t = "", n = [], r = []) {
+  const o = Ge(e);
   for (let s = 0, a = o.length; s < a; s++) {
     const i = o[s];
     if (i && typeof i == "object") {
       i.hasOwnProperty("path") || (i.path = "");
-      const c = _n(i, t);
+      const c = Nn(i, t);
       for (const l of c) {
         n.push(l);
         const u = Array.isArray(i.children) && i.children.length === 0;
-        if (i.children && !u) Ge(i.children, l.pattern, n, r);
+        if (i.children && !u) Je(i.children, l.pattern, n, r);
         else {
-          const v = Nn([...n], r.length);
+          const v = Fn([...n], r.length);
           r.push(v);
         }
         n.pop();
@@ -2798,15 +2798,15 @@ function B(e, t) {
   }
   return [];
 }
-function Fn(e, t, n) {
-  const r = new URL(je), o = createMemo((u) => {
+function Mn(e, t, n) {
+  const r = new URL(Ue), o = createMemo((u) => {
     const v = e();
     try {
       return new URL(v, r);
     } catch {
       return console.error(`Invalid path ${v}`), u;
     }
-  }, r, { equals: (u, v) => u.href === v.href }), s = createMemo(() => o().pathname), a = createMemo(() => o().search, true), i = createMemo(() => o().hash), c = () => "", l = on$1(a, () => Ue(o()));
+  }, r, { equals: (u, v) => u.href === v.href }), s = createMemo(() => o().pathname), a = createMemo(() => o().search, true), i = createMemo(() => o().hash), c = () => "", l = on$1(a, () => Be(o()));
   return { get pathname() {
     return s();
   }, get search() {
@@ -2817,14 +2817,14 @@ function Fn(e, t, n) {
     return t();
   }, get key() {
     return c();
-  }, query: n ? n(l) : Be(l) };
+  }, query: n ? n(l) : We(l) };
 }
 let q;
-function Mn() {
+function jn() {
   return q;
 }
-function jn(e, t, n, r = {}) {
-  const { signal: [o, s], utils: a = {} } = e, i = a.parsePath || ((p) => p), c = a.renderPath || ((p) => p), l = a.beforeLeave || Me(), u = z("", r.base || "");
+function Un(e, t, n, r = {}) {
+  const { signal: [o, s], utils: a = {} } = e, i = a.parsePath || ((p) => p), c = a.renderPath || ((p) => p), l = a.beforeLeave || je(), u = z("", r.base || "");
   if (u === void 0) throw new Error(`${u} is not a valid base path`);
   u && !o().value && s({ value: u, replace: true, scroll: false });
   const [v, g] = createSignal(false);
@@ -2834,18 +2834,18 @@ function jn(e, t, n, r = {}) {
       h === w && (f(h.value), b(h.state), resetErrorBoundaries(), isServer || k[1]((E) => E.filter((I) => I.pending)));
     }).finally(() => {
       h === w && batch(() => {
-        q = void 0, p === "navigate" && Ze(h), g(false), h = void 0;
+        q = void 0, p === "navigate" && et(h), g(false), h = void 0;
       });
     }));
-  }, [d, f] = createSignal(o().value), [R, b] = createSignal(o().state), L = Fn(d, R, a.queryWrapper), T = [], k = createSignal(isServer ? tt() : []), M = createMemo(() => typeof r.transformUrl == "function" ? B(t(), r.transformUrl(L.pathname)) : B(t(), L.pathname)), ue = () => {
+  }, [d, f] = createSignal(o().value), [R, b] = createSignal(o().state), L = Mn(d, R, a.queryWrapper), T = [], k = createSignal(isServer ? nt() : []), M = createMemo(() => typeof r.transformUrl == "function" ? B(t(), r.transformUrl(L.pathname)) : B(t(), L.pathname)), ue = () => {
     const p = M(), w = {};
     for (let E = 0; E < p.length; E++) Object.assign(w, p[E].params);
     return w;
-  }, Xe = a.paramsWrapper ? a.paramsWrapper(ue, t) : Be(ue), de = { pattern: u, path: () => u, outlet: () => null, resolvePath(p) {
+  }, Ye = a.paramsWrapper ? a.paramsWrapper(ue, t) : We(ue), de = { pattern: u, path: () => u, outlet: () => null, resolvePath(p) {
     return z(u, p);
   } };
-  return createRenderEffect(on$1(o, (p) => y("native", p), { defer: true })), { base: de, location: L, params: Xe, isRouting: v, renderPath: c, parsePath: i, navigatorFactory: Qe, matches: M, beforeLeave: l, preloadRoute: et, singleFlight: r.singleFlight === void 0 ? true : r.singleFlight, submissions: k };
-  function Ye(p, w, E) {
+  return createRenderEffect(on$1(o, (p) => y("native", p), { defer: true })), { base: de, location: L, params: Ye, isRouting: v, renderPath: c, parsePath: i, navigatorFactory: Ze, matches: M, beforeLeave: l, preloadRoute: tt, singleFlight: r.singleFlight === void 0 ? true : r.singleFlight, submissions: k };
+  function Qe(p, w, E) {
     untrack(() => {
       if (typeof w == "number") {
         w && (a.go ? a.go(w) : console.warn("Router integration does not support relative routing"));
@@ -2853,7 +2853,7 @@ function jn(e, t, n, r = {}) {
       }
       const I = !w || w[0] === "?", { replace: W, resolve: _, scroll: D, state: N } = { replace: false, resolve: !I, scroll: true, ...E }, F = _ ? p.resolvePath(w) : z(I && L.pathname || "", w);
       if (F === void 0) throw new Error(`Path '${w}' is not a routable path`);
-      if (T.length >= On) throw new Error("Too many redirects");
+      if (T.length >= In) throw new Error("Too many redirects");
       const he = d();
       if (F !== he || N !== R()) if (isServer) {
         const fe = getRequestEvent();
@@ -2861,30 +2861,30 @@ function jn(e, t, n, r = {}) {
       } else l.confirm(F, E) && (T.push({ value: he, replace: W, scroll: D, state: R() }), y("navigate", { value: F, state: N }));
     });
   }
-  function Qe(p) {
-    return p = p || useContext(De) || de, (w, E) => Ye(p, w, E);
-  }
   function Ze(p) {
+    return p = p || useContext(Ke) || de, (w, E) => Qe(p, w, E);
+  }
+  function et(p) {
     const w = T[0];
     w && (s({ ...p, replace: w.replace, scroll: w.scroll }), T.length = 0);
   }
-  function et(p, w) {
+  function tt(p, w) {
     const E = B(t(), p.pathname), I = q;
     q = "preload";
     for (let W in E) {
       const { route: _, params: D } = E[W];
       _.component && _.component.preload && _.component.preload();
       const { preload: N } = _;
-      w && N && runWithOwner(n(), () => N({ params: D, location: { pathname: p.pathname, search: p.search, hash: p.hash, query: Ue(p), state: null, key: "" }, intent: "preload" }));
+      w && N && runWithOwner(n(), () => N({ params: D, location: { pathname: p.pathname, search: p.search, hash: p.hash, query: Be(p), state: null, key: "" }, intent: "preload" }));
     }
     q = I;
   }
-  function tt() {
+  function nt() {
     const p = getRequestEvent();
     return p && p.router && p.router.submission ? [p.router.submission] : [];
   }
 }
-function Un(e, t, n, r) {
+function Bn(e, t, n, r) {
   const { base: o, location: s, params: a } = e, { pattern: i, component: c, preload: l } = r().route, u = createMemo(() => r().path);
   c && c.preload && c.preload();
   const v = l ? l({ params: a, location: s, intent: q || "initial" }) : void 0;
@@ -2894,25 +2894,25 @@ function Un(e, t, n, r) {
     return z(o.path(), h, u());
   } };
 }
-const Je = (e) => (t) => {
-  const { base: n } = t, r = children(() => t.children), o = createMemo(() => Ge(r(), t.base || ""));
+const ze = (e) => (t) => {
+  const { base: n } = t, r = children(() => t.children), o = createMemo(() => Je(r(), t.base || ""));
   let s;
-  const a = jn(e, o, () => s, { base: n, singleFlight: t.singleFlight, transformUrl: t.transformUrl });
-  return e.create && e.create(a), createComponent$1(In.Provider, { value: a, get children() {
-    return createComponent$1(Bn, { routerState: a, get root() {
+  const a = Un(e, o, () => s, { base: n, singleFlight: t.singleFlight, transformUrl: t.transformUrl });
+  return e.create && e.create(a), createComponent$1(_n.Provider, { value: a, get children() {
+    return createComponent$1(Wn, { routerState: a, get root() {
       return t.root;
     }, get preload() {
       return t.rootPreload || t.rootLoad;
     }, get children() {
-      return [(s = getOwner()) && null, createComponent$1(Wn, { routerState: a, get branches() {
+      return [(s = getOwner()) && null, createComponent$1(Dn, { routerState: a, get branches() {
         return o();
       } })];
     } });
   } });
 };
-function Bn(e) {
+function Wn(e) {
   const t = e.routerState.location, n = e.routerState.params, r = createMemo(() => e.preload && untrack(() => {
-    e.preload({ params: n, location: t, intent: Mn() || "initial" });
+    e.preload({ params: n, location: t, intent: jn() || "initial" });
   }));
   return createComponent$1(Show, { get when() {
     return e.root;
@@ -2924,11 +2924,11 @@ function Bn(e) {
     return e.children;
   } }) });
 }
-function Wn(e) {
+function Dn(e) {
   if (isServer) {
     const o = getRequestEvent();
     if (o && o.router && o.router.dataOnly) {
-      Dn(o, e.routerState, e.branches);
+      Kn(o, e.routerState, e.branches);
       return;
     }
     o && ((o.router || (o.router = {})).matches || (o.router.matches = e.routerState.matches().map(({ route: s, path: a, params: i }) => ({ path: s.originalPath, pattern: s.pattern, match: a, params: i, info: s.info }))));
@@ -2941,7 +2941,7 @@ function Wn(e) {
     for (let l = 0, u = o.length; l < u; l++) {
       const v = s && s[l], g = o[l];
       a && v && g.route.key === v.route.key ? c[l] = a[l] : (i = false, t[l] && t[l](), createRoot((h) => {
-        t[l] = h, c[l] = Un(e.routerState, c[l - 1] || e.routerState.base, Re(() => r()[l + 1]), () => {
+        t[l] = h, c[l] = Bn(e.routerState, c[l - 1] || e.routerState.base, Re(() => r()[l + 1]), () => {
           var _a;
           const y = e.routerState.matches();
           return (_a = y[l]) != null ? _a : y[0];
@@ -2954,10 +2954,10 @@ function Wn(e) {
 }
 const Re = (e) => () => createComponent$1(Show, { get when() {
   return e();
-}, keyed: true, children: (t) => createComponent$1(De.Provider, { value: t, get children() {
+}, keyed: true, children: (t) => createComponent$1(Ke.Provider, { value: t, get children() {
   return t.outlet();
 } }) });
-function Dn(e, t, n) {
+function Kn(e, t, n) {
   const r = new URL(e.request.url), o = B(n, new URL(e.router.previousUrl || e.request.url).pathname), s = B(n, r.pathname);
   for (let a = 0; a < s.length; a++) {
     (!o[a] || s[a].route !== o[a].route) && (e.router.dataOnly = true);
@@ -2965,34 +2965,34 @@ function Dn(e, t, n) {
     i.preload && i.preload({ params: c, location: t.location, intent: "preload" });
   }
 }
-function Kn([e, t], n, r) {
+function Gn([e, t], n, r) {
   return [e, r ? (o) => t(r(o)) : t];
 }
-function Gn(e) {
+function Jn(e) {
   let t = false;
-  const n = (o) => typeof o == "string" ? { value: o } : o, r = Kn(createSignal(n(e.get()), { equals: (o, s) => o.value === s.value && o.state === s.state }), void 0, (o) => (!t && e.set(o), sharedConfig.registry && !sharedConfig.done && (sharedConfig.done = true), o));
+  const n = (o) => typeof o == "string" ? { value: o } : o, r = Gn(createSignal(n(e.get()), { equals: (o, s) => o.value === s.value && o.state === s.state }), void 0, (o) => (!t && e.set(o), sharedConfig.registry && !sharedConfig.done && (sharedConfig.done = true), o));
   return e.init && onCleanup(e.init((o = e.get()) => {
     t = true, r[1](n(o)), t = false;
-  })), Je({ signal: r, create: e.create, utils: e.utils });
+  })), ze({ signal: r, create: e.create, utils: e.utils });
 }
-function Jn(e, t, n) {
+function zn(e, t, n) {
   return e.addEventListener(t, n), () => e.removeEventListener(t, n);
 }
-function zn(e, t) {
+function Vn(e, t) {
   const n = e && document.getElementById(e);
   n ? n.scrollIntoView() : t && window.scrollTo(0, 0);
 }
-function Vn(e) {
+function Xn(e) {
   const t = new URL(e);
   return t.pathname + t.search;
 }
-function Xn(e) {
+function Yn(e) {
   let t;
-  const n = { value: e.url || (t = getRequestEvent()) && Vn(t.request.url) || "" };
-  return Je({ signal: [() => n, (r) => Object.assign(n, r)] })(e);
+  const n = { value: e.url || (t = getRequestEvent()) && Xn(t.request.url) || "" };
+  return ze({ signal: [() => n, (r) => Object.assign(n, r)] })(e);
 }
-const Yn = /* @__PURE__ */ new Map();
-function Qn({ preload: e = true, explicitLinks: t = false, actionBase: n = "/_server", transformUrl: r } = {}) {
+const Qn = /* @__PURE__ */ new Map();
+function Zn({ preload: e = true, explicitLinks: t = false, actionBase: n = "/_server", transformUrl: r } = {}) {
   return (o) => {
     const s = o.base.path(), a = o.navigatorFactory(o.base);
     let i, c;
@@ -3036,11 +3036,11 @@ function Qn({ preload: e = true, explicitLinks: t = false, actionBase: n = "/_se
       let f = d.submitter && d.submitter.hasAttribute("formaction") ? d.submitter.getAttribute("formaction") : d.target.getAttribute("action");
       if (!f) return;
       if (!f.startsWith("https://action/")) {
-        const b = new URL(f, je);
+        const b = new URL(f, Ue);
         if (f = o.parsePath(b.pathname + b.search), !f.startsWith(n)) return;
       }
       if (d.target.method.toUpperCase() !== "POST") throw new Error("Only POST forms are supported for Actions");
-      const R = Yn.get(f);
+      const R = Qn.get(f);
       if (R) {
         d.preventDefault();
         const b = new FormData(d.target, d.submitter);
@@ -3052,26 +3052,26 @@ function Qn({ preload: e = true, explicitLinks: t = false, actionBase: n = "/_se
     });
   };
 }
-function Zn(e) {
-  if (isServer) return Xn(e);
+function er(e) {
+  if (isServer) return Yn(e);
   const t = () => {
     const r = window.location.pathname.replace(/^\/+/, "/") + window.location.search, o = window.history.state && window.history.state._depth && Object.keys(window.history.state).length === 1 ? void 0 : window.history.state;
     return { value: r + window.location.hash, state: o };
-  }, n = Me();
-  return Gn({ get: t, set({ value: r, replace: o, scroll: s, state: a }) {
-    o ? window.history.replaceState(Pn(a), "", r) : window.history.pushState(a, "", r), zn(decodeURIComponent(window.location.hash.slice(1)), s), le();
-  }, init: (r) => Jn(window, "popstate", Cn(r, (o) => {
+  }, n = je();
+  return Jn({ get: t, set({ value: r, replace: o, scroll: s, state: a }) {
+    o ? window.history.replaceState(Cn(a), "", r) : window.history.pushState(a, "", r), Vn(decodeURIComponent(window.location.hash.slice(1)), s), le();
+  }, init: (r) => zn(window, "popstate", xn(r, (o) => {
     if (o) return !n.confirm(o);
     {
       const s = t();
       return !n.confirm(s.value, { state: s.state });
     }
-  })), create: Qn({ preload: e.preload, explicitLinks: e.explicitLinks, actionBase: e.actionBase, transformUrl: e.transformUrl }), utils: { go: (r) => window.history.go(r), beforeLeave: n } })(e);
+  })), create: Zn({ preload: e.preload, explicitLinks: e.explicitLinks, actionBase: e.actionBase, transformUrl: e.transformUrl }), utils: { go: (r) => window.history.go(r), beforeLeave: n } })(e);
 }
-function er(e) {
+function tr(e) {
   return e.children;
 }
-var tr = ["<script", ">", "<\/script>"];
+var Se = ["<script", ">", "<\/script>"];
 const nr = `
 (function() {
   try {
@@ -3079,10 +3079,17 @@ const nr = `
     if (t) document.documentElement.setAttribute('data-theme', t);
   } catch(e) {}
 })();
+`.trim(), rr = `
+(function() {
+  try {
+    var l = localStorage.getItem('portfolio-language');
+    if (l === 'pt-br' || l === 'en') document.documentElement.lang = l;
+  } catch(e) {}
+})();
 `.trim();
-function rr() {
-  return createComponent$1(Zn, { root: (e) => createComponent$1(En, { get children() {
-    return [createComponent$1(Tn, { children: "Gustavo M Camargo | AI & Systems Engineer" }), ssr(tr, ssrHydrationKey(), nr), createComponent$1(Q, { rel: "preconnect", href: "https://fonts.googleapis.com" }), createComponent$1(Q, { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" }), createComponent$1(Q, { href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap", rel: "stylesheet" }), createComponent$1(er, { get children() {
+function or() {
+  return createComponent$1(er, { root: (e) => createComponent$1($n, { get children() {
+    return [createComponent$1(Pn, { children: "Gustavo M Camargo | AI & Systems Engineer" }), ssr(Se, ssrHydrationKey(), nr), ssr(Se, ssrHydrationKey(), rr), createComponent$1(Q, { rel: "preconnect", href: "https://fonts.googleapis.com" }), createComponent$1(Q, { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" }), createComponent$1(Q, { href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap", rel: "stylesheet" }), createComponent$1(tr, { get children() {
       return createComponent$1(D, { get children() {
         return createComponent$1(Suspense, { get children() {
           return e.children;
@@ -3090,41 +3097,41 @@ function rr() {
       } });
     } })];
   } }), get children() {
-    return createComponent$1(mn, {});
+    return createComponent$1(gn, {});
   } });
 }
-const ze = isServer ? (e) => {
+const Ve = isServer ? (e) => {
   const t = getRequestEvent();
   return t.response.status = e.code, t.response.statusText = e.text, onCleanup(() => !t.nativeEvent.handled && !t.complete && (t.response.status = 200)), null;
 } : (e) => null;
-var or = ["<span", ' style="font-size:1.5em;text-align:center;position:fixed;left:0px;bottom:55%;width:100%;">', "</span>"], sr = ["<span", ' style="font-size:1.5em;text-align:center;position:fixed;left:0px;bottom:55%;width:100%;">500 | Internal Server Error</span>'];
-const ar = (e) => {
+var sr = ["<span", ' style="font-size:1.5em;text-align:center;position:fixed;left:0px;bottom:55%;width:100%;">', "</span>"], ar = ["<span", ' style="font-size:1.5em;text-align:center;position:fixed;left:0px;bottom:55%;width:100%;">500 | Internal Server Error</span>'];
+const ir = (e) => {
   const t = isServer ? "500 | Internal Server Error" : "Error | Uncaught Client Exception";
-  return createComponent$1(ErrorBoundary, { fallback: (n) => (console.error(n), [ssr(or, ssrHydrationKey(), escape(t)), createComponent$1(ze, { code: 500 })]), get children() {
+  return createComponent$1(ErrorBoundary, { fallback: (n) => (console.error(n), [ssr(sr, ssrHydrationKey(), escape(t)), createComponent$1(Ve, { code: 500 })]), get children() {
     return e.children;
   } });
-}, ir = (e) => {
+}, cr = (e) => {
   let t = false;
   const n = catchError(() => e.children, (r) => {
     console.error(r), t = !!r;
   });
-  return t ? [ssr(sr, ssrHydrationKey()), createComponent$1(ze, { code: 500 })] : n;
+  return t ? [ssr(ar, ssrHydrationKey()), createComponent$1(Ve, { code: 500 })] : n;
 };
-var Se = ["<script", ">", "<\/script>"], cr = ["<script", ' type="module"', " async", "><\/script>"], lr = ["<script", ' type="module" async', "><\/script>"];
-const ur = ssr("<!DOCTYPE html>");
-function Ve(e, t, n = []) {
+var Ee = ["<script", ">", "<\/script>"], lr = ["<script", ' type="module"', " async", "><\/script>"], ur = ["<script", ' type="module" async', "><\/script>"];
+const dr = ssr("<!DOCTYPE html>");
+function Xe(e, t, n = []) {
   for (let r = 0; r < t.length; r++) {
     const o = t[r];
     if (o.path !== e[0].path) continue;
     let s = [...n, o];
     if (o.children) {
       const a = e.slice(1);
-      if (a.length === 0 || (s = Ve(a, o.children, s), !s)) continue;
+      if (a.length === 0 || (s = Xe(a, o.children, s), !s)) continue;
     }
     return s;
   }
 }
-function dr(e) {
+function hr(e) {
   const t = getRequestEvent(), n = t.nonce;
   let r = [];
   return Promise.resolve().then(async () => {
@@ -3132,7 +3139,7 @@ function dr(e) {
     if (t.router && t.router.matches) {
       const s = [...t.router.matches];
       for (; s.length && (!s[0].info || !s[0].info.filesystem); ) s.shift();
-      const a = s.length && Ve(s, t.routes);
+      const a = s.length && Xe(s, t.routes);
       if (a) {
         const i = globalThis.MANIFEST.client.inputs;
         for (let c = 0; c < a.length; c++) {
@@ -3143,30 +3150,30 @@ function dr(e) {
     }
     r = await Promise.all(o).then((s) => [...new Map(s.flat().map((a) => [a.attrs.key, a])).values()].filter((a) => a.attrs.rel === "modulepreload" && !t.assets.find((i) => i.attrs.key === a.attrs.key)));
   }), useAssets(() => r.length ? r.map((o) => ne(o)) : void 0), createComponent$1(NoHydration, { get children() {
-    return [ur, createComponent$1(ir, { get children() {
+    return [dr, createComponent$1(cr, { get children() {
       return createComponent$1(e.document, { get assets() {
         return [createComponent$1(HydrationScript, {}), t.assets.map((o) => ne(o, n))];
       }, get scripts() {
-        return n ? [ssr(Se, ssrHydrationKey() + ssrAttribute("nonce", escape(n, true), false), `window.manifest = ${JSON.stringify(t.manifest)}`), ssr(cr, ssrHydrationKey(), ssrAttribute("nonce", escape(n, true), false), ssrAttribute("src", escape(globalThis.MANIFEST.client.inputs[globalThis.MANIFEST.client.handler].output.path, true), false))] : [ssr(Se, ssrHydrationKey(), `window.manifest = ${JSON.stringify(t.manifest)}`), ssr(lr, ssrHydrationKey(), ssrAttribute("src", escape(globalThis.MANIFEST.client.inputs[globalThis.MANIFEST.client.handler].output.path, true), false))];
+        return n ? [ssr(Ee, ssrHydrationKey() + ssrAttribute("nonce", escape(n, true), false), `window.manifest = ${JSON.stringify(t.manifest)}`), ssr(lr, ssrHydrationKey(), ssrAttribute("nonce", escape(n, true), false), ssrAttribute("src", escape(globalThis.MANIFEST.client.inputs[globalThis.MANIFEST.client.handler].output.path, true), false))] : [ssr(Ee, ssrHydrationKey(), `window.manifest = ${JSON.stringify(t.manifest)}`), ssr(ur, ssrHydrationKey(), ssrAttribute("src", escape(globalThis.MANIFEST.client.inputs[globalThis.MANIFEST.client.handler].output.path, true), false))];
       }, get children() {
         return createComponent$1(Hydration, { get children() {
-          return createComponent$1(ar, { get children() {
-            return createComponent$1(rr, {});
+          return createComponent$1(ir, { get children() {
+            return createComponent$1(or, {});
           } });
         } });
       } });
     } })];
   } });
 }
-var hr = ['<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080012"><link rel="icon" href="/favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">', "</head>"], fr = ["<html", ' lang="en" data-theme="ai">', '<body><a href="#main" class="skip-link">Skip to main content</a><div id="app">', "</div><!--$-->", "<!--/--></body></html>"];
-const Sr = bn(() => createComponent$1(dr, { document: ({ assets: e, children: t, scripts: n }) => ssr(fr, ssrHydrationKey(), createComponent$1(NoHydration, { get children() {
-  return ssr(hr, escape(e));
+var fr = ['<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080012"><link rel="icon" href="/favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">', "</head>"], pr = ["<html", ' lang="en" data-theme="ai">', '<body><a href="#main" class="skip-link">Skip to main content</a><div id="app">', "</div><!--$-->", "<!--/--></body></html>"];
+const Er = Rn(() => createComponent$1(hr, { document: ({ assets: e, children: t, scripts: n }) => ssr(pr, ssrHydrationKey(), createComponent$1(NoHydration, { get children() {
+  return ssr(fr, escape(e));
 } }), escape(t), escape(n)) }));
 
 const handlers = [
   { route: '', handler: _2L1h_Z, lazy: false, middleware: true, method: undefined },
   { route: '/_server', handler: Lt, lazy: false, middleware: true, method: undefined },
-  { route: '/', handler: Sr, lazy: false, middleware: true, method: undefined }
+  { route: '/', handler: Er, lazy: false, middleware: true, method: undefined }
 ];
 
 function createNitroApp() {

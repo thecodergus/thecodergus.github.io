@@ -65,6 +65,7 @@ export interface NavbarMessages {
   experience: string;
   projects: string;
   contact: string;
+  language: string;
 }
 
 export interface HeroMessages {
@@ -82,6 +83,7 @@ export interface ContactMessages {
 
 export interface FooterMessages {
   made_with: string;
+  by: string;
 }
 
 export interface ProjectsFilterMessages {

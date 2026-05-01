@@ -3,6 +3,41 @@ import { setLanguage, useI18n } from "~/stores/i18nStore";
 import { Language } from "~/types";
 import { Menu, X } from "lucide-solid";
 
+const LangSwitcher = (props: {
+  language: () => Language;
+  label: () => string;
+  mobile?: boolean;
+}) => {
+  const active = "bg-accent-cyan text-bg border-accent-cyan";
+  const inactive = "bg-transparent text-text-muted border-border hover:border-accent-cyan hover:text-accent-cyan";
+
+  return (
+    <div class={`flex items-center gap-2 ${props.mobile ? "pt-2 border-t border-border" : ""}`}>
+      <span class="text-xs text-text-muted font-mono">{props.label()}</span>
+      <div class="flex items-center rounded-lg border border-border overflow-hidden">
+        <button
+          onClick={() => setLanguage(Language.PtBr)}
+          class={`px-3 py-1.5 text-sm font-medium transition-colors border-r border-border ${
+            props.language() === Language.PtBr ? active : inactive
+          }`}
+          aria-label="Português (Brasil)"
+        >
+          🇧🇷 PT
+        </button>
+        <button
+          onClick={() => setLanguage(Language.En)}
+          class={`px-3 py-1.5 text-sm font-medium transition-colors ${
+            props.language() === Language.En ? active : inactive
+          }`}
+          aria-label="English"
+        >
+          🇺🇸 EN
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function Navbar() {
   const { language, messages } = useI18n();
   const [scrolled, setScrolled] = createSignal(false);
@@ -19,6 +54,8 @@ export default function Navbar() {
     ];
   };
 
+  const langLabel = () => messages()?.navbar?.language || "Idioma";
+
   onMount(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -26,11 +63,6 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     onCleanup(() => window.removeEventListener("scroll", handleScroll));
   });
-
-  const toggleLang = () => {
-    const next = language() === Language.PtBr ? Language.En : Language.PtBr;
-    setLanguage(next);
-  };
 
   const handleNavClick = (e: MouseEvent, href: string) => {
     e.preventDefault();
@@ -66,12 +98,7 @@ export default function Navbar() {
               <span class="absolute -bottom-1 left-0 w-0 h-px bg-accent-cyan transition-all group-hover:w-full" />
             </a>
           ))}
-          <button
-            onClick={toggleLang}
-            class="text-xs font-mono px-3 py-1 rounded border border-border hover:border-accent-green hover:text-accent-green transition-colors"
-          >
-            {language() === Language.PtBr ? "EN" : "PT"}
-          </button>
+          <LangSwitcher language={language} label={langLabel} />
         </div>
 
         {/* Mobile toggle */}
@@ -96,12 +123,7 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <button
-            onClick={toggleLang}
-            class="text-xs font-mono px-3 py-1 rounded border border-border hover:border-accent-green hover:text-accent-green transition-colors self-start"
-          >
-            {language() === Language.PtBr ? "EN" : "PT"}
-          </button>
+          <LangSwitcher language={language} label={langLabel} mobile />
         </div>
       )}
     </nav>

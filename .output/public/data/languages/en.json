@@ -15,7 +15,8 @@
         "skills": "Skills",
         "experience": "Experience",
         "projects": "Projects",
-        "contact": "Contact"
+        "contact": "Contact",
+        "language": "Language"
     },
     "hero": {
         "subtitle": "AI Automation Specialist. Full-Stack Developer with expertise in Python, Rust, C++ and computer vision. Building the future, line by line.",
@@ -29,7 +30,8 @@
         "paragraph": "Have an interesting project or opportunity? Let's talk. I'm always open to new challenges in AI, systems and computer vision."
     },
     "footer": {
-        "made_with": "Made with"
+        "made_with": "Made with",
+        "by": "by"
     },
     "projects_filter": {
         "all": "All",

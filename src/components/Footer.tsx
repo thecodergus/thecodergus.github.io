@@ -12,7 +12,7 @@ export default function Footer() {
         <div class="flex items-center gap-2 text-sm text-text-muted">
           <span>{madeWith()}</span>
           <Heart size={14} class="text-accent-red fill-accent-red" />
-          <span>por {name()}</span>
+          <span>{messages()?.footer?.by || "por"} {name()}</span>
         </div>
 
         <div class="flex items-center gap-6">

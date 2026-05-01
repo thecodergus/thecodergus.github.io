@@ -4,7 +4,7 @@ import type { Project } from "~/types";
 import ProjectModal from "~/components/ProjectModal";
 
 export default function Projects() {
-  const { messages } = useI18n();
+  const { messages, language } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
   const [activeFilter, setActiveFilter] = createSignal<string>("all");
   const [selectedProject, setSelectedProject] = createSignal<Project | null>(null);
@@ -27,6 +27,12 @@ export default function Projects() {
 
     if (sectionRef) observer.observe(sectionRef);
     return () => observer.disconnect();
+  });
+
+  createEffect(() => {
+    void language();
+    setSelectedProject(null);
+    setModalOpen(false);
   });
 
   const projects = () => messages()?.projects || [];

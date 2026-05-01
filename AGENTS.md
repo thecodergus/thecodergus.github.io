@@ -18,7 +18,6 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - `npm run dev` — Start dev server
 - `npm run build` — Static build (output: `.output/public`)
 - `npm start` — Preview production build
-- `npm run version` — Prints Vinxi version
 - CI uses `npm ci` (not `npm install`); local development uses `npm install`
 
 ## Tooling (via `.opencode/opencode.json`)
@@ -107,32 +106,11 @@ Blocking inline `<script>` in `app.tsx` `<head>` reads `localStorage.getItem('po
 ### Camera Frustum Math
 Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0. Use `camera.getViewSize(distance, new THREE.Vector2())` for programmatic lookups.
 
-**Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true):
+**Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true): `AI(orbit=14,spd=0.02,h=5,θ=π/2) Blockchain(12,0.02,3,π/4) Software(10,0.015,2,0) Web(11,0.015,1.5,0)`
 
-| Theme      | orbitRadius | orbitSpeed | heightAmplitude | initialAngle |
-| ---------- | ----------- | ---------- | --------------- | ------------ |
-| AI         | 14          | 0.02       | 5               | π/2          |
-| Blockchain | 12          | 0.02       | 3               | π/4          |
-| Software   | 10          | 0.015      | 2               | 0            |
-| Web        | 11          | 0.015      | 1.5             | 0            |
+**Post-process Presets** (bloom=bloomStrength, s=scanlineIntensity, v=vignetteStrength, c=chromaticStrength): `AI(bloom=0.4,s=0.15,v=0.35,c=0.003) Blockchain(bloom=0.5,s=0.08,v=0.35,c=0.003) Software(bloom=1.0,s=0.18,v=0.4,c=0.004) Web(bloom=0.5,s=0.05,v=0.15,c=0.003)`
 
-**Post-process Presets**:
-
-| Theme      | bloomStrength | bloomRadius | bloomThreshold | scanlineIntensity | vignetteStrength | chromaticStrength |
-| ---------- | ------------- | ----------- | -------------- | ----------------- | ---------------- | ----------------- |
-| AI         | 0.4           | 0.4         | 0.1            | 0.15              | 0.35             | 0.003             |
-| Blockchain | 0.5           | 0.5         | 0.2            | 0.08              | 0.35             | 0.003             |
-| Software   | 1.0           | 0.5         | 0.2            | 0.18              | 0.4              | 0.004             |
-| Web        | 0.5           | 0.4         | 0.15           | 0.05              | 0.15             | 0.003             |
-
-**Theme Color Schemes**:
-
-| Theme      | primary | secondary | tertiary | background |
-| ---------- | ------- | --------- | -------- | ---------- |
-| AI         | #00E5FF | #10A37F   | #8B5CF6  | #080012    |
-| Blockchain | #F7931A | #00BFA5   | #627EEA  | #0D1117    |
-| Software   | #00FF41 | #006622   | #FFFFFF  | #000000    |
-| Web        | #0000EE | #551A8B   | #CC0000  | #F8F9FA    |
+**Theme Color Schemes** (primary, secondary, tertiary, background): `AI(#00E5FF,#10A37F,#8B5CF6,#080012) Blockchain(#F7931A,#00BFA5,#627EEA,#0D1117) Software(#00FF41,#006622,#FFFFFF,#000000) Web(#0000EE,#551A8B,#CC0000,#F8F9FA)`
 
 ### Post-Processing Notes
 - **`antialias: true` on WebGLRenderer has NO effect with EffectComposer.** MSAA only works when rendering directly to the default framebuffer. If antialiasing is needed, use an FXAA or SMAA pass at the end of the chain.
@@ -165,7 +143,10 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - **Typewriter/interval animations MUST use `onMount` + `setInterval`/`setTimeout`, never `createEffect`.**
   SolidJS effects only track signals read **synchronously** within the effect callback body. Signals read inside async callbacks (`setTimeout`, `setInterval`, event handlers) are invisible to the reactivity system — the effect will run once and never re-trigger. This is intentional SolidJS behavior (same in Vue and MobX).
   See `TypewriterText.tsx` and `RotatingTypewriter.tsx` for the canonical pattern: `onMount(() => { const timer = setInterval(() => { ... }); onCleanup(() => clearInterval(timer)); })`.
+- **If you MUST use `createEffect` with async (e.g., RotatingTypewriter delete cycle), read the signal synchronously BEFORE the timer:**
+  `createEffect(() => { const val = displayText(); setTimeout(() => { /* use val */ }); })`. The synchronous read makes `displayText` a tracked dependency so the effect re-fires on each character. Omitting this causes the bug where only 1 character advances.
 - `setInterval`/`setTimeout` at component top-level (outside `onMount`) creates intervals during SSR, which is a memory leak. Always wrap in `onMount` + `onCleanup`.
+- **Hero animation assignment**: Name → `TypewriterText` (type-once, cursor vanishes after). Titles → `RotatingTypewriter` (cycle with delete). Do NOT use `GlitchText` for the name — GlitchText is for decorative scramble effects only.
 
 ### 3D Scene Conventions
 - Each scene is a pure factory function (`SceneConfig → SceneHandle`).
@@ -176,6 +157,7 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - Materials that need absolute opacity overrides (e.g. blockchain) must snapshot base via `userData._baseOpacity` to avoid multiplicative drift.
 
 ## Gotchas
+- `engine.setTheme()` has a same-theme guard at the top: `if (currentModule?.sceneKind === m.sceneKind) return;` — clicking the same theme pill should never rebuild the scene.
 - `TransitionManager` receives `onDispose` as a callback parameter — ensures `mainScene.remove(obj)` always pairs with `handle.dispose()`. Same callback fires on abort (rapid theme switch) to prevent orphan GPU objects.
 - `camera.lookAt(0, 0, 0)` called every frame in the render loop. If you change the lookAt target, update in `engine.ts`.
 - `body { overflow-x: hidden }` in `app.css` — full-bleed elements need explicit width handling.

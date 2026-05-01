@@ -15,7 +15,8 @@
         "skills": "Skills",
         "experience": "Experiência",
         "projects": "Projetos",
-        "contact": "Contato"
+        "contact": "Contato",
+        "language": "Idioma"
     },
     "hero": {
         "subtitle": "Especialista em Automação com IA. Full-Stack Developer com expertise em Python, Rust, C++ e visão computacional. Construindo o futuro, linha por linha.",
@@ -29,7 +30,8 @@
         "paragraph": "Tem um projeto interessante ou uma oportunidade? Vamos conversar. Estou sempre aberto a novos desafios em IA, sistemas e visão computacional."
     },
     "footer": {
-        "made_with": "Feito com"
+        "made_with": "Feito com",
+        "by": "por"
     },
     "projects_filter": {
         "all": "Todos",
