@@ -11,4 +11,12 @@
   --color-accent-purple-dim: #2E0B59;
   --color-border: rgba(0, 0, 0, 0.08);
   --color-border-strong: rgba(0, 0, 0, 0.15);
+
+  --color-accent-green: #0000EE;
+  --color-accent-cyan: #551A8B;
+  --color-accent-yellow: #CC0000;
+
+  --shadow-glow-green: 0 0 20px rgba(0, 0, 238, 0.25);
+  --shadow-glow-cyan: 0 0 20px rgba(85, 26, 139, 0.25);
+  --shadow-glow-purple: 0 0 20px rgba(204, 0, 0, 0.4);
 }

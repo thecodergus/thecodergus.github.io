@@ -4,7 +4,7 @@
 - SolidJS 1.9 + SolidStart 1.3 + Vinxi 0.5
 - TypeScript strict
 - Tailwind CSS v4 com `@theme` tokens e `data-theme` scoping
-- Three.js 0.170+ raw API (engine puro funcional em `src/engine/`)
+- Three.js ^0.184.0 raw API (engine puro funcional em `src/engine/`)
 - Post-processing: ShaderPass (scanline, vignette, chromatic aberration) + UnrealBloomPass (bloom)
 - Kobalte Core, Lucide Solid para UI
 - Deploy: GitHub Pages via static preset
@@ -26,7 +26,8 @@
 - `npm start` — preview de produção
 
 ## Quirks
-- `vite.config.ts` externaliza react/react-dom no Rollup (não remover)
 - TransitionManager recebe callback `onDispose` — garante que `mainScene.remove(obj)` sempre emparelha com `handle.dispose()`
+- `disposeScene` callback must be defined before `createTransitionManager(disposeScene)` in engine.ts for closure capture
 - `--color-accent-red: #FE4450` é universal (não temático) — usado para elementos semânticos (heart icon, status dots)
 - SSR flash prevenido por script inline bloqueante no `<head>` que lê localStorage e seta data-theme antes do primeiro paint
+- Fonts loaded at different weights in entry-server.tsx (JetBrains Mono `400;500`) vs app.tsx (`400;500;600;700`)

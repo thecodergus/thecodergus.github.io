@@ -18,7 +18,12 @@
         "contact": "Contato"
     },
     "hero": {
-        "subtitle": "Especialista em Automação com IA. Full-Stack Developer com expertise em Python, Rust, C++ e visão computacional. Construindo o futuro, linha por linha."
+        "subtitle": "Especialista em Automação com IA. Full-Stack Developer com expertise em Python, Rust, C++ e visão computacional. Construindo o futuro, linha por linha.",
+        "themes_label": "Explore os temas",
+        "themes_ai": "Motor Neural",
+        "themes_blockchain": "Rede em Cadeia",
+        "themes_software": "Terminal Matrix",
+        "themes_web": "Web Retrô"
     },
     "contact_message": {
         "paragraph": "Tem um projeto interessante ou uma oportunidade? Vamos conversar. Estou sempre aberto a novos desafios em IA, sistemas e visão computacional."
@@ -40,6 +45,12 @@
         "years": "Anos de Exp.",
         "languages": "Linguagens",
         "deploys": "Deploys"
+    },
+    "projects_modal": {
+        "close": "Fechar",
+        "view_project": "Ver projeto",
+        "technologies": "Tecnologias",
+        "period": "Período"
     },
     "projects": [
         {

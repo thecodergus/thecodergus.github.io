@@ -24,17 +24,17 @@
 
 ### Stores
 - `themeStore.ts`: `ThemeId = "ai" | "blockchain" | "software" | "web"`, localStorage `"portfolio-theme"`
-- `i18nStore.tsx`: language context with `createEffect` sync
+- `i18nStore.tsx`: language context with async `fetch` in `I18nProvider.onMount`
 
 ### 3D Engine (`src/engine/`)
 - Pure functional, no classes, closures with factory functions
 - `engine.ts`: scene/camera/renderer/composer, orbit logic, bloom breathing
   - Renderer: `WebGLRenderer({ antialias: true, alpha: true })`, `pixelRatio ≤ 2`, toneMapping `ACESFilmic`, exposure `1.2`
   - Camera: `PerspectiveCamera(55, aspect, 0.1, 100)`, orbits with `lookAt(0,0,0)` every frame
-  - Orbit: angle += `orbitSpeed * delta * 0.001`, mouse offset `* 0.26`, height `sin(angle * freq) * amplitude`, lerp `0.03`
-  - Bloom breathing: `0.5 + density * 1.0` — only for scenes with `getDensity()` (AI, Software)
+  - Orbit: angle += `orbitSpeed * delta * 0.001`, height `sin(angle * freq) * amplitude`, lerp `0.03`
+  - Bloom breathing: `baseStrength * (0.5 + density)` — only for scenes with `getDensity()` (AI, Software)
 - `transition.ts`: FadeOut/FadeIn, `FADE_DURATION=800ms`, `easeInOutCubic`, kills pending if new transition starts
-- `math.ts`: easing functions, clamp, vec3/vec2 utilities, seeded PRNG (global seed=42)
+- `math.ts`: easing functions, clamp, vec3/vec2 utilities, Lehmer PRNG (global seed=42)
 
 ### Theme System (`src/themes/`)
 Registry frozen at `src/themes/registry.ts`. Each theme: `index.ts` (ThemeModule), `scene.ts` (Three.js factory), `theme.css` (CSS vars scoped to `[data-theme]`).
@@ -42,31 +42,26 @@ Registry frozen at `src/themes/registry.ts`. Each theme: `index.ts` (ThemeModule
 **ThemeModule**: `{ sceneKind, colorScheme, createScene, cameraPreset, postPreset }`
 
 ## Camera Frustum Math
-From Three.js source (`PerspectiveCamera.js:299-302`):
-```
-visibleHeight = 2 × tan(FOV_rad / 2) × distance / zoom
-visibleWidth  = visibleHeight × aspect
-```
+From Three.js: `visibleHeight = 2 × tan(FOV_rad / 2) × distance`, `visibleWidth = visibleHeight × aspect`
 With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0.
-Use `camera.getViewSize(distance, new THREE.Vector2())` for robust calculations.
 
-## Current Camera Presets (FOV=55, heightFreq=0.5, pauseOnHover=true, autoRotate=true)
+## Camera Presets (all FOV=55, heightFrequency=0.5, autoRotate=true)
 
-| Theme      | orbitRadius | orbitSpeed | heightAmplitude |
-|------------|-------------|------------|-----------------|
-| AI         | 14          | 0.02       | 5               |
-| Blockchain | 12          | 0.02       | 3               |
-| Software   | 10          | 0.015      | 2               |
-| Web        | 12          | 0.02       | 3               |
+| Theme      | orbitRadius | orbitSpeed | heightAmplitude | initialAngle |
+|------------|-------------|------------|-----------------|--------------|
+| AI         | 14          | 0.02       | 5               | π/2          |
+| Blockchain | 12          | 0.02       | 3               | π/4          |
+| Software   | 10          | 0.015      | 2               | 0            |
+| Web        | 11          | 0.015      | 1.5             | 0            |
 
 ## Post-Process Presets
 
-| Theme      | bloomStrength | bloomRadius | bloomThreshold | scanline | vignette | chromatic |
-|------------|---------------|-------------|----------------|----------|----------|-----------|
-| AI         | 1.2           | 0.4         | 0.1            | 0.15     | 0.35     | 0.003     |
-| Blockchain | 1.0           | 0.5         | 0.15           | 0.12     | 0.35     | 0.003     |
-| Software   | 0.6           | 0.5         | 0.2            | 0.18     | 0.4      | 0.004     |
-| Web        | 1.0           | 0.5         | 0.15           | 0.12     | 0.35     | 0.003     |
+| Theme      | bloomStrength | bloomRadius | bloomThreshold | scanlineIntensity | vignetteStrength | chromaticStrength |
+|------------|---------------|-------------|----------------|-------------------|------------------|-------------------|
+| AI         | 0.4           | 0.4         | 0.1            | 0.15              | 0.35             | 0.003             |
+| Blockchain | 0.5           | 0.5         | 0.2            | 0.08              | 0.35             | 0.003             |
+| Software   | 1.0           | 0.5         | 0.2            | 0.18              | 0.4              | 0.004             |
+| Web        | 0.5           | 0.4         | 0.15           | 0.05              | 0.15             | 0.003             |
 
 ## Color Schemes
 
@@ -74,28 +69,26 @@ Use `camera.getViewSize(distance, new THREE.Vector2())` for robust calculations.
 |------------|---------|-----------|----------|------------|
 | AI         | #00E5FF | #10A37F   | #8B5CF6  | #080012    |
 | Blockchain | #F7931A | #00BFA5   | #627EEA  | #0D1117    |
-| Software   | #569CD6 | #00FF41   | #C586C0  | #0A0A0A    |
-| Web        | #F7DF1E | #58C4DC   | #8B5CF6  | #0F1117    |
+| Software   | #00FF41 | #006622   | #FFFFFF  | #000000    |
+| Web        | #0000EE | #551A8B   | #CC0000  | #F8F9FA    |
 
 ## Gotchas
-- `vite.config.ts` externalizes `react`/`react-dom` — DO NOT remove
-- `gsap` in package.json but never imported — dead dependency
-- `camera.lookAt(0,0,0)` every frame in render loop — if moving lookAt, update engine.ts:232
+- `camera.lookAt(0,0,0)` every frame in render loop — if moving lookAt, update engine.ts
 - `body { overflow-x: hidden }` — full-bleed elements need explicit width
 - AI scene `onKeyPress` exists but NOT exported — keyboard routing only works for Software
-- First-visit forces AI theme via `localStorage` key `"portfolio-v3"`
-- Fonts loaded twice (entry-server.tsx + app.tsx) with different weight specs
-- Resize sequence: camera.aspect → updateProjectionMatrix → renderer.setSize → composer.setSize
+- `createEngine()` forces `camera.lookAt(0, 0, 0)` each frame
+- Fonts loaded at different weights in entry-server.tsx (JetBrains Mono `400;500`) vs app.tsx (`400;500;600;700`)
+- `antialias: true` has NO effect with EffectComposer — MSAA only works on default framebuffer
+- Resize sequence: camera.aspect → updateProjectionMatrix → renderer.setSize → composer.setSize (current code does renderer.setSize first)
 - Transition kills pending scene on rapid theme switching
 - `--color-accent-red: #FE4450` universal, not theme-scoped
-- PRNG global seed (42) not reset on scene re-instantiation
-- `antialias: true` suboptimal with post-processing pipeline
+- Lehmer PRNG global seed (42) shared across all scenes, not reset on re-instantiation
 - Bloom breathing only for AI and Software (themes with `getDensity()`)
 
 ## Build & Deploy
 - CI: `.github/workflows/deploy.yml` — push/PR to main, Node 20, `npm ci`, `npm run build`
 - Artifact: `.output/public` → `actions/deploy-pages@v4`
-- CSS: `app.css` — single `@theme` block (AI defaults), theme CSS files `@import`-ed
 
 ## SSR Flash Prevention
 Blocking inline `<script>` in `app.tsx` reads `localStorage.getItem('portfolio-theme')` and sets `document.documentElement.setAttribute('data-theme', t)` before first paint.
+`<html>` tag in `entry-server.tsx` has `data-theme="ai"` as SSR fallback.

@@ -107,23 +107,23 @@ Blocking inline `<script>` in `app.tsx` `<head>` reads `localStorage.getItem('po
 ### Camera Frustum Math
 Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0. Use `camera.getViewSize(distance, new THREE.Vector2())` for programmatic lookups.
 
-**Camera Presets** (all FOV=55, heightFreq=0.5, pauseOnHover=true, autoRotate=true):
+**Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true):
 
-| Theme      | orbitRadius | orbitSpeed | heightAmplitude |
-| ---------- | ----------- | ---------- | --------------- |
-| AI         | 14          | 0.02       | 5               |
-| Blockchain | 12          | 0.02       | 3               |
-| Software   | 10          | 0.015      | 2               |
-| Web        | 12          | 0.02       | 3               |
+| Theme      | orbitRadius | orbitSpeed | heightAmplitude | initialAngle |
+| ---------- | ----------- | ---------- | --------------- | ------------ |
+| AI         | 14          | 0.02       | 5               | π/2          |
+| Blockchain | 12          | 0.02       | 3               | π/4          |
+| Software   | 10          | 0.015      | 2               | 0            |
+| Web        | 11          | 0.015      | 1.5             | 0            |
 
 **Post-process Presets**:
 
-| Theme      | bloomStrength | bloomRadius | bloomThreshold | scanline | vignette | chromatic |
-| ---------- | ------------- | ----------- | -------------- | -------- | -------- | --------- |
-| AI         | 1.2           | 0.4         | 0.1            | 0.15     | 0.35     | 0.003     |
-| Blockchain | 1.0           | 0.5         | 0.15           | 0.12     | 0.35     | 0.003     |
-| Software   | 0.6           | 0.5         | 0.2            | 0.18     | 0.4      | 0.004     |
-| Web        | 1.0           | 0.5         | 0.15           | 0.12     | 0.35     | 0.003     |
+| Theme      | bloomStrength | bloomRadius | bloomThreshold | scanlineIntensity | vignetteStrength | chromaticStrength |
+| ---------- | ------------- | ----------- | -------------- | ----------------- | ---------------- | ----------------- |
+| AI         | 0.4           | 0.4         | 0.1            | 0.15              | 0.35             | 0.003             |
+| Blockchain | 0.5           | 0.5         | 0.2            | 0.08              | 0.35             | 0.003             |
+| Software   | 1.0           | 0.5         | 0.2            | 0.18              | 0.4              | 0.004             |
+| Web        | 0.5           | 0.4         | 0.15           | 0.05              | 0.15             | 0.003             |
 
 **Theme Color Schemes**:
 
@@ -131,13 +131,13 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 | ---------- | ------- | --------- | -------- | ---------- |
 | AI         | #00E5FF | #10A37F   | #8B5CF6  | #080012    |
 | Blockchain | #F7931A | #00BFA5   | #627EEA  | #0D1117    |
-| Software   | #569CD6 | #00FF41   | #C586C0  | #0A0A0A    |
-| Web        | #F7DF1E | #58C4DC   | #8B5CF6  | #0F1117    |
+| Software   | #00FF41 | #006622   | #FFFFFF  | #000000    |
+| Web        | #0000EE | #551A8B   | #CC0000  | #F8F9FA    |
 
 ### Post-Processing Notes
 - **`antialias: true` on WebGLRenderer has NO effect with EffectComposer.** MSAA only works when rendering directly to the default framebuffer. If antialiasing is needed, use an FXAA or SMAA pass at the end of the chain.
 - `pixelRatio` capped at `Math.min(devicePixelRatio, 2)`.
-- Bloom breathing: modulates `bloomStrength` by `0.5 + density * 1.0`. Only works for scenes that export `getDensity()` — **AI** and **Software** have it; **Blockchain** and **Web** do NOT.
+- Bloom breathing: modulates `bloomStrength` by `baseStrength * (0.5 + density)` where `baseStrength` comes from the theme's `postPreset.bloomStrength`. Only works for scenes that export `getDensity()` — **AI** and **Software** have it; **Blockchain** and **Web** do NOT.
 - Resize order should be: `camera.aspect = w/h` → `camera.updateProjectionMatrix()` → `renderer.setSize(w, h)` → `composer.setSize(w, h)`. Current code sets renderer size before camera update.
 
 ## Build & Deploy
@@ -183,6 +183,6 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - `renderer.toneMapping = ACESFilmicToneMapping`, `toneMappingExposure = 1.2` — global, affects all themes.
 - Transition kills pending scene on rapid theme switching — may cause visual glitch.
 - `--color-accent-red: #FE4450` is universal (not theme-specific) — used for semantic elements like heart icon, status dots.
-- `Math.random`-based PRNG in `math.ts` shares a global seed (initially 42) — re-instantiating scenes doesn't reset it.
+- Lehmer PRNG in `math.ts` has a module-level mutable seed (initially 42) shared across all scenes — re-instantiating scenes doesn't reset it.
 - Font weights differ between `entry-server.tsx` (JetBrains Mono `400;500`) and `app.tsx` (JetBrains Mono `400;500;600;700`). If font rendering looks inconsistent, align these.
-- `onDispose` callback in transition.ts must be declared BEFORE `createTransitionManager` — use-before-declaration in closure.
+- `disposeScene` callback must be defined before `createTransitionManager(disposeScene)` in `engine.ts` — order matters due to closure capture in the transition manager.

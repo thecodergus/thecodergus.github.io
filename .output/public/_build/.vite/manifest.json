@@ -1,20 +1,20 @@
 {
-  "_Icon-BPd0Z1RN.js": {
-    "file": "assets/Icon-BPd0Z1RN.js",
+  "_Icon-CUfPr7EP.js": {
+    "file": "assets/Icon-CUfPr7EP.js",
     "name": "Icon",
     "imports": [
-      "_web-Ml1_dNb4.js"
+      "_web-B70XeL33.js"
     ]
   },
-  "_i18nStore-BipZZ_0h.js": {
-    "file": "assets/i18nStore-BipZZ_0h.js",
+  "_i18nStore-pcdiE20B.js": {
+    "file": "assets/i18nStore-pcdiE20B.js",
     "name": "i18nStore",
     "imports": [
-      "_web-Ml1_dNb4.js"
+      "_web-B70XeL33.js"
     ]
   },
-  "_web-Ml1_dNb4.js": {
-    "file": "assets/web-Ml1_dNb4.js",
+  "_web-B70XeL33.js": {
+    "file": "assets/web-B70XeL33.js",
     "name": "web"
   },
   "node_modules/devicon/fonts/devicon.svg": {
@@ -30,43 +30,43 @@
     "src": "node_modules/devicon/fonts/devicon.woff"
   },
   "src/routes/doom.tsx?pick=default&pick=$css": {
-    "file": "assets/doom-8RaPHlkM.js",
+    "file": "assets/doom-CYb3UizC.js",
     "name": "doom",
     "src": "src/routes/doom.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_web-Ml1_dNb4.js",
-      "_Icon-BPd0Z1RN.js"
+      "_web-B70XeL33.js",
+      "_Icon-CUfPr7EP.js"
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-DYSlQaa3.js",
+    "file": "assets/index-DBa_E2eI.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_web-Ml1_dNb4.js",
-      "_i18nStore-BipZZ_0h.js",
-      "_Icon-BPd0Z1RN.js"
+      "_web-B70XeL33.js",
+      "_i18nStore-pcdiE20B.js",
+      "_Icon-CUfPr7EP.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-CE5OsAnq.js",
+    "file": "assets/client-B2bGNenX.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
-      "_web-Ml1_dNb4.js",
-      "_i18nStore-BipZZ_0h.js"
+      "_web-B70XeL33.js",
+      "_i18nStore-pcdiE20B.js"
     ],
     "dynamicImports": [
       "src/routes/doom.tsx?pick=default&pick=$css",
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-BmvxoaSK.css"
+      "assets/client-BjXEo4Al.css"
     ],
     "assets": [
       "assets/devicon-BwTrXM5G.ttf",

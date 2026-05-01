@@ -69,6 +69,11 @@ export interface NavbarMessages {
 
 export interface HeroMessages {
   subtitle: string;
+  themes_label?: string;
+  themes_ai?: string;
+  themes_blockchain?: string;
+  themes_software?: string;
+  themes_web?: string;
 }
 
 export interface ContactMessages {
@@ -82,6 +87,13 @@ export interface FooterMessages {
 export interface ProjectsFilterMessages {
   all: string;
   view_project: string;
+}
+
+export interface ProjectsModalMessages {
+  close: string;
+  view_project: string;
+  technologies: string;
+  period: string;
 }
 
 export interface SkillsCategoryMessages {
@@ -106,6 +118,7 @@ export interface Messages {
   contact_message?: ContactMessages;
   footer?: FooterMessages;
   projects_filter?: ProjectsFilterMessages;
+  projects_modal?: ProjectsModalMessages;
   skills_categories?: SkillsCategoryMessages;
   stats?: StatsMessages;
 }

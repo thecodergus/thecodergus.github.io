@@ -1,4 +1,8 @@
-## Visual Theme - CyberMatrix Terminal
+## Visual Theme - Early Concept (NOT current implementation)
+
+This was the original design concept. The actual implemented theme system uses 4 distinct themes (AI, Blockchain, Software, Web) with different color schemes. See `src/themes/*/index.ts` for current colorScheme values.
+
+Early concept palette:
 
 Chosen palette for the portfolio redesign:
 - Background: #050203 (near-black)

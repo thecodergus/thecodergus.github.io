@@ -18,7 +18,12 @@
         "contact": "Contact"
     },
     "hero": {
-        "subtitle": "AI Automation Specialist. Full-Stack Developer with expertise in Python, Rust, C++ and computer vision. Building the future, line by line."
+        "subtitle": "AI Automation Specialist. Full-Stack Developer with expertise in Python, Rust, C++ and computer vision. Building the future, line by line.",
+        "themes_label": "Explore themes",
+        "themes_ai": "Neural Engine",
+        "themes_blockchain": "Chain Network",
+        "themes_software": "Terminal Matrix",
+        "themes_web": "Retro Web"
     },
     "contact_message": {
         "paragraph": "Have an interesting project or opportunity? Let's talk. I'm always open to new challenges in AI, systems and computer vision."
@@ -40,6 +45,12 @@
         "years": "Years Exp.",
         "languages": "Languages",
         "deploys": "Deploys"
+    },
+    "projects_modal": {
+        "close": "Close",
+        "view_project": "View project",
+        "technologies": "Technologies",
+        "period": "Period"
     },
     "projects": [
         {

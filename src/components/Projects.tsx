@@ -1,11 +1,19 @@
 import { createSignal, createEffect, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import type { Project } from "~/types";
+import ProjectModal from "~/components/ProjectModal";
 
 export default function Projects() {
   const { messages } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
   const [activeFilter, setActiveFilter] = createSignal<string>("all");
+  const [selectedProject, setSelectedProject] = createSignal<Project | null>(null);
+  const [modalOpen, setModalOpen] = createSignal(false);
+
+  const openProjectModal = (project: Project) => {
+    setSelectedProject(project);
+    setModalOpen(true);
+  };
 
   let sectionRef: HTMLDivElement | undefined;
 
@@ -42,6 +50,7 @@ export default function Projects() {
   };
 
   return (
+    <>
     <section
       id="projects"
       ref={sectionRef}
@@ -85,7 +94,8 @@ export default function Projects() {
           <For each={filteredProjects()}>
             {(project, index) => (
               <article
-                class="group bg-surface rounded-2xl overflow-hidden border border-border hover:border-accent-cyan/50 transition-all hover:-translate-y-1 hover:shadow-glow-cyan/10"
+                class="group bg-surface rounded-2xl overflow-hidden border border-border hover:border-accent-cyan/50 transition-all hover:-translate-y-1 hover:shadow-glow-cyan/10 cursor-pointer"
+                onClick={() => openProjectModal(project)}
                 style={{
                   opacity: isVisible() ? 1 : 0,
                   transform: isVisible() ? "translateY(0)" : "translateY(20px)",
@@ -99,18 +109,11 @@ export default function Projects() {
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  {project.url && (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <span class="px-4 py-2 rounded-full border border-white text-white text-sm font-medium">
-                        {viewProject()}
-                      </span>
-                    </a>
-                  )}
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <span class="px-4 py-2 rounded-full border border-white text-white text-sm font-medium">
+                      {viewProject()}
+                    </span>
+                  </div>
                 </div>
                 <div class="p-5">
                   <h3 class="font-semibold text-text mb-1 group-hover:text-accent-cyan transition-colors">
@@ -139,5 +142,12 @@ export default function Projects() {
         </div>
       </div>
     </section>
+
+    <ProjectModal
+      project={selectedProject()}
+      open={modalOpen()}
+      onOpenChange={setModalOpen}
+    />
+    </>
   );
 }
