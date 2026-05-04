@@ -1,20 +1,13 @@
 {
-  "_Footer-BdHU1Kj0.js": {
-    "file": "assets/Footer-BdHU1Kj0.js",
-    "name": "Footer",
-    "imports": [
-      "_i18nStore-CvoAD9yr.js"
-    ]
+  "_Footer-DdA34m4s.js": {
+    "file": "assets/Footer-DdA34m4s.js",
+    "name": "Footer"
   },
-  "_i18nStore-CvoAD9yr.js": {
-    "file": "assets/i18nStore-CvoAD9yr.js",
-    "name": "i18nStore"
-  },
-  "_index-1oyYkNVU.js": {
-    "file": "assets/index-1oyYkNVU.js",
+  "_index-CJ0NunAk.js": {
+    "file": "assets/index-CJ0NunAk.js",
     "name": "index",
     "imports": [
-      "_i18nStore-CvoAD9yr.js"
+      "_Footer-DdA34m4s.js"
     ]
   },
   "node_modules/devicon/fonts/devicon.svg": {
@@ -29,51 +22,37 @@
     "file": "assets/devicon-D0iwJE0M.woff",
     "src": "node_modules/devicon/fonts/devicon.woff"
   },
-  "src/routes/[...404].tsx?pick=default&pick=$css": {
-    "file": "assets/_...404_-Ate-vyEZ.js",
-    "name": "_...404_",
-    "src": "src/routes/[...404].tsx?pick=default&pick=$css",
-    "isEntry": true,
-    "isDynamicEntry": true,
-    "imports": [
-      "_i18nStore-CvoAD9yr.js",
-      "_Footer-BdHU1Kj0.js"
-    ]
-  },
   "src/routes/doom.tsx?pick=default&pick=$css": {
-    "file": "assets/doom-CNizeEs_.js",
+    "file": "assets/doom-DioAsstH.js",
     "name": "doom",
     "src": "src/routes/doom.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_i18nStore-CvoAD9yr.js",
-      "_index-1oyYkNVU.js",
-      "_Footer-BdHU1Kj0.js"
+      "_Footer-DdA34m4s.js",
+      "_index-CJ0NunAk.js"
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-b7MwP6uv.js",
+    "file": "assets/index-Bmwz0ncp.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_i18nStore-CvoAD9yr.js",
-      "_Footer-BdHU1Kj0.js"
+      "_Footer-DdA34m4s.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-CAB3K4gc.js",
+    "file": "assets/client-Bf8Dzlgt.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
-      "_i18nStore-CvoAD9yr.js",
-      "_index-1oyYkNVU.js"
+      "_Footer-DdA34m4s.js",
+      "_index-CJ0NunAk.js"
     ],
     "dynamicImports": [
-      "src/routes/[...404].tsx?pick=default&pick=$css",
       "src/routes/doom.tsx?pick=default&pick=$css",
       "src/routes/index.tsx?pick=default&pick=$css"
     ],

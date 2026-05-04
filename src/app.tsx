@@ -1,8 +1,9 @@
 import { MetaProvider, Title, Meta, Link } from "@solidjs/meta";
-import { Router } from "@solidjs/router";
+import { Router, Route } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 import { I18nProvider } from "~/stores/i18nStore";
+import NotFoundPage from "~/components/NotFoundPage";
 import "./app.css";
 
 const THEME_SCRIPT = `
@@ -56,6 +57,7 @@ export default function App() {
       )}
     >
       <FileRoutes />
+      <Route path="*" component={NotFoundPage} />
     </Router>
   );
 }
