@@ -29,6 +29,17 @@
     "file": "assets/devicon-D0iwJE0M.woff",
     "src": "node_modules/devicon/fonts/devicon.woff"
   },
+  "src/routes/[...404].tsx?pick=default&pick=$css": {
+    "file": "assets/_...404_-Ate-vyEZ.js",
+    "name": "_...404_",
+    "src": "src/routes/[...404].tsx?pick=default&pick=$css",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_i18nStore-CvoAD9yr.js",
+      "_Footer-BdHU1Kj0.js"
+    ]
+  },
   "src/routes/doom.tsx?pick=default&pick=$css": {
     "file": "assets/doom-CNizeEs_.js",
     "name": "doom",
@@ -53,7 +64,7 @@
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-DhgXYQKj.js",
+    "file": "assets/client-CAB3K4gc.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
@@ -62,11 +73,12 @@
       "_index-1oyYkNVU.js"
     ],
     "dynamicImports": [
+      "src/routes/[...404].tsx?pick=default&pick=$css",
       "src/routes/doom.tsx?pick=default&pick=$css",
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-D_LjfpgR.css"
+      "assets/client-CK9A2-Y5.css"
     ],
     "assets": [
       "assets/devicon-BwTrXM5G.ttf",

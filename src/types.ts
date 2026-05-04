@@ -115,6 +115,15 @@ export interface DoomMessages {
   back_to_portfolio: string;
 }
 
+export interface NotFoundMessages {
+  title: string;
+  status: string;
+  heading: string;
+  description: string;
+  back_home: string;
+  subtext: string;
+}
+
 export interface StatsMessages {
   projects: string;
   years: string;
@@ -134,6 +143,7 @@ export interface Messages {
   projects_modal?: ProjectsModalMessages;
   skills_categories?: SkillsCategoryMessages;
   doom?: DoomMessages;
+  not_found?: NotFoundMessages;
   stats?: StatsMessages;
 }
 
