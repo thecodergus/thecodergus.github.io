@@ -4,9 +4,6 @@ import { Language, type Messages, type SharedData } from "~/types";
 const STORAGE_KEY = "portfolio-language";
 
 function getInitialLanguage(): Language {
-  if (typeof window === "undefined") return Language.PtBr;
-  const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-  if (stored && Object.values(Language).includes(stored)) return stored;
   return Language.PtBr;
 }
 
@@ -81,6 +78,14 @@ export function I18nProvider(props: { children: JSX.Element }) {
     fetchSharedData().catch(() => {
       console.error("[i18n] Failed to load shared data");
     }).then((data) => { if (data) setSharedData(data); });
+
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
+      if (stored && Object.values(Language).includes(stored) && stored !== language()) {
+        setLanguageSignal(stored);
+      }
+    }
+
     fetchMessages(language())
       .then((data) => { setMessages(data); setFetchError(null); })
       .catch((err) => {
