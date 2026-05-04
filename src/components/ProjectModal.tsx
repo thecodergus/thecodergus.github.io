@@ -15,6 +15,9 @@ export default function ProjectModal(props: ProjectModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = createSignal(0);
 
   const modalMsgs = () => messages()?.projects_modal;
+  const prevImgLabel = () => modalMsgs()?.prev_image || "Previous image";
+  const nextImgLabel = () => modalMsgs()?.next_image || "Next image";
+  const imgLabel = (i: number) => `${modalMsgs()?.image || "Image"} ${i + 1}`;
 
   const hasMultipleImages = () =>
     (props.project?.images?.length ?? 0) > 1;
@@ -68,14 +71,14 @@ export default function ProjectModal(props: ProjectModalProps) {
                     <button
                       onClick={prevImage}
                       class="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                      aria-label="Imagem anterior"
+                      aria-label={prevImgLabel()}
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button
                       onClick={nextImage}
                       class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                      aria-label="Próxima imagem"
+                      aria-label={nextImgLabel()}
                     >
                       <ChevronRight size={20} />
                     </button>
@@ -86,10 +89,10 @@ export default function ProjectModal(props: ProjectModalProps) {
                             onClick={() => setCurrentImageIndex(i())}
                             class={`w-2 h-2 rounded-full transition-all ${
                               i() === currentImageIndex()
-                                ? "bg-accent-cyan w-4"
+                                ? "bg-accent-secondary w-4"
                                 : "bg-white/50 hover:bg-white/80"
                             }`}
-                            aria-label={`Imagem ${i() + 1}`}
+                            aria-label={imgLabel(i())}
                           />
                         )}
                       </For>
@@ -105,7 +108,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                 {/* Period */}
                 <Show when={modalMsgs()}>
                   <p class="text-sm text-text-muted font-mono mb-4">
-                    <span class="text-accent-green">
+                    <span class="text-accent-primary">
                       {modalMsgs()?.period}:
                     </span>{" "}
                     {project().startDate}
@@ -146,7 +149,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                     href={project().url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-green text-white font-medium text-sm hover:bg-accent-green/90 transition-colors"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-primary text-white font-medium text-sm hover:bg-accent-primary/90 transition-colors"
                   >
                     <ExternalLink size={16} />
                     {modalMsgs()?.view_project ?? "Ver projeto"}

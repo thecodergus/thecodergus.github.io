@@ -13,6 +13,7 @@ import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import type { SceneHandle, SceneConfig, CameraPreset, PostProcessPreset } from "./types";
 import type { ThemeModule } from "./types";
 import { createTransitionManager } from "./transition";
+import { setSeed } from "./math";
 
 // ── Scanline shader with per-theme uniform controls ──
 
@@ -143,6 +144,7 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
   // ── Scene helpers ──
 
   const buildScene = (m: ThemeModule): SceneHandle | null => {
+    setSeed(42);
     const config: SceneConfig = {
       width: renderer.domElement.clientWidth,
       height: renderer.domElement.clientHeight,
@@ -254,9 +256,9 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
   const resize = (): void => {
     const w = container.clientWidth;
     const h = container.clientHeight;
-    renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
     composer.setSize(w, h);
     scanlinePass.uniforms.uResolution.value.set(w, h);
   };

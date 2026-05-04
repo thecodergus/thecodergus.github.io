@@ -1,20 +1,35 @@
 import { Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import { theme, setTheme, THEMES } from "~/stores/themeStore";
+import { theme, setTheme, THEMES, type ThemeId } from "~/stores/themeStore";
 import NeuralCanvas from "~/components/NeuralCanvas";
 import TypewriterText from "~/components/TypewriterText";
 import RotatingTypewriter from "~/components/RotatingTypewriter";
-import { Brain, Blocks, Terminal, Globe, Palette, Check, ChevronDown, Github, Linkedin, Mail } from "lucide-solid";
+import { Brain, Blocks, Terminal, Globe, Palette, Check, ChevronDown, Github, Linkedin, Mail, ExternalLink } from "lucide-solid";
 
 export default function Hero() {
-  const { sharedData, messages } = useI18n();
+  const { sharedData, messages, language } = useI18n();
   const name = () => sharedData()?.basic_info?.name || "";
-  const titles = () => sharedData()?.basic_info?.titles || [];
+  const titles = () => messages()?.hero?.titles || sharedData()?.basic_info?.titles || [];
   const subtitle = () => messages()?.hero?.subtitle || "";
 
   const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const handleThemeKeyDown = (e: KeyboardEvent, themeId: ThemeId) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setTheme(themeId);
+    }
+  };
+
+  const socialIcons: Record<string, typeof Github> = {
+    github: Github,
+    linkedin: Linkedin,
+    gmail: Mail,
+  };
+
+  const socials = () => sharedData()?.basic_info?.social || [];
 
   return (
     <section
@@ -25,7 +40,7 @@ export default function Hero() {
 
       <div class="relative z-10 text-center px-6 max-w-4xl mx-auto bg-bg/25 backdrop-blur-[2px] rounded-2xl py-8">
         <div class="mb-6 inline-block">
-          <span class="font-mono text-xs text-accent-green border border-accent-green/30 px-3 py-1 rounded-full bg-accent-green/5">
+          <span class="font-mono text-xs text-accent-primary border border-accent-primary/30 px-3 py-1 rounded-full bg-accent-primary/5">
             &lt;AI_Engineer /&gt;
           </span>
         </div>
@@ -40,7 +55,7 @@ export default function Hero() {
           <Show when={titles().length > 0}>
             <RotatingTypewriter
               titles={titles()}
-              class="font-mono text-lg md:text-2xl text-accent-cyan"
+              class="font-mono text-lg md:text-2xl text-accent-secondary"
             />
           </Show>
         </div>
@@ -63,18 +78,19 @@ export default function Hero() {
               return (
                 <button
                   onClick={() => setTheme(t.id)}
-                  class="relative flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-green/50 active:scale-95"
+                  onKeyDown={(e) => handleThemeKeyDown(e, t.id)}
+                  class="relative flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 active:scale-95"
                   classList={{
-                    "text-accent-green bg-accent-green/10 border-2 border-accent-green/50 shadow-[var(--shadow-glow-green)] scale-105":
+                    "text-accent-primary bg-accent-primary/10 border-2 border-accent-primary/50 shadow-[var(--shadow-glow-primary)] scale-105":
                       isActive(),
-                    "text-text-secondary bg-surface/30 border border-border hover:border-accent-green/40 hover:bg-surface/50 hover:scale-[1.02]":
+                    "text-text-secondary bg-surface/30 border border-border hover:border-accent-primary/40 hover:bg-surface/50 hover:scale-[1.02]":
                       !isActive(),
                   }}
                   aria-pressed={isActive()}
                   aria-label={`${t.label} — ${messages()?.hero?.[`themes_${t.id}`] || ""}`}
                 >
                   <Show when={isActive()}>
-                    <span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-accent-green flex items-center justify-center">
+                    <span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-accent-primary flex items-center justify-center">
                       <Check size={10} class="text-bg" />
                     </span>
                   </Show>
@@ -103,36 +119,26 @@ export default function Hero() {
         </div>
 
         <div class="flex items-center justify-center gap-6 mb-12">
-          <a
-            href="https://github.com/thecodergus"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="p-3 rounded-full border border-border hover:border-accent-green hover:text-accent-green hover:shadow-glow-green transition-all"
-            aria-label="GitHub"
-          >
-            <Github size={20} />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/thecodergus"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="p-3 rounded-full border border-border hover:border-accent-cyan hover:text-accent-cyan hover:shadow-glow-cyan transition-all"
-            aria-label="LinkedIn"
-          >
-            <Linkedin size={20} />
-          </a>
-          <a
-            href="mailto:gustavo.michels.de.camargo@gmail.com"
-            class="p-3 rounded-full border border-border hover:border-accent-yellow hover:text-accent-yellow transition-all"
-            aria-label="Email"
-          >
-            <Mail size={20} />
-          </a>
+          {socials().map((s) => {
+            const Icon = socialIcons[s.name] || ExternalLink;
+            const isEmail = s.url.startsWith("mailto:");
+            return (
+              <a
+                href={s.url}
+                target={isEmail ? undefined : "_blank"}
+                rel={isEmail ? undefined : "noopener noreferrer"}
+                class="p-3 rounded-full border border-border hover:border-accent-primary hover:text-accent-primary hover:shadow-glow-primary transition-all"
+                aria-label={s.name}
+              >
+                <Icon size={20} />
+              </a>
+            );
+          })}
         </div>
 
         <button
           onClick={scrollToAbout}
-          class="absolute bottom-10 left-1/2 -translate-x-1/2 text-text-muted hover:text-accent-green transition-colors animate-bounce"
+          class="absolute bottom-10 left-1/2 -translate-x-1/2 text-text-muted hover:text-accent-primary transition-colors animate-bounce"
           aria-label="Scroll down"
         >
           <ChevronDown size={32} />

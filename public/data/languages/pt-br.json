@@ -16,10 +16,18 @@
         "experience": "Experiência",
         "projects": "Projetos",
         "contact": "Contato",
-        "language": "Idioma"
+        "language": "Idioma",
+        "menu_open": "Abrir menu"
     },
     "hero": {
         "subtitle": "Especialista em Automação com IA com LangGraph e Agentes de IA. Full-Stack Developer com expertise em Python, React, C++ e visão computacional. Construindo o futuro, linha por linha.",
+        "titles": [
+            "Especialista em Automação com IA",
+            "LangGraph & AI Agents",
+            "Python + React Engineer",
+            "Full-Stack Developer",
+            "C++ Systems Developer"
+        ],
         "themes_label": "Explore os temas",
         "themes_ai": "Motor Neural",
         "themes_blockchain": "Rede em Cadeia",
@@ -52,7 +60,10 @@
         "close": "Fechar",
         "view_project": "Ver projeto",
         "technologies": "Tecnologias",
-        "period": "Período"
+        "period": "Período",
+        "prev_image": "Imagem anterior",
+        "next_image": "Próxima imagem",
+        "image": "Imagem"
     },
     "projects": [
         {

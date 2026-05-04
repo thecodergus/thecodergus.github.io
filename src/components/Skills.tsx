@@ -1,11 +1,18 @@
-import { createSignal, createEffect, For } from "solid-js";
+import { createSignal, onMount, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import type { Skill } from "~/types";
 
 interface SkillCategory {
+  key: string;
   name: string;
   skills: Skill[];
 }
+
+const CATEGORY_ORDER: Record<string, number> = {
+  languages: 0,
+  frameworks: 1,
+  data: 2,
+};
 
 export default function Skills() {
   const { sharedData, messages } = useI18n();
@@ -13,7 +20,7 @@ export default function Skills() {
 
   let sectionRef: HTMLDivElement | undefined;
 
-  createEffect(() => {
+  onMount(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
@@ -29,26 +36,28 @@ export default function Skills() {
   const sectionName = () => messages()?.basic_info?.section_name?.skills || "";
   const catNames = () => messages()?.skills_categories;
 
-  const categories = (): SkillCategory[] => [
-    {
-      name: catNames()?.languages || "Linguagens",
-      skills: skills().filter((s) =>
-        ["Python", "C++", "Rust", "TypeScript", "JavaScript", "Haskell", "Java", "C", "Bash"].includes(s.name)
-      ),
-    },
-    {
-      name: catNames()?.frameworks || "Frameworks & Ferramentas",
-      skills: skills().filter((s) =>
-        ["React", "FastAPI", "Angular", "Git", "Docker", "Linux", "TensorFlow", "OpenCV", "LangGraph", "LangChain", "RabbitMQ"].includes(s.name)
-      ),
-    },
-    {
-      name: catNames()?.data || "Dados & Bancos",
-      skills: skills().filter((s) =>
-        ["PostgreSQL", "MongoDB", "MySQL"].includes(s.name)
-      ),
-    },
-  ];
+  const categories = (): SkillCategory[] => {
+    const icons = skills();
+    const grouped = new Map<string, Skill[]>();
+
+    for (const s of icons) {
+      const cat = s.category || "other";
+      if (!grouped.has(cat)) grouped.set(cat, []);
+      grouped.get(cat)!.push(s);
+    }
+
+    const result: SkillCategory[] = [];
+    for (const [key, items] of grouped) {
+      result.push({
+        key,
+        name: (catNames() as Record<string, string> | undefined)?.[key] || key,
+        skills: items,
+      });
+    }
+
+    result.sort((a, b) => (CATEGORY_ORDER[a.key] ?? 99) - (CATEGORY_ORDER[b.key] ?? 99));
+    return result;
+  };
 
   return (
     <section
@@ -58,7 +67,7 @@ export default function Skills() {
     >
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-bold font-display text-center mb-16 text-text">
-          <span class="text-accent-purple">&gt;</span> {sectionName()}
+          <span class="text-accent-tertiary">&gt;</span> {sectionName()}
         </h2>
 
         <div class="grid md:grid-cols-3 gap-10">
@@ -72,7 +81,7 @@ export default function Skills() {
                   transition: `opacity 0.6s ease-out ${catIndex() * 0.15}s, transform 0.6s ease-out ${catIndex() * 0.15}s`,
                 }}
               >
-                <h3 class="text-accent-cyan font-mono text-sm uppercase tracking-wider mb-6">
+                <h3 class="text-accent-secondary font-mono text-sm uppercase tracking-wider mb-6">
                   {category.name}
                 </h3>
                 <div class="space-y-4">
@@ -94,7 +103,7 @@ export default function Skills() {
                         </div>
                         <div class="h-2 bg-surface-elevated rounded-full overflow-hidden">
                           <div
-                            class="h-full rounded-full bg-accent-green transition-all duration-1000 ease-out"
+                            class="h-full rounded-full bg-accent-primary transition-all duration-1000 ease-out"
                             style={{
                               width: isVisible() ? `${skill.level}%` : "0%",
                               "transition-delay": `${(catIndex() * 0.15) + (skillIndex() * 0.05)}s`,

@@ -22,7 +22,7 @@ export default function ScrollProgress() {
     <div class="fixed top-0 left-0 right-0 h-1 z-[60] bg-transparent">
       <div
         ref={barRef}
-        class="h-full bg-accent-green origin-left shadow-glow-green"
+        class="h-full bg-accent-primary origin-left shadow-glow-primary"
         style={{ transform: "scaleX(0)" }}
       />
     </div>

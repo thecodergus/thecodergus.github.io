@@ -1,6 +1,6 @@
 // ── NeuralCanvas — thin SolidJS wrapper around the scene-agnostic engine ──
 
-import { onMount, onCleanup, createEffect } from "solid-js";
+import { onMount, onCleanup, createEffect, ErrorBoundary } from "solid-js";
 
 import { createEngine } from "~/engine/engine";
 import type { EngineHandle } from "~/engine/engine";
@@ -9,7 +9,7 @@ import { theme } from "~/stores/themeStore";
 
 import { REGISTRY } from "~/themes/registry";
 
-export default function NeuralCanvas() {
+function CanvasLayer() {
   let containerRef: HTMLDivElement | undefined;
   let engine: EngineHandle | undefined;
 
@@ -41,5 +41,13 @@ export default function NeuralCanvas() {
       class="absolute inset-0 w-full h-full overflow-hidden"
       style={{ position: "absolute", top: "0", left: "0", "z-index": "1" }}
     />
+  );
+}
+
+export default function NeuralCanvas() {
+  return (
+    <ErrorBoundary fallback={() => null}>
+      <CanvasLayer />
+    </ErrorBoundary>
   );
 }

@@ -5,14 +5,14 @@
   --color-text: #E4D9FF;
   --color-text-secondary: #B8A9D4;
   --color-text-muted: #7C6B9E;
-  --color-accent-green: #10A37F;
-  --color-accent-green-dim: #0B5E4A;
-  --color-accent-purple: #8B5CF6;
-  --color-accent-purple-dim: #2A1078;
-  --color-accent-cyan: #00E5FF;
-  --color-accent-cyan-dim: #004D5C;
-  --color-accent-yellow: #F5C842;
-  --shadow-glow-green: 0 0 20px rgba(16, 163, 127, 0.3);
-  --shadow-glow-cyan: 0 0 20px rgba(0, 229, 255, 0.3);
-  --shadow-glow-purple: 0 0 20px rgba(139, 92, 246, 0.4);
+  --color-accent-primary: #10A37F;
+  --color-accent-primary-dim: #0B5E4A;
+  --color-accent-secondary: #00E5FF;
+  --color-accent-secondary-dim: #004D5C;
+  --color-accent-tertiary: #8B5CF6;
+  --color-accent-tertiary-dim: #2A1078;
+  --color-accent-quaternary: #F5C842;
+  --shadow-glow-primary: 0 0 20px rgba(16, 163, 127, 0.3);
+  --shadow-glow-secondary: 0 0 20px rgba(0, 229, 255, 0.3);
+  --shadow-glow-tertiary: 0 0 20px rgba(139, 92, 246, 0.4);
 }

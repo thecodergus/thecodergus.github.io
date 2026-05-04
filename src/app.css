@@ -14,13 +14,13 @@
   --color-text-muted: #7C6B9E;
 
   /* Accent colors */
-  --color-accent-green: #10A37F;
-  --color-accent-green-dim: #0B5E4A;
-  --color-accent-purple: #8B5CF6;
-  --color-accent-purple-dim: #2A1078;
-  --color-accent-cyan: #00E5FF;
-  --color-accent-cyan-dim: #004D5C;
-  --color-accent-yellow: #F5C842;
+  --color-accent-primary: #10A37F;
+  --color-accent-primary-dim: #0B5E4A;
+  --color-accent-secondary: #00E5FF;
+  --color-accent-secondary-dim: #004D5C;
+  --color-accent-tertiary: #8B5CF6;
+  --color-accent-tertiary-dim: #2A1078;
+  --color-accent-quaternary: #F5C842;
   --color-accent-red: #FE4450; /* universal — not theme-specific, used for semantic elements (heart, status dots) */
 
   /* Borders */
@@ -35,6 +35,38 @@
   /* Spacing */
   --spacing-section: clamp(4rem, 10vw, 8rem);
 
+  /* Glow shadows */
+  --shadow-glow-primary: 0 0 20px rgba(16, 163, 127, 0.3);
+  --shadow-glow-secondary: 0 0 20px rgba(0, 229, 255, 0.3);
+  --shadow-glow-tertiary: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-surface-elevated);
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  z-index: 9999;
+  border: 2px solid var(--color-accent-primary);
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0.75rem;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-primary), 0.4);
+}
+
+/* Global focus-visible */
+*:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
 }
 
 /* Custom scrollbar */
@@ -45,16 +77,16 @@
   background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-accent-green-dim);
+  background: var(--color-accent-primary-dim);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-green);
+  background: var(--color-accent-primary);
 }
 
 /* Selection */
 ::selection {
-  background: var(--color-accent-green);
+  background: var(--color-accent-primary);
   color: var(--color-bg);
 }
 

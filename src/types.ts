@@ -15,6 +15,7 @@ export interface Skill {
   name: string;
   class: string;
   level: string;
+  category: string;
 }
 
 export interface SkillsData {
@@ -67,10 +68,12 @@ export interface NavbarMessages {
   projects: string;
   contact: string;
   language: string;
+  menu_open: string;
 }
 
 export interface HeroMessages {
   subtitle: string;
+  titles?: string[];
   themes_label?: string;
   themes_ai?: string;
   themes_blockchain?: string;
@@ -97,6 +100,9 @@ export interface ProjectsModalMessages {
   view_project: string;
   technologies: string;
   period: string;
+  prev_image: string;
+  next_image: string;
+  image: string;
 }
 
 export interface SkillsCategoryMessages {

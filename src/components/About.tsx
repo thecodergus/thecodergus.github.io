@@ -36,7 +36,7 @@ export default function About() {
     >
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-bold font-display text-center mb-16 text-text">
-          <span class="text-accent-green">&gt;</span> {heading()}
+          <span class="text-accent-primary">&gt;</span> {heading()}
         </h2>
 
         <div class="grid md:grid-cols-[280px_1fr] gap-12 items-start">
@@ -56,7 +56,7 @@ export default function About() {
                 class="w-64 h-64 object-cover rounded-xl mb-4"
                 loading="lazy"
               />
-              <div class="flex justify-center gap-4 text-accent-green">
+              <div class="flex justify-center gap-4 text-accent-primary">
                 <Code size={28} />
                 <Terminal size={28} />
                 <Database size={28} />
@@ -76,12 +76,12 @@ export default function About() {
           >
             <div class="flex gap-2 px-5 py-4 bg-black/40 border-b border-border">
               <span class="w-3 h-3 rounded-full bg-accent-red" />
-              <span class="w-3 h-3 rounded-full bg-accent-yellow" />
-              <span class="w-3 h-3 rounded-full bg-accent-green" />
+              <span class="w-3 h-3 rounded-full bg-accent-quaternary" />
+              <span class="w-3 h-3 rounded-full bg-accent-primary" />
               <span class="ml-3 font-mono text-xs text-text-muted">gustavo@portfolio ~ neofetch</span>
             </div>
             <div class="p-6 md:p-8">
-              <p class="font-mono text-lg font-semibold text-accent-green mb-4">
+              <p class="font-mono text-lg font-semibold text-accent-primary mb-4">
                 {aboutData()?.description_header} :)
               </p>
               <p class="text-text-secondary leading-relaxed text-sm md:text-base whitespace-pre-line">

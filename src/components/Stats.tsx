@@ -1,4 +1,4 @@
-import { createSignal, createEffect, For } from "solid-js";
+import { createSignal, onMount, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 
 interface Stat {
@@ -22,21 +22,21 @@ export default function Stats() {
     { label: statsLabels()?.deploys || "Deploys", value: 50, suffix: "+" },
   ];
 
-  createEffect(() => {
+  onMount(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
       { threshold: 0.3 }
     );
 
     if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
   });
 
-  createEffect(() => {
-    if (!isVisible()) return;
-
+  onMount(() => {
     const stats = STATS();
     const duration = 2000;
     const startTime = performance.now();
@@ -53,7 +53,15 @@ export default function Stats() {
       }
     };
 
-    requestAnimationFrame(animate);
+    let rafId = 0;
+    const startOnVisible = () => {
+      if (isVisible()) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        rafId = requestAnimationFrame(startOnVisible);
+      }
+    };
+    rafId = requestAnimationFrame(startOnVisible);
   });
 
   return (
@@ -74,7 +82,7 @@ export default function Stats() {
                   transition: `opacity 0.5s ease-out ${index() * 0.1}s, transform 0.5s ease-out ${index() * 0.1}s`,
                 }}
               >
-                <div class="text-4xl md:text-5xl font-bold font-display text-accent-green mb-2">
+                <div class="text-4xl md:text-5xl font-bold font-display text-accent-primary mb-2">
                   {counts()[index()]}{stat.suffix}
                 </div>
                 <div class="text-sm text-text-muted font-medium uppercase tracking-wider">

@@ -38,7 +38,7 @@ export default function Contact() {
     >
       <div class="max-w-4xl mx-auto px-6 text-center">
         <h2 class="text-3xl md:text-4xl font-bold font-display mb-6 text-text">
-          <span class="text-accent-green">&gt;</span> {sectionName()}
+          <span class="text-accent-primary">&gt;</span> {sectionName()}
         </h2>
 
         <p class="text-text-secondary mb-12 max-w-xl mx-auto">
@@ -60,10 +60,10 @@ export default function Contact() {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-bg border border-border min-w-[140px] hover:border-accent-green hover:shadow-glow-green transition-all hover:-translate-y-1"
+                class="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-bg border border-border min-w-[140px] hover:border-accent-primary hover:shadow-glow-primary transition-all hover:-translate-y-1"
                 aria-label={item.name}
               >
-                <Icon size={28} class="text-text-secondary group-hover:text-accent-green transition-colors" />
+                <Icon size={28} class="text-text-secondary group-hover:text-accent-primary transition-colors" />
                 <span class="text-sm font-medium text-text-secondary group-hover:text-text capitalize">
                   {item.name}
                 </span>

@@ -29,45 +29,29 @@
   },
   "skills": {
     "icons": [
-      { "name": "Python", "class": "devicon-python-plain", "level": "100" },
-      { "name": "LangGraph", "class": "devicon-python-plain", "level": "85" },
-      { "name": "LangChain", "class": "devicon-python-plain", "level": "85" },
-      { "name": "C++", "class": "devicon-cplusplus-plain", "level": "95" },
-      { "name": "Rust", "class": "devicon-rust-plain", "level": "80" },
-      {
-        "name": "TypeScript",
-        "class": "devicon-typescript-plain",
-        "level": "90"
-      },
-      {
-        "name": "JavaScript",
-        "class": "devicon-javascript-plain",
-        "level": "90"
-      },
-      { "name": "Java", "class": "devicon-java-plain", "level": "75" },
-      { "name": "Haskell", "class": "devicon-haskell-plain", "level": "65" },
-      { "name": "C", "class": "devicon-c-plain", "level": "85" },
-      { "name": "Bash", "class": "devicon-bash-plain", "level": "80" },
-      { "name": "FastAPI", "class": "devicon-fastapi-plain", "level": "90" },
-      { "name": "React", "class": "devicon-react-plain", "level": "85" },
-      { "name": "Angular", "class": "devicon-angular-plain", "level": "60" },
-      { "name": "Docker", "class": "devicon-docker-plain", "level": "95" },
-      { "name": "RabbitMQ", "class": "devicon-rabbitmq-plain", "level": "80" },
-      { "name": "Git", "class": "devicon-git-plain", "level": "90" },
-      { "name": "Linux", "class": "devicon-linux-plain", "level": "85" },
-      {
-        "name": "PostgreSQL",
-        "class": "devicon-postgresql-plain",
-        "level": "85"
-      },
-      { "name": "MySQL", "class": "devicon-mysql-plain", "level": "75" },
-      { "name": "MongoDB", "class": "devicon-mongodb-plain", "level": "70" },
-      {
-        "name": "TensorFlow",
-        "class": "devicon-tensorflow-original",
-        "level": "80"
-      },
-      { "name": "OpenCV", "class": "devicon-opencv-plain", "level": "85" }
+      { "name": "Python", "class": "devicon-python-plain", "level": "100", "category": "languages" },
+      { "name": "LangGraph", "class": "devicon-python-plain", "level": "85", "category": "frameworks" },
+      { "name": "LangChain", "class": "devicon-python-plain", "level": "85", "category": "frameworks" },
+      { "name": "C++", "class": "devicon-cplusplus-plain", "level": "95", "category": "languages" },
+      { "name": "Rust", "class": "devicon-rust-plain", "level": "80", "category": "languages" },
+      { "name": "TypeScript", "class": "devicon-typescript-plain", "level": "90", "category": "languages" },
+      { "name": "JavaScript", "class": "devicon-javascript-plain", "level": "90", "category": "languages" },
+      { "name": "Java", "class": "devicon-java-plain", "level": "75", "category": "languages" },
+      { "name": "Haskell", "class": "devicon-haskell-plain", "level": "65", "category": "languages" },
+      { "name": "C", "class": "devicon-c-plain", "level": "85", "category": "languages" },
+      { "name": "Bash", "class": "devicon-bash-plain", "level": "80", "category": "languages" },
+      { "name": "FastAPI", "class": "devicon-fastapi-plain", "level": "90", "category": "frameworks" },
+      { "name": "React", "class": "devicon-react-plain", "level": "85", "category": "frameworks" },
+      { "name": "Angular", "class": "devicon-angular-plain", "level": "60", "category": "frameworks" },
+      { "name": "Docker", "class": "devicon-docker-plain", "level": "95", "category": "frameworks" },
+      { "name": "RabbitMQ", "class": "devicon-rabbitmq-plain", "level": "80", "category": "frameworks" },
+      { "name": "Git", "class": "devicon-git-plain", "level": "90", "category": "frameworks" },
+      { "name": "Linux", "class": "devicon-linux-plain", "level": "85", "category": "frameworks" },
+      { "name": "PostgreSQL", "class": "devicon-postgresql-plain", "level": "85", "category": "data" },
+      { "name": "MySQL", "class": "devicon-mysql-plain", "level": "75", "category": "data" },
+      { "name": "MongoDB", "class": "devicon-mongodb-plain", "level": "70", "category": "data" },
+      { "name": "TensorFlow", "class": "devicon-tensorflow-original", "level": "80", "category": "frameworks" },
+      { "name": "OpenCV", "class": "devicon-opencv-plain", "level": "85", "category": "frameworks" }
     ]
   }
 }

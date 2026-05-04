@@ -17,7 +17,7 @@ export default function DoomPage() {
         <div class="max-w-7xl mx-auto px-6 h-14 flex items-center">
           <a
             href="/"
-            class="flex items-center gap-2 text-sm font-medium text-text-secondary hover:text-accent-green transition-colors"
+            class="flex items-center gap-2 text-sm font-medium text-text-secondary hover:text-accent-primary transition-colors"
           >
             <ArrowLeft size={18} />
             Voltar ao Portfolio

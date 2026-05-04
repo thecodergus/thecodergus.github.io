@@ -5,18 +5,16 @@
   --color-text: #1A1A2E;
   --color-text-secondary: #4A4A5A;
   --color-text-muted: #8B8B9E;
-  --color-accent-blue: #0000EE;
-  --color-accent-blue-dim: #000088;
-  --color-accent-purple: #551A8B;
-  --color-accent-purple-dim: #2E0B59;
+  --color-accent-primary: #0000EE;
+  --color-accent-primary-dim: #000088;
+  --color-accent-secondary: #551A8B;
+  --color-accent-secondary-dim: #2E0B59;
+  --color-accent-tertiary: #CC0000;
+  --color-accent-tertiary-dim: #660000;
+  --color-accent-quaternary: #FFD700;
   --color-border: rgba(0, 0, 0, 0.08);
   --color-border-strong: rgba(0, 0, 0, 0.15);
-
-  --color-accent-green: #0000EE;
-  --color-accent-cyan: #551A8B;
-  --color-accent-yellow: #CC0000;
-
-  --shadow-glow-green: 0 0 20px rgba(0, 0, 238, 0.25);
-  --shadow-glow-cyan: 0 0 20px rgba(85, 26, 139, 0.25);
-  --shadow-glow-purple: 0 0 20px rgba(204, 0, 0, 0.4);
+  --shadow-glow-primary: 0 0 20px rgba(0, 0, 238, 0.25);
+  --shadow-glow-secondary: 0 0 20px rgba(85, 26, 139, 0.25);
+  --shadow-glow-tertiary: 0 0 20px rgba(204, 0, 0, 0.4);
 }

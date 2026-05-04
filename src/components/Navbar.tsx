@@ -8,8 +8,8 @@ const LangSwitcher = (props: {
   label: () => string;
   mobile?: boolean;
 }) => {
-  const active = "bg-accent-cyan text-bg border-accent-cyan";
-  const inactive = "bg-transparent text-text-muted border-border hover:border-accent-cyan hover:text-accent-cyan";
+  const active = "bg-accent-secondary text-bg border-accent-secondary";
+  const inactive = "bg-transparent text-text-muted border-border hover:border-accent-secondary hover:text-accent-secondary";
 
   return (
     <div class={`flex items-center gap-2 ${props.mobile ? "pt-2 border-t border-border" : ""}`}>
@@ -55,6 +55,7 @@ export default function Navbar() {
   };
 
   const langLabel = () => messages()?.navbar?.language || "Idioma";
+  const menuLabel = () => messages()?.navbar?.menu_open || "Abrir menu";
 
   onMount(() => {
     const handleScroll = () => {
@@ -82,7 +83,7 @@ export default function Navbar() {
       }}
     >
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" class="font-mono text-accent-green font-bold text-lg tracking-wider">
+        <a href="#" class="font-mono text-accent-primary font-bold text-lg tracking-wider">
           &lt;thecodergus/&gt;
         </a>
 
@@ -92,10 +93,10 @@ export default function Navbar() {
             <a
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              class="text-sm font-medium text-text-secondary hover:text-accent-cyan transition-colors relative group"
+              class="text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors relative group"
             >
               {link.label}
-              <span class="absolute -bottom-1 left-0 w-0 h-px bg-accent-cyan transition-all group-hover:w-full" />
+              <span class="absolute -bottom-1 left-0 w-0 h-px bg-accent-secondary transition-all group-hover:w-full" />
             </a>
           ))}
           <LangSwitcher language={language} label={langLabel} />
@@ -103,9 +104,9 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          class="md:hidden text-text-secondary hover:text-accent-cyan"
+          class="md:hidden text-text-secondary hover:text-accent-secondary"
           onClick={() => setMobileOpen(!mobileOpen())}
-          aria-label="Abrir menu"
+          aria-label={menuLabel()}
         >
           {mobileOpen() ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -118,7 +119,7 @@ export default function Navbar() {
             <a
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              class="text-sm font-medium text-text-secondary hover:text-accent-cyan transition-colors"
+              class="text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors"
             >
               {link.label}
             </a>

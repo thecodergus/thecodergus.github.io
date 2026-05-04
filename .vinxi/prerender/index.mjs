@@ -1,4 +1,4 @@
-import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};export { c as closePrerenderer, a as localFetch } from './chunks/nitro/nitro.mjs';
+import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};export { c as closePrerenderer, l as localFetch } from './chunks/nitro/nitro.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/destr/dist/index.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/nitropack/node_modules/h3/dist/index.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/hookable/dist/index.mjs';

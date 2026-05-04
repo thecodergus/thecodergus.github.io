@@ -9,13 +9,31 @@ export default createHandler(() => (
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#080012" />
           <link rel="icon" href="/favicon.ico" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-            rel="stylesheet"
-          />
+          <link rel="manifest" href="/manifest.json" />
           {assets}
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Gustavo M Camargo",
+              "url": "https://thecodergus.github.io",
+              "jobTitle": "AI & Software Engineer",
+              "sameAs": [
+                "https://github.com/thecodergus",
+                "https://www.linkedin.com/in/thecodergus"
+              ],
+              "knowsAbout": [
+                "Artificial Intelligence",
+                "LangGraph",
+                "Python",
+                "C++",
+                "Rust",
+                "React",
+                "TypeScript",
+                "Full-Stack Development"
+              ]
+            })}
+          </script>
         </head>
         <body>
           <a href="#main" class="skip-link">Pular para o conteúdo</a>

@@ -20,14 +20,14 @@ export default function Footer() {
             href="https://github.com/thecodergus"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-text-muted hover:text-accent-green transition-colors"
+            class="text-text-muted hover:text-accent-primary transition-colors"
             aria-label="GitHub"
           >
             <Github size={20} />
           </a>
           <a
             href="/doom"
-            class="text-xs font-mono text-text-muted hover:text-accent-green transition-colors border border-border px-3 py-1 rounded hover:border-accent-green"
+            class="text-xs font-mono text-text-muted hover:text-accent-primary transition-colors border border-border px-3 py-1 rounded hover:border-accent-primary"
           >
             /doom
           </a>
