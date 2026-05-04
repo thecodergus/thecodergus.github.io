@@ -40,6 +40,14 @@
     "doom": {
         "back_to_portfolio": "Voltar ao Portfolio"
     },
+    "not_found": {
+        "title": "404 — Página não encontrada",
+        "status": "404",
+        "heading": "Você entrou no inferno errado.",
+        "description": "Esta página foi perdida nas profundezas. O caminho que você busca não existe mais — ou nunca existiu.",
+        "back_home": "Voltar ao Mundo dos Vivos",
+        "subtext": "Este não é o caminho que você procura."
+    },
     "footer": {
         "made_with": "Feito com",
         "by": "por"

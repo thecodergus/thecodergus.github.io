@@ -5,3 +5,4 @@ bun*
 build/
 package-lock*
 *.tex
+.output/

@@ -40,6 +40,14 @@
     "doom": {
         "back_to_portfolio": "Back to Portfolio"
     },
+    "not_found": {
+        "title": "404 — Page Not Found",
+        "status": "404",
+        "heading": "You've entered the wrong hell.",
+        "description": "This page has been lost to the depths. The path you seek no longer exists — or never did.",
+        "back_home": "Return to the Living",
+        "subtext": "This is not the path you're looking for."
+    },
     "footer": {
         "made_with": "Made with",
         "by": "by"
