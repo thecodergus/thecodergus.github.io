@@ -31,19 +31,19 @@ export default function Skills() {
 
   const categories = (): SkillCategory[] => [
     {
-      name: catNames()?.languages || "Languages",
+      name: catNames()?.languages || "Linguagens",
       skills: skills().filter((s) =>
         ["Python", "C++", "Rust", "TypeScript", "JavaScript", "Haskell", "Java", "C", "Bash"].includes(s.name)
       ),
     },
     {
-      name: catNames()?.frameworks || "Frameworks & Tools",
+      name: catNames()?.frameworks || "Frameworks & Ferramentas",
       skills: skills().filter((s) =>
         ["React", "FastAPI", "Angular", "Git", "Docker", "Linux", "TensorFlow", "OpenCV", "LangGraph", "LangChain", "RabbitMQ"].includes(s.name)
       ),
     },
     {
-      name: catNames()?.data || "Data & Databases",
+      name: catNames()?.data || "Dados & Bancos",
       skills: skills().filter((s) =>
         ["PostgreSQL", "MongoDB", "MySQL"].includes(s.name)
       ),

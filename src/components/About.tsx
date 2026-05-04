@@ -26,7 +26,7 @@ export default function About() {
   };
 
   const aboutData = () => messages()?.basic_info;
-  const heading = () => aboutData()?.section_name?.about || "About Me";
+  const heading = () => aboutData()?.section_name?.about || "Sobre Mim";
 
   return (
     <section

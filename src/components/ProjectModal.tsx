@@ -68,14 +68,14 @@ export default function ProjectModal(props: ProjectModalProps) {
                     <button
                       onClick={prevImage}
                       class="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                      aria-label="Previous image"
+                      aria-label="Imagem anterior"
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button
                       onClick={nextImage}
                       class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                      aria-label="Next image"
+                      aria-label="Próxima imagem"
                     >
                       <ChevronRight size={20} />
                     </button>
@@ -89,7 +89,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                                 ? "bg-accent-cyan w-4"
                                 : "bg-white/50 hover:bg-white/80"
                             }`}
-                            aria-label={`Image ${i() + 1}`}
+                            aria-label={`Imagem ${i() + 1}`}
                           />
                         )}
                       </For>
@@ -149,7 +149,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-green text-white font-medium text-sm hover:bg-accent-green/90 transition-colors"
                   >
                     <ExternalLink size={16} />
-                    {modalMsgs()?.view_project ?? "View project"}
+                    {modalMsgs()?.view_project ?? "Ver projeto"}
                   </a>
                 </Show>
               </div>

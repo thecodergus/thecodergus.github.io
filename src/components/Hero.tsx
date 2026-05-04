@@ -54,7 +54,7 @@ export default function Hero() {
           <Show when={messages()}>
             <p class="text-text-muted text-xs font-mono mb-3 flex items-center justify-center gap-2">
               <Palette size={14} />
-              <span>{messages()?.hero?.themes_label || "Explore themes"}</span>
+              <span>{messages()?.hero?.themes_label || "Explorar temas"}</span>
             </p>
           </Show>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-lg mx-auto">

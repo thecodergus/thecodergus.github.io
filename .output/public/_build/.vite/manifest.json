@@ -6,8 +6,8 @@
       "_web-Jk5OU5WA.js"
     ]
   },
-  "_i18nStore-BVyym-E4.js": {
-    "file": "assets/i18nStore-BVyym-E4.js",
+  "_i18nStore-cjG-g8Ik.js": {
+    "file": "assets/i18nStore-cjG-g8Ik.js",
     "name": "i18nStore",
     "imports": [
       "_web-Jk5OU5WA.js"
@@ -41,32 +41,32 @@
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-CrSjn1mR.js",
+    "file": "assets/index-mtkKP4Vh.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
       "_web-Jk5OU5WA.js",
-      "_i18nStore-BVyym-E4.js",
+      "_i18nStore-cjG-g8Ik.js",
       "_Icon-DgOwbl39.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-KIc2DHuW.js",
+    "file": "assets/client-Cbb2OfRM.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
       "_web-Jk5OU5WA.js",
-      "_i18nStore-BVyym-E4.js"
+      "_i18nStore-cjG-g8Ik.js"
     ],
     "dynamicImports": [
       "src/routes/doom.tsx?pick=default&pick=$css",
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-Yay47AnY.css"
+      "assets/client-BCu3jQlK.css"
     ],
     "assets": [
       "assets/devicon-BwTrXM5G.ttf",

@@ -13,12 +13,19 @@ function getInitialLanguage(): Language {
 const [language, setLanguageSignal] = createSignal<Language>(getInitialLanguage());
 const [messages, setMessages] = createSignal<Messages | undefined>(undefined);
 const [sharedData, setSharedData] = createSignal<SharedData | undefined>(undefined);
+const [fetchError, setFetchError] = createSignal<string | null>(null);
 
 export function setLanguage(lang: Language) {
   setLanguageSignal(lang);
   if (typeof window !== "undefined") {
     localStorage.setItem(STORAGE_KEY, lang);
-    fetchMessages(lang).then(setMessages).catch(console.error);
+    setFetchError(null);
+    fetchMessages(lang)
+      .then((data) => { setMessages(data); setFetchError(null); })
+      .catch((err) => {
+        console.error("[i18n] Failed to load messages:", err);
+        setFetchError(`Falha ao carregar idioma: ${lang}`);
+      });
   }
 }
 
@@ -50,7 +57,7 @@ export function t(key: string): string {
   return typeof value === "string" ? value : key;
 }
 
-export { language, messages, sharedData };
+export { language, messages, sharedData, fetchError };
 
 interface I18nContextValue {
   language: () => Language;
@@ -58,6 +65,7 @@ interface I18nContextValue {
   t: (key: string) => string;
   messages: () => Messages | undefined;
   sharedData: () => SharedData | undefined;
+  fetchError: () => string | null;
 }
 
 const I18nContext = createContext<I18nContextValue>();
@@ -70,8 +78,15 @@ export function useI18n() {
 
 export function I18nProvider(props: { children: JSX.Element }) {
   onMount(() => {
-    fetchSharedData().then(setSharedData).catch(console.error);
-    fetchMessages(language()).then(setMessages).catch(console.error);
+    fetchSharedData().catch(() => {
+      console.error("[i18n] Failed to load shared data");
+    }).then((data) => { if (data) setSharedData(data); });
+    fetchMessages(language())
+      .then((data) => { setMessages(data); setFetchError(null); })
+      .catch((err) => {
+        console.error("[i18n] Failed to load messages:", err);
+        setFetchError(`Falha ao carregar idioma: ${language()}`);
+      });
   });
 
   const value: I18nContextValue = {
@@ -80,6 +95,7 @@ export function I18nProvider(props: { children: JSX.Element }) {
     t,
     messages,
     sharedData,
+    fetchError,
   };
 
   return (

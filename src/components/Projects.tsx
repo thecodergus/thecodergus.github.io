@@ -37,8 +37,8 @@ export default function Projects() {
 
   const projects = () => messages()?.projects || [];
   const sectionName = () => messages()?.basic_info?.section_name?.projects || "";
-  const filterAll = () => messages()?.projects_filter?.all || "All";
-  const viewProject = () => messages()?.projects_filter?.view_project || "View project";
+  const filterAll = () => messages()?.projects_filter?.all || "Todos";
+  const viewProject = () => messages()?.projects_filter?.view_project || "Ver projeto";
 
   const allTechnologies = () => {
     const techs = new Set<string>();

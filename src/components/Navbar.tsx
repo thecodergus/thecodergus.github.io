@@ -46,11 +46,11 @@ export default function Navbar() {
   const navLinks = () => {
     const nav = messages()?.navbar;
     return [
-      { href: "#about", label: nav?.about || "About" },
-      { href: "#skills", label: nav?.skills || "Skills" },
-      { href: "#experience", label: nav?.experience || "Experience" },
-      { href: "#projects", label: nav?.projects || "Projects" },
-      { href: "#contact", label: nav?.contact || "Contact" },
+      { href: "#about", label: nav?.about || "Sobre" },
+      { href: "#skills", label: nav?.skills || "Habilidades" },
+      { href: "#experience", label: nav?.experience || "Experiência" },
+      { href: "#projects", label: nav?.projects || "Projetos" },
+      { href: "#contact", label: nav?.contact || "Contato" },
     ];
   };
 
@@ -105,7 +105,7 @@ export default function Navbar() {
         <button
           class="md:hidden text-text-secondary hover:text-accent-cyan"
           onClick={() => setMobileOpen(!mobileOpen())}
-          aria-label="Toggle menu"
+          aria-label="Abrir menu"
         >
           {mobileOpen() ? <X size={24} /> : <Menu size={24} />}
         </button>

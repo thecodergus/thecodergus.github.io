@@ -3,7 +3,7 @@ import { createHandler, StartServer } from "@solidjs/start/server";
 export default createHandler(() => (
   <StartServer
     document={({ assets, children, scripts }) => (
-      <html lang="en" data-theme="ai">
+      <html lang="pt-br" data-theme="ai">
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,7 +18,7 @@ export default createHandler(() => (
           {assets}
         </head>
         <body>
-          <a href="#main" class="skip-link">Skip to main content</a>
+          <a href="#main" class="skip-link">Pular para o conteúdo</a>
           <div id="app">{children}</div>
           {scripts}
         </body>
