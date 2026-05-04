@@ -1,7 +1,7 @@
 {
     "basic_info": {
         "description_header": "Hello, nice to meet you",
-        "description": "I am Gustavo Michels de Camargo, a Computer Science undergraduate at the State University of Santa Catarina (UDESC). Throughout my academic and professional journey, I have developed a passion for Artificial Intelligence, Image Processing, and Industrial Development, areas in which I have worked as a scholarship holder. My practical experience is accentuated by significant projects to which I have had the opportunity to contribute, such as the 'Spark Eyes System' in collaboration with General Motors, SENAI, and Strokmatic, where I developed computer vision software for automated inspection of welding points in the automotive industry. My journey has also led me to contribute to the field of computer vision through the development of the SKM-GenICam Library, an industrial camera management system, and through contributions to the open-source imageproc project, where I implemented features for Laplacian edge detection. In addition, I have worked on projects with Strokmatic for Usiminas and Santista, developing data collection systems for training artificial neural networks. My tech stack includes languages such as C, C++, Python, Rust, and TypeScript, and technologies like Docker, Redis, and Postgres. Beyond my professional interest, I am an avid reader with a particular love for history, classical literature, philosophy, and psychology. I am always looking to expand my knowledge and apply my skills in challenging and innovative projects that have a real impact on the industry and community.",
+        "description": "Software Engineer and AI Engineer with experience in industrial projects and process automation with AI. I worked on developing advanced solutions using C++20, Python, TypeScript, and Python-C++ integration with Pybind11, standing out for creating the Genicam-SKT library for GENICAM cameras. I have expertise in AI frameworks such as LangGraph, LangChain, LLMs, VLMs, TensorFlow, and Docling, as well as leading automation initiatives such as PDF data extraction and NPS systems with AI. Open source contributor (Imageproc), seeking to apply technical skills in software engineering and AI challenges.",
         "section_name": {
             "about": "About Me",
             "projects": "Projects",
@@ -10,221 +10,250 @@
             "contact": "Contact Me"
         }
     },
+    "navbar": {
+        "about": "About",
+        "skills": "Skills",
+        "experience": "Experience",
+        "projects": "Projects",
+        "contact": "Contact",
+        "language": "Language",
+        "menu_open": "Open menu"
+    },
+    "hero": {
+        "subtitle": "AI Automation Specialist with LangGraph and AI Agents. Full-Stack Developer with expertise in Python, React, C++ and computer vision. Building the future, line by line.",
+        "titles": [
+            "AI Automation Specialist",
+            "LangGraph & AI Agents",
+            "Python + React Engineer",
+            "Full-Stack Developer",
+            "C++ Systems Developer"
+        ],
+        "themes_label": "Explore themes",
+        "themes_ai": "Neural Engine",
+        "themes_blockchain": "Chain Network",
+        "themes_software": "Terminal Matrix",
+        "themes_web": "Retro Web"
+    },
+    "contact_message": {
+        "paragraph": "Have an interesting project or opportunity? I'm open to remote work and new challenges in AI, software engineering, and computer vision. Let's talk."
+    },
+    "doom": {
+        "back_to_portfolio": "Back to Portfolio"
+    },
+    "not_found": {
+        "title": "404 — Page Not Found",
+        "status": "404",
+        "heading": "You've entered the wrong hell.",
+        "description": "This page has been lost to the depths. The path you seek no longer exists — or never did.",
+        "back_home": "Return to the Living",
+        "subtext": "This is not the path you're looking for."
+    },
+    "footer": {
+        "made_with": "Made with",
+        "by": "by"
+    },
+    "projects_filter": {
+        "all": "All",
+        "view_project": "View project"
+    },
+    "skills_categories": {
+        "languages": "Languages",
+        "frameworks": "Frameworks & Tools",
+        "data": "Data & Databases"
+    },
+    "stats": {
+        "projects": "Projects",
+        "years": "Years Exp.",
+        "languages": "Languages",
+        "deploys": "Deploys"
+    },
+    "projects_modal": {
+        "close": "Close",
+        "view_project": "View project",
+        "technologies": "Technologies",
+        "period": "Period",
+        "prev_image": "Previous image",
+        "next_image": "Next image",
+        "image": "Image"
+    },
     "projects": [
         {
+            "title": "Automated NPS System",
+            "startDate": "Feb 2026",
+            "endDate": "Mar 2026",
+            "description": "Artificial intelligence pipeline for automated analysis of customer service interactions, calculating NPS and extracting insights without manual intervention. The microservices architecture uses LangGraph for AI agent orchestration, RabbitMQ for asynchronous message processing, FastAPI for API exposure, and PostgreSQL for persistence, all containerized with Docker.",
+            "url": "",
+            "images": ["images/projects/nps/nps1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-fastapi-plain", "name": "FastAPI" },
+                { "class": "devicon-postgresql-plain", "name": "PostgreSQL" },
+                { "class": "devicon-docker-plain", "name": "Docker" }
+            ]
+        },
+        {
+            "title": "Accounting PDF to Markdown Converter",
+            "startDate": "Feb 2026",
+            "endDate": "Mar 2026",
+            "description": "Batch conversion system for accounting PDF documents to structured Markdown using Vision-Language Models (VLMs). The solution uses the Docling library with VlmPipeline, processing documents in parallel via ProcessPoolExecutor with 25 workers.",
+            "url": "",
+            "images": ["images/projects/pdf/pdf1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-docker-plain", "name": "Docker" }
+            ]
+        },
+        {
+            "title": "Multi-Agent Data Analysis System",
+            "startDate": "Sep 2024",
+            "endDate": "Aug 2025",
+            "description": "Artificial intelligence system that allows executives and analysts to perform complex queries on a PostgreSQL database using natural language. Implemented on the n8n platform with Ollama and OpenAI, it translates questions in Portuguese into optimized SQL queries.",
+            "url": "",
+            "images": ["images/projects/multiagent/multi1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-postgresql-plain", "name": "PostgreSQL" }
+            ]
+        },
+        {
+            "title": "Blockchain Traceability Platform",
+            "startDate": "Sep 2024",
+            "endDate": "Aug 2025",
+            "description": "Complete architecture for traceability in the Brazilian agribusiness supply chain. Uses Hyperledger Besu, Smart Contracts, and off-chain indexing system to ensure integrity and end-to-end tracking. Aligned with DREX (Digital Real) guidelines.",
+            "url": "",
+            "images": ["images/projects/blockchain/block1.png"],
+            "technologies": [
+                { "class": "devicon-solidity-plain", "name": "Solidity" },
+                { "class": "devicon-react-plain", "name": "React" },
+                { "class": "devicon-typescript-plain", "name": "TypeScript" }
+            ]
+        },
+        {
             "title": "Spark Eyes System",
-            "startDate": "October 2022",
-            "description": "I am actively involved in the 'Spark Eyes System' project, focused on developing an advanced solution for the inspection of welding points in the automotive industry. The initiative aimed to automate the inspection of these joints through Artificial Intelligence-based technology, creating laboratory, industrial, and multi-platform prototypes. Within this scope, I was the sole author and responsible for the computer vision software of the project, as well as leading the development of the communication module with ViewR. I was also in charge of developing high-performance versions of certain confidential modules, contributing significantly to the efficiency and accuracy in the inspection of welding points.",
+            "startDate": "Dec 2022",
+            "endDate": "Nov 2023",
+            "description": "Automated system for weld inspection in the automotive industry, developed with C++, TensorFlow, and OpenCV. Real-time communication and monitoring modules, using the SKM-Genicam library for industrial camera control.",
             "url": "",
             "images": [
                 "images/projects/sparkeyes/spark1.png",
-                "images/projects/sparkeyes/spark2.png",
-                "images/projects/sparkeyes/spark3.png"
+                "images/projects/sparkeyes/spark2.png"
             ],
             "technologies": [
-                {
-                    "class": "devicon-cplusplus-plain",
-                    "name": "C++"
-                },
-                {
-                    "class": "devicon-python-plain",
-                    "name": "Python"
-                },
-                {
-                    "class": "devicon-typescript-plain",
-                    "name": "TypeScript"
-                },
-                {
-                    "class": "devicon-docker-plain",
-                    "name": "Docker"
-                },
-                {
-                    "class": "devicon-redis-plain",
-                    "name": "Redis"
-                },
-                {
-                    "class": "devicon-postgresql-plain",
-                    "name": "Postgres"
-                }
+                { "class": "devicon-cplusplus-plain", "name": "C++" },
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-typescript-plain", "name": "TypeScript" },
+                { "class": "devicon-docker-plain", "name": "Docker" }
             ]
         },
         {
-            "title": "Development of SKM-GenICam Library",
-            "startDate": "March 2023",
-            "description": "I architected and developed an industrial camera management system based on the generic European GenICam programming interface. This implementation proved to be absolutely more efficient in meeting the demands of computer vision compared to the solutions originally provided by the camera manufacturers and became the standard software for use within computer vision-based innovation projects.",
+            "title": "SKM-Genicam Library",
+            "startDate": "Mar 2023",
+            "endDate": "Nov 2023",
+            "description": "Library for industrial camera control, 100% developed with smart pointers, ensuring memory safety. Solved limitations of manufacturer-provided libraries, becoming the standard in the organization.",
             "url": "",
-            "images": [
-                "images/projects/genicam/genicam1.png",
-                "images/projects/genicam/genicam2.png",
-                "images/projects/genicam/genicam3.png"
-            ],
+            "images": ["images/projects/genicam/genicam1.png"],
             "technologies": [
-                {
-                    "class": "devicon-c-plain",
-                    "name": "C"
-                },
-                {
-                    "class": "devicon-cplusplus-plain",
-                    "name": "C++"
-                }
+                { "class": "devicon-c-plain", "name": "C" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" }
             ]
         },
         {
-            "title": "Implementation of Laplacian Edge Detection in image-rs/imageproc",
-            "startDate": "April 2023",
-            "description": "I contributed to the open-source imageproc project, which is an image processing library in Rust. I implemented Laplacian constructor structures and LaplacianEdgeDetector to facilitate Laplacian edge detection in grayscale images, as requested in Issue #505. The Pull Request was submitted under the title 'Implementing Laplacian and LaplacianEdgeDetector Builders for Laplacian Edge Detection'",
+            "title": "GitHub RAG Tool",
+            "startDate": "2024",
+            "description": "Tool based on RAG (Retrieval-Augmented Generation) for AI agents capable of analyzing GitHub repositories. Uses natural language to answer questions about code, issues, and pull requests.",
+            "url": "https://github.com/thecodergus/github-rag-tool",
+            "images": ["images/projects/rag/rag1.png"],
+            "technologies": [
+                { "class": "devicon-python-plain", "name": "Python" }
+            ]
+        },
+        {
+            "title": "Imageproc - Open Source",
+            "startDate": "Apr 2023",
+            "description": "Rust contributions focused on Laplacian edge detection in grayscale images. Integrated implementation with open source tools.",
             "url": "https://github.com/image-rs/imageproc/pull/516",
-            "images": [
-                "images/projects/laplacian-edge/ovo1.jpeg",
-                "images/projects/laplacian-edge/ovo2.jpeg",
-                "images/projects/laplacian-edge/ovo3.jpeg"
-            ],
+            "images": ["images/projects/laplacian-edge/ovo1.jpeg"],
             "technologies": [
-                {
-                    "class": "devicon-rust-plain",
-                    "name": "Rust"
-                }
+                { "class": "devicon-rust-plain", "name": "Rust" }
             ]
         },
         {
-            "title": "Usiminas Project",
-            "startDate": "March 2023",
-            "description": "I developed a data collection system for training artificial neural networks, focusing on the detection of foreign bodies in steel. Activities involved data collection and processing, as well as the design and implementation of the system that contributed to improving the quality and safety of Usiminas steel products.",
+            "title": "Steel Defect Detection System",
+            "startDate": "2023",
+            "description": "Real-time data collection and analysis system to detect foreign bodies in steel plates. Applied trained neural networks in Python with parallel processing in C++, increasing detection precision by 35% and reducing unplanned production failures.",
             "url": "",
-            "images": [
-                "images/projects/usiminas/usiminas1.png",
-                "images/projects/usiminas/usminas2.png"
-            ],
+            "images": ["images/projects/steel/steel1.png"],
             "technologies": [
-                {
-                    "class": "devicon-python-plain",
-                    "name": "Python"
-                },
-                {
-                    "class": "devicon-docker-plain",
-                    "name": "Docker"
-                },
-                {
-                    "class": "devicon-redis-plain",
-                    "name": "Redis"
-                },
-                {
-                    "class": "devicon-mongodb-plain",
-                    "name": "MongoDB"
-                }
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" }
             ]
         },
         {
-            "title": "Santista Project",
-            "startDate": "December 2022",
-            "description": "I developed a data collection system for training artificial neural networks, focusing on the detection of foreign bodies in steel. Activities involved data collection and processing, as well as the design and implementation of the system that contributed to improving the quality and safety of Usiminas steel products.",
+            "title": "Textile Industry Systems",
+            "startDate": "2023",
+            "description": "Two interconnected systems that revolutionized production efficiency: a Data Collection System for automated image capture to train neural networks (reducing defects by 20%), and a Neural Inference System in C++ and Qt for real-time defect detection (increasing productivity by 25%).",
             "url": "",
-            "images": [
-                "images/projects/santista/santista1.png",
-                "images/projects/santista/santista2.jpeg"
-            ],
+            "images": ["images/projects/textile/textile1.png"],
             "technologies": [
-                {
-                    "class": "devicon-python-plain",
-                    "name": "Python"
-                },
-                {
-                    "class": "devicon-cplusplus-plain",
-                    "name": "C++"
-                },
-                {
-                    "class": "devicon-typescript-plain",
-                    "name": "TypeScript"
-                },
-                {
-                    "class": "devicon-docker-plain",
-                    "name": "Docker"
-                },
-                {
-                    "class": "devicon-redis-plain",
-                    "name": "Redis"
-                },
-                {
-                    "class": "devicon-postgresql-plain",
-                    "name": "Postgres"
-                }
-            ]
-        },
-        {
-            "title": "Julia Language Course",
-            "startDate": "2022",
-            "description": "...",
-            "images": [
-                "images/projects/julia-course/IMG_20221018_174932.jpg",
-                "images/projects/julia-course/IMG_20221019_183914.jpg"
-            ],
-            "url": "https://github.com/thelostgus/curso-julia-sei-2022",
-            "technologies": [
-                {
-                    "class": "devicon-julia-plain",
-                    "name": "Julia"
-                }
+                { "class": "devicon-python-plain", "name": "Python" },
+                { "class": "devicon-cplusplus-plain", "name": "C++" },
+                { "class": "devicon-qt-plain", "name": "Qt" }
             ]
         }
     ],
     "experience": [
         {
-            "company": "SENAI",
-            "title": "Industrial Software Developer",
-            "years": "12.2022 - Present",
-            "icon": "devicon-cplusplus-plain",
-            "mainTech": [
-                "C++"
+            "company": "Ottimizza Contabilidade",
+            "title": "Data and AI Engineer",
+            "years": "Feb 2026 - Mar 2026",
+            "icon": "devicon-python-plain",
+            "mainTech": ["Python", "Generative AI"],
+            "highlights": [
+                "Automated bank statement PDF reading using Vision-Language Models (VLMs) via Docling, delivering a definitive solution for a decade-old data extraction problem.",
+                "Designed and implemented an automatic Net Promoter Score (NPS) system with Large Language Models (LLMs), enabling automated collection and analysis of customer satisfaction metrics."
             ],
-            "technologies": [
-                "Python",
-                "C++",
-                "NodeJS",
-                "Docker",
-                "Bash"
-            ]
+            "technologies": ["Docling", "VLM", "LLM", "FastAPI", "PostgreSQL", "Docker"]
         },
         {
-            "company": "Udesc",
-            "title": "Graph Theory Teaching Assistant",
-            "years": "07.2022 - 07.2023",
-            "icon": "devicon-c-plain",
-            "mainTech": [
-                "C++"
+            "company": "UDESC / Becomex",
+            "title": "Blockchain Researcher",
+            "years": "Sep 2024 - Aug 2025",
+            "icon": "devicon-solidity-plain",
+            "mainTech": ["Blockchain", "React"],
+            "highlights": [
+                "Led the development of a blockchain architecture for agribusiness supply chain traceability using Hyperledger Besu with QBFT consensus.",
+                "Developed a complete prototype including multi-node validator network, Solidity smart contracts for transaction management, and a REST API with 25 endpoints for integration.",
+                "Created an off-chain data indexing system to optimize complex queries for large-scale real data from major Brazilian agribusiness companies.",
+                "Designed and implemented a multi-layer privacy architecture to protect sensitive commercial data in a transparent and immutable environment.",
+                "Developed a React frontend for transaction graph interaction and visualization, improving usability across the supply chain."
             ],
-            "technologies": [
-                "Graph Theory",
-                "Algorithms"
-            ]
+            "technologies": ["Hyperledger Besu", "Solidity", "TypeScript", "PostgreSQL", "Python"]
+        },
+        {
+            "company": "SENAI Inovação / Strokmatic",
+            "title": "Software Developer",
+            "years": "Dec 2022 - Nov 2023",
+            "icon": "devicon-cplusplus-plain",
+            "mainTech": ["C++", "Computer Vision"],
+            "highlights": [
+                "Created automated industrial inspection solutions with AI in the Spark Eyes System featuring real-time monitoring of weld points in the automotive industry.",
+                "Developed a camera management solution based on the Genicam protocol (SKM-Genicam), replacing poor market standards with customizable, safe, and efficient algorithms.",
+                "Built memory-safe C++ libraries with Python wrappers using smart pointers.",
+                "Developed integration modules for additional devices with Spark Eyes, improving inspection precision and efficiency by 30%."
+            ],
+            "technologies": ["Python", "TensorFlow", "OpenCV", "Docker", "TypeScript"]
         },
         {
             "company": "Devellop Labs",
-            "title": "Developer",
-            "years": "06.2021 - 12.2021",
+            "title": "Software Developer",
+            "years": "Jun 2021 - Dec 2021",
             "icon": "devicon-php-plain",
-            "mainTech": [
-                "Magento"
+            "mainTech": ["PHP", "Magento"],
+            "highlights": [
+                "Implemented e-commerce solutions and optimizations (Magento).",
+                "Configured optimized Docker environments, reducing setup time by 70%."
             ],
-            "technologies": [
-                "Magento 1/2",
-                "RegEx",
-                "Bash",
-                "Cron",
-                "Docker"
-            ]
-        },
-        {
-            "company": "Udesc",
-            "title": "Data Structures Teaching Assistant",
-            "years": "05.2019 - 05.2021",
-            "icon": "devicon-cplusplus-plain",
-            "mainTech": [
-                "C"
-            ],
-            "technologies": [
-                "Data Structures",
-                "Algorithms"
-            ]
+            "technologies": ["Docker", "Bash", "MySQL"]
         }
     ]
 }

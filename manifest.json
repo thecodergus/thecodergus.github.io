@@ -1,6 +1,6 @@
 {
   "short_name": "Gus",
-  "name": "Gustavo Michels de Camargo",
+  "name": "Gustavo M Camargo — Portfolio",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,8 +8,9 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#080012",
+  "background_color": "#080012",
+  "description": "Portfolio de Gustavo M Camargo — Especialista em Automação com IA"
 }
