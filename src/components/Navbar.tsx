@@ -38,13 +38,21 @@ const LangSwitcher = (props: {
   );
 };
 
-export default function Navbar() {
+export default function Navbar(props: { standalone?: boolean }) {
   const { language, messages } = useI18n();
   const [scrolled, setScrolled] = createSignal(false);
   const [mobileOpen, setMobileOpen] = createSignal(false);
 
+  const homeLabel = () => {
+    const lang = language();
+    if (lang === Language.En) return "Home";
+    return "Início";
+  };
   const navLinks = () => {
     const nav = messages()?.navbar;
+    if (props.standalone) {
+      return [{ href: "/", label: homeLabel() }];
+    }
     return [
       { href: "#about", label: nav?.about || "Sobre" },
       { href: "#skills", label: nav?.skills || "Habilidades" },
@@ -66,6 +74,10 @@ export default function Navbar() {
   });
 
   const handleNavClick = (e: MouseEvent, href: string) => {
+    if (props.standalone) {
+      setMobileOpen(false);
+      return;
+    }
     e.preventDefault();
     const el = document.querySelector(href);
     if (el) {
@@ -83,7 +95,7 @@ export default function Navbar() {
       }}
     >
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" class="font-mono text-accent-primary font-bold text-lg tracking-wider">
+        <a href={props.standalone ? "/" : "#"} class="font-mono text-accent-primary font-bold text-lg tracking-wider">
           &lt;thecodergus/&gt;
         </a>
 

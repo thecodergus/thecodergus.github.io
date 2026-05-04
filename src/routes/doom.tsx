@@ -1,35 +1,50 @@
-import { onMount } from "solid-js";
-import { ArrowLeft } from "lucide-solid";
+import { onMount, onCleanup } from "solid-js";
+import { Link } from "@solidjs/meta";
+import { useI18n } from "~/stores/i18nStore";
+import Navbar from "~/components/Navbar";
+import Footer from "~/components/Footer";
 
 export default function DoomPage() {
   let containerRef: HTMLDivElement | undefined;
+  const { messages } = useI18n();
+  const backLabel = () => messages()?.doom?.back_to_portfolio || "Voltar ao Portfolio";
 
   onMount(() => {
-    if (containerRef && typeof (window as unknown as { Dos?: (el: HTMLDivElement) => { run: (path: string) => void } }).Dos !== "undefined") {
+    const prevTheme = document.documentElement.getAttribute("data-theme");
+    document.documentElement.setAttribute("data-theme", "doom");
+
+    if (containerRef && "Dos" in window) {
       const win = window as unknown as { Dos: (el: HTMLDivElement) => { run: (path: string) => void } };
       win.Dos(containerRef!).run("dos/files/doom.jsdos");
     }
+
+    onCleanup(() => {
+      if (prevTheme) {
+        document.documentElement.setAttribute("data-theme", prevTheme);
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    });
   });
 
   return (
-    <main class="min-h-screen bg-bg">
-      <nav class="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-border">
-        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center">
-          <a
-            href="/"
-            class="flex items-center gap-2 text-sm font-medium text-text-secondary hover:text-accent-primary transition-colors"
-          >
-            <ArrowLeft size={18} />
-            Voltar ao Portfolio
-          </a>
+    <>
+      <Link rel="stylesheet" href="/dos/js-dos/js-dos.css" />
+      <script src="/dos/js-dos/js-dos.js"></script>
+      <script>emulators.pathPrefix = "dos/js-dos/";</script>
+
+      <Navbar standalone />
+
+      <main id="main" class="min-h-screen bg-bg pt-16 flex flex-col">
+        <div class="flex-1 flex items-center justify-center p-4">
+          <div
+            ref={containerRef}
+            class="w-full max-w-5xl aspect-[4/3] bg-black rounded-lg border border-border overflow-hidden"
+          />
         </div>
-      </nav>
-      <div class="pt-14 h-screen flex items-center justify-center p-4">
-        <div
-          ref={containerRef}
-          class="w-full max-w-5xl aspect-[4/3] bg-black rounded-lg border border-border overflow-hidden"
-        />
-      </div>
-    </main>
+      </main>
+
+      <Footer hideDoomLink />
+    </>
   );
 }

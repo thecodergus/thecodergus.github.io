@@ -1,0 +1,29 @@
+[data-theme="doom"] {
+  /* Background surface */
+  --color-bg: #0D0D0D;
+  --color-surface: #1A0808;
+  --color-surface-elevated: #2A1010;
+
+  /* Text */
+  --color-text: #E8D5D5;
+  --color-text-secondary: #BF9999;
+  --color-text-muted: #805A5A;
+
+  /* Accents — DOOM palette */
+  --color-accent-primary: #FF3333;
+  --color-accent-primary-dim: #660000;
+  --color-accent-secondary: #FF8800;
+  --color-accent-secondary-dim: #662200;
+  --color-accent-tertiary: #FFD700;
+  --color-accent-tertiary-dim: #665000;
+  --color-accent-quaternary: #888888;
+
+  /* Borders */
+  --color-border: rgba(255, 50, 50, 0.15);
+  --color-border-strong: rgba(255, 50, 50, 0.25);
+
+  /* Glow shadows */
+  --shadow-glow-primary: 0 0 20px rgba(255, 51, 51, 0.3);
+  --shadow-glow-secondary: 0 0 20px rgba(255, 136, 0, 0.3);
+  --shadow-glow-tertiary: 0 0 20px rgba(255, 215, 0, 0.3);
+}

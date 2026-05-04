@@ -1,7 +1,7 @@
 import { useI18n } from "~/stores/i18nStore";
 import { Github, Heart } from "lucide-solid";
 
-export default function Footer() {
+export default function Footer(props: { hideDoomLink?: boolean }) {
   const { sharedData, messages } = useI18n();
   const name = () => sharedData()?.basic_info?.name || "";
   const madeWith = () => messages()?.footer?.made_with || "";
@@ -25,12 +25,14 @@ export default function Footer() {
           >
             <Github size={20} />
           </a>
-          <a
-            href="/doom"
-            class="text-xs font-mono text-text-muted hover:text-accent-primary transition-colors border border-border px-3 py-1 rounded hover:border-accent-primary"
-          >
-            /doom
-          </a>
+          {!props.hideDoomLink && (
+            <a
+              href="/doom"
+              class="text-xs font-mono text-text-muted hover:text-accent-primary transition-colors border border-border px-3 py-1 rounded hover:border-accent-primary"
+            >
+              /doom
+            </a>
+          )}
         </div>
 
         <p class="text-xs text-text-muted font-mono">

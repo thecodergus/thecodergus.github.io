@@ -1,21 +1,21 @@
 {
-  "_Icon-DgOwbl39.js": {
-    "file": "assets/Icon-DgOwbl39.js",
-    "name": "Icon",
+  "_Footer-BdHU1Kj0.js": {
+    "file": "assets/Footer-BdHU1Kj0.js",
+    "name": "Footer",
     "imports": [
-      "_web-Jk5OU5WA.js"
+      "_i18nStore-CvoAD9yr.js"
     ]
   },
-  "_i18nStore-CobAFObd.js": {
-    "file": "assets/i18nStore-CobAFObd.js",
-    "name": "i18nStore",
-    "imports": [
-      "_web-Jk5OU5WA.js"
-    ]
+  "_i18nStore-CvoAD9yr.js": {
+    "file": "assets/i18nStore-CvoAD9yr.js",
+    "name": "i18nStore"
   },
-  "_web-Jk5OU5WA.js": {
-    "file": "assets/web-Jk5OU5WA.js",
-    "name": "web"
+  "_index-1oyYkNVU.js": {
+    "file": "assets/index-1oyYkNVU.js",
+    "name": "index",
+    "imports": [
+      "_i18nStore-CvoAD9yr.js"
+    ]
   },
   "node_modules/devicon/fonts/devicon.svg": {
     "file": "assets/devicon-DBhpxM3S.svg",
@@ -30,43 +30,43 @@
     "src": "node_modules/devicon/fonts/devicon.woff"
   },
   "src/routes/doom.tsx?pick=default&pick=$css": {
-    "file": "assets/doom-JhZwlZ-j.js",
+    "file": "assets/doom-CNizeEs_.js",
     "name": "doom",
     "src": "src/routes/doom.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_web-Jk5OU5WA.js",
-      "_Icon-DgOwbl39.js"
+      "_i18nStore-CvoAD9yr.js",
+      "_index-1oyYkNVU.js",
+      "_Footer-BdHU1Kj0.js"
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-C3JMGe5J.js",
+    "file": "assets/index-b7MwP6uv.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_web-Jk5OU5WA.js",
-      "_i18nStore-CobAFObd.js",
-      "_Icon-DgOwbl39.js"
+      "_i18nStore-CvoAD9yr.js",
+      "_Footer-BdHU1Kj0.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-CMPeJCIA.js",
+    "file": "assets/client-DhgXYQKj.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
-      "_web-Jk5OU5WA.js",
-      "_i18nStore-CobAFObd.js"
+      "_i18nStore-CvoAD9yr.js",
+      "_index-1oyYkNVU.js"
     ],
     "dynamicImports": [
       "src/routes/doom.tsx?pick=default&pick=$css",
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-Ba6R8DFA.css"
+      "assets/client-D_LjfpgR.css"
     ],
     "assets": [
       "assets/devicon-BwTrXM5G.ttf",

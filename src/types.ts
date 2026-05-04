@@ -111,6 +111,10 @@ export interface SkillsCategoryMessages {
   data: string;
 }
 
+export interface DoomMessages {
+  back_to_portfolio: string;
+}
+
 export interface StatsMessages {
   projects: string;
   years: string;
@@ -129,6 +133,7 @@ export interface Messages {
   projects_filter?: ProjectsFilterMessages;
   projects_modal?: ProjectsModalMessages;
   skills_categories?: SkillsCategoryMessages;
+  doom?: DoomMessages;
   stats?: StatsMessages;
 }
 

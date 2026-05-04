@@ -37,6 +37,9 @@
     "contact_message": {
         "paragraph": "Have an interesting project or opportunity? I'm open to remote work and new challenges in AI, software engineering, and computer vision. Let's talk."
     },
+    "doom": {
+        "back_to_portfolio": "Back to Portfolio"
+    },
     "footer": {
         "made_with": "Made with",
         "by": "by"

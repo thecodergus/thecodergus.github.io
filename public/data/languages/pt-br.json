@@ -37,6 +37,9 @@
     "contact_message": {
         "paragraph": "Tem um projeto interessante ou uma oportunidade? Estou aberto a trabalho remoto e novos desafios em IA, engenharia de software e visão computacional. Vamos conversar."
     },
+    "doom": {
+        "back_to_portfolio": "Voltar ao Portfolio"
+    },
     "footer": {
         "made_with": "Feito com",
         "by": "por"

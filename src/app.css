@@ -4,6 +4,8 @@
 @import "./themes/software/theme.css";
 @import "./themes/web/theme.css";
 
+@import "./doom.css";
+
 @theme {
   /* Base colors — defaults to AI theme */
   --color-bg: #080012;
