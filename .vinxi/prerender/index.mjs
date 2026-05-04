@@ -1,6 +1,6 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};export { c as closePrerenderer, l as localFetch } from './chunks/nitro/nitro.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/destr/dist/index.mjs';
-import 'file:///home/gus/thecodergus.github.io/node_modules/nitropack/node_modules/h3/dist/index.mjs';
+import 'file:///home/gus/thecodergus.github.io/node_modules/h3/dist/index.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/hookable/dist/index.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/ofetch/dist/node.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/node-mock-http/dist/index.mjs';
@@ -24,7 +24,6 @@ import 'file:///home/gus/thecodergus.github.io/node_modules/cookie-es/dist/index
 import 'file:///home/gus/thecodergus.github.io/node_modules/solid-js/dist/server.js';
 import 'file:///home/gus/thecodergus.github.io/node_modules/solid-js/web/dist/server.js';
 import 'file:///home/gus/thecodergus.github.io/node_modules/solid-js/web/storage/dist/storage.js';
-import 'file:///home/gus/thecodergus.github.io/node_modules/h3/dist/index.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/seroval/dist/esm/production/index.mjs';
 import 'file:///home/gus/thecodergus.github.io/node_modules/seroval-plugins/dist/esm/production/web.mjs';
 //# sourceMappingURL=index.mjs.map
