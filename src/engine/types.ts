@@ -38,6 +38,7 @@ export interface SceneConfig {
   readonly height: number;
   readonly colorScheme: ColorScheme;
   readonly softwarePlanes?: number;
+  readonly camera: THREE.PerspectiveCamera;
 }
 
 export interface SceneHandle {

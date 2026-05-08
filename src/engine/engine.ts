@@ -178,6 +178,7 @@ export const createEngine = (
       height: renderer.domElement.clientHeight,
       colorScheme: m.colorScheme,
       softwarePlanes: quality.softwarePlanes,
+      camera,
     };
 
     const handle = m.createScene(config);

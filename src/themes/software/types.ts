@@ -20,16 +20,14 @@ export interface Drop {
   isHead: boolean;
   entranceFactor: number;
   frozen: boolean;
-  charIndex: number;
 }
 
 export interface PlaneState {
   group: THREE.Group;
   config: PlaneConfig;
   drops: Drop[];
-  points: THREE.Points;
+  sprites: THREE.Sprite[];
   columnSpacing: number;
-  geo: THREE.BufferGeometry;
 }
 
 export interface GlitchState {

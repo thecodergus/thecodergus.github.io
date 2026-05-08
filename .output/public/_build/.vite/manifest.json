@@ -3,8 +3,8 @@
     "file": "assets/Footer-D4bL0TYP.js",
     "name": "Footer"
   },
-  "_index-C602Uw4b.js": {
-    "file": "assets/index-C602Uw4b.js",
+  "_index-Co_ZCjXo.js": {
+    "file": "assets/index-Co_ZCjXo.js",
     "name": "index",
     "isDynamicEntry": true,
     "imports": [
@@ -45,66 +45,66 @@
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-BkuFBGk2.js",
+    "file": "assets/index-qPZjdjPJ.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "imports": [
       "_Footer-D4bL0TYP.js",
-      "_index-C602Uw4b.js",
+      "_index-Co_ZCjXo.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/ai/index.ts": {
-    "file": "assets/index-DIvpXF2z.js",
+    "file": "assets/index-CiwRMTkL.js",
     "name": "index",
     "src": "src/themes/ai/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-C602Uw4b.js",
+      "_index-Co_ZCjXo.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/blockchain/index.ts": {
-    "file": "assets/index-fwzLq88r.js",
+    "file": "assets/index-aCHIESul.js",
     "name": "index",
     "src": "src/themes/blockchain/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-C602Uw4b.js",
+      "_index-Co_ZCjXo.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/software/index.ts": {
-    "file": "assets/index-CRA9jxrv.js",
+    "file": "assets/index-CMtvIuA6.js",
     "name": "index",
     "src": "src/themes/software/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-C602Uw4b.js",
+      "_index-Co_ZCjXo.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/web/index.ts": {
-    "file": "assets/index-DfOVXl-A.js",
+    "file": "assets/index-DJFC26OT.js",
     "name": "index",
     "src": "src/themes/web/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-C602Uw4b.js",
+      "_index-Co_ZCjXo.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-DBGEjNL6.js",
+    "file": "assets/client-BHKYJtRo.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
@@ -118,7 +118,7 @@
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-Dx1GX3Zu.css"
+      "assets/client-DwnNMWeW.css"
     ]
   }
 }

@@ -2,11 +2,8 @@
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
-import { range, randomRange, clamp01 } from "../../engine/math";
+import { randomRange, clamp01 } from "../../engine/math";
 import type { PlaneConfig, Drop, PlaneState, GlitchState, FreezeState, KeySprite } from "./types";
-import { createMatrixAtlas, disposeAtlas } from "./atlas";
-import type { AtlasData } from "./atlas";
-import { createRainMaterial } from "./rain-shader";
 
 // ── Constants ──
 
@@ -94,6 +91,29 @@ const CODE_SNIPPETS: readonly string[] = Object.freeze([
   "  --host 0.0.0.0",
 ]);
 
+// ── Matrix character set ──
+
+const MATRIX_CHARS = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍABCDEFGHIJKLMNOPQRSTUVWXYZ012345789日";
+
+// ── Fast character pool (avoids Math.random in hot path) ──
+
+const createCharPool = (): { next: () => string } => {
+  const len = MATRIX_CHARS.length;
+  // 256-entry ring buffer: pre-filled with random chars, cycled via & 0xFF
+  const pool: string[] = [];
+  for (let i = 0; i < 256; i++) {
+    pool.push(MATRIX_CHARS[Math.floor(Math.random() * len)]);
+  }
+  let cursor = 0;
+  return {
+    next: (): string => {
+      const ch = pool[cursor];
+      cursor = (cursor + 1) & 0xFF;
+      return ch;
+    },
+  };
+};
+
 // ── Helpers ──
 
 const createCharTexture = (char: string, color: string): THREE.CanvasTexture => {
@@ -109,96 +129,136 @@ const createCharTexture = (char: string, color: string): THREE.CanvasTexture => 
   return new THREE.CanvasTexture(canvas);
 };
 
-const MATRIX_CHARS = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍABCDEFGHIJKLMNOPQRSTUVWXYZ012345789日";
+// ── Texture cache (reuses per-character textures instead of recreating) ──
 
-const generateChar = (): string => MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+const createTextureCache = () => {
+  const cache = new Map<string, THREE.CanvasTexture>();
 
+  const get = (char: string, color: string): THREE.CanvasTexture => {
+    const key = `${char}:${color}`;
+    const existing = cache.get(key);
+    if (existing) return existing;
+    const tex = createCharTexture(char, color);
+    cache.set(key, tex);
+    return tex;
+  };
 
-// ── Create a single plane of drops (Points + sprite atlas) ──
+  const dispose = (): void => {
+    cache.forEach((tex) => tex.dispose());
+    cache.clear();
+  };
+
+  return { get, dispose };
+};
+
+// ── SpriteMaterial pool (reuses materials for freeze/key sprites) ──
+
+const createMaterialPool = () => {
+  const pool: THREE.SpriteMaterial[] = [];
+  const defaults: THREE.SpriteMaterialParameters = {
+    blending: THREE.AdditiveBlending,
+    transparent: true,
+    depthWrite: false,
+  };
+
+  const acquire = (map: THREE.CanvasTexture, opacity: number): THREE.SpriteMaterial => {
+    const mat = pool.pop();
+    if (mat) {
+      mat.map = map;
+      mat.opacity = opacity;
+      mat.needsUpdate = true;
+      return mat;
+    }
+    return new THREE.SpriteMaterial({ ...defaults, map, opacity });
+  };
+
+  const release = (mat: THREE.SpriteMaterial): void => {
+    mat.map = null;
+    mat.opacity = 0;
+    pool.push(mat);
+  };
+
+  const dispose = (): void => {
+    pool.forEach((m) => m.dispose());
+    pool.length = 0;
+  };
+
+  return { acquire, release, dispose };
+};
+
+// ── Create a single plane of drops ──
 
 const createPlane = (
   config: PlaneConfig,
-  atlas: AtlasData,
-  rainMat: THREE.ShaderMaterial,
+  color: string,
+  getTex: (char: string, color: string) => THREE.CanvasTexture,
 ): PlaneState => {
   const group = new THREE.Group();
   const columnSpacing = GRID_WIDTH / config.columns;
-  const totalDrops = config.columns * config.maxDropsPerColumn;
 
-  const positions = new Float32Array(totalDrops * 3);
-  const charIndices = new Float32Array(totalDrops);
-  const opacities = new Float32Array(totalDrops);
+  const totalDrops = config.columns * config.maxDropsPerColumn;
+  const drops: Drop[] = [];
+  const sprites: THREE.Sprite[] = [];
 
   const activeColumns = new Set<number>();
-  range(config.columns).forEach((i) => activeColumns.add(i));
+  for (let i = 0; i < config.columns; i++) {
+    activeColumns.add(i);
+  }
 
-  const drops: Drop[] = [];
-
-  range(totalDrops).forEach((i) => {
+  for (let i = 0; i < totalDrops; i++) {
     const col = Math.floor(Math.random() * config.columns);
-    const char = generateChar();
+    const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+    const tex = getTex(char, color);
+
+    const spriteMat = new THREE.SpriteMaterial({
+      map: tex,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+    });
+
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(config.charSize, config.charSize, 1);
+
     const x = -GRID_WIDTH / 2 + col * columnSpacing + columnSpacing / 2;
     const startY = GRID_HEIGHT / 2 + Math.random() * GRID_HEIGHT;
     const startRow = Math.round(startY / config.charSize);
 
-    positions[i * 3] = x;
-    positions[i * 3 + 1] = startY;
-    positions[i * 3 + 2] = randomRange(-0.3, 0.3);
+    sprite.position.set(x, startY, randomRange(-0.3, 0.3));
+    group.add(sprite);
+    sprites.push(sprite);
 
-    const isActive = activeColumns.has(col);
     drops.push({
       column: col,
       row: startRow,
       speed: randomRange(config.speedMin, config.speedMax),
-      opacity: isActive
+      opacity: activeColumns.has(col)
         ? randomRange(config.opacityMin, config.opacityMax)
         : randomRange(config.opacityMin * 0.3, config.opacityMax * 0.4),
       isHead: false,
       entranceFactor: 0,
       frozen: false,
-      charIndex: atlas.indexForChar(char),
     });
-  });
+  }
 
-  // Mark heads (highest Y drop per column)
+  // Mark first (highest Y) drop in each column as head
   const columnHeads = new Map<number, number>();
-  drops.forEach((d, i) => {
+  for (let i = 0; i < drops.length; i++) {
+    const d = drops[i];
     const existing = columnHeads.get(d.column);
     if (existing === undefined || drops[existing].row < d.row) {
       columnHeads.set(d.column, i);
     }
-  });
+  }
   columnHeads.forEach((idx) => {
     drops[idx].isHead = true;
     drops[idx].opacity = Math.min(drops[idx].opacity * 1.4, 0.95);
   });
 
-  // Init buffer data (all start invisible for cascade)
-  drops.forEach((d, i) => {
-    charIndices[i] = d.charIndex;
-    opacities[i] = 0;
-  });
-
-  const geo = new THREE.BufferGeometry();
-  const posAttr = new THREE.BufferAttribute(positions, 3);
-  const charAttr = new THREE.BufferAttribute(charIndices, 1);
-  const opacAttr = new THREE.BufferAttribute(opacities, 1);
-
-  posAttr.setUsage(THREE.DynamicDrawUsage);
-  charAttr.setUsage(THREE.DynamicDrawUsage);
-  opacAttr.setUsage(THREE.DynamicDrawUsage);
-
-  geo.setAttribute("position", posAttr);
-  geo.setAttribute("charIndex", charAttr);
-  geo.setAttribute("aOpacity", opacAttr);
-
-  const points = new THREE.Points(geo, rainMat);
-  points.frustumCulled = false;
-
-  group.add(points);
   group.position.z = config.zOffset;
 
-  return { group, points, config, drops, columnSpacing, geo };
+  return { group, config, drops, sprites, columnSpacing };
 };
 
 // ── Factory ──
@@ -211,16 +271,20 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const { colorScheme: cs } = config;
 
-  // ── Rain planes (Points + sprite atlas) ──
+  // ── Caches & pools ──
 
-  const atlas = createMatrixAtlas(cs.primary);
-  const rainMat = createRainMaterial(atlas);
+  const textureCache = createTextureCache();
+  const materialPool = createMaterialPool();
+  const charPool = createCharPool();
 
-  const maxPlanes = config.softwarePlanes ?? 3;
-  const planes: PlaneState[] = PLANE_CONFIGS
-    .slice(0, maxPlanes)
-    .map((pc) => createPlane(pc, atlas, rainMat));
-  planes.forEach((p) => root.add(p.group));
+  // ── Three rain planes ──
+
+  const planes: PlaneState[] = [];
+  for (let i = 0; i < PLANE_CONFIGS.length; i++) {
+    const plane = createPlane(PLANE_CONFIGS[i], cs.primary, (ch: string, c: string) => textureCache.get(ch, c));
+    planes.push(plane);
+    root.add(plane.group);
+  }
 
   // ── Ground fog (wide plane with horizontal fade) ──
 
@@ -270,24 +334,29 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const keySprites: KeySprite[] = [];
 
-  // ── Scene-space mouse coordinate ──
+  // ── Pre-allocated reusable objects (zero GC per frame) ──
 
-
+  const _vec3 = new THREE.Vector3();
+  const _projScreen = new THREE.Matrix4();
+  const _frustum = new THREE.Frustum();
 
   // ── Entrance progress tracking ──
 
   const updateCascade = (elapsedMs: number): void => {
     if (cascadeDone) return;
     let allDone = true;
-    planes.forEach((plane) => {
-      plane.drops.forEach((d) => {
+    for (let pi = 0; pi < planes.length; pi++) {
+      const plane = planes[pi];
+      const drops = plane.drops;
+      for (let di = 0; di < drops.length; di++) {
+        const d = drops[di];
         if (d.entranceFactor < 1) {
           const delay = (d.column / plane.config.columns) * CASCADE_DURATION;
           d.entranceFactor = clamp01(elapsedMs / Math.max(delay, 1));
           if (d.entranceFactor < 1) allDone = false;
         }
-      });
-    });
+      }
+    }
     if (allDone) cascadeDone = true;
   };
 
@@ -307,50 +376,59 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     const elapsedSinceCreation = now - (sceneStartTime ?? now);
     updateCascade(elapsedSinceCreation);
 
-    // ── Per-plane rain update ──
+    // ── Per-plane rain update (with frustum culling) ──
 
-    planes.forEach((plane) => {
-      const posAttr = plane.geo.attributes.position as THREE.BufferAttribute;
-      const charAttr = plane.geo.attributes.charIndex as THREE.BufferAttribute;
-      const opacAttr = plane.geo.attributes.aOpacity as THREE.BufferAttribute;
+    // Compute frustum from camera once per frame
+    _projScreen.multiplyMatrices(config.camera.projectionMatrix, config.camera.matrixWorldInverse);
+    _frustum.setFromProjectionMatrix(_projScreen);
 
-      plane.drops.forEach((d, i) => {
-        if (d.opacity <= 0 || d.entranceFactor < 1) return;
-        if (d.frozen) return;
+    for (let pi = 0; pi < planes.length; pi++) {
+      const plane = planes[pi];
+      const drops = plane.drops;
+      const sprites = plane.sprites;
+      const pc = plane.config;
+      const colSpacing = plane.columnSpacing;
+      const groupZ = plane.group.position.z;
+
+      for (let i = 0; i < drops.length; i++) {
+        const d = drops[i];
+        if (d.opacity <= 0 || d.entranceFactor < 1) continue;
+        if (d.frozen) continue;
 
         d.row -= d.speed;
+        const sprite = sprites[i];
+        if (!sprite) continue;
 
-        const localX = -GRID_WIDTH / 2 + d.column * plane.columnSpacing + plane.columnSpacing / 2;
-        posAttr.array[i * 3] = localX;
-        posAttr.array[i * 3 + 1] = d.row * plane.config.charSize;
+        const localX = -GRID_WIDTH / 2 + d.column * colSpacing + colSpacing / 2;
+        const localY = d.row * pc.charSize;
+        sprite.position.set(localX, localY, 0);
 
-        // Head respawn: recycle to top of screen, pick new random char from atlas
-        if (d.isHead && d.row * plane.config.charSize < -GRID_HEIGHT / 2 - 1) {
-          d.row = Math.round((GRID_HEIGHT / 2 + 1) / plane.config.charSize);
-          d.charIndex = atlas.indexForChar(generateChar());
-          charAttr.array[i] = d.charIndex;
-          charAttr.needsUpdate = true;
+        // Frustum culling: compute cheap world position (skip getWorldPosition overhead)
+        _vec3.set(localX, localY, groupZ);
+        sprite.visible = _frustum.containsPoint(_vec3);
+
+        // Head respawn (reuse cached texture)
+        if (d.isHead && d.row * pc.charSize < -GRID_HEIGHT / 2 - 1) {
+          d.row = Math.round((GRID_HEIGHT / 2 + 1) / pc.charSize);
+          const mat = sprite.material as THREE.SpriteMaterial;
+          mat.map = textureCache.get(charPool.next(), cs.primary);
+          mat.needsUpdate = true;
         }
 
-        // Trail respawn
-        if (!d.isHead && d.row * plane.config.charSize < -GRID_HEIGHT / 2 - 2) {
-          d.row = Math.round((GRID_HEIGHT / 2 + Math.random() * 2) / plane.config.charSize);
-          d.speed = randomRange(plane.config.speedMin, plane.config.speedMax);
-          d.charIndex = atlas.indexForChar(generateChar());
-          charAttr.array[i] = d.charIndex;
-          charAttr.needsUpdate = true;
+        // Trail respawn (reuse cached texture)
+        if (!d.isHead && d.row * pc.charSize < -GRID_HEIGHT / 2 - 2) {
+          d.row = Math.round((GRID_HEIGHT / 2 + Math.random() * 2) / pc.charSize);
+          d.speed = randomRange(pc.speedMin, pc.speedMax);
+          const mat = sprite.material as THREE.SpriteMaterial;
+          mat.map = textureCache.get(charPool.next(), cs.primary);
+          mat.needsUpdate = true;
         }
 
-        // Opacity with sinusoidal shimmer on heads
-        const baseOpacity = d.isHead
-          ? 0.6 + Math.sin(time * 12 + i) * 0.15
-          : d.opacity * 0.55;
-        opacAttr.array[i] = clamp01(baseOpacity);
-      });
-
-      posAttr.needsUpdate = true;
-      opacAttr.needsUpdate = true;
-    });
+        const baseOpacity = d.isHead ? 0.6 + Math.sin(time * 12 + i) * 0.15 : d.opacity * 0.55;
+        const mat = sprite.material as THREE.SpriteMaterial;
+        mat.opacity = clamp01(baseOpacity);
+      }
+    }
 
     // ── Glitch ──
 
@@ -379,10 +457,11 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     if (!freeze.active) {
       freezeTimer += _delta * 1000;
       if (freezeTimer > randomRange(FREEZE_INTERVAL_MIN, FREEZE_INTERVAL_MAX)) {
-        // Pick a random plane and column
         const rPlane = Math.floor(Math.random() * planes.length);
         const pState = planes[rPlane];
         const rCol = Math.floor(Math.random() * pState.config.columns);
+        const pConfig = pState.config;
+        const drops = pState.drops;
 
         freeze.active = true;
         freeze.plane = rPlane;
@@ -391,38 +470,30 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
         freezeTimer = 0;
 
         // Freeze all drops in that column
-        const frozenDrops: Drop[] = [];
-        pState.drops.forEach((d) => {
-          if (d.column === rCol) {
-            d.frozen = true;
-            frozenDrops.push(d);
+        for (let i = 0; i < drops.length; i++) {
+          if (drops[i].column === rCol) {
+            drops[i].frozen = true;
           }
-        });
+        }
 
-        // Spawn code snippet sprites
+        // Spawn code snippet sprites (use material pool)
         const snippet = CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
         const chars = snippet.split("");
-        const pConfig = pState.config;
         const x = -GRID_WIDTH / 2 + rCol * pState.columnSpacing + pState.columnSpacing / 2;
         const startY = GRID_HEIGHT / 2 - 1;
 
         freezeSpriteData = [];
 
-        chars.forEach((ch, ci) => {
-          const tex = createCharTexture(ch, cs.tertiary);
-          const mat = new THREE.SpriteMaterial({
-            map: tex,
-            blending: THREE.AdditiveBlending,
-            transparent: true,
-            opacity: 0.7,
-            depthWrite: false,
-          });
+        for (let ci = 0; ci < chars.length; ci++) {
+          const ch = chars[ci];
+          const tex = textureCache.get(ch, cs.tertiary);
+          const mat = materialPool.acquire(tex, 0.7);
           const sprite = new THREE.Sprite(mat);
           sprite.scale.set(pConfig.charSize * 1.3, pConfig.charSize * 1.3, 1);
           sprite.position.set(x, startY - ci * pConfig.charSize * 1.1, 0);
           pState.group.add(sprite);
           freezeSpriteData.push({ sprite, plane: pState, idx: -1 });
-        });
+        }
       }
     } else {
       freeze.timer += _delta * 1000;
@@ -430,17 +501,18 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
         // Unfreeze
         const pState = planes[freeze.plane];
         if (pState) {
-          pState.drops.forEach((d) => {
-            if (d.column === freeze.column) d.frozen = false;
-          });
+          const drops = pState.drops;
+          for (let i = 0; i < drops.length; i++) {
+            if (drops[i].column === freeze.column) drops[i].frozen = false;
+          }
         }
 
-        // Remove snippet sprites
-        freezeSpriteData.forEach(({ sprite, plane: ps }) => {
+        // Remove snippet sprites (return materials to pool)
+        for (let fi = 0; fi < freezeSpriteData.length; fi++) {
+          const { sprite, plane: ps } = freezeSpriteData[fi];
           ps.group.remove(sprite);
-          (sprite.material as THREE.SpriteMaterial).map?.dispose();
-          (sprite.material as THREE.SpriteMaterial).dispose();
-        });
+          materialPool.release(sprite.material as THREE.SpriteMaterial);
+        }
         freezeSpriteData = [];
         freeze.active = false;
         freeze.column = -1;
@@ -461,8 +533,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
       if (prog >= 1) {
         root.remove(ks.sprite);
-        (ks.sprite.material as THREE.SpriteMaterial).map?.dispose();
-        (ks.sprite.material as THREE.SpriteMaterial).dispose();
+        materialPool.release(ks.sprite.material as THREE.SpriteMaterial);
         keySprites.splice(i, 1);
       }
     }
@@ -479,19 +550,12 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
       const oldest = keySprites.shift();
       if (oldest) {
         root.remove(oldest.sprite);
-        (oldest.sprite.material as THREE.SpriteMaterial).map?.dispose();
-        (oldest.sprite.material as THREE.SpriteMaterial).dispose();
+        materialPool.release(oldest.sprite.material as THREE.SpriteMaterial);
       }
     }
 
-    const tex = createCharTexture(key, cs.tertiary);
-    const mat = new THREE.SpriteMaterial({
-      map: tex,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      opacity: 1,
-      depthWrite: false,
-    });
+    const tex = textureCache.get(key, cs.tertiary);
+    const mat = materialPool.acquire(tex, 1);
     const sprite = new THREE.Sprite(mat);
     const baseScale = randomRange(0.5, 1.0);
     sprite.scale.setScalar(baseScale);
@@ -516,35 +580,50 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
   const getDensity = (): number => {
     let activeCount = 0;
     let totalCount = 0;
-    planes.forEach((plane) => {
-      const posAttr = plane.geo.attributes.position as THREE.BufferAttribute;
-      plane.drops.forEach((d, i) => {
+    for (let pi = 0; pi < planes.length; pi++) {
+      const plane = planes[pi];
+      const drops = plane.drops;
+      const sprites = plane.sprites;
+      for (let i = 0; i < drops.length; i++) {
+        const d = drops[i];
         totalCount++;
         if (d.opacity > 0 && d.entranceFactor >= 1 && !d.frozen) {
-          const y = posAttr.array[i * 3 + 1];
-          if (y > -GRID_HEIGHT / 2 - 1 && y < GRID_HEIGHT / 2 + 1) {
-            activeCount++;
+          const sprite = sprites[i];
+          if (sprite) {
+            const y = sprite.position.y;
+            if (y > -GRID_HEIGHT / 2 - 1 && y < GRID_HEIGHT / 2 + 1) {
+              activeCount++;
+            }
           }
         }
-      });
-    });
+      }
+    }
     return totalCount === 0 ? 0 : clamp01(activeCount / totalCount);
   };
 
   // ── dissolve (pixel dissolve for transitions) ──
 
   const dissolve = (progress: number): void => {
-    planes.forEach((plane) => {
-      const opacAttr = plane.geo.attributes.aOpacity as THREE.BufferAttribute;
-      plane.drops.forEach((d, i) => {
-        const threshold = (i / plane.drops.length) * 0.9;
+    for (let pi = 0; pi < planes.length; pi++) {
+      const plane = planes[pi];
+      const drops = plane.drops;
+      const sprites = plane.sprites;
+      const pConfig = plane.config;
+      const len = drops.length;
+      for (let i = 0; i < len; i++) {
+        const d = drops[i];
+        const threshold = (i / len) * 0.9;
+        const sprite = sprites[i];
+        if (!sprite) continue;
+
         if (progress > threshold) {
           const localP = clamp01((progress - threshold) / (1 - threshold + 0.001));
-          opacAttr.array[i] = clamp01(d.opacity * (1 - localP));
+          sprite.scale.setScalar(pConfig.charSize * (1 - localP));
+          const mat = sprite.material as THREE.SpriteMaterial;
+          mat.opacity = clamp01(d.opacity * (1 - localP));
         }
-      });
-      opacAttr.needsUpdate = true;
-    });
+      }
+    }
 
     fogMat.opacity = 0.12 * (1 - progress);
   };
@@ -560,14 +639,19 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
   // ── setOpacity ──
 
   const setOpacity = (t: number): void => {
-    planes.forEach((plane) => {
-      const opacAttr = plane.geo.attributes.aOpacity as THREE.BufferAttribute;
-      plane.drops.forEach((d, i) => {
+    for (let pi = 0; pi < planes.length; pi++) {
+      const plane = planes[pi];
+      const drops = plane.drops;
+      const sprites = plane.sprites;
+      for (let i = 0; i < drops.length; i++) {
+        const d = drops[i];
+        const sprite = sprites[i];
+        if (!sprite) continue;
         const entranceF = d.entranceFactor < 1 ? d.entranceFactor : 1;
-        opacAttr.array[i] = clamp01(d.opacity * entranceF * t * 0.8);
-      });
-      opacAttr.needsUpdate = true;
-    });
+        const mat = sprite.material as THREE.SpriteMaterial;
+        mat.opacity = clamp01(d.opacity * entranceF * t * 0.8);
+      }
+    }
 
     fogMat.opacity = 0.12 * t;
   };
@@ -603,21 +687,23 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     fogMat.dispose();
     fogTex.dispose();
 
-    rainMat.dispose();
-    disposeAtlas(atlas);
+    textureCache.dispose();
+    materialPool.dispose();
 
     // Clear key sprites
-    keySprites.forEach((ks) => {
-      (ks.sprite.material as THREE.SpriteMaterial).map?.dispose();
-      (ks.sprite.material as THREE.SpriteMaterial).dispose();
-    });
+    for (let i = 0; i < keySprites.length; i++) {
+      const mat = keySprites[i].sprite.material as THREE.SpriteMaterial;
+      mat.map?.dispose();
+      mat.dispose();
+    }
     keySprites.length = 0;
 
     // Clear freeze sprites
-    freezeSpriteData.forEach(({ sprite }) => {
-      (sprite.material as THREE.SpriteMaterial).map?.dispose();
-      (sprite.material as THREE.SpriteMaterial).dispose();
-    });
+    for (let i = 0; i < freezeSpriteData.length; i++) {
+      const mat = freezeSpriteData[i].sprite.material as THREE.SpriteMaterial;
+      mat.map?.dispose();
+      mat.dispose();
+    }
     freezeSpriteData.length = 0;
 
     root.clear();
