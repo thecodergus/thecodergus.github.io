@@ -1,0 +1,1 @@
+var r=(e=>(e.AI="ai",e.Blockchain="blockchain",e.Software="software",e.Web="web",e))(r||{});function t(e){return Object.freeze({sceneKind:e.sceneKind,colorScheme:Object.freeze(e.colorScheme),createScene:e.createScene,cameraPreset:Object.freeze(e.cameraPreset),postPreset:Object.freeze(e.postPreset)})}export{r as S,t as c};
