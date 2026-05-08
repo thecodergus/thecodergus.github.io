@@ -1,5 +1,37 @@
 import { createHandler, StartServer } from "@solidjs/start/server";
 
+interface StructuredData {
+  "@context": "https://schema.org";
+  "@type": "Person";
+  name: string;
+  url: string;
+  jobTitle: string;
+  sameAs: readonly string[];
+  knowsAbout: readonly string[];
+}
+
+const structuredData: StructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Gustavo M Camargo",
+  url: "https://thecodergus.github.io",
+  jobTitle: "AI & Software Engineer",
+  sameAs: [
+    "https://github.com/thecodergus",
+    "https://www.linkedin.com/in/thecodergus",
+  ],
+  knowsAbout: [
+    "Artificial Intelligence",
+    "LangGraph",
+    "Python",
+    "C++",
+    "Rust",
+    "React",
+    "TypeScript",
+    "Full-Stack Development",
+  ],
+};
+
 export default createHandler(() => (
   <StartServer
     document={({ assets, children, scripts }) => (
@@ -12,27 +44,7 @@ export default createHandler(() => (
           <link rel="manifest" href="/manifest.json" />
           {assets}
           <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Gustavo M Camargo",
-              "url": "https://thecodergus.github.io",
-              "jobTitle": "AI & Software Engineer",
-              "sameAs": [
-                "https://github.com/thecodergus",
-                "https://www.linkedin.com/in/thecodergus"
-              ],
-              "knowsAbout": [
-                "Artificial Intelligence",
-                "LangGraph",
-                "Python",
-                "C++",
-                "Rust",
-                "React",
-                "TypeScript",
-                "Full-Stack Development"
-              ]
-            })}
+            {JSON.stringify(structuredData)}
           </script>
         </head>
         <body>

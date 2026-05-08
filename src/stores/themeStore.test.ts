@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
+import { SceneKind } from "~/engine/types";
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
@@ -21,27 +22,32 @@ describe("themeStore", () => {
     vi.resetModules();
   });
 
-  it("theme signal initializes as 'ai' regardless of localStorage", async () => {
-    localStorage.setItem("portfolio-theme", "blockchain");
+  it("theme signal initializes as SceneKind.AI regardless of localStorage", async () => {
+    localStorage.setItem("portfolio-theme", SceneKind.Blockchain);
     const mod = await import("~/stores/themeStore");
-    // getInitialTheme() always returns "ai" — signal starts there
-    expect(mod.theme()).toBe("ai");
+    // getInitialTheme() always returns SceneKind.AI — signal starts there
+    expect(mod.theme()).toBe(SceneKind.AI);
   });
 
   it("THEMES array contains all 4 theme entries", async () => {
     const { THEMES } = await import("~/stores/themeStore");
     expect(THEMES).toHaveLength(4);
     const ids = THEMES.map((t) => t.id);
-    expect(ids).toContain("ai");
-    expect(ids).toContain("blockchain");
-    expect(ids).toContain("software");
-    expect(ids).toContain("web");
+    expect(ids).toContain(SceneKind.AI);
+    expect(ids).toContain(SceneKind.Blockchain);
+    expect(ids).toContain(SceneKind.Software);
+    expect(ids).toContain(SceneKind.Web);
   });
 
-  it("REGISTRY has all 4 theme modules", async () => {
+  it("REGISTRY keys match SceneKind enum values", async () => {
     const { REGISTRY } = await import("~/themes/registry");
     const keys = Object.keys(REGISTRY);
     expect(keys).toHaveLength(4);
-    expect(keys).toEqual(["ai", "blockchain", "software", "web"]);
+    expect(keys).toEqual([
+      SceneKind.AI,
+      SceneKind.Blockchain,
+      SceneKind.Software,
+      SceneKind.Web,
+    ]);
   });
 });

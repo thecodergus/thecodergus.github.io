@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig, CameraState } from "../../engine/types";
 import { randomRange, clamp01 } from "../../engine/math";
+import { createCanvasTexture } from "../../engine/canvasTexture";
 import { ChainPhase } from "./types";
 import type { BlockData, ChainLink, HashParticle } from "./types";
 
@@ -26,27 +27,19 @@ const CHECK_RADIUS = 7.0;
 const CHECK_HEIGHT = 1.5;
 const INITIAL_ANGLE = Math.PI / 4;
 
-// ── Canvas glow texture ──
+// ── Glow texture factory ──
 
-const createGlowTexture = (): THREE.CanvasTexture => {
-  const size = 256;
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Failed to get 2d context");
-
-  const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  gradient.addColorStop(0, "rgba(255, 179, 71, 1)");
-  gradient.addColorStop(0.12, "rgba(255, 179, 71, 0.7)");
-  gradient.addColorStop(0.35, "rgba(255, 160, 30, 0.25)");
-  gradient.addColorStop(0.7, "rgba(247, 147, 26, 0.04)");
-  gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, size, size);
-
-  return new THREE.CanvasTexture(canvas);
-};
+const makeGlowTexture = (): THREE.CanvasTexture =>
+  createCanvasTexture({ width: 256, height: 256 }, (ctx) => {
+    const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gradient.addColorStop(0, "rgba(255, 179, 71, 1)");
+    gradient.addColorStop(0.12, "rgba(255, 179, 71, 0.7)");
+    gradient.addColorStop(0.35, "rgba(255, 160, 30, 0.25)");
+    gradient.addColorStop(0.7, "rgba(247, 147, 26, 0.04)");
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 256, 256);
+  });
 
 // ── Merkle tree factory ──
 
@@ -207,7 +200,7 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
 
   // ── Glow sprite ──
 
-  const glowTex = createGlowTexture();
+  const glowTex = makeGlowTexture();
   const glowMat = new THREE.SpriteMaterial({
     map: glowTex,
     blending: THREE.AdditiveBlending,

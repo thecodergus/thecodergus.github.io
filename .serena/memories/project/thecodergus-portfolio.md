@@ -23,8 +23,11 @@
 - `t(key)` helper with dot-notation: `t("navbar.home")`
 
 ### Stores
-- `themeStore.ts`: `ThemeId = "ai" | "blockchain" | "software" | "web"`, localStorage `"portfolio-theme"`
-- `i18nStore.tsx`: language context with async `fetch` in `I18nProvider.onMount`
+- `themeStore.ts`: uses `SceneKind` enum from `types.ts`, localStorage `"portfolio-theme"`, initial always `SceneKind.AI`
+- `i18nStore.tsx`: language context with async `fetch` in `I18nProvider.onMount`, `t()` helper at 38 call sites
+
+### Test Architecture (143 tests, 5 files)
+- `math.test.ts` (93), `transition.test.ts` (18 — includes forceScene), `quality.test.ts` (10), `themeStore.test.ts` (3), `i18nStore.test.tsx` (19)
 
 ### 3D Engine (`src/engine/`)
 - Pure functional, no classes, closures with factory functions
@@ -86,7 +89,9 @@ With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0.
 - **Fonts self-hosted**: 16 `.woff2` in `public/fonts/` via `fonts.css`, zero external requests
 - **Lucide Solid**: deep imports only (`lucide-solid/icons/icon-name`), never barrel import
 - **CSS theme colors vs TypeScript colorScheme**: separate systems — UI vs 3D
-- **WebGL context loss**: `webglcontextlost`/`webglcontextrestored` handlers pause render loop
+- **WebGL context loss**: handlers on canvas. Context lost → render loop skips. Context restore → rebuilds entire scene via `transitionManager.forceScene()`
+- **canvasTexture.ts**: shared factory used by blockchain, software, web themes. Uses distinct `MinificationTextureFilter`/`MagnificationTextureFilter` types — cast `LinearFilter` with `as`
+- **AI scene colorScheme**: LAYERS, neurons, edges, ripple rings, manifolds all derive from `config.colorScheme`. Only attention yellow (`#F5C842`) is scene-internal constant.
 - **lerpColor()**: only 6-char hex (`#RRGGBB`), not short hex
 - **i18n ESLint reactivity**: read signal synchronously before fetch chain: `const lang = language();` then `fetch(...).then(...)`
 

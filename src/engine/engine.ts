@@ -100,6 +100,12 @@ export const createEngine = (
 
   const onContextRestored = (): void => {
     contextLost = false;
+    if (!currentModule) return;
+    // Dispose old GPU resources (lost during context loss) and rebuild
+    const active = transitionManager.getActive();
+    if (active) disposeScene(active);
+    const newScene = buildScene(currentModule);
+    if (newScene) transitionManager.forceScene(newScene);
   };
 
   renderer.domElement.addEventListener("webglcontextlost", onContextLost);

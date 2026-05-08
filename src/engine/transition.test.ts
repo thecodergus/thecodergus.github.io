@@ -207,4 +207,59 @@ describe("createTransitionManager", () => {
     }
     expect(onDispose).toHaveBeenCalledTimes(4); // first becomes next, then disposed during transition to second, etc.
   });
+
+  describe("forceScene", () => {
+    it("replaces current scene immediately with full opacity", () => {
+      const tm = createTransitionManager(onDispose);
+      const old = makeHandle("old");
+      const next = makeHandle("next");
+
+      // Set up old as current
+      tm.transition(null, old);
+      tm.update(400);
+      tm.update(400);
+
+      // Force replace
+      tm.forceScene(next);
+      expect(tm.isTransitioning()).toBe(false);
+      expect(tm.getActive()).toBe(next);
+      expect(next.setOpacity).toHaveBeenCalledWith(1);
+      expect(onDispose).toHaveBeenCalledWith(old);
+    });
+
+    it("aborts pending transition and disposes next scene", () => {
+      const tm = createTransitionManager(onDispose);
+      const a = makeHandle("a");
+      const b = makeHandle("b");
+      const c = makeHandle("c");
+
+      // Start transition a → b
+      tm.transition(null, a);
+      tm.update(400);
+      tm.update(400);
+      tm.transition(a, b);
+      tm.update(100); // mid-FadingOut (a dissolving, b waiting)
+
+      // Force c in the middle of transition
+      tm.forceScene(c);
+
+      // a was current (disposed), b was pending next (aborted and disposed)
+      expect(onDispose).toHaveBeenCalledWith(a);
+      expect(onDispose).toHaveBeenCalledWith(b);
+      expect(tm.isTransitioning()).toBe(false);
+      expect(tm.getActive()).toBe(c);
+      expect(c.setOpacity).toHaveBeenCalledWith(1);
+    });
+
+    it("works when no current scene exists", () => {
+      const tm = createTransitionManager(onDispose);
+      const scene = makeHandle("fresh");
+
+      tm.forceScene(scene);
+      expect(tm.isTransitioning()).toBe(false);
+      expect(tm.getActive()).toBe(scene);
+      expect(scene.setOpacity).toHaveBeenCalledWith(1);
+      expect(onDispose).not.toHaveBeenCalled();
+    });
+  });
 });

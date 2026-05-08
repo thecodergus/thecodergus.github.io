@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
 import { randomRange, clamp01 } from "../../engine/math";
+import { createCanvasTexture } from "../../engine/canvasTexture";
 import type { CardNode, Thread, Traveler, FloatingSprite } from "./types";
 
 // ── Constants ──
@@ -32,23 +33,8 @@ const URL_TEXTS = [
 
 // ── Canvas texture helpers ──
 
-type CanvasSize = { readonly w: number; readonly h: number };
-
-const createCanvasTexture = (size: CanvasSize, draw: (ctx: CanvasRenderingContext2D) => void): THREE.CanvasTexture => {
-  const canvas = document.createElement("canvas");
-  canvas.width = size.w;
-  canvas.height = size.h;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Failed to get 2d context");
-  draw(ctx);
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.minFilter = THREE.LinearFilter;
-  tex.magFilter = THREE.LinearFilter;
-  return tex;
-};
-
 const createCardSymbolTexture = (symbol: string): THREE.CanvasTexture =>
-  createCanvasTexture({ w: 256, h: 128 }, (ctx) => {
+  createCanvasTexture({ width: 256, height: 128 }, (ctx) => {
     ctx.fillStyle = "#000000";
     ctx.font = "bold 36px 'JetBrains Mono', monospace";
     ctx.textAlign = "center";
@@ -57,7 +43,7 @@ const createCardSymbolTexture = (symbol: string): THREE.CanvasTexture =>
   });
 
 const createURLTexture = (url: string, color: string): THREE.CanvasTexture =>
-  createCanvasTexture({ w: 512, h: 64 }, (ctx) => {
+  createCanvasTexture({ width: 512, height: 64 }, (ctx) => {
     ctx.fillStyle = color;
     ctx.font = "bold 28px 'JetBrains Mono', monospace";
     ctx.textAlign = "center";

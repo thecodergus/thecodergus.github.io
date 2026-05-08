@@ -21,75 +21,69 @@ import type { SceneHandle, SceneConfig } from "../../engine/types";
 import { range, randomRange, random, clamp01 } from "../../engine/math";
 import type { LayerDef, FlowParticle, SpikeRing, DropoutState } from "./types";
 
-const LAYERS: readonly LayerDef[] = Object.freeze([
-  { count:  7, z: -10.5, radius: 7.5, color: "#8B5CF6", hasRipple: false },  // Input (purple)
-  { count:  6, z:  -6.6, radius: 6.3, color: "#00E5FF", hasRipple: false },  // H1 (cyan)
-  { count:  6, z:  -3.0, radius: 5.1, color: "#00E5FF", hasRipple: true  },  // H2 (cyan) ★ ripple
-  { count:  6, z:   0.3, radius: 3.9, color: "#00E5FF", hasRipple: false },  // H3 (cyan)
-  { count:  4, z:   3.0, radius: 3.0, color: "#F5C842", hasRipple: false },  // Attention (yellow)
-  { count:  4, z:   5.4, radius: 2.4, color: "#10A37F", hasRipple: true  },  // H4 (green) ★ ripple
-  { count:  4, z:   7.5, radius: 1.8, color: "#10A37F", hasRipple: false },  // H5 (green)
-  { count:  4, z:   9.3, radius: 1.5, color: "#10A37F", hasRipple: true  },  // H6 (green) ★ ripple
-  { count:  3, z:  11.1, radius: 0.9, color: "#8B5CF6", hasRipple: false },  // Output (purple)
-]);
-
-const TOTAL_LAYERS = LAYERS.length;
-const TOTAL_NEURONS = LAYERS.reduce((s, l) => s + l.count, 0);
-
-// Pre-compute neuron start indices per layer
-const LAYER_STARTS: readonly number[] = Object.freeze(
-  (() => {
-    const arr: number[] = [];
-    let sum = 0;
-    for (const l of LAYERS) { arr.push(sum); sum += l.count; }
-    return arr;
-  })(),
-);
-
-// Total connections (all-to-all between adjacent layers)
-const TOTAL_EDGES = (() => {
-  let e = 0;
-  for (let i = 0; i < TOTAL_LAYERS - 1; i++) {
-    e += LAYERS[i].count * LAYERS[i + 1].count;
-  }
-  return e;
-})();
-
-// Pre-compute edge start indices per layer pair
-const EDGE_BASES: readonly number[] = Object.freeze(
-  (() => {
-    const arr: number[] = [];
-    let base = 0;
-    for (let l = 0; l < TOTAL_LAYERS - 1; l++) {
-      arr.push(base);
-      base += LAYERS[l].count * LAYERS[l + 1].count;
-    }
-    return arr;
-  })(),
-);
-
-// ── Particle constants ──
+// ── Particle constants (independent of color scheme) ──
 
 const FORWARD_PARTICLES = 125;
 const BACKWARD_PARTICLES = 40;
 const SPIKE_RING_POOL = 20;
 const ATTENTION_MATRIX_SIZE = 4;
 
-// ── Helper: compute neuron world position ──
-
-const neuronPosition = (layerIdx: number, neuronIdx: number): readonly [number, number, number] => {
-  const layer = LAYERS[layerIdx];
-  const angle = (neuronIdx / layer.count) * Math.PI * 2;
-  return [Math.cos(angle) * layer.radius, Math.sin(angle) * layer.radius, layer.z];
-};
-
 const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x));
 
 // ── Factory ──
 
-export const createAIScene = (_config: SceneConfig): SceneHandle => {
+export const createAIScene = (config: SceneConfig): SceneHandle => {
+  const cs = config.colorScheme;
   const group = new THREE.Group();
   let disposed = false;
+
+  const ATTENTION_COLOR = "#F5C842";
+
+  const layers: LayerDef[] = Object.freeze([
+    { count:  7, z: -10.5, radius: 7.5, color: cs.tertiary,     hasRipple: false },
+    { count:  6, z:  -6.6, radius: 6.3, color: cs.primary,      hasRipple: false },
+    { count:  6, z:  -3.0, radius: 5.1, color: cs.primary,      hasRipple: true  },
+    { count:  6, z:   0.3, radius: 3.9, color: cs.primary,      hasRipple: false },
+    { count:  4, z:   3.0, radius: 3.0, color: ATTENTION_COLOR,  hasRipple: false },
+    { count:  4, z:   5.4, radius: 2.4, color: cs.secondary,    hasRipple: true  },
+    { count:  4, z:   7.5, radius: 1.8, color: cs.secondary,    hasRipple: false },
+    { count:  4, z:   9.3, radius: 1.5, color: cs.secondary,    hasRipple: true  },
+    { count:  3, z:  11.1, radius: 0.9, color: cs.tertiary,     hasRipple: false },
+  ]) as LayerDef[];
+
+  const TOTAL_LAYERS = layers.length;
+  const TOTAL_NEURONS = layers.reduce((s, l) => s + l.count, 0);
+
+  const LAYER_STARTS: readonly number[] = (() => {
+    const arr: number[] = [];
+    let sum = 0;
+    for (const l of layers) { arr.push(sum); sum += l.count; }
+    return arr;
+  })();
+
+  const TOTAL_EDGES = (() => {
+    let e = 0;
+    for (let i = 0; i < TOTAL_LAYERS - 1; i++) {
+      e += layers[i].count * layers[i + 1].count;
+    }
+    return e;
+  })();
+
+  const EDGE_BASES: readonly number[] = (() => {
+    const arr: number[] = [];
+    let base = 0;
+    for (let l = 0; l < TOTAL_LAYERS - 1; l++) {
+      arr.push(base);
+      base += layers[l].count * layers[l + 1].count;
+    }
+    return arr;
+  })();
+
+  const neuronPosition = (layerIdx: number, neuronIdx: number): readonly [number, number, number] => {
+    const layer = layers[layerIdx];
+    const angle = (neuronIdx / layer.count) * Math.PI * 2;
+    return [Math.cos(angle) * layer.radius, Math.sin(angle) * layer.radius, layer.z];
+  };
 
   // ═══════════════════════════════════════════
   // LAYOUT: Neuron positions
@@ -97,7 +91,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
   const nPositions: THREE.Vector3[] = [];
   for (let l = 0; l < TOTAL_LAYERS; l++) {
-    for (let n = 0; n < LAYERS[l].count; n++) {
+    for (let n = 0; n < layers[l].count; n++) {
       const [x, y, z] = neuronPosition(l, n);
       nPositions.push(new THREE.Vector3(x, y, z));
     }
@@ -116,8 +110,8 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     for (let l = 1; l < TOTAL_LAYERS; l++) {
       const fromStart = LAYER_STARTS[l - 1];
       const toStart = LAYER_STARTS[l];
-      const fromCount = LAYERS[l - 1].count;
-      const toCount = LAYERS[l].count;
+      const fromCount = layers[l - 1].count;
+      const toCount = layers[l].count;
       const edgeBase = EDGE_BASES[l - 1];
 
       for (let t = 0; t < toCount; t++) {
@@ -161,7 +155,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     let layerIdx = 0;
     while (layerIdx < TOTAL_LAYERS - 1 && i >= LAYER_STARTS[layerIdx + 1]) layerIdx++;
 
-    nColor.set(LAYERS[layerIdx].color);
+    nColor.set(layers[layerIdx].color);
     neurons.setColorAt(i, nColor);
     neuronBaseColors[i * 3] = nColor.r;
     neuronBaseColors[i * 3 + 1] = nColor.g;
@@ -181,8 +175,8 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
   let edgeIdx = 0;
   for (let l = 0; l < TOTAL_LAYERS - 1; l++) {
-    const fromLayer = LAYERS[l];
-    const toLayer = LAYERS[l + 1];
+    const fromLayer = layers[l];
+    const toLayer = layers[l + 1];
     const fromStart = LAYER_STARTS[l];
     const toStart = LAYER_STARTS[l + 1];
 
@@ -258,8 +252,8 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const spawnFwd = (): void => {
     if (disposed) return;
     const fromLayer = Math.floor(Math.random() * (TOTAL_LAYERS - 1));
-    const fromCount = LAYERS[fromLayer].count;
-    const toCount = LAYERS[fromLayer + 1].count;
+    const fromCount = layers[fromLayer].count;
+    const toCount = layers[fromLayer + 1].count;
     fwdParticles.push({
       fromLayer,
       fromNeuron: Math.floor(Math.random() * fromCount),
@@ -305,8 +299,8 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const spawnBwd = (): void => {
     if (disposed) return;
     const toLayer = Math.floor(Math.random() * (TOTAL_LAYERS - 1)) + 1; // 1..last
-    const fromCount = LAYERS[toLayer].count;
-    const toCount = LAYERS[toLayer - 1].count;
+    const fromCount = layers[toLayer].count;
+    const toCount = layers[toLayer - 1].count;
     bwdParticles.push({
       fromLayer: toLayer,
       fromNeuron: Math.floor(Math.random() * fromCount),
@@ -349,11 +343,11 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   // ═══════════════════════════════════════════
 
   const ripples: { ring: THREE.Mesh; material: THREE.MeshBasicMaterial; layerIdx: number }[] = [];
-  LAYERS.forEach((layer, idx) => {
+  layers.forEach((layer, idx) => {
     if (!layer.hasRipple) return;
     const ringGeo = new THREE.TorusGeometry(layer.radius + 0.7, 0.05, 8, 64);
     const ringMat = new THREE.MeshBasicMaterial({
-      color: "#00E5FF",
+      color: cs.primary,
       transparent: true,
       opacity: 0.4,
       depthWrite: false,
@@ -372,7 +366,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const attnCells = ATTENTION_MATRIX_SIZE * ATTENTION_MATRIX_SIZE;
   const attnGeo = new THREE.BoxGeometry(0.12, 0.12, 0.03);
   const attnMat = new THREE.MeshBasicMaterial({
-    color: "#F5C842",
+    color: ATTENTION_COLOR,
     transparent: true,
     opacity: 0.7,
     depthWrite: false,
@@ -381,7 +375,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const attnDummy = new THREE.Object3D();
   const attnColor = new THREE.Color();
 
-  const attnZ = (LAYERS[4].z + LAYERS[5].z) / 2; // Between Attention and H4
+  const attnZ = (layers[4].z + layers[5].z) / 2; // Between Attention and H4
   const attnSpan = 5.0;
 
   for (let row = 0; row < ATTENTION_MATRIX_SIZE; row++) {
@@ -393,7 +387,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
       attnDummy.scale.setScalar(0.6 + Math.random() * 0.4);
       attnDummy.updateMatrix();
       attnMesh.setMatrixAt(idx, attnDummy.matrix);
-      attnColor.set("#F5C842");
+      attnColor.set(ATTENTION_COLOR);
       attnMesh.setColorAt(idx, attnColor);
     }
   }
@@ -428,7 +422,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     }
     const curveGeo = new THREE.BufferGeometry().setFromPoints(points);
     const curveMat = new THREE.LineBasicMaterial({
-      color: idx % 2 === 0 ? "#10A37F" : "#00E5FF",
+      color: idx % 2 === 0 ? cs.secondary : cs.primary,
       transparent: true,
       opacity: 0.25,
       depthWrite: false,
@@ -494,7 +488,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   for (let i = 0; i < SPIKE_RING_POOL; i++) {
     const ringGeo = new THREE.TorusGeometry(0.35, 0.03, 6, 16);
     const ringMat = new THREE.MeshBasicMaterial({
-      color: "#00E5FF",
+      color: cs.primary,
       transparent: true,
       opacity: 0,
       depthWrite: false,
@@ -529,7 +523,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
   const gradBarGeo = new THREE.BoxGeometry(0.3, 0.2, 0.2);
   const gradBarMat = new THREE.MeshBasicMaterial({
-    color: "#10A37F",
+      color: cs.secondary,
     transparent: true,
     opacity: 0.6,
     depthWrite: false,
@@ -560,20 +554,22 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const manPoints = new THREE.Points(manGeo, manMat);
   group.add(manPoints);
 
-  const manifoldClusters: { centerX: number; centerY: number; color: string; r: number; g: number; b: number }[] = [
-    { centerX: -6.0, centerY: -9.0, color: "#00E5FF", r: 0, g: 0.898, b: 1 },
-    { centerX: 0, centerY: -9.5, color: "#8B5CF6", r: 0.545, g: 0.361, b: 0.965 },
-    { centerX: 6.0, centerY: -9.0, color: "#10A37F", r: 0.063, g: 0.639, b: 0.498 },
+  const clusterColors = [new THREE.Color(cs.primary), new THREE.Color(cs.tertiary), new THREE.Color(cs.secondary)];
+  const manifoldClusters: { centerX: number; centerY: number; colorIdx: number }[] = [
+    { centerX: -6.0, centerY: -9.0, colorIdx: 0 },
+    { centerX: 0, centerY: -9.5, colorIdx: 1 },
+    { centerX: 6.0, centerY: -9.0, colorIdx: 2 },
   ];
 
   for (let i = 0; i < manifoldCount; i++) {
     const cluster = manifoldClusters[i % 3];
+    const c = clusterColors[cluster.colorIdx];
     manPositions[i * 3] = cluster.centerX + randomRange(-1.5, 1.5);
     manPositions[i * 3 + 1] = cluster.centerY + randomRange(-1.0, 1.0);
     manPositions[i * 3 + 2] = randomRange(-2.0, 2.0);
-    manColors[i * 3] = cluster.r * 0.6;
-    manColors[i * 3 + 1] = cluster.g * 0.6;
-    manColors[i * 3 + 2] = cluster.b * 0.6;
+    manColors[i * 3] = c.r * 0.6;
+    manColors[i * 3 + 1] = c.g * 0.6;
+    manColors[i * 3 + 2] = c.b * 0.6;
   }
 
   // ═══════════════════════════════════════════
@@ -583,10 +579,12 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   let entranceTimer = -1; // -1 = done/not started
   let entranceOpacity = 1.0;
   const ENTRANCE_RAMP_MS = 300; // ms for full cascade
+  const attnBaseColor = new THREE.Color(ATTENTION_COLOR);
 
   // ── Tensor forward pass timer ──
 
   let forwardPassTimer = 0.6;
+  let frameCount = 0;
   const FORWARD_PASS_INTERVAL = 0.6;
 
   // ── Dirty flags: skip frame work when data hasn't changed ──
@@ -610,6 +608,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
   const update = (time: number, _delta: number, _mouse: import("../../engine/types").Vec2 | null): void => {
     if (disposed) return;
+    frameCount++;
 
     // ── Entrance cascade ──
     if (entranceTimer >= 0) {
@@ -621,10 +620,12 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     forwardPassTimer -= _delta;
     if (forwardPassTimer <= 0) {
       forwardPassTimer = FORWARD_PASS_INTERVAL;
-      for (let n = 0; n < LAYERS[0].count; n++) {
-        neuronActivations[n] = randomRange(0.2, 0.8);
+      if (entranceOpacity >= 1.0) {
+        for (let n = 0; n < layers[0].count; n++) {
+          neuronActivations[n] = randomRange(0.2, 0.8);
+        }
+        runForwardPass();
       }
-      runForwardPass();
     }
 
     // ── E1: Forward pass particles ──
@@ -649,7 +650,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
           p.fromLayer = p.toLayer;
           p.fromNeuron = p.toNeuron;
           p.toLayer = p.toLayer + 1;
-          p.toNeuron = Math.floor(Math.random() * LAYERS[p.toLayer].count);
+          p.toNeuron = Math.floor(Math.random() * layers[p.toLayer].count);
           p.progress = 0;
           p.speed = randomRange(0.018, 0.066);
         } else {
@@ -712,7 +713,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
           p.fromLayer = p.toLayer;
           p.fromNeuron = p.toNeuron;
           p.toLayer = p.toLayer - 1;
-          p.toNeuron = Math.floor(Math.random() * LAYERS[p.toLayer].count);
+          p.toNeuron = Math.floor(Math.random() * layers[p.toLayer].count);
           p.progress = 0;
           p.speed = randomRange(0.024, 0.075);
         } else {
@@ -794,8 +795,8 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
       for (let l = 0; l < TOTAL_LAYERS - 1; l++) {
         const fromStart = LAYER_STARTS[l];
         const toStart = LAYER_STARTS[l + 1];
-        const fromCount = LAYERS[l].count;
-        const toCount = LAYERS[l + 1].count;
+        const fromCount = layers[l].count;
+        const toCount = layers[l + 1].count;
         for (let f = 0; f < fromCount; f++) {
           const sourceActivation = neuronActivations[fromStart + f];
           for (let t = 0; t < toCount; t++) {
@@ -829,8 +830,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
     // ── E5: Attention matrix shimmer (every 4th frame) ──
     {
-      const frameMod = Math.floor(time * 60) % 4;
-      if (frameMod === 0) {
+      if (frameCount % 4 === 0) {
         for (let row = 0; row < ATTENTION_MATRIX_SIZE; row++) {
           for (let col = 0; col < ATTENTION_MATRIX_SIZE; col++) {
             const idx = row * ATTENTION_MATRIX_SIZE + col;
@@ -849,7 +849,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
             attnMesh.setMatrixAt(idx, attnDummy.matrix);
 
             const b = 0.2 + val * 0.8;
-            attnColor.setRGB(b * 0.96, b * 0.72, b * 0.26);
+            attnColor.setRGB(b * attnBaseColor.r, b * attnBaseColor.g, b * attnBaseColor.b);
             attnMesh.setColorAt(idx, attnColor);
           }
         }
@@ -917,9 +917,10 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
         manPositions[i * 3 + 2] += (Math.cos(time * 0.4 + i) * 0.5 - manPositions[i * 3 + 2]) * 0.01;
 
         const dim = 0.3 + Math.sin(time * 2 + i) * 0.15;
-        manColors[i * 3] = cluster.r * dim;
-        manColors[i * 3 + 1] = cluster.g * dim;
-        manColors[i * 3 + 2] = cluster.b * dim;
+        const c = clusterColors[cluster.colorIdx];
+        manColors[i * 3] = c.r * dim;
+        manColors[i * 3 + 1] = c.g * dim;
+        manColors[i * 3 + 2] = c.b * dim;
       }
       manGeo.attributes.position.needsUpdate = true;
       manGeo.attributes.color.needsUpdate = true;

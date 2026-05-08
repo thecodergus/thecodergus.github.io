@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
 import { randomRange, clamp01 } from "../../engine/math";
+import { createCanvasTexture } from "../../engine/canvasTexture";
 import type { PlaneConfig, Drop, PlaneState, GlitchState, FreezeState, KeySprite } from "./types";
 
 // ── Constants ──
@@ -116,19 +117,14 @@ const createCharPool = (): { next: () => string } => {
 
 // ── Helpers ──
 
-const createCharTexture = (char: string, color: string): THREE.CanvasTexture => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 32;
-  canvas.height = 32;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Failed to get 2d context");
-  ctx.font = "bold 20px 'JetBrains Mono', monospace";
-  ctx.fillStyle = color;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(char, 16, 16);
-  return new THREE.CanvasTexture(canvas);
-};
+const createCharTexture = (char: string, color: string): THREE.CanvasTexture =>
+  createCanvasTexture({ width: 32, height: 32 }, (ctx) => {
+    ctx.font = "bold 20px 'JetBrains Mono', monospace";
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(char, 16, 16);
+  });
 
 // ── Texture cache (reuses per-character textures instead of recreating) ──
 

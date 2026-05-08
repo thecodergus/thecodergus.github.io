@@ -11,7 +11,8 @@ Portfolio pessoal de Gustavo M Camargo — Especialista em Automação com IA, L
 | Bundler | Vite 7.3.2 + Vinxi 0.5.11                 |
 | Estilo  | Tailwind CSS v4 + data-theme scoping       |
 | 3D      | Three.js ^0.184.0 (raw API, sem R3F)      |
-| Icons   | Lucide Solid (deep imports) + Devicon (build-time) |
+| PostP   | ShaderPass (scanline, vignette, chromatic) + UnrealBloomPass |
+| Icons   | Lucide Solid (deep imports)             |
 | A11y    | Kobalte Core                            |
 
 ## Scripts
@@ -24,7 +25,7 @@ npm start           # Preview do build
 npm run typecheck   # Verificação de tipos (tsc --noEmit)
 npm run lint        # ESLint
 npm run lint:fix    # ESLint com correção automática
-npm run test         # Vitest (4 arquivos, 121 testes)
+npm run test         # Vitest (5 arquivos, 143 testes)
 npm run test:watch   # Vitest em modo watch
 npm run test:coverage # Relatório de cobertura (@vitest/coverage-v8)
 ```
@@ -34,7 +35,7 @@ npm run test:coverage # Relatório de cobertura (@vitest/coverage-v8)
 ```
 src/
 ├── app.tsx                 # Entry: Router, MetaProvider, I18nProvider
-├── entry-server.tsx        # SSR: HTML shell, skip link, JSON-LD
+├── entry-server.tsx        # SSR: HTML shell, skip link, JSON-LD (StructuredData interface)
 ├── entry-client.tsx        # Client: mount + CSS imports
 ├── routes/
 │   ├── index.tsx           # Home — todas as seções do portfolio
@@ -42,12 +43,13 @@ src/
 ├── components/             # 15 componentes SolidJS
 ├── engine/                 # Engine Three.js puro (zero SolidJS)
 │   ├── engine.ts           # Orquestrador: renderer, câmera, post-process
-│   ├── transition.ts       # Crossfade manager (800ms)
+│   ├── transition.ts       # Crossfade manager (800ms) + forceScene
 │   ├── math.ts             # Vec3, easing, Lehmer PRNG
 │   ├── quality.ts          # GPU tier detection (low/medium/high)
+│   ├── canvasTexture.ts    # Shared CanvasTexture factory
 │   ├── types.ts            # SceneHandle, ThemeModule, SceneKind enum
 │   ├── math.test.ts        # 93 testes — Vec3, easings, PRNG
-│   ├── transition.test.ts  # 15 testes — máquina de estados
+│   ├── transition.test.ts  # 18 testes — máquina de estados + forceScene
 │   └── quality.test.ts     # 10 testes — detecção de GPU
 ├── themes/                 # Sistema de temas plug-in
 │   ├── registry.ts         # REGISTRY + loadTheme() com cache de Promise
@@ -57,9 +59,10 @@ src/
 │   ├── software/           # Matrix digital rain + glitch
 │   └── web/                # Topologia hyperlink spiderweb
 ├── stores/
-│   ├── themeStore.ts       # Sinal theme + localStorage (AI sempre inicial)
+│   ├── themeStore.ts       # Sinal theme + localStorage (AI sempre inicial, SceneKind enum)
 │   ├── themeStore.test.ts  # 3 testes — signal inicial, THEMES, REGISTRY
-│   └── i18nStore.tsx       # pt-br/en, fetch JSON, context, t() helper
+│   ├── i18nStore.tsx       # pt-br/en, fetch JSON, context, t() helper
+│   └── i18nStore.test.tsx  # 19 testes — signals, t(), setLanguage, fetchError
 └── types.ts                # Interfaces compartilhadas (Language enum, Messages)
 ```
 
@@ -76,14 +79,15 @@ Troca de tema usa **crossfade de 800ms** (400ms fade out + 400ms fade in).
 
 ## Testes
 
-Vitest 4 com jsdom environment e globals mode. 4 arquivos, 121 testes:
+Vitest 4 com jsdom environment e globals mode. 5 arquivos, 143 testes:
 
 | Arquivo                  | Testes | Foco                                            |
 | ------------------------ | ------ | ----------------------------------------------- |
 | `math.test.ts`           | 93     | Vec3, easings, PRNG, array utilities            |
-| `transition.test.ts`     | 15     | Máquina de estados, timing, abort               |
+| `transition.test.ts`     | 18     | Máquina de estados, timing, abort, forceScene   |
 | `quality.test.ts`        | 10     | GPU tier detection, pixelRatio cap               |
 | `themeStore.test.ts`     | 3      | Signal inicial, THEMES, REGISTRY                |
+| `i18nStore.test.tsx`     | 19     | Signals, t() helper, setLanguage, fetchError     |
 
 CI: `typecheck → lint → test` (ordem de falha mais rápida primeiro).
 
@@ -102,27 +106,31 @@ Shaders personalizados aplicados via `EffectComposer` (GLSL 3.0 ES):
 - JSON em `public/data/languages/`
 - Persistência via `localStorage` (`portfolio-language`)
 - SSR sempre renderiza pt-br; cliente corrige se necessário
-- Componentes usam `messages()?.path` com fallback em português
+- `t(key, defaultValue?)` helper com dot-notation usado em todos os componentes (38 call sites)
+- `StructuredData` interface tipada para JSON-LD
 
-## Convenções
+## Conventions
 
-- `enum` para todos os estados discretos (SceneKind, Phase, Language, TransitionPhase)
-- Funções puras, imutabilidade (`Object.freeze`, `Readonly<>`)
-- Zero classes — estado em closures (factory functions)
-- Animações usam `onMount` + `setInterval`, nunca `createEffect`
-- TypeScript strict, nunca `any`
-- Lucide Solid usa deep imports (`lucide-solid/icons/icon-name`), nunca barrel import
+- `enum` para todos os estados discretos (SceneKind, Language, TransitionPhase)
+- TypeScript strict, nunca `any`, nunca `!` assertions
+- Funções puras, imutabilidade (`Object.freeze`, `Readonly<>`), zero classes (factory closures)
+- Animações: `onMount` + `setInterval`/`setTimeout`, nunca `createEffect`
+- Lucide Solid: deep imports (`lucide-solid/icons/icon-name`), nunca barrel import
+- `vinxi/types/client` (não `vinxi/client` — não existe)
 
 ## Gotchas
 
-- **GLSL 3.0 ES**: NUNCA inclua `#version 300 es` — Three.js injeta no topo. Use `material.glslVersion = THREE.GLSL3`.
+- **GLSL 3.0 ES**: NUNCA inclua `#version 300 es` — Three.js 0.184 injeta no topo. Use `material.glslVersion = THREE.GLSL3`.
 - **`quality.ts`**: `getParameter` retorna `null` no Firefox/Safari — use `(getParameter(...) ?? "").toLowerCase()`.
 - **Fontes self-hosted**: 16 `.woff2` em `public/fonts/` — zero requisições externas.
-- **CSS colors vs TypeScript colorScheme**: sistemas independentes — um controla a UI, outro controla as cores 3D.
+- **CSS colors vs TypeScript colorScheme**: sistemas independentes — CSS controla UI, TypeScript controla cores 3D.
 - **`lerpColor()`** só aceita hex 6 caracteres (`#RRGGBB`), não short hex (`#RGB`).
-- **WebGL context loss**: handlers em `webglcontextlost`/`webglcontextrestored` pausam o render loop.
-- **Bloom breathing** só funciona em AI e Software (temas com `getDensity()`).
+- **`canvasTexture.ts`**: Three.js usa tipos distintos de filter — cast com `as` ao atribuir `LinearFilter`.
+- **WebGL context restore**: reconstrói toda a cena via `transitionManager.forceScene()`.
+- **Blook breathing** só funciona em AI e Software (temas com `getDensity()`).
 - **`camera.lookAt(0,0,0)`** chamado todo frame. Se mudar o target, atualize `engine.ts`.
+- **`@theme` block** em `app.css` duplica `ai/theme.css` intencionalmente — é registro de tokens Tailwind v4.
+- **`t()` helper** usado em 10 componentes (38 call sites) — `messages()?.path` direto também funciona.
 
 ## Deploy
 

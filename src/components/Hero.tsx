@@ -1,6 +1,7 @@
 import { Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import { theme, setTheme, THEMES, type ThemeId } from "~/stores/themeStore";
+import { SceneKind } from "~/engine/types";
+import { theme, setTheme, THEMES } from "~/stores/themeStore";
 import NeuralCanvas from "~/components/NeuralCanvas";
 import TypewriterText from "~/components/TypewriterText";
 import RotatingTypewriter from "~/components/RotatingTypewriter";
@@ -26,7 +27,7 @@ export default function Hero() {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleThemeKeyDown = (e: KeyboardEvent, themeId: ThemeId) => {
+  const handleThemeKeyDown = (e: KeyboardEvent, themeId: SceneKind) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       setTheme(themeId);
@@ -104,9 +105,9 @@ export default function Hero() {
                       <Check size={10} class="text-bg" />
                     </span>
                   </Show>
-                  {th.id === "ai" ? <Brain size={24} /> :
-                   th.id === "blockchain" ? <Blocks size={24} /> :
-                   th.id === "software" ? <Terminal size={24} /> :
+                  {th.id === SceneKind.AI ? <Brain size={24} /> :
+                   th.id === SceneKind.Blockchain ? <Blocks size={24} /> :
+                   th.id === SceneKind.Software ? <Terminal size={24} /> :
                    <Globe size={24} />}
                   <span class="text-xs font-mono font-bold">
                     {th.label}

@@ -7,7 +7,9 @@
 @import "./doom.css";
 
 @theme {
-  /* Base colors — defaults to AI theme */
+  /* Base theme tokens — defaults to AI theme.
+     Values duplicated from ./themes/ai/theme.css for Tailwind v4 @theme registration.
+     Other themes override via [data-theme="..."] selectors. */
   --color-bg: #080012;
   --color-surface: #0F0024;
   --color-surface-elevated: #140033;

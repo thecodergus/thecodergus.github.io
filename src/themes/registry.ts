@@ -1,20 +1,20 @@
 // ── Theme Registry — lazy-loaded theme modules via dynamic import ──
 
-import type { ThemeId } from "~/stores/themeStore";
+import { SceneKind } from "~/engine/types";
 import type { ThemeModule } from "~/engine/types";
 
 type ThemeLoader = () => Promise<ThemeModule>;
 
-export const REGISTRY: Readonly<Record<ThemeId, ThemeLoader>> = Object.freeze({
-  ai: () => import("./ai").then((m) => m.default),
-  blockchain: () => import("./blockchain").then((m) => m.default),
-  software: () => import("./software").then((m) => m.default),
-  web: () => import("./web").then((m) => m.default),
+export const REGISTRY: Readonly<Record<SceneKind, ThemeLoader>> = Object.freeze({
+  [SceneKind.AI]:          () => import("./ai").then((m) => m.default),
+  [SceneKind.Blockchain]:  () => import("./blockchain").then((m) => m.default),
+  [SceneKind.Software]:    () => import("./software").then((m) => m.default),
+  [SceneKind.Web]:         () => import("./web").then((m) => m.default),
 });
 
-const moduleCache = new Map<ThemeId, Promise<ThemeModule | null>>();
+const moduleCache = new Map<SceneKind, Promise<ThemeModule | null>>();
 
-export async function loadTheme(id: ThemeId): Promise<ThemeModule | null> {
+export async function loadTheme(id: SceneKind): Promise<ThemeModule | null> {
   const cached = moduleCache.get(id);
   if (cached) return cached;
 

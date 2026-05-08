@@ -1,11 +1,10 @@
 import { createSignal, createEffect } from "solid-js";
+import { SceneKind } from "~/engine/types";
 
 const STORAGE_KEY = "portfolio-theme";
 
-export type ThemeId = "ai" | "blockchain" | "software" | "web";
-
 export interface ThemeMeta {
-  id: ThemeId;
+  id: SceneKind;
   label: string;
   primary: string;
   secondary: string;
@@ -14,17 +13,17 @@ export interface ThemeMeta {
 }
 
 export const THEMES: ThemeMeta[] = [
-  { id: "ai",         label: "IA",         primary: "#00E5FF", secondary: "#10A37F", tertiary: "#8B5CF6", background: "#080012" },
-  { id: "blockchain", label: "Blockchain", primary: "#F7931A", secondary: "#00BFA5", tertiary: "#627EEA", background: "#0D1117" },
-  { id: "software",   label: "Software",   primary: "#00FF41", secondary: "#006622", tertiary: "#FFFFFF", background: "#000000" },
-  { id: "web",        label: "Web",        primary: "#0000EE", secondary: "#551A8B", tertiary: "#CC0000", background: "#F8F9FA" },
+  { id: SceneKind.AI,          label: "IA",         primary: "#00E5FF", secondary: "#10A37F", tertiary: "#8B5CF6", background: "#080012" },
+  { id: SceneKind.Blockchain,  label: "Blockchain", primary: "#F7931A", secondary: "#00BFA5", tertiary: "#627EEA", background: "#0D1117" },
+  { id: SceneKind.Software,    label: "Software",   primary: "#00FF41", secondary: "#006622", tertiary: "#FFFFFF", background: "#000000" },
+  { id: SceneKind.Web,         label: "Web",        primary: "#0000EE", secondary: "#551A8B", tertiary: "#CC0000", background: "#F8F9FA" },
 ];
 
-function getInitialTheme(): ThemeId {
-  return "ai";
+function getInitialTheme(): SceneKind {
+  return SceneKind.AI;
 }
 
-const [theme, setThemeSignal] = createSignal<ThemeId>(getInitialTheme());
+const [theme, setThemeSignal] = createSignal<SceneKind>(getInitialTheme());
 
 createEffect(() => {
   if (typeof document !== "undefined") {
@@ -34,7 +33,7 @@ createEffect(() => {
 });
 
 
-export function setTheme(id: ThemeId) {
+export function setTheme(id: SceneKind) {
   setThemeSignal(id);
 }
 

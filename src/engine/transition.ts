@@ -34,6 +34,7 @@ export const createTransitionManager = (
   readonly update: (dt: number) => void;
   readonly isTransitioning: () => boolean;
   readonly getActive: () => SceneHandle | null;
+  readonly forceScene: (scene: SceneHandle) => void;
 }> => {
   const state: TransitionState = {
     phase: TransitionPhase.Idle,
@@ -112,11 +113,30 @@ export const createTransitionManager = (
   const getActive = (): SceneHandle | null =>
     state.current;
 
+  const forceScene = (scene: SceneHandle): void => {
+    // Abort any pending transition
+    if (state.phase !== TransitionPhase.Idle && state.next) {
+      state.next.setOpacity(0);
+      onDispose(state.next);
+      state.next = null;
+    }
+    // Dispose current scene
+    if (state.current) {
+      onDispose(state.current);
+    }
+    // Install new scene at full opacity
+    state.current = scene;
+    state.phase = TransitionPhase.Idle;
+    state.timer = 0;
+    scene.setOpacity(1);
+  };
+
   return Object.freeze({
     transition,
     update,
     isTransitioning,
     getActive,
+    forceScene,
   });
 };
 

@@ -31,176 +31,140 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **MCP** (via `.opencode/opencode.json`): eslint, vitest testing, shadcn/ui, radix primitives, lighthouse, perf-tools
 - **TypeScript 6.0.3**: `baseUrl` is deprecated — use `paths` with explicit patterns. `vinxi/types/client` (not `vinxi/client` — the latter doesn't exist, SolidStart issue #1454). Include `"vitest/globals"` in `types` for test globals.
 
-### Test Architecture
-- **`src/engine/math.test.ts`** — 93 tests covering all pure functions: Vec3 construction, arithmetic, normalization, dot/length/dist, lerp, easings, PRNG determinism, array utilities.
-- **`src/engine/transition.test.ts`** — 15 tests: state machine (Idle→FadingOut→FadingIn→Idle), opacity/dissolve/entrance callbacks, abort handling, timing (800ms total).
-- **`src/engine/quality.test.ts`** — 10 tests: GPU tier detection (WebGL2 unavailable, integrated+lowRAM=low, integrated+sufficient=medium, Apple Silicon=medium, dedicated=high), pixelRatio cap, config freezing.
-- **`src/stores/themeStore.test.ts`** — 3 tests: initial theme signal, THEMES array, REGISTRY keys.
-- Test mocking: `localStorage` via closure mock in themeStore test; `HTMLCanvasElement.prototype.getContext` and `navigator.deviceMemory` in quality test.
+### Test Architecture (143 tests across 5 files)
+- **`src/engine/math.test.ts`** — 93 tests: Vec3 construction, arithmetic, normalization, dot/length/dist, lerp, easings, PRNG determinism.
+- **`src/engine/transition.test.ts`** — 18 tests: state machine (Idle→FadingOut→FadingIn→Idle), opacity/dissolve/entrance callbacks, abort handling, timing (800ms total), `forceScene` method.
+- **`src/engine/quality.test.ts`** — 10 tests: GPU tier detection, pixelRatio cap, config freezing.
+- **`src/stores/themeStore.test.ts`** — 3 tests: initial theme signal (always SceneKind.AI), THEMES array, REGISTRY keys.
+- **`src/stores/i18nStore.test.tsx`** — 19 tests: module-level signal defaults, `t()` nested key resolution/fallbacks, `setLanguage` signal+localStorage, fetchError handling.
+- Test mocking: `localStorage` via closure mock; `HTMLCanvasElement.prototype.getContext` and `navigator.deviceMemory` in quality test; `globalThis.fetch` in i18n tests.
 
 ## Architecture
 
 ### Routing
-- **Entry**: `src/app.tsx` wraps router with MetaProvider (Meta, Title, Link, Script), ThemeProvider, I18nProvider.
+- **Entry**: `src/app.tsx` wraps router with MetaProvider, I18nProvider.
 - **File-based routing** in `src/routes/`. Active routes: `/`, `/doom`.
 - **Prerender**: Configured in `app.config.ts` for `/` and `/doom`. Crawls links.
-- **Aliases**: `~/` resolves to `./src/` (configured in `tsconfig.json` and `vite.config.ts`).
+- **Aliases**: `~/` → `./src/` (tsconfig + vite.config).
 
 ### I18n (`src/stores/i18nStore.tsx`)
 - Context-based via `createContext<I18nContextValue>()`.
 - Languages: `Language.PtBr = "pt-br"`, `Language.En = "en"` (default `PtBr`).
 - localStorage key: `"portfolio-language"`.
 - Data: `/data/languages/${lang}.json` (messages) + `/data/portfolio_shared_data.json` (shared).
-- `t(key, defaultValue?)` helper uses nested dot-notation lookup (e.g., `t("navbar.home", "Início")`). Now used by all components; the optional `defaultValue` parameter provides fallback when messages aren't loaded or key is missing.
-- `<I18nProvider>` wraps entire app in `app.tsx`.
-- **I18nProvider.onMount** fetches `sharedData` and `messages` for the default language. It also checks `localStorage` for a stored preference and syncs the `language` signal accordingly before fetching.
-- **`setLanguage(lang)`** (exported directly from the module, also in context) updates the signal, persists to `localStorage`, and re-fetches messages for the new language.
-- **`fetchError` signal**: exported for components to detect JSON load failures. Set to `null` on success.
-- **Fallback strings**: 21 hardcoded fallbacks across 9 component files — all in Portuguese (e.g. `"Sobre"`, `"Habilidades"`, `"Projetos"`). This matches the default `pt-br` language.
-- `entry-server.tsx` has `<html lang="pt-br">` hardcoded. LANG_SCRIPT in `app.tsx` corrects `document.documentElement.lang` from localStorage on the client (cosmetic only — does not affect content).
+- **`t(key, defaultValue?)`** helper — nested dot-notation lookup. Used by ALL components (38 call sites in 10 files). Falls back to `defaultValue` when messages aren't loaded or key missing.
+- `<I18nProvider>` wraps entire app in `app.tsx`. `onMount` fetches sharedData + messages, syncs language signal from localStorage before fetching.
+- **`setLanguage(lang)`** — exported from module (also in context). Updates signal, persists to localStorage, re-fetches messages.
+- **`fetchError` signal** — null on success, error message string on failure.
+- **Fallback strings**: ~21 hardcoded fallbacks across components — all in Portuguese (default language).
+- `entry-server.tsx` has `<html lang="pt-br">` hardcoded. LANG_SCRIPT in `app.tsx` corrects `document.documentElement.lang` and skip link text from localStorage on client.
+- **Structured data**: `entry-server.tsx` exports `StructuredData` interface for typed JSON-LD.
 
 ### Async Data Pattern
-`sharedData` and `messages` are loaded asynchronously via `fetch` inside `I18nProvider.onMount` — they are NOT available during SSR. Components consuming these values **must** guard with `<Show when={data()}>` to prevent rendering with `undefined` values. Example: `<Show when={name()}><TypewriterText text={name()} /></Show>`.
+`sharedData` and `messages` are loaded asynchronously via `fetch` in `I18nProvider.onMount` — NOT available during SSR. Components consuming these **must** guard with `<Show when={data()}>`.
 
 ### 3D Engine (`src/engine/`)
 Pure functional engine, zero SolidJS imports. No classes — all state in closures via factory functions.
-- **`engine.ts`** — Orchestrator: creates scene/camera/renderer/composer, manages disposal and theme switching. Entry point via `createEngine()` factory. GLSL 3.0 ES scanline shader with per-theme uniform controls. Global keydown handler skips events from editable elements (INPUT, TEXTAREA, SELECT, contentEditable) to prevent interference with form fields.
-- **`transition.ts`** — Crossfade manager: receives `onDispose: (SceneHandle) => void` callback. Handles FadeOut (old scene dissolve) → FadeIn (new scene entrance). `FADE_DURATION = 800ms`, `TransitionPhase` enum (Idle, FadingOut, FadingIn). Import `easeInOutCubic` from `math.ts`.
-- **`math.ts`** — Pure easing functions: `easeInOutCubic`, `clamp01`, etc.
-- **`quality.ts`** — GPU tier detection: low/medium/high based on renderer string and device memory. Controls pixelRatio, bloom, scanline, software planes. On `low` tier, EffectComposer and FXAA are disabled — rendering goes directly to default framebuffer.
 
-- **`types.ts`** — Shared interfaces: `SceneHandle`, `SceneConfig`, `ThemeModule`, `ColorScheme`, `CameraPreset`, `PostProcessPreset`. `SceneKind` enum.
+| File | Role |
+|------|------|
+| `engine.ts` | Orchestrator: renderer, scene, camera, composer, animation loop, camera orbit, keyboard routing, theme switching, resize. Entry: `createEngine()` |
+| `transition.ts` | Crossfade manager: FadeOut→FadeIn, 800ms total. `TransitionPhase` enum. `forceScene()` for context restore. |
+| `math.ts` | Pure easing functions, Lehmer PRNG (shared mutable seed=42) |
+| `quality.ts` | GPU tier detection: low/medium/high. On `low` tier, EffectComposer disabled. |
+| `canvasTexture.ts` | Shared `createCanvasTexture(options, draw)` factory. Used by blockchain, software, web themes. |
+| `types.ts` | `SceneHandle`, `SceneConfig`, `ThemeModule`, `ColorScheme`, `CameraPreset`, `PostProcessPreset`, `SceneKind` enum |
 
 ### Theme System (`src/themes/`)
 Modular plug-in architecture. Each theme is a self-contained directory:
 ```
 src/themes/
-├── registry.ts                  — frozen REGISTRY; loadTheme() with Promise cache + error handling
-├── create-theme-module.ts       — factory: createThemeModule(config: ThemeConfig) => ThemeModule
-├── ai/
-│   ├── index.ts                 — createThemeModule({...}) — pure data, no logic
-│   ├── scene.ts                 — Three.js scene factory (3D neural network)
-│   ├── types.ts                 — theme-specific types
-│   └── theme.css                — `[data-theme="ai"]` CSS custom properties
-├── blockchain/
-│   ├── index.ts                 — force-directed graph (chain nodes, wallet nodes, transaction particles)
-│   ├── scene.ts
-│   ├── types.ts
-│   └── theme.css
-├── software/
-│   ├── index.ts                 — data pipeline (processing stages, Bezier curves, data flow)
-│   ├── scene.ts
-│   ├── types.ts
-│   └── theme.css
-└── web/
-    ├── index.ts                 — network topology (hub, satellites, request/response packets)
-    ├── scene.ts
-    ├── types.ts
-    └── theme.css
+├── registry.ts                  — frozen REGISTRY; loadTheme() with Promise cache
+├── create-theme-module.ts       — factory: ThemeConfig → ThemeModule
+├── ai/          — 3D neural network (forward/backward pass, attention, manifolds)
+├── blockchain/  — force-directed graph (chain nodes, wallet nodes, transaction particles)
+├── software/    — data pipeline (processing stages, Bezier curves, falling text)
+└── web/         — network topology (hub, satellites, request/response packets)
 ```
 
-All 4 theme `index.ts` files use `createThemeModule()` from `src/themes/create-theme-module.ts`. They are ~33 lines each of pure data (colorScheme, cameraPreset, postPreset, createScene function reference) — no logic. The factory handles `Object.freeze`.
+Each has `index.ts` (pure data, ~33 lines), `scene.ts` (Three.js factory), `types.ts`, `theme.css`. All use `createThemeModule()` from `src/themes/create-theme-module.ts`. `Object.freeze` handled by factory.
 
-`loadTheme(id)` in `registry.ts` returns `Promise<ThemeModule | null>` — caches the promise (not the resolved value) so concurrent calls share the same import. Errors clear the cache entry and return `null`.
+`loadTheme(id)` returns `Promise<ThemeModule | null>` — caches the promise, errors clear cache.
 
-**ThemeModule contract** (defined in `src/engine/types.ts`):
-```ts
-interface ThemeModule {
-  readonly sceneKind: SceneKind;      // ai | blockchain | software | web
-  readonly colorScheme: ColorScheme;
-  readonly createScene: (config: SceneConfig) => SceneHandle;
-  readonly cameraPreset: CameraPreset;
-  readonly postPreset: PostProcessPreset;
-}
-```
-
-**CSS Architecture**: `app.css` has single `@theme {}` block with base tokens (defaults to AI theme). Each theme's `.css` file uses `[data-theme="x"]` scope to override colors and post-processing intensities. All theme CSS files are static `@import` in `app.css`.
-
-### SSR Flash Prevention
-Blocking inline `<script>` in `app.tsx` `<head>` reads `localStorage.getItem('portfolio-theme')` and sets `document.documentElement.setAttribute('data-theme', t)` before first paint. The `<html>` tag in `entry-server.tsx` has `data-theme="ai"` as the SSR fallback.
-
-### SolidJS ↔ Engine Bridge
-- **`src/components/NeuralCanvas.tsx`** — Thin SolidJS wrapper. Reads `theme()` signal, calls `engine.setTheme()` on changes. Creates `requestAnimationFrame` loop via `onMount` / `onCleanup`. Owns the `<canvas>` element.
+**CSS Architecture**: `app.css` has `@theme {}` block with base tokens (defaults to AI theme — values intentionally duplicated from `ai/theme.css`). Each theme's `.css` uses `[data-theme="x"]` scope. All theme CSS files are static `@import` in `app.css`.
 
 ### ThemeStore (`src/stores/themeStore.ts`)
-- `ThemeId = "ai" | "blockchain" | "software" | "web"`
-- `getInitialTheme()` always returns `"ai"` — all visitors start on AI theme.
+- Uses `SceneKind` enum from `src/engine/types.ts` (not string union).
+- `getInitialTheme()` always returns `SceneKind.AI` — all visitors start on AI theme.
 - localStorage key: `"portfolio-theme"`.
 
-### Camera Frustum Math
-Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0. Orbit math uses `sin`/`cos` around Y axis.
+### SSR Flash Prevention
+Blocking inline `<script>` in `app.tsx` `<head>` reads `localStorage.getItem('portfolio-theme')` and sets `data-theme` before first paint. SSR fallback: `<html data-theme="ai">` in `entry-server.tsx`.
 
-**Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true): `AI(orbit=14,spd=0.02,h=5,θ=π/2) Blockchain(12,0.02,3,π/4) Software(10,0.015,2,0) Web(11,0.015,1.5,0)`
+### SolidJS ↔ Engine Bridge
+- **`src/components/NeuralCanvas.tsx`** — Reads `theme()` signal, calls `engine.setTheme()` on changes. Owns `<canvas>`, runs `requestAnimationFrame` loop via `onMount`/`onCleanup`.
 
-**Post-process Presets** (bloom=bloomStrength, s=scanlineIntensity, v=vignetteStrength, c=chromaticStrength): `AI(bloom=0.4,s=0.15,v=0.35,c=0.003) Blockchain(bloom=0.5,s=0.08,v=0.35,c=0.003) Software(bloom=1.0,s=0.18,v=0.4,c=0.004) Web(bloom=0.5,s=0.05,v=0.15,c=0.003)`
+### Camera / Post-process / Color Data
+**Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true):
+AI(orbit=14,spd=0.02,h=5,θ=π/2) Blockchain(12,0.02,3,π/4) Software(10,0.015,2,0) Web(11,0.015,1.5,0)
 
-**Theme Color Schemes** (primary, secondary, tertiary, background): `AI(#00E5FF,#10A37F,#8B5CF6,#080012) Blockchain(#F7931A,#00BFA5,#627EEA,#0D1117) Software(#00FF41,#006622,#FFFFFF,#000000) Web(#0000EE,#551A8B,#CC0000,#F8F9FA)`
+**Post-process** (bloom/scanline/vignette/chromatic): AI(0.4/0.15/0.35/0.003) Blockchain(0.5/0.08/0.35/0.003) Software(1.0/0.18/0.4/0.004) Web(0.5/0.05/0.15/0.003)
+
+**Color Schemes** (primary/secondary/tertiary/background): AI(#00E5FF/#10A37F/#8B5CF6/#080012) Blockchain(#F7931A/#00BFA5/#627EEA/#0D1117) Software(#00FF41/#006622/#FFFFFF/#000000) Web(#0000EE/#551A8B/#CC0000/#F8F9FA)
 
 ### Post-Processing Notes
-- **`antialias: true` on WebGLRenderer has NO effect with EffectComposer.** MSAA only works when rendering directly to the default framebuffer. If antialiasing is needed, use an FXAA or SMAA pass at the end of the chain.
+- **`antialias: true` on WebGLRenderer has NO effect with EffectComposer.** MSAA only works rendering to default framebuffer. Use FXAA (already in engine).
 - `pixelRatio` capped at `Math.min(devicePixelRatio, 2)`.
-- Bloom breathing: modulates `bloomStrength` by `baseStrength * (0.5 + density)` where `baseStrength` comes from the theme's `postPreset.bloomStrength`. Only works for scenes that export `getDensity()` — **AI** and **Software** have it; **Blockchain** and **Web** do NOT.
-- Resize order: `camera.aspect = w/h` → `camera.updateProjectionMatrix()` → `renderer.setSize(w, h)` → `composer.setSize(w, h)`. This is the correct order and is already followed in the code.
+- Bloom breathing: only for scenes with `getDensity()` — **AI** and **Software**.
+- Resize order: `camera.aspect = w/h` → `camera.updateProjectionMatrix()` → `renderer.setSize(w, h)` → `composer.setSize(w, h)`.
 
 ## Build & Deploy
-- Static preset (`server: { preset: "static" }`).
-- CI runs on push to `main`: quality job (`typecheck → lint → test`) → deploy job (`build → gh-pages`).
-- PWA via `vite-plugin-pwa` (autoUpdate). Three.js bundles are excluded from precaching (`globIgnores` in `app.config.ts`).
-- Build artifact deployed from `.output/public`; `_server` artifacts cleaned before deploy; `.nojekyll` file added.
-- **Vite manual chunks** (`vite.config.ts`): Three.js is split into separate chunks (`three`, `three-examples`, `vendor`) to improve caching and avoid monolithic bundles.
+- Static preset. CI: `typecheck → lint → test` → `build → gh-pages`.
+- PWA via `vite-plugin-pwa`. Three.js bundles excluded from precaching.
+- Build from `.output/public`; `_server` cleaned; `.nojekyll` added.
+- Three.js split into `three`, `three-examples`, `vendor` manual chunks in `vite.config.ts`.
 
 ## Conventions
-- **Lucide Solid imports must use deep imports** (`lucide-solid/icons/component-name`), never barrel imports (`from "lucide-solid"`). Deep imports tree-shake to ~2KB per icon vs ~400KB for the full library.
-- JSX import source is `solid-js`.
-- Strict TypeScript, no emit, bundler module resolution.
+- **Lucide Solid**: deep imports only (`lucide-solid/icons/component-name`). Barrel imports pull ~400KB.
+- JSX import source is `solid-js`. Strict TypeScript, no emit, bundler resolution.
 
-### TypeScript strictness
-- **NEVER use `any`.** Prefer `unknown` and narrow with type guards. If a type is truly dynamic, use `Record<string, unknown>`.
-- **ALWAYS use `enum` for categorization.** Any set of discrete variants (phases, states, modes, themes, categories) MUST be an `enum`, never string unions or magic constants. `enum` provides a single source of truth and compiler-verified exhaustiveness.
-- Function parameters and return types must be explicitly typed — avoid implicit inference for public APIs.
-- **Non-null assertions (`!`) are prohibited.** Use type guards or early returns instead.
+### TypeScript
+- **NEVER `any`.** Prefer `unknown` → narrowing.
+- **ALWAYS use `enum` for categorization.** Any set of discrete variants MUST be an `enum`, never string unions. `SceneKind`, `TransitionPhase`, `Language` all follow this.
+- Explicit types on public APIs. **Non-null assertions (`!`) prohibited.**
 
-### Functional programming conventions
-- **Pure functions**: all computation returns new values, never mutates inputs.
-- **Immutability**: `Object.freeze`, `Readonly<>`, spread operators on arrays, `readonly T[]`.
-- **enum for all discrete states**: `SceneKind`, `TransitionPhase`.
-- **No classes**: all state encapsulated in closures via factory functions.
+### Functional Programming
+- Pure functions, immutability (`Object.freeze`, `Readonly<>`, `readonly T[]`), no classes (closures only).
 
-### SolidJS Reactivity Conventions
-- **Typewriter/interval animations MUST use `onMount` + `setInterval`/`setTimeout`, never `createEffect`.**
-  SolidJS effects only track signals read **synchronously** within the effect callback body. Signals read inside async callbacks (`setTimeout`, `setInterval`, event handlers) are invisible to the reactivity system — the effect will run once and never re-trigger. This is intentional SolidJS behavior (same in Vue and MobX).
-  See `TypewriterText.tsx` and `RotatingTypewriter.tsx` for the canonical pattern: `onMount(() => { const timer = setInterval(() => { ... }); onCleanup(() => clearInterval(timer)); })`.
-- **If you MUST use `createEffect` with async (e.g., RotatingTypewriter delete cycle), read the signal synchronously BEFORE the timer:**
-  `createEffect(() => { const val = displayText(); setTimeout(() => { /* use val */ }); })`. The synchronous read makes `displayText` a tracked dependency so the effect re-fires on each character. Omitting this causes the bug where only 1 character advances.
-- `setInterval`/`setTimeout` at component top-level (outside `onMount`) creates intervals during SSR, which is a memory leak. Always wrap in `onMount` + `onCleanup`.
-- **Hero animation assignment**: Name → `TypewriterText` (type-once, cursor vanishes after). Titles → `RotatingTypewriter` (cycle with delete). Do NOT use `GlitchText` for the name — GlitchText is for decorative scramble effects only.
+### SolidJS Reactivity
+- **Animations MUST use `onMount` + `setInterval`/`setTimeout`, never `createEffect`.** Signals inside async callbacks are invisible to the reactivity tracker.
+- If `createEffect` + async is unavoidable, read the signal synchronously BEFORE the timer: `const val = displayText(); setTimeout(() => { /* use val */ })`.
+- `setInterval`/`setTimeout` outside `onMount` creates SSR memory leaks. Always wrap in `onMount` + `onCleanup`.
+- **Hero**: Name → `TypewriterText` (type-once). Titles → `RotatingTypewriter` (cycle+delete). Do NOT use `GlitchText` for name.
 
 ### 3D Scene Conventions
-- Each scene is a pure factory function (`SceneConfig → SceneHandle`).
-- `SceneHandle.getObjects()` returns `readonly THREE.Object3D[]` — engine adds/removes from main scene.
-- `SceneHandle.setOpacity(t: number)` — used by transition manager during crossfade.
-- `SceneHandle.dispose()` — tears down GPU resources (geometries, materials, textures).
-- All rendering uses `UnrealBloomPass` for cinematic glow effect.
-- Materials that need absolute opacity overrides (e.g. blockchain) must snapshot base via `userData._baseOpacity` to avoid multiplicative drift.
+- Factory function `SceneConfig → SceneHandle`. `getObjects()` returns `readonly THREE.Object3D[]`.
+- `dispose()` tears down ALL GPU resources (geometries, materials, textures, canvas textures).
+- Materials needing absolute opacity must snapshot base via `userData._baseOpacity`.
 
 ## Gotchas
-- **GLSL 3.0 ES shaders: NEVER include `#version 300 es` in `ShaderMaterial` source.** Three.js 0.184 hardcodes this directive as the first line of every shader. Including it again in the user source causes `#version directive must occur before anything else` at runtime. Instead, set `material.glslVersion = THREE.GLSL3` and declare `out vec4 fragColor;` explicitly. The Three.js-injected macros (`#define varying in/out`, `#define texture2D texture`) are benign for code already using GLSL 3.0 ES syntax.
-- `engine.setTheme()` has a same-theme guard at the top: `if (currentModule?.sceneKind === m.sceneKind) return;` — clicking the same theme pill should never rebuild the scene.
-- `TransitionManager` receives `onDispose` as a callback parameter — ensures `mainScene.remove(obj)` always pairs with `handle.dispose()`. Same callback fires on abort (rapid theme switch) to prevent orphan GPU objects.
-- `camera.lookAt(0, 0, 0)` called every frame in the render loop. If you change the lookAt target, update in `engine.ts`.
-- `body { overflow-x: hidden }` in `app.css` — full-bleed elements need explicit width handling.
-- Only the Software theme exports `onKeyPress` (keyboard easter egg); AI, Blockchain, and Web themes have no keyboard routing.
-- `quality.ts`: `getParameter(UNMASKED_RENDERER_WEBGL)` returns `null` in Firefox/Safari — use `(getParameter(...) ?? "").toLowerCase()`, never `?.toLowerCase()`.
-- Global keydown handler in `engine.ts` skips events from editable elements (INPUT, TEXTAREA, SELECT, contentEditable) to prevent interference with form fields.
-- `renderer.toneMapping = ACESFilmicToneMapping`, `toneMappingExposure = 1.2` — global, affects all themes.
-- Transition kills pending scene on rapid theme switching — may cause visual glitch.
-- `--color-accent-red: #FE4450` is universal (not theme-specific) — used for semantic elements like heart icon, status dots.
-- Lehmer PRNG in `math.ts` has a module-level mutable seed (initially 42) shared across all scenes — re-instantiating scenes doesn't reset it.
-- **Fonts are self-hosted** via 16 `.woff2` files in `public/fonts/` with `@font-face` rules in `public/fonts/fonts.css`. No external font requests. Linked via `<Link>` in `app.tsx`. `entry-server.tsx` does not load fonts — no duplication risk.
-- `disposeScene` callback must be defined before `createTransitionManager(disposeScene)` in `engine.ts` — order matters due to closure capture in the transition manager.
-- **AI scene entranceTimer/spike rings**: `entranceTimer` is driven by the transition manager's FadeIn phase (0–400ms). The spike ring gate now checks `entranceTimer >= 0` instead of `> ENTRANCE_DURATION` (fixed). Timer resets to -1 when `entranceOpacity >= 1.0` (at 300ms). See `src/themes/ai/scene.ts:616-618`.
-- **Module-level `createSignal` MUST NOT read `localStorage` during init.** During SSR, `typeof window === "undefined"` forces a default, but on client hydration the module re-executes in the browser and `getInitialLanguage()` reads `localStorage` — producing a different initial value than SSR. This caused the bug where SSR HTML renders Portuguese ("Sobre", "Habilidades") but the client signal starts as `Language.En` (from a prior EN click), so `onMount` fetches `en.json` and the page flips to English. **Fix**: `getInitialLanguage()` always returns `Language.PtBr`; the `I18nProvider.onMount` syncs the signal with `localStorage` *before* fetching messages. Same pattern applies to `themeStore.ts` — `getInitialTheme()` already does this correctly (always returns `"ai"`).
-- **WebGL context loss**: Engine registers `webglcontextlost`/`webglcontextrestored` handlers on `canvas` (not renderer). When context is lost, the render loop skips all WebGL calls. Context lost listeners are cleaned up in `dispose()`.
-- **CSS theme colors ≠ TypeScript colorScheme**: CSS `[data-theme="x"]` custom properties control UI component colors (Navbar, cards, buttons). TypeScript `ColorScheme` properties control 3D scene element colors. They are intentionally separate systems — changing one does not affect the other.
-- **`lerpColor()` in `math.ts` only supports 6-character hex strings** (`#RRGGBB`). Short hex (#RGB, #RGBA, #RRGGBBAA) are not parsed.
-- **ESLint `solid/reactivity` in i18nStore**: Signal accesses inside async callbacks (`.then()`, `.catch()`) are invisible to the reactivity tracker. To fix: read the signal synchronously before the promise chain: `const lang = language();` then `fetch(...).then(() => /* use lang */)`.
+- **GLSL 3.0 ES**: NEVER include `#version 300 es` in ShaderMaterial source. Three.js 0.184 hardcodes it. Set `material.glslVersion = THREE.GLSL3` and declare `out vec4 fragColor;`.
+- `engine.setTheme()` has same-theme guard: `if (currentModule?.sceneKind === m.sceneKind) return;`.
+- `camera.lookAt(0, 0, 0)` every frame. Change target → update `engine.ts`.
+- `body { overflow-x: hidden }` → full-bleed elements need explicit width.
+- Only Software theme exports `onKeyPress` for keyboard easter egg.
+- `quality.ts`: use `(getParameter(UNMASKED_RENDERER_WEBGL) ?? "").toLowerCase()`, never `?.toLowerCase()` (Firefox/Safari).
+- Global keydown handler skips INPUT/TEXTAREA/SELECT/contentEditable.
+- `toneMapping = ACESFilmicToneMapping`, `toneMappingExposure = 1.2` — global.
+- `--color-accent-red: #FE4450` is universal (heart, status dots).
+- Lehmer PRNG seed (42) is shared across all scenes; re-instantiating scenes doesn't reset it.
+- **Fonts self-hosted**: 16 `.woff2` in `public/fonts/`, `@font-face` in `public/fonts/fonts.css`. No external requests.
+- `disposeScene` must be defined before `createTransitionManager(disposeScene)` — order matters for closure capture.
+- **Module-level `createSignal` MUST NOT read `localStorage` during init** — causes SSR/client hydration mismatch. `getInitialLanguage()` and `getInitialTheme()` both always return their default; `onMount` syncs with localStorage.
+- **WebGL context loss**: handlers on `canvas`. Context lost → render loop skips. **Context restore → rebuilds entire scene via `transitionManager.forceScene()`** (not just flag reset).
+- **CSS theme colors ≠ TypeScript colorScheme**: separate systems. CSS controls UI, TypeScript controls 3D scene elements.
+- **`lerpColor()`** only supports 6-char hex (`#RRGGBB`).
+- **ESLint `solid/reactivity` in i18nStore**: read signal synchronously before `.then()` chains.
+- **`canvasTexture.ts` filter types**: Three.js uses distinct `MinificationTextureFilter`/`MagnificationTextureFilter` types. Cast with `as` when assigning `LinearFilter` defaults.
+- **`@theme` block in `app.css`** intentionally duplicates `ai/theme.css` values — it's Tailwind v4 token registration. Other themes override via `[data-theme="..."]` selectors.
+- **AI scene now respects `config.colorScheme`** — LAYERS, neurons, edges, ripple rings, manifolds all derive colors from the passed scheme. Only attention yellow (`#F5C842`) is a scene-internal constant.
