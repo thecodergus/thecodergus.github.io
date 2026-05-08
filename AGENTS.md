@@ -24,9 +24,11 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **Lint**: ESLint 9 + `typescript-eslint` + `eslint-plugin-solid`. Key rules: `solid/no-destructure: error`, `solid/reactivity: warn`, `solid/jsx-no-undef: error`. Run: `npm run lint` / `npm run lint:fix`.
 - **Test**: Vitest 4, jsdom environment, globals mode. Test pattern: `src/**/*.test.{ts,tsx}`. Setup file: `vitest.setup.ts`. Run: `npm run test` / `npm run test:watch`.
 - **Typecheck**: `tsc --noEmit`. Run: `npm run typecheck`.
+- **Verification order** (matches CI): `typecheck → lint → test`. Fastest failure first.
 - No pre-commit hooks configured.
 - **LSP** (via `.opencode/opencode.json`): vtsls, eslint-language-server, ganko-lsp, tailwindcss-language-server, json
 - **MCP** (via `.opencode/opencode.json`): eslint, vitest testing, shadcn/ui, radix primitives, lighthouse, perf-tools
+- **TypeScript 6.0.3**: `baseUrl` is deprecated — use `paths` with explicit patterns. `vinxi/types/client` (not `vinxi/client` — the latter doesn't exist, SolidStart issue #1454). Include `"vitest/globals"` in `types` for test globals.
 
 ### Test Architecture
 - **`src/engine/math.test.ts`** — 93 tests covering all pure functions: Vec3 construction, arithmetic, normalization, dot/length/dist, lerp, easings, PRNG determinism, array utilities.
@@ -53,7 +55,7 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **I18nProvider.onMount** fetches `sharedData` and `messages` for the default language. It also checks `localStorage` for a stored preference and syncs the `language` signal accordingly before fetching.
 - **`setLanguage(lang)`** (exported directly from the module, also in context) updates the signal, persists to `localStorage`, and re-fetches messages for the new language.
 - **`fetchError` signal**: exported for components to detect JSON load failures. Set to `null` on success.
-- **Fallback strings**: 21 hardcoded fallbacks across 9 component files — all in Portuguese (e.g. `"Sobre"`, `"Habilidades"`, `"Projetos"`). Only 2 were already in Portuguese (`"Idioma"`, `"por"`); the other 17 were originally English and were converted. See the gotcha about SSR fallback language consistency.
+- **Fallback strings**: 21 hardcoded fallbacks across 9 component files — all in Portuguese (e.g. `"Sobre"`, `"Habilidades"`, `"Projetos"`). This matches the default `pt-br` language.
 - `entry-server.tsx` has `<html lang="pt-br">` hardcoded. LANG_SCRIPT in `app.tsx` corrects `document.documentElement.lang` from localStorage on the client (cosmetic only — does not affect content).
 
 ### Async Data Pattern
@@ -175,11 +177,14 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - Materials that need absolute opacity overrides (e.g. blockchain) must snapshot base via `userData._baseOpacity` to avoid multiplicative drift.
 
 ## Gotchas
+- **GLSL 3.0 ES shaders: NEVER include `#version 300 es` in `ShaderMaterial` source.** Three.js 0.184 hardcodes this directive as the first line of every shader. Including it again in the user source causes `#version directive must occur before anything else` at runtime. Instead, set `material.glslVersion = THREE.GLSL3` and declare `out vec4 fragColor;` explicitly. The Three.js-injected macros (`#define varying in/out`, `#define texture2D texture`) are benign for code already using GLSL 3.0 ES syntax.
 - `engine.setTheme()` has a same-theme guard at the top: `if (currentModule?.sceneKind === m.sceneKind) return;` — clicking the same theme pill should never rebuild the scene.
 - `TransitionManager` receives `onDispose` as a callback parameter — ensures `mainScene.remove(obj)` always pairs with `handle.dispose()`. Same callback fires on abort (rapid theme switch) to prevent orphan GPU objects.
 - `camera.lookAt(0, 0, 0)` called every frame in the render loop. If you change the lookAt target, update in `engine.ts`.
 - `body { overflow-x: hidden }` in `app.css` — full-bleed elements need explicit width handling.
 - Only the Software theme exports `onKeyPress` (keyboard easter egg); AI, Blockchain, and Web themes have no keyboard routing.
+- `quality.ts`: `getParameter(UNMASKED_RENDERER_WEBGL)` returns `null` in Firefox/Safari — use `(getParameter(...) ?? "").toLowerCase()`, never `?.toLowerCase()`.
+- Global keydown handler in `engine.ts` skips events from editable elements (INPUT, TEXTAREA, SELECT, contentEditable) to prevent interference with form fields.
 - `renderer.toneMapping = ACESFilmicToneMapping`, `toneMappingExposure = 1.2` — global, affects all themes.
 - Transition kills pending scene on rapid theme switching — may cause visual glitch.
 - `--color-accent-red: #FE4450` is universal (not theme-specific) — used for semantic elements like heart icon, status dots.

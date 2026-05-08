@@ -1,21 +1,21 @@
 {
-  "_Footer-D4bL0TYP.js": {
-    "file": "assets/Footer-D4bL0TYP.js",
+  "_Footer-CV_Rz88Q.js": {
+    "file": "assets/Footer-CV_Rz88Q.js",
     "name": "Footer"
   },
-  "_index-DO01bAoj.js": {
-    "file": "assets/index-DO01bAoj.js",
+  "_index-BUAobrxW.js": {
+    "file": "assets/index-BUAobrxW.js",
     "name": "index",
     "imports": [
-      "_Footer-D4bL0TYP.js"
+      "_Footer-CV_Rz88Q.js"
     ]
   },
-  "_index-NvL93cse.js": {
-    "file": "assets/index-NvL93cse.js",
+  "_index-BzbvkZIV.js": {
+    "file": "assets/index-BzbvkZIV.js",
     "name": "index",
     "isDynamicEntry": true,
     "imports": [
-      "_Footer-D4bL0TYP.js",
+      "_Footer-CV_Rz88Q.js",
       "_preload-helper-ug3pwPZ1.js"
     ],
     "dynamicImports": [
@@ -34,83 +34,83 @@
     "name": "types"
   },
   "src/routes/doom.tsx?pick=default&pick=$css": {
-    "file": "assets/doom-U-O5dgG4.js",
+    "file": "assets/doom-BCkYrGOX.js",
     "name": "doom",
     "src": "src/routes/doom.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_Footer-D4bL0TYP.js",
-      "_index-DO01bAoj.js"
+      "_Footer-CV_Rz88Q.js",
+      "_index-BUAobrxW.js"
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-CVl0akiX.js",
+    "file": "assets/index-DTzOT0Tc.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "imports": [
-      "_Footer-D4bL0TYP.js",
-      "_index-NvL93cse.js",
+      "_Footer-CV_Rz88Q.js",
+      "_index-BzbvkZIV.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/ai/index.ts": {
-    "file": "assets/index-D008ugTD.js",
+    "file": "assets/index-BVORSzSB.js",
     "name": "index",
     "src": "src/themes/ai/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-NvL93cse.js",
-      "_Footer-D4bL0TYP.js",
+      "_index-BzbvkZIV.js",
+      "_Footer-CV_Rz88Q.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/blockchain/index.ts": {
-    "file": "assets/index-OyQIc89e.js",
+    "file": "assets/index-DoLa-Llo.js",
     "name": "index",
     "src": "src/themes/blockchain/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-NvL93cse.js",
-      "_Footer-D4bL0TYP.js",
+      "_index-BzbvkZIV.js",
+      "_Footer-CV_Rz88Q.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/software/index.ts": {
-    "file": "assets/index-xYJyvev4.js",
+    "file": "assets/index-6zqDNN42.js",
     "name": "index",
     "src": "src/themes/software/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-NvL93cse.js",
-      "_Footer-D4bL0TYP.js",
+      "_index-BzbvkZIV.js",
+      "_Footer-CV_Rz88Q.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/web/index.ts": {
-    "file": "assets/index-Bno4K-ui.js",
+    "file": "assets/index-BBe8O4oN.js",
     "name": "index",
     "src": "src/themes/web/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-NvL93cse.js",
-      "_Footer-D4bL0TYP.js",
+      "_index-BzbvkZIV.js",
+      "_Footer-CV_Rz88Q.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-BHaDSC-I.js",
+    "file": "assets/client-XgL5BClu.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
-      "_Footer-D4bL0TYP.js",
-      "_index-DO01bAoj.js",
+      "_Footer-CV_Rz88Q.js",
+      "_index-BUAobrxW.js",
       "_preload-helper-ug3pwPZ1.js"
     ],
     "dynamicImports": [
@@ -118,7 +118,7 @@
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-DwnNMWeW.css"
+      "assets/client-NjtOsW42.css"
     ]
   }
 }

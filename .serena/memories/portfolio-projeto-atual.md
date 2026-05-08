@@ -1,7 +1,7 @@
 # Projeto Atual: Portfolio Pessoal (SolidStart)
 
 ## Stack
-- SolidJS 1.9 + SolidStart 1.3 + Vinxi 0.5
+- SolidJS 1.9 + SolidStart 1.0.11 + Vinxi 0.5
 - TypeScript strict
 - Tailwind CSS v4 com `@theme` tokens e `data-theme` scoping
 - Three.js ^0.184.0 raw API (engine puro funcional em `src/engine/`)
@@ -26,6 +26,9 @@
 - `npm start` — preview de produção
 
 ## Quirks
+- GLSL 3.0 ES: NUNCA incluir `#version 300 es` no source do `ShaderMaterial` — Three.js hardcoded no topo. Usar `material.glslVersion = THREE.GLSL3` e declarar `out vec4 fragColor;` explicitamente.
+- `quality.ts`: `getParameter(UNMASKED_RENDERER_WEBGL)` retorna `null` no Firefox/Safari — usar `(getParameter(...) ?? "").toLowerCase()`.
+- Keydown handler global em `engine.ts` pula eventos de elementos editáveis (INPUT, TEXTAREA, SELECT, contentEditable).
 - TransitionManager recebe callback `onDispose` — garante que `mainScene.remove(obj)` sempre emparelha com `handle.dispose()`
 - `disposeScene` callback must be defined before `createTransitionManager(disposeScene)` in engine.ts for closure capture
 - `--color-accent-red: #FE4450` é universal (não temático) — usado para elementos semânticos (heart icon, status dots)

@@ -1,8 +1,8 @@
 # thecodergus.github.io — Portfolio Site
 
 ## Tech Stack (exact versions)
-- **Framework**: SolidJS 1.9.12 + SolidStart 1.3.2
-- **Bundler**: Vite 8.0.10 + Vinxi 0.5.11
+- **Framework**: SolidJS 1.9.12 + SolidStart 1.0.11
+- **Bundler**: Vite 7.3.2 + Vinxi 0.5.11
 - **Styling**: Tailwind CSS v4.2.4 with `@theme` tokens, `data-theme` scoping
 - **UI**: Kobalte Core 0.13.11, Lucide Solid 0.562.0, devicon 2.16.0
 - **3D**: Three.js ^0.184.0 (raw API, no R3F), ShaderPass (scanline/vignette/chromatic) + UnrealBloomPass (bloom)
@@ -73,13 +73,16 @@ With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0.
 | Web        | #0000EE | #551A8B   | #CC0000  | #F8F9FA    |
 
 ## Gotchas
+- GLSL 3.0 ES: NEVER include `#version 300 es` in `ShaderMaterial` source. Three.js hardcodes it at the top. Set `material.glslVersion = THREE.GLSL3`, declare `out vec4 fragColor;` explicitly.
+- `quality.ts`: `getParameter(UNMASKED_RENDERER_WEBGL)` returns `null` in Firefox/Safari — use `(getParameter(...) ?? "").toLowerCase()`.
+- Global keydown handler in `engine.ts` skips events from editable elements (INPUT, TEXTAREA, SELECT, contentEditable).
 - `camera.lookAt(0,0,0)` every frame in render loop — if moving lookAt, update engine.ts
 - `body { overflow-x: hidden }` — full-bleed elements need explicit width
 - AI scene `onKeyPress` exists but NOT exported — keyboard routing only works for Software
 - `createEngine()` forces `camera.lookAt(0, 0, 0)` each frame
 - Fonts loaded at different weights in entry-server.tsx (JetBrains Mono `400;500`) vs app.tsx (`400;500;600;700`)
 - `antialias: true` has NO effect with EffectComposer — MSAA only works on default framebuffer
-- Resize sequence: camera.aspect → updateProjectionMatrix → renderer.setSize → composer.setSize (current code does renderer.setSize first)
+- Resize sequence: camera.aspect → updateProjectionMatrix → renderer.setSize → composer.setSize (correct order, already followed in code)
 - Transition kills pending scene on rapid theme switching
 - `--color-accent-red: #FE4450` universal, not theme-scoped
 - Lehmer PRNG global seed (42) shared across all scenes, not reset on re-instantiation

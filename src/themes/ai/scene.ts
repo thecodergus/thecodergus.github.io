@@ -615,6 +615,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     // ── Entrance cascade ──
     if (entranceTimer >= 0) {
       entranceOpacity = clamp01(entranceTimer / 300);
+      if (entranceOpacity >= 1.0) entranceTimer = -1;
     }
 
     // ── Tensor forward pass ──
@@ -640,7 +641,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
       if (p.progress >= 1.0) {
         // Trigger spike at destination neuron
         const destIdx = LAYER_STARTS[p.toLayer] + p.toNeuron;
-        if (entranceTimer < 0 || entranceTimer > ENTRANCE_DURATION) {
+        if (entranceTimer < 0) {
           triggerSpike(destIdx);
         }
 

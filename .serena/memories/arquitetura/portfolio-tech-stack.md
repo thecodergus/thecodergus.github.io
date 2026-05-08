@@ -1,7 +1,7 @@
 ## Tech Stack & Architecture
 
-- Framework: SolidJS 1.9 + SolidStart 1.3
-- Bundler: Vite 8 + Vinxi 0.5
+- Framework: SolidJS 1.9 + SolidStart 1.0.11
+- Bundler: Vite 7.3.2 + Vinxi 0.5
 - Styling: Tailwind CSS v4 with custom theme tokens
 - UI: Kobalte Core, Lucide Solid (icons)
 - Animation: Pure CSS + requestAnimationFrame (no GSAP due to SSR issues)
