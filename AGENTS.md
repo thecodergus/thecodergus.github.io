@@ -36,12 +36,12 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **Prerender**: Configured in `app.config.ts` for `/` and `/doom`. Crawls links.
 - **Aliases**: `~/` resolves to `./src/` (configured in `tsconfig.json` and `vite.config.ts`).
 
-### I18n (`src/stores/i18nStore.tsx`, `src/providers/I18nProvider.tsx`)
+### I18n (`src/stores/i18nStore.tsx`)
 - Context-based via `createContext<I18nContextValue>()`.
 - Languages: `Language.PtBr = "pt-br"`, `Language.En = "en"` (default `PtBr`).
 - localStorage key: `"portfolio-language"`.
 - Data: `/data/languages/${lang}.json` (messages) + `/data/portfolio_shared_data.json` (shared).
-- `t(key)` helper uses nested dot-notation lookup (e.g., `t("navbar.home")`). **NOTE: `t()` is defined and wired into context but NOT used by any component.** All components destructure `messages()` from `useI18n()` and manually access properties (e.g. `messages()?.navbar?.about || "Sobre"`). See `sr-004` memory for the full map.
+- `t(key)` helper uses nested dot-notation lookup (e.g., `t("navbar.home")`). **NOTE: `t()` is defined and wired into context but NOT used by any component.** All components destructure `messages()` from `useI18n()` and manually access properties (e.g. `messages()?.navbar?.about || "Sobre"`).
 - `<I18nProvider>` wraps entire app in `app.tsx`.
 - **I18nProvider.onMount** fetches `sharedData` and `messages` for the default language. It also checks `localStorage` for a stored preference and syncs the `language` signal accordingly before fetching.
 - **`setLanguage(lang)`** (exported directly from the module, also in context) updates the signal, persists to `localStorage`, and re-fetches messages for the new language.
@@ -128,8 +128,9 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 ## Build & Deploy
 - Static preset (`server: { preset: "static" }`).
 - CI runs on push to `main`: quality job (`typecheck → lint → test`) → deploy job (`build → gh-pages`).
-- PWA via `vite-plugin-pwa` (autoUpdate, runtime caching for Google Fonts).
+- PWA via `vite-plugin-pwa` (autoUpdate, runtime caching for Google Fonts). Three.js bundles are excluded from precaching (`globIgnores` in `app.config.ts`) because they're large static assets.
 - Build artifact deployed from `.output/public`; `_server` artifacts cleaned before deploy; `.nojekyll` file added.
+- **Vite manual chunks** (`vite.config.ts`): Three.js is split into separate chunks (`three`, `three-examples`, `vendor`) to improve caching and avoid monolithic bundles.
 
 ## Conventions
 - JSX import source is `solid-js`.
@@ -174,6 +175,6 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - Transition kills pending scene on rapid theme switching — may cause visual glitch.
 - `--color-accent-red: #FE4450` is universal (not theme-specific) — used for semantic elements like heart icon, status dots.
 - Lehmer PRNG in `math.ts` has a module-level mutable seed (initially 42) shared across all scenes — re-instantiating scenes doesn't reset it.
-- Font weights differ between `entry-server.tsx` (JetBrains Mono `400;500`) and `app.tsx` (JetBrains Mono `400;500;600;700`). If font rendering looks inconsistent, align these.
+- Fonts are loaded via `<Link>` in `app.tsx` (Inter, JetBrains Mono, Space Grotesk: `400;500;600;700`). `entry-server.tsx` does not load fonts — no duplication risk.
 - `disposeScene` callback must be defined before `createTransitionManager(disposeScene)` in `engine.ts` — order matters due to closure capture in the transition manager.
 - **Module-level `createSignal` MUST NOT read `localStorage` during init.** During SSR, `typeof window === "undefined"` forces a default, but on client hydration the module re-executes in the browser and `getInitialLanguage()` reads `localStorage` — producing a different initial value than SSR. This caused the bug where SSR HTML renders Portuguese ("Sobre", "Habilidades") but the client signal starts as `Language.En` (from a prior EN click), so `onMount` fetches `en.json` and the page flips to English. **Fix**: `getInitialLanguage()` always returns `Language.PtBr`; the `I18nProvider.onMount` syncs the signal with `localStorage` *before* fetching messages. Same pattern applies to `themeStore.ts` — `getInitialTheme()` already does this correctly (always returns `"ai"`).

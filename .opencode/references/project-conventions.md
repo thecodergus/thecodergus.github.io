@@ -36,7 +36,7 @@ CI: `npm ci` (não `npm install`).
 - Prerender configurado em `app.config.ts` para `/` e `/doom`.
 - Alias `~/` → `./src/` (tsconfig + vite.config).
 
-### i18n (`src/stores/i18nStore.tsx`, `src/providers/I18nProvider.tsx`)
+### i18n (`src/stores/i18nStore.tsx`)
 - Context-based, idiomas: `pt-br` (default), `en`.
 - localStorage key: `"portfolio-language"`.
 - Dados: `/data/languages/${lang}.json` + `/data/portfolio_shared_data.json`.
