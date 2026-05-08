@@ -75,9 +75,12 @@ export function useI18n() {
 
 export function I18nProvider(props: { children: JSX.Element }) {
   onMount(() => {
-    fetchSharedData().catch(() => {
-      console.error("[i18n] Failed to load shared data");
-    }).then((data) => { if (data) setSharedData(data); });
+    fetchSharedData()
+      .then((data) => { if (data) setSharedData(data); })
+      .catch((err) => {
+        console.error("[i18n] Failed to load shared data:", err);
+        setFetchError("Falha ao carregar dados compartilhados");
+      });
 
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(STORAGE_KEY) as Language | null;

@@ -12,6 +12,14 @@
     "ganko": {
       "command": ["ganko-lsp"],
       "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    },
+    "tailwindcss": {
+      "command": ["npx", "-y", "tailwindcss-language-server", "--stdio"],
+      "extensions": [".tsx", ".ts", ".jsx", ".js", ".css"]
+    },
+    "json": {
+      "command": ["npx", "-y", "vscode-json-languageserver", "--stdio"],
+      "extensions": [".json", ".jsonc"]
     }
   },
   "mcp": {
@@ -34,8 +42,22 @@
       "type": "local",
       "command": ["npx", "-y", "@gianpieropuleo/radix-mcp-server"],
       "enabled": true
+    },
+    "lighthouse": {
+      "type": "local",
+      "command": ["npx", "-y", "lighthouse-mcp"],
+      "enabled": true
+    },
+    "perf-tools": {
+      "type": "local",
+      "command": ["npx", "-y", "@rog0x/mcp-perf-tools"],
+      "enabled": true
     }
   },
+  "instructions": [
+    "AGENTS.md",
+    ".opencode/references/project-conventions.md"
+  ],
   "permission": {
     "bash": {
       "uv": "allow",

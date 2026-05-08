@@ -4,8 +4,8 @@
 Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 
 ## Tech stack
-- **Framework**: SolidJS 1.9.12 + SolidStart 1.3.2
-- **Bundler**: Vite 8.0.10 + Vinxi 0.5.11
+- **Framework**: SolidJS 1.9.12 + SolidStart 1.0.11
+- **Bundler**: Vite 7.3.2 + Vinxi 0.5.11
 - **Styling**: Tailwind CSS v4 with `@theme` tokens, `data-theme` scoping
 - **UI**: Kobalte Core, Lucide Solid
 - **3D Engine**: Three.js ^0.184.0 (raw API — no R3F since SolidJS doesn't have fiber equivalent)
@@ -15,15 +15,18 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **Package manager**: npm
 
 ## Commands
-- `npm run dev` — Start dev server
+- `npm run dev` — Start dev server (http://localhost:3000)
 - `npm run build` — Static build (output: `.output/public`)
 - `npm start` — Preview production build
 - CI uses `npm ci` (not `npm install`); local development uses `npm install`
 
-## Tooling (via `.opencode/opencode.json`)
-- **LSP**: vtsls (TypeScript), eslint-language-server, ganko-lsp
-- **MCP**: eslint, vitest testing, shadcn/ui components, radix primitives
-- No configured pre-commit hooks, formatter, or test runner in the project itself.
+## Tooling
+- **Lint**: ESLint 9 + `typescript-eslint` + `eslint-plugin-solid`. Key rules: `solid/no-destructure: error`, `solid/reactivity: warn`, `solid/jsx-no-undef: error`. Run: `npm run lint` / `npm run lint:fix`.
+- **Test**: Vitest 4, jsdom environment, globals mode. Test pattern: `src/**/*.test.{ts,tsx}`. Setup file: `vitest.setup.ts`. Run: `npm run test` / `npm run test:watch`.
+- **Typecheck**: `tsc --noEmit`. Run: `npm run typecheck`.
+- No pre-commit hooks configured.
+- **LSP** (via `.opencode/opencode.json`): vtsls, eslint-language-server, ganko-lsp, tailwindcss-language-server, json
+- **MCP** (via `.opencode/opencode.json`): eslint, vitest testing, shadcn/ui, radix primitives, lighthouse, perf-tools
 
 ## Architecture
 
@@ -108,7 +111,7 @@ Blocking inline `<script>` in `app.tsx` `<head>` reads `localStorage.getItem('po
 - localStorage key: `"portfolio-theme"`.
 
 ### Camera Frustum Math
-Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0. Use `camera.getViewSize(distance, new THREE.Vector2())` for programmatic lookups.
+Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0. Orbit math uses `sin`/`cos` around Y axis.
 
 **Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true): `AI(orbit=14,spd=0.02,h=5,θ=π/2) Blockchain(12,0.02,3,π/4) Software(10,0.015,2,0) Web(11,0.015,1.5,0)`
 
@@ -124,18 +127,19 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 
 ## Build & Deploy
 - Static preset (`server: { preset: "static" }`).
-- CI deploys to GitHub Pages on push/PR to `main` (`.github/workflows/deploy.yml`).
-- Build artifact uploaded from `.output/public`.
+- CI runs on push to `main`: quality job (`typecheck → lint → test`) → deploy job (`build → gh-pages`).
+- PWA via `vite-plugin-pwa` (autoUpdate, runtime caching for Google Fonts).
+- Build artifact deployed from `.output/public`; `_server` artifacts cleaned before deploy; `.nojekyll` file added.
 
 ## Conventions
 - JSX import source is `solid-js`.
 - Strict TypeScript, no emit, bundler module resolution.
-- No configured test runner, linter, or formatter.
 
 ### TypeScript strictness
 - **NEVER use `any`.** Prefer `unknown` and narrow with type guards. If a type is truly dynamic, use `Record<string, unknown>`.
 - **ALWAYS use `enum` for categorization.** Any set of discrete variants (phases, states, modes, themes, categories) MUST be an `enum`, never string unions or magic constants. `enum` provides a single source of truth and compiler-verified exhaustiveness.
 - Function parameters and return types must be explicitly typed — avoid implicit inference for public APIs.
+- **Non-null assertions (`!`) are prohibited.** Use type guards or early returns instead.
 
 ### Functional programming conventions
 - **Pure functions**: all computation returns new values, never mutates inputs.
@@ -165,7 +169,7 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - `TransitionManager` receives `onDispose` as a callback parameter — ensures `mainScene.remove(obj)` always pairs with `handle.dispose()`. Same callback fires on abort (rapid theme switch) to prevent orphan GPU objects.
 - `camera.lookAt(0, 0, 0)` called every frame in the render loop. If you change the lookAt target, update in `engine.ts`.
 - `body { overflow-x: hidden }` in `app.css` — full-bleed elements need explicit width handling.
-- AI scene's `onKeyPress` method exists in source but is **not exported** from `createAIScene` — keyboard routing only works for Software theme.
+- Only the Software theme exports `onKeyPress` (keyboard easter egg); AI, Blockchain, and Web themes have no keyboard routing.
 - `renderer.toneMapping = ACESFilmicToneMapping`, `toneMappingExposure = 1.2` — global, affects all themes.
 - Transition kills pending scene on rapid theme switching — may cause visual glitch.
 - `--color-accent-red: #FE4450` is universal (not theme-specific) — used for semantic elements like heart icon, status dots.

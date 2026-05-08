@@ -9,8 +9,9 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader.js";
 
-import type { SceneHandle, SceneConfig, CameraPreset, PostProcessPreset } from "./types";
+import type { SceneHandle, SceneConfig, CameraPreset, PostProcessPreset, QualityConfig } from "./types";
 import type { ThemeModule } from "./types";
 import { createTransitionManager } from "./transition";
 import { setSeed } from "./math";
@@ -70,14 +71,17 @@ export interface EngineHandle {
 
 // ── Engine factory ──
 
-export const createEngine = (container: HTMLElement): EngineHandle => {
+export const createEngine = (
+  container: HTMLElement,
+  quality: QualityConfig,
+): EngineHandle => {
   // ── Renderer ──
 
   const renderer = new THREE.WebGLRenderer({
-    antialias: true,
     alpha: true,
+    powerPreference: "high-performance",
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(quality.pixelRatio);
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -104,8 +108,10 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
 
   const renderScenePass = new RenderPass(mainScene, camera);
 
+  const bloomW = Math.floor(container.clientWidth * quality.bloomResolutionScale) || 1;
+  const bloomH = Math.floor(container.clientHeight * quality.bloomResolutionScale) || 1;
   const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(container.clientWidth, container.clientHeight),
+    new THREE.Vector2(bloomW, bloomH),
     1.0,
     0.4,
     0.85,
@@ -122,18 +128,40 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
       fragmentShader: string;
     },
   );
-  scanlinePass.renderToScreen = true;
+  scanlinePass.renderToScreen = false;
 
   const composer = new EffectComposer(renderer);
   composer.addPass(renderScenePass);
-  composer.addPass(bloomPass);
-  composer.addPass(scanlinePass);
+
+  if (quality.bloomEnabled) {
+    composer.addPass(bloomPass);
+  }
+
+  if (quality.scanlineEnabled) {
+    composer.addPass(scanlinePass);
+  }
+
+  // FXAA — replaces non-functional MSAA; cheap, high visual quality
+  const fxaaPass = new ShaderPass(
+    FXAAShader as unknown as {
+      uniforms: Record<string, THREE.IUniform>;
+      vertexShader: string;
+      fragmentShader: string;
+    },
+  );
+  fxaaPass.uniforms.resolution.value.set(
+    1 / (container.clientWidth * renderer.getPixelRatio()),
+    1 / (container.clientHeight * renderer.getPixelRatio()),
+  );
+  composer.addPass(fxaaPass);
+  fxaaPass.renderToScreen = true;
 
   // ── State ──
 
   let animationId = 0;
   let lastTime = 0;
   let disposed = false;
+  let frameCount = 0;
 
   let activePreset: CameraPreset | null = null;
 
@@ -149,6 +177,7 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
       width: renderer.domElement.clientWidth,
       height: renderer.domElement.clientHeight,
       colorScheme: m.colorScheme,
+      softwarePlanes: quality.softwarePlanes,
     };
 
     const handle = m.createScene(config);
@@ -260,7 +289,17 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
     composer.setSize(w, h);
+    if (quality.bloomEnabled && quality.bloomResolutionScale > 0) {
+      bloomPass.setSize(
+        Math.floor(w * quality.bloomResolutionScale),
+        Math.floor(h * quality.bloomResolutionScale),
+      );
+    }
     scanlinePass.uniforms.uResolution.value.set(w, h);
+    fxaaPass.uniforms.resolution.value.set(
+      1 / (w * renderer.getPixelRatio()),
+      1 / (h * renderer.getPixelRatio()),
+    );
   };
 
   window.addEventListener("resize", resize);
@@ -299,6 +338,18 @@ export const createEngine = (container: HTMLElement): EngineHandle => {
 
     // Render
     composer.render();
+
+    // Dev logging: draw call statistics every 60 frames
+    if (import.meta.env.DEV) {
+      frameCount++;
+      if (frameCount > 1 && frameCount % 60 === 0) {
+        const calls = renderer.info.render?.calls ?? 0;
+        const points = renderer.info.render?.points ?? 0;
+        console.debug(
+          `[Three.js] Frame ${frameCount} | Draw calls: ${calls} | Points: ${points} | Tier: ${quality.tier}`,
+        );
+      }
+    }
   };
 
   animationId = requestAnimationFrame(animate);

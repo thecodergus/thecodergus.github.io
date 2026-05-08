@@ -4,6 +4,9 @@ import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
 import { range, randomRange, clamp01 } from "../../engine/math";
 import type { PlaneConfig, Drop, PlaneState, GlitchState, FreezeState, KeySprite } from "./types";
+import { createMatrixAtlas, disposeAtlas } from "./atlas";
+import type { AtlasData } from "./atlas";
+import { createRainMaterial } from "./rain-shader";
 
 // ── Constants ──
 
@@ -111,62 +114,53 @@ const MATRIX_CHARS = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹ�
 const generateChar = (): string => MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
 
 
-// ── Create a single plane of drops ──
+// ── Create a single plane of drops (Points + sprite atlas) ──
 
 const createPlane = (
   config: PlaneConfig,
-  color: string,
+  atlas: AtlasData,
+  rainMat: THREE.ShaderMaterial,
 ): PlaneState => {
   const group = new THREE.Group();
   const columnSpacing = GRID_WIDTH / config.columns;
-
   const totalDrops = config.columns * config.maxDropsPerColumn;
-  const drops: Drop[] = [];
-  const sprites: THREE.Sprite[] = [];
+
+  const positions = new Float32Array(totalDrops * 3);
+  const charIndices = new Float32Array(totalDrops);
+  const opacities = new Float32Array(totalDrops);
 
   const activeColumns = new Set<number>();
-  range(config.columns).forEach((i) => {
-    activeColumns.add(i);
-  });
+  range(config.columns).forEach((i) => activeColumns.add(i));
 
-  range(totalDrops).forEach(() => {
+  const drops: Drop[] = [];
+
+  range(totalDrops).forEach((i) => {
     const col = Math.floor(Math.random() * config.columns);
     const char = generateChar();
-    const tex = createCharTexture(char, color);
-
-    const spriteMat = new THREE.SpriteMaterial({
-      map: tex,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      opacity: 0,
-      depthWrite: false,
-    });
-
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(config.charSize, config.charSize, 1);
-
     const x = -GRID_WIDTH / 2 + col * columnSpacing + columnSpacing / 2;
     const startY = GRID_HEIGHT / 2 + Math.random() * GRID_HEIGHT;
     const startRow = Math.round(startY / config.charSize);
 
-    sprite.position.set(x, startY, randomRange(-0.3, 0.3));
-    group.add(sprite);
-    sprites.push(sprite);
+    positions[i * 3] = x;
+    positions[i * 3 + 1] = startY;
+    positions[i * 3 + 2] = randomRange(-0.3, 0.3);
 
+    const isActive = activeColumns.has(col);
     drops.push({
       column: col,
       row: startRow,
       speed: randomRange(config.speedMin, config.speedMax),
-      opacity: activeColumns.has(col)
+      opacity: isActive
         ? randomRange(config.opacityMin, config.opacityMax)
         : randomRange(config.opacityMin * 0.3, config.opacityMax * 0.4),
       isHead: false,
       entranceFactor: 0,
       frozen: false,
+      charIndex: atlas.indexForChar(char),
     });
   });
 
-  // Mark first (highest Y) drop in each column as head
+  // Mark heads (highest Y drop per column)
   const columnHeads = new Map<number, number>();
   drops.forEach((d, i) => {
     const existing = columnHeads.get(d.column);
@@ -179,9 +173,32 @@ const createPlane = (
     drops[idx].opacity = Math.min(drops[idx].opacity * 1.4, 0.95);
   });
 
+  // Init buffer data (all start invisible for cascade)
+  drops.forEach((d, i) => {
+    charIndices[i] = d.charIndex;
+    opacities[i] = 0;
+  });
+
+  const geo = new THREE.BufferGeometry();
+  const posAttr = new THREE.BufferAttribute(positions, 3);
+  const charAttr = new THREE.BufferAttribute(charIndices, 1);
+  const opacAttr = new THREE.BufferAttribute(opacities, 1);
+
+  posAttr.setUsage(THREE.DynamicDrawUsage);
+  charAttr.setUsage(THREE.DynamicDrawUsage);
+  opacAttr.setUsage(THREE.DynamicDrawUsage);
+
+  geo.setAttribute("position", posAttr);
+  geo.setAttribute("charIndex", charAttr);
+  geo.setAttribute("aOpacity", opacAttr);
+
+  const points = new THREE.Points(geo, rainMat);
+  points.frustumCulled = false;
+
+  group.add(points);
   group.position.z = config.zOffset;
 
-  return { group, config, drops, sprites, columnSpacing };
+  return { group, points, config, drops, columnSpacing, geo };
 };
 
 // ── Factory ──
@@ -194,9 +211,15 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const { colorScheme: cs } = config;
 
-  // ── Three rain planes ──
+  // ── Rain planes (Points + sprite atlas) ──
 
-  const planes: PlaneState[] = PLANE_CONFIGS.map((pc) => createPlane(pc, cs.primary));
+  const atlas = createMatrixAtlas(cs.primary);
+  const rainMat = createRainMaterial(atlas);
+
+  const maxPlanes = config.softwarePlanes ?? 3;
+  const planes: PlaneState[] = PLANE_CONFIGS
+    .slice(0, maxPlanes)
+    .map((pc) => createPlane(pc, atlas, rainMat));
   planes.forEach((p) => root.add(p.group));
 
   // ── Ground fog (wide plane with horizontal fade) ──
@@ -287,44 +310,46 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     // ── Per-plane rain update ──
 
     planes.forEach((plane) => {
+      const posAttr = plane.geo.attributes.position as THREE.BufferAttribute;
+      const charAttr = plane.geo.attributes.charIndex as THREE.BufferAttribute;
+      const opacAttr = plane.geo.attributes.aOpacity as THREE.BufferAttribute;
 
       plane.drops.forEach((d, i) => {
         if (d.opacity <= 0 || d.entranceFactor < 1) return;
         if (d.frozen) return;
 
         d.row -= d.speed;
-        const sprite = plane.sprites[i];
-        if (!sprite) return;
 
         const localX = -GRID_WIDTH / 2 + d.column * plane.columnSpacing + plane.columnSpacing / 2;
-        sprite.position.x = localX;
-        sprite.position.y = d.row * plane.config.charSize;
+        posAttr.array[i * 3] = localX;
+        posAttr.array[i * 3 + 1] = d.row * plane.config.charSize;
 
-        // Head respawn
+        // Head respawn: recycle to top of screen, pick new random char from atlas
         if (d.isHead && d.row * plane.config.charSize < -GRID_HEIGHT / 2 - 1) {
           d.row = Math.round((GRID_HEIGHT / 2 + 1) / plane.config.charSize);
-          const newTex = createCharTexture(generateChar(), cs.primary);
-          const mat = sprite.material as THREE.SpriteMaterial;
-          mat.map?.dispose();
-          mat.map = newTex;
-          mat.needsUpdate = true;
+          d.charIndex = atlas.indexForChar(generateChar());
+          charAttr.array[i] = d.charIndex;
+          charAttr.needsUpdate = true;
         }
 
         // Trail respawn
         if (!d.isHead && d.row * plane.config.charSize < -GRID_HEIGHT / 2 - 2) {
           d.row = Math.round((GRID_HEIGHT / 2 + Math.random() * 2) / plane.config.charSize);
           d.speed = randomRange(plane.config.speedMin, plane.config.speedMax);
-          const newTex = createCharTexture(generateChar(), cs.primary);
-          const mat = sprite.material as THREE.SpriteMaterial;
-          mat.map?.dispose();
-          mat.map = newTex;
-          mat.needsUpdate = true;
+          d.charIndex = atlas.indexForChar(generateChar());
+          charAttr.array[i] = d.charIndex;
+          charAttr.needsUpdate = true;
         }
 
-        const baseOpacity = d.isHead ? 0.6 + Math.sin(time * 12 + i) * 0.15 : d.opacity * 0.55;
-        const mat = sprite.material as THREE.SpriteMaterial;
-        mat.opacity = clamp01(baseOpacity);
+        // Opacity with sinusoidal shimmer on heads
+        const baseOpacity = d.isHead
+          ? 0.6 + Math.sin(time * 12 + i) * 0.15
+          : d.opacity * 0.55;
+        opacAttr.array[i] = clamp01(baseOpacity);
       });
+
+      posAttr.needsUpdate = true;
+      opacAttr.needsUpdate = true;
     });
 
     // ── Glitch ──
@@ -492,15 +517,13 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
     let activeCount = 0;
     let totalCount = 0;
     planes.forEach((plane) => {
+      const posAttr = plane.geo.attributes.position as THREE.BufferAttribute;
       plane.drops.forEach((d, i) => {
         totalCount++;
         if (d.opacity > 0 && d.entranceFactor >= 1 && !d.frozen) {
-          const sprite = plane.sprites[i];
-          if (sprite) {
-            const y = sprite.position.y;
-            if (y > -GRID_HEIGHT / 2 - 1 && y < GRID_HEIGHT / 2 + 1) {
-              activeCount++;
-            }
+          const y = posAttr.array[i * 3 + 1];
+          if (y > -GRID_HEIGHT / 2 - 1 && y < GRID_HEIGHT / 2 + 1) {
+            activeCount++;
           }
         }
       });
@@ -512,21 +535,17 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const dissolve = (progress: number): void => {
     planes.forEach((plane) => {
+      const opacAttr = plane.geo.attributes.aOpacity as THREE.BufferAttribute;
       plane.drops.forEach((d, i) => {
         const threshold = (i / plane.drops.length) * 0.9;
-        const sprite = plane.sprites[i];
-        if (!sprite) return;
-
         if (progress > threshold) {
           const localP = clamp01((progress - threshold) / (1 - threshold + 0.001));
-          sprite.scale.setScalar(plane.config.charSize * (1 - localP));
-          const mat = sprite.material as THREE.SpriteMaterial;
-          mat.opacity = clamp01(d.opacity * (1 - localP));
+          opacAttr.array[i] = clamp01(d.opacity * (1 - localP));
         }
       });
+      opacAttr.needsUpdate = true;
     });
 
-    // Dissolve fog
     fogMat.opacity = 0.12 * (1 - progress);
   };
 
@@ -542,13 +561,12 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const setOpacity = (t: number): void => {
     planes.forEach((plane) => {
+      const opacAttr = plane.geo.attributes.aOpacity as THREE.BufferAttribute;
       plane.drops.forEach((d, i) => {
-        const sprite = plane.sprites[i];
-        if (!sprite) return;
         const entranceF = d.entranceFactor < 1 ? d.entranceFactor : 1;
-        const mat = sprite.material as THREE.SpriteMaterial;
-        mat.opacity = clamp01(d.opacity * entranceF * t * 0.8);
+        opacAttr.array[i] = clamp01(d.opacity * entranceF * t * 0.8);
       });
+      opacAttr.needsUpdate = true;
     });
 
     fogMat.opacity = 0.12 * t;
@@ -584,6 +602,9 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
     fogMat.dispose();
     fogTex.dispose();
+
+    rainMat.dispose();
+    disposeAtlas(atlas);
 
     // Clear key sprites
     keySprites.forEach((ks) => {

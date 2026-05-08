@@ -888,7 +888,6 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
 
     // ── E11: Data manifold drift ──
     {
-      const mColor = new THREE.Color();
       for (let i = 0; i < manifoldCount; i++) {
         const cluster = manifoldClusters[i % 3];
         const sep = Math.sin(time * 0.3) * 0.5;
@@ -896,11 +895,11 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         manPositions[i * 3 + 1] += (cluster.centerY + Math.sin(time * 0.5 + i) * 0.3 - manPositions[i * 3 + 1]) * 0.01;
         manPositions[i * 3 + 2] += (Math.cos(time * 0.4 + i) * 0.5 - manPositions[i * 3 + 2]) * 0.01;
 
-        mColor.set(cluster.color);
+        nColor.set(cluster.color);
         const dim = 0.3 + Math.sin(time * 2 + i) * 0.15;
-        manColors[i * 3] = mColor.r * dim;
-        manColors[i * 3 + 1] = mColor.g * dim;
-        manColors[i * 3 + 2] = mColor.b * dim;
+        manColors[i * 3] = nColor.r * dim;
+        manColors[i * 3 + 1] = nColor.g * dim;
+        manColors[i * 3 + 2] = nColor.b * dim;
       }
       manGeo.attributes.position.needsUpdate = true;
       manGeo.attributes.color.needsUpdate = true;

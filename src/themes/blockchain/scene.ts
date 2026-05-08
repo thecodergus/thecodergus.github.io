@@ -316,6 +316,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   let nextBlockZ = CHAIN_Z_START + INITIAL_BLOCKS * CHAIN_Z_STEP;
   let nextBlockIndex = INITIAL_BLOCKS;
 
+  const _tmpVec3 = new THREE.Vector3();
+
   // ── Camera state getter ──
 
   const getCameraState = (): CameraState | null => {
@@ -440,9 +442,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
         block.mesh.scale.setScalar(1 + glowF * 0.15);
 
         // Glow sprite follows block
-        const blockWorldPos = new THREE.Vector3();
-        block.mesh.getWorldPosition(blockWorldPos);
-        glowSprite.position.set(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z);
+        block.mesh.getWorldPosition(_tmpVec3);
+        glowSprite.position.set(_tmpVec3.x, _tmpVec3.y, _tmpVec3.z);
         glowSprite.position.z += 0.1;
         glowMat.opacity = glowF * 0.35;
 

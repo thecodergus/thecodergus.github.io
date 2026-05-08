@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": {
+          "regexp": "."
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "http://localhost:"
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "detail": "Start Vinxi dev server (http://localhost:3000)"
+    },
+    {
+      "label": "build",
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Production build → .output/public/"
+    },
+    {
+      "label": "typecheck",
+      "type": "npm",
+      "script": "typecheck",
+      "group": "none",
+      "problemMatcher": ["$tsc"],
+      "detail": "TypeScript type checking (tsc --noEmit)"
+    },
+    {
+      "label": "preview",
+      "type": "npm",
+      "script": "start",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": {
+          "regexp": "."
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "http://localhost:"
+        }
+      },
+      "group": "none",
+      "detail": "Preview production build (vinxi start)"
+    }
+  ]
+}

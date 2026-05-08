@@ -37,6 +37,7 @@ export interface SceneConfig {
   readonly width: number;
   readonly height: number;
   readonly colorScheme: ColorScheme;
+  readonly softwarePlanes?: number;
 }
 
 export interface SceneHandle {
@@ -92,3 +93,5 @@ export type ThreeCamera = THREE.PerspectiveCamera;
 export type ThreeRenderer = THREE.WebGLRenderer;
 
 export type SceneFactory = (config: SceneConfig) => SceneHandle;
+
+export type { QualityConfig } from "./quality";

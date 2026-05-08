@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "yoavbls.pretty-ts-errors",
+    "bradlc.vscode-tailwindcss",
+    "vunguyentuan.vscode-css-variables",
+    "figma.figma-vscode-extension",
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "jock.svg",
+    "sburg.vscode-javascript-booster",
+    "styled-components.vscode-styled-components"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript-next",
+    "hookyqr.beautify",
+    "HookyQR.beautify"
+  ]
+}

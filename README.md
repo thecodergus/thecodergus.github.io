@@ -7,7 +7,7 @@ Portfolio pessoal de Gustavo M Camargo — Especialista em Automação com IA, L
 | Camada  | Tecnologia                              |
 | ------- | --------------------------------------- |
 | Runtime | Node.js >=20                            |
-| UI      | SolidJS 1.9 + SolidStart 1.3 + Vite 8   |
+| UI      | SolidJS 1.9 + SolidStart 1.0 + Vite 7   |
 | Estilo  | Tailwind CSS v4 + data-theme scoping     |
 | 3D      | Three.js 0.184 (raw API, sem R3F)       |
 | Icons   | Lucide Solid + Devicon                  |
@@ -16,10 +16,15 @@ Portfolio pessoal de Gustavo M Camargo — Especialista em Automação com IA, L
 ## Scripts
 
 ```bash
-npm install        # Instalar dependências
-npm run dev        # Servidor de desenvolvimento
-npm run build      # Build estático → .output/public
-npm start          # Preview do build
+npm install         # Instalar dependências
+npm run dev         # Servidor de desenvolvimento (http://localhost:3000)
+npm run build       # Build estático → .output/public
+npm start           # Preview do build
+npm run typecheck   # Verificação de tipos (tsc --noEmit)
+npm run lint        # ESLint
+npm run lint:fix    # ESLint com correção automática
+npm run test        # Vitest
+npm run test:watch  # Vitest em modo watch
 ```
 
 ## Arquitetura
@@ -32,7 +37,7 @@ src/
 ├── routes/
 │   ├── index.tsx           # Home — todas as seções do portfolio
 │   └── doom.tsx            # DOOM via JS-DOS (rota lazy-load)
-├── components/             # 12 componentes SolidJS
+├── components/             # 15 componentes SolidJS
 ├── engine/                 # Engine Three.js puro (zero SolidJS)
 │   ├── engine.ts           # Orquestrador: renderer, câmera, post-process
 │   ├── transition.ts       # Crossfade manager (800ms)
@@ -88,7 +93,7 @@ Shaders personalizados aplicados via `EffectComposer`:
 
 ## Deploy
 
-CI via GitHub Actions: push/PR na `main` → build estático → GitHub Pages.
+CI via GitHub Actions: push na `main` → quality (typecheck + lint + test) → build → GitHub Pages.
 Config em `.github/workflows/deploy.yml`.
 
 ## Licença
