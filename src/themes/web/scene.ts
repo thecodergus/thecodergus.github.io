@@ -133,18 +133,10 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
   );
   root.add(centerGroup);
 
-  const centerNode: CardNode = Object.freeze({
-    group: centerGroup,
-    planeMat: centerPlaneMat,
-    edgeMat: centerEdgeMat,
-    position: new THREE.Vector3(0, 0, 0),
-    spokeIndex: -1,
-    ringIndex: 0,
-  });
-
   // ── Ring cards ──
 
   const cardNodes: CardNode[] = [];
+  let cardPhase = 0;
 
   for (let r = 0; r < RINGS; r++) {
     const radius = RING_RADII[r];
@@ -178,20 +170,17 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
           position: pos,
           spokeIndex: s,
           ringIndex: r + 1,
+          phaseOffset: cardPhase++ * 0.4,
         }),
       );
     }
   }
-
-  const allCards: readonly CardNode[] = Object.freeze([centerNode, ...cardNodes]);
 
   // ── Spoke threads ──
 
   const threads: Thread[] = [];
 
   for (let s = 0; s < SPOKES; s++) {
-    const angle = (s / SPOKES) * Math.PI * 2;
-
     // Center → Ring1
     {
       const p0 = new THREE.Vector3(0, 0, 0);
@@ -206,7 +195,7 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
       });
       mat.userData = { baseOpacity: baseOp };
       root.add(new THREE.Line(geo, mat));
-      threads.push({ line: null as unknown as THREE.Line, mat, baseOpacity: baseOp, kind: "spoke" });
+      threads.push({ mat, baseOpacity: baseOp, amp: 0.06 });
     }
 
     // Ring → Ring
@@ -225,7 +214,7 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
       });
       mat.userData = { baseOpacity: baseOp };
       root.add(new THREE.Line(geo, mat));
-      threads.push({ line: null as unknown as THREE.Line, mat, baseOpacity: baseOp, kind: "spoke" });
+      threads.push({ mat, baseOpacity: baseOp, amp: 0.06 });
     }
   }
 
@@ -251,7 +240,7 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     });
     mat.userData = { baseOpacity: baseOp };
     root.add(new THREE.Line(geo, mat));
-    threads.push({ line: null as unknown as THREE.Line, mat, baseOpacity: baseOp, kind: "ring" });
+    threads.push({ mat, baseOpacity: baseOp, amp: 0.03 });
   }
 
   // ── Travelers (URL particles along spokes) ──
@@ -312,6 +301,20 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     });
   }
 
+  // ── Pre-built dissolve array ──
+
+  const _dissolveObjects: THREE.Object3D[] = [];
+  root.traverse((child) => {
+    if (
+      child instanceof THREE.Mesh ||
+      child instanceof THREE.Line ||
+      child instanceof THREE.LineSegments ||
+      child instanceof THREE.Sprite
+    ) {
+      _dissolveObjects.push(child);
+    }
+  });
+
   // ── Update ──
 
   const update = (time: number, _delta: number, _mouse: import("../../engine/types").Vec2 | null): void => {
@@ -321,22 +324,21 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     const centerS = 1 + Math.sin(time * 2.5) * 0.05;
     centerGroup.scale.setScalar(centerS);
 
-    cardNodes.forEach((c, i) => {
-      const s = 1 + Math.sin(time * 2.5 + i * 0.4) * 0.04;
-      c.group.scale.setScalar(s);
-    });
+    for (let i = 0; i < cardNodes.length; i++) {
+      cardNodes[i].group.scale.setScalar(1 + Math.sin(time * 2.5 + cardNodes[i].phaseOffset) * 0.04);
+    }
 
     // Pulse thread opacities (breathing)
-    threads.forEach((th, i) => {
-      const amp = th.kind === "spoke" ? 0.06 : 0.03;
-      th.mat.opacity = th.baseOpacity + Math.sin(time * 1.5 + i * 0.3) * amp;
-    });
+    for (let i = 0; i < threads.length; i++) {
+      threads[i].mat.opacity = threads[i].baseOpacity + Math.sin(time * 1.5 + i * 0.3) * threads[i].amp;
+    }
 
     // Update travelers
     const maxRadius = RING_RADII[RINGS - 1];
     const maxZ = RINGS * RING_Z_OFFSET;
 
-    travelers.forEach((t) => {
+    for (let i = 0; i < travelers.length; i++) {
+      const t = travelers[i];
       t.progress += t.speed;
       if (t.progress >= 1) {
         t.progress = 0;
@@ -356,14 +358,15 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
         Math.sin(angle) * radius + arc,
         z,
       );
-    });
+    }
 
     // Float </> sprites
-    floatingSprites.forEach((fs) => {
+    for (let i = 0; i < floatingSprites.length; i++) {
+      const fs = floatingSprites[i];
       fs.sprite.position.y = fs.baseY + Math.sin(time * fs.speed + fs.phase) * 0.35;
       fs.mat.opacity = 0.2 + Math.sin(time * fs.speed + fs.phase) * 0.1;
       fs.sprite.rotation.z += 0.002;
-    });
+    }
 
     void _mouse;
   };
@@ -394,7 +397,7 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     bracketTex.dispose();
     hashTex.dispose();
     curlyTex.dispose();
-    urlTexs.forEach((t) => t.dispose());
+    for (let i = 0; i < urlTexs.length; i++) urlTexs[i].dispose();
     root.clear();
   };
 
@@ -404,60 +407,54 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     const c = clamp01(t);
     centerPlaneMat.opacity = 0.85 * c;
     centerEdgeMat.opacity = 0.7 * c;
-    cardNodes.forEach((cn) => {
-      cn.planeMat.opacity = 0.7 * c;
-      cn.edgeMat.opacity = 0.5 * c;
-    });
-    threads.forEach((th) => {
-      th.mat.opacity = th.baseOpacity * c;
-    });
-    travelers.forEach((tr) => {
-      (tr.sprite.material as THREE.SpriteMaterial).opacity = 0.85 * c;
-    });
-    floatingSprites.forEach((fs) => {
-      fs.mat.opacity = 0.3 * c;
-    });
+    for (let i = 0; i < cardNodes.length; i++) {
+      cardNodes[i].planeMat.opacity = 0.7 * c;
+      cardNodes[i].edgeMat.opacity = 0.5 * c;
+    }
+    for (let i = 0; i < threads.length; i++) {
+      threads[i].mat.opacity = threads[i].baseOpacity * c;
+    }
+    for (let i = 0; i < travelers.length; i++) {
+      (travelers[i].sprite.material as THREE.SpriteMaterial).opacity = 0.85 * c;
+    }
+    for (let i = 0; i < floatingSprites.length; i++) {
+      floatingSprites[i].mat.opacity = 0.3 * c;
+    }
   };
 
   // ── Dissolve (transition out) ──
 
   const dissolve = (progress: number): void => {
-    const objs: THREE.Object3D[] = [];
-    root.traverse((child) => {
-      if (
-        child instanceof THREE.Mesh ||
-        child instanceof THREE.Line ||
-        child instanceof THREE.LineSegments ||
-        child instanceof THREE.Sprite
-      ) {
-        objs.push(child);
-      }
-    });
+    const count = _dissolveObjects.length;
+    const countMinusOne = count - 1;
 
-    objs.forEach((obj, i) => {
-      const seed = i / (objs.length - 1 + 0.001);
+    for (let i = 0; i < count; i++) {
+      const seed = i / (countMinusOne + 0.001);
       if (progress > seed) {
         const localP = clamp01((progress - seed) / (1 - seed + 0.001));
+        const obj = _dissolveObjects[i];
         obj.scale.setScalar(1 - localP);
-        const applyFade = (mat: THREE.Material): void => {
-          mat.transparent = true;
-          mat.depthWrite = false;
-          (mat as THREE.MeshBasicMaterial).opacity = Math.max(
-            0,
-            1 - localP,
-          );
-        };
+
         if (
           obj instanceof THREE.Mesh ||
           obj instanceof THREE.Line ||
           obj instanceof THREE.LineSegments
         ) {
           const mats = obj.material;
-          if (Array.isArray(mats)) mats.forEach(applyFade);
-          else applyFade(mats);
+          if (Array.isArray(mats)) {
+            for (let m = 0; m < mats.length; m++) {
+              mats[m].transparent = true;
+              mats[m].depthWrite = false;
+              (mats[m] as THREE.MeshBasicMaterial).opacity = Math.max(0, 1 - localP);
+            }
+          } else {
+            mats.transparent = true;
+            mats.depthWrite = false;
+            (mats as THREE.MeshBasicMaterial).opacity = Math.max(0, 1 - localP);
+          }
         }
       }
-    });
+    }
   };
 
   return {

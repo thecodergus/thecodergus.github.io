@@ -2,7 +2,7 @@
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig, CameraState } from "../../engine/types";
-import { range, randomRange, clamp01 } from "../../engine/math";
+import { randomRange, clamp01 } from "../../engine/math";
 import { ChainPhase } from "./types";
 import type { BlockData, ChainLink, HashParticle } from "./types";
 
@@ -61,20 +61,20 @@ const createMerkleTree = (colorScheme: { readonly secondary: string }): THREE.Gr
 
   const nodes: { mesh: THREE.Mesh; position: THREE.Vector3 }[] = [];
 
-  range(leafCount).forEach((leaf) => {
+  for (let leaf = 0; leaf < leafCount; leaf++) {
     const leafX = (leaf - leafCount / 2 + 0.5) * (BLOCK_SIZE * 0.25);
     const mesh = new THREE.Mesh(merkleGeo, merkleMat.clone());
     mesh.position.set(leafX, -BLOCK_SIZE * 0.28, 0);
     group.add(mesh);
     nodes.push({ mesh, position: mesh.position.clone() });
-  });
+  }
 
-  range(2).forEach((mid) => {
+  for (let mid = 0; mid < 2; mid++) {
     const mesh = new THREE.Mesh(merkleGeo, merkleMat.clone());
     mesh.position.set((mid - 0.5) * BLOCK_SIZE * 0.35, 0, 0);
     group.add(mesh);
     nodes.push({ mesh, position: mesh.position.clone() });
-  });
+  }
 
   const root = new THREE.Mesh(
     new THREE.SphereGeometry(0.12, 8, 8),
@@ -96,7 +96,7 @@ const createMerkleTree = (colorScheme: { readonly secondary: string }): THREE.Gr
     depthWrite: false,
   });
 
-  range(leafCount).forEach((leaf) => {
+  for (let leaf = 0; leaf < leafCount; leaf++) {
     const midIdx = leafCount + Math.floor(leaf / 2);
     if (midIdx < nodes.length) {
       const geo = new THREE.BufferGeometry().setFromPoints([
@@ -105,9 +105,9 @@ const createMerkleTree = (colorScheme: { readonly secondary: string }): THREE.Gr
       ]);
       group.add(new THREE.Line(geo, lineMat.clone()));
     }
-  });
+  }
 
-  range(2).forEach((mid) => {
+  for (let mid = 0; mid < 2; mid++) {
     const midIdx = leafCount + mid;
     const rootIdx = nodes.length - 1;
     if (midIdx < nodes.length) {
@@ -117,7 +117,7 @@ const createMerkleTree = (colorScheme: { readonly secondary: string }): THREE.Gr
       ]);
       group.add(new THREE.Line(geo, lineMat.clone()));
     }
-  });
+  }
 
   return group;
 };
@@ -190,6 +190,10 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   const cs = config.colorScheme;
   let disposed = false;
 
+  // Pre-computed RGB (0-1) — avoids parseInt+slice in hot particle loop
+  const primaryRGB: readonly [number, number, number] = [0.969, 0.576, 0.102];   // #F7931A
+  const secondaryRGB: readonly [number, number, number] = [0, 0.749, 0.647];     // #00BFA5
+
   // ── Shared geometry ──
 
   const validatorGeo = new THREE.SphereGeometry(0.12, 12, 12);
@@ -244,9 +248,9 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     return bd;
   };
 
-  range(INITIAL_BLOCKS).forEach((i) => {
+  for (let i = 0; i < INITIAL_BLOCKS; i++) {
     addBlock(i, CHAIN_Z_START + i * CHAIN_Z_STEP);
-  });
+  }
 
   // ── Validators ──
 
@@ -256,7 +260,7 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   const validatorHeights: number[] = [];
   const validatorSpeeds: number[] = [];
 
-  range(VALIDATOR_COUNT).forEach(() => {
+  for (let i = 0; i < VALIDATOR_COUNT; i++) {
     const mesh = new THREE.Mesh(validatorGeo, validatorMat.clone());
     validators.push(mesh);
     validatorAngles.push(randomRange(0, Math.PI * 2));
@@ -264,7 +268,7 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     validatorHeights.push(randomRange(-1.5, 1.5));
     validatorSpeeds.push(randomRange(0.003, 0.008));
     group.add(mesh);
-  });
+  }
 
   // ── Hash particles ──
 
@@ -274,9 +278,9 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   particleGeom.setAttribute("position", new THREE.BufferAttribute(pPositions, 3));
   particleGeom.setAttribute("color", new THREE.BufferAttribute(pColors, 3));
 
-  range(PARTICLE_COUNT).forEach((i) => {
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
     pPositions[i * 3 + 1] = -999;
-  });
+  }
 
   const particleMat = new THREE.PointsMaterial({
     size: 0.12,
@@ -295,13 +299,13 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   const spawnHash = (): void => {
     if (disposed || blocks.length < 2) return;
     const fromBlock = Math.floor(Math.random() * (blocks.length - 1));
-    const from = blocks[fromBlock].position.clone();
-    from.x += BLOCK_SIZE * 0.55;
-    const to = blocks[fromBlock + 1].position.clone();
-    to.x -= BLOCK_SIZE * 0.55;
+    _fromVec.copy(blocks[fromBlock].position);
+    _fromVec.x += BLOCK_SIZE * 0.55;
+    _toVec.copy(blocks[fromBlock + 1].position);
+    _toVec.x -= BLOCK_SIZE * 0.55;
     hashParticles.push({
-      from,
-      to,
+      from: _fromVec.clone(),
+      to: _toVec.clone(),
       progress: 0,
       speed: randomRange(0.01, 0.025),
     });
@@ -316,7 +320,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   let nextBlockZ = CHAIN_Z_START + INITIAL_BLOCKS * CHAIN_Z_STEP;
   let nextBlockIndex = INITIAL_BLOCKS;
 
-  const _tmpVec3 = new THREE.Vector3();
+  const _fromVec = new THREE.Vector3();
+  const _toVec = new THREE.Vector3();
 
   // ── Camera state getter ──
 
@@ -345,36 +350,36 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
 
     // ── Chain wobble ──
 
-    blocks.forEach((b, i) => {
+    for (let i = 0; i < blocks.length; i++) {
+      const b = blocks[i];
       b.mesh.position.y = Math.sin(time * 0.8 + i * 0.5) * 0.2;
       b.mesh.rotation.y = Math.sin(time * 0.5 + i * 0.3) * 0.05;
       b.mesh.rotation.x = Math.cos(time * 0.6 + i * 0.4) * 0.03;
-    });
+    }
 
     // ── Validators orbit ──
 
-    validators.forEach((v, i) => {
+    for (let i = 0; i < validators.length; i++) {
       validatorAngles[i] += validatorSpeeds[i];
-      v.position.set(
+      validators[i].position.set(
         Math.cos(validatorAngles[i]) * validatorDists[i],
         validatorHeights[i] + Math.sin(time * 0.7 + i) * 0.5,
         CHAIN_Z_START + (validatorAngles[i] / (Math.PI * 2)) * blocks.length * CHAIN_Z_STEP,
       );
-    });
+    }
 
     // ── Hash particles ──
 
     if (Math.random() < 0.15) spawnHash();
 
-    const toRemove: number[] = [];
-    hashParticles.forEach((p, idx) => {
+    for (let i = hashParticles.length - 1; i >= 0; i--) {
+      const p = hashParticles[i];
       p.progress += p.speed;
-      if (p.progress >= 1) toRemove.push(idx);
-    });
-    toRemove.reverse().forEach((idx) => hashParticles.splice(idx, 1));
+      if (p.progress >= 1) hashParticles.splice(i, 1);
+    }
     while (hashParticles.length > PARTICLE_COUNT) hashParticles.shift();
 
-    range(PARTICLE_COUNT).forEach((i) => {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       if (i < hashParticles.length) {
         const p = hashParticles[i];
         const t = p.progress;
@@ -382,14 +387,14 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
         pPositions[i * 3 + 1] = p.from.y + (p.to.y - p.from.y) * t;
         pPositions[i * 3 + 2] = p.from.z + (p.to.z - p.from.z) * t;
         const opacity = Math.sin(t * Math.PI);
-        const hex = t < 0.5 ? cs.primary : cs.secondary;
-        pColors[i * 3] = (parseInt(hex.slice(1, 3), 16) / 255) * opacity;
-        pColors[i * 3 + 1] = (parseInt(hex.slice(3, 5), 16) / 255) * opacity;
-        pColors[i * 3 + 2] = (parseInt(hex.slice(5, 7), 16) / 255) * opacity;
+        const rgb = t < 0.5 ? primaryRGB : secondaryRGB;
+        pColors[i * 3] = rgb[0] * opacity;
+        pColors[i * 3 + 1] = rgb[1] * opacity;
+        pColors[i * 3 + 2] = rgb[2] * opacity;
       } else {
         pPositions[i * 3 + 1] = -999;
       }
-    });
+    }
 
     particleGeom.attributes.position.needsUpdate = true;
     particleGeom.attributes.color.needsUpdate = true;
@@ -441,10 +446,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
         block.edgeMaterial.opacity = 0.5 + glowF * 0.5;
         block.mesh.scale.setScalar(1 + glowF * 0.15);
 
-        // Glow sprite follows block
-        block.mesh.getWorldPosition(_tmpVec3);
-        glowSprite.position.set(_tmpVec3.x, _tmpVec3.y, _tmpVec3.z);
-        glowSprite.position.z += 0.1;
+        // Glow sprite follows block (direct pos — no getWorldPosition matrix traversal)
+        glowSprite.position.set(0, block.mesh.position.y, block.position.z + 0.1);
         glowMat.opacity = glowF * 0.35;
 
         // Transition to next block
@@ -572,21 +575,21 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
       }
       basicMat.opacity = (basicMat.userData._baseOpacity as number) * t;
     };
-    blocks.forEach((b) => {
-      b.mesh.traverse((child) => {
+    for (let bi = 0; bi < blocks.length; bi++) {
+      blocks[bi].mesh.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           setMaterialOpacity(child.material as THREE.MeshBasicMaterial);
         } else if (child instanceof THREE.Line || child instanceof THREE.LineSegments) {
           setMaterialOpacity(child.material as THREE.LineBasicMaterial);
         }
       });
-    });
-    validators.forEach((v) => {
-      setMaterialOpacity(v.material as THREE.MeshBasicMaterial);
-    });
-    chainLinks.forEach((cl) => {
-      setMaterialOpacity(cl.material);
-    });
+    }
+    for (let vi = 0; vi < validators.length; vi++) {
+      setMaterialOpacity(validators[vi].material as THREE.MeshBasicMaterial);
+    }
+    for (let ci = 0; ci < chainLinks.length; ci++) {
+      setMaterialOpacity(chainLinks[ci].material);
+    }
     setMaterialOpacity(particleMat);
   };
 

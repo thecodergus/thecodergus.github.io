@@ -18,7 +18,7 @@
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
-import { range, rangeBetween, randomRange, clamp01, easeInOutCubic, easeOutQuad } from "../../engine/math";
+import { range, randomRange, clamp01 } from "../../engine/math";
 import type { LayerDef, FlowParticle, SpikeRing, DropoutState } from "./types";
 
 const LAYERS: readonly LayerDef[] = Object.freeze([
@@ -87,7 +87,7 @@ const sigmoid = (x: number): number => 1 / (1 + Math.exp(-x));
 
 // ── Factory ──
 
-export const createAIScene = (config: SceneConfig): SceneHandle => {
+export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const group = new THREE.Group();
   let disposed = false;
 
@@ -129,6 +129,8 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         neuronActivations[toStart + t] = sigmoid(z);
       }
     }
+    neuronsDirty = true;
+    edgeColorsDirty = true;
   };
 
   // ═══════════════════════════════════════════
@@ -297,7 +299,6 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
 
   const bwdParticles: FlowParticle[] = [];
   let backpropActive = false;
-  let backpropTimer = 0;
   let backpropPhase = 0; // 0=forward, 1=backward, 2=pause
   let phaseTimer = 2.5;
 
@@ -339,6 +340,8 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     for (let i = 0; i < dropCount; i++) {
       dropout.dropped.add(shuffled[i]);
     }
+    neuronsDirty = true;
+    edgeColorsDirty = true;
   };
 
   // ═══════════════════════════════════════════
@@ -381,7 +384,6 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
 
   const attnZ = (LAYERS[4].z + LAYERS[5].z) / 2; // Between Attention and H4
   const attnSpan = 5.0;
-  const attnHalf = attnSpan / 2;
 
   for (let row = 0; row < ATTENTION_MATRIX_SIZE; row++) {
     for (let col = 0; col < ATTENTION_MATRIX_SIZE; col++) {
@@ -559,10 +561,10 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
   const manPoints = new THREE.Points(manGeo, manMat);
   group.add(manPoints);
 
-  const manifoldClusters: { centerX: number; centerY: number; color: string }[] = [
-    { centerX: -6.0, centerY: -9.0, color: "#00E5FF" },
-    { centerX: 0, centerY: -9.5, color: "#8B5CF6" },
-    { centerX: 6.0, centerY: -9.0, color: "#10A37F" },
+  const manifoldClusters: { centerX: number; centerY: number; color: string; r: number; g: number; b: number }[] = [
+    { centerX: -6.0, centerY: -9.0, color: "#00E5FF", r: 0, g: 0.898, b: 1 },
+    { centerX: 0, centerY: -9.5, color: "#8B5CF6", r: 0.545, g: 0.361, b: 0.965 },
+    { centerX: 6.0, centerY: -9.0, color: "#10A37F", r: 0.063, g: 0.639, b: 0.498 },
   ];
 
   for (let i = 0; i < manifoldCount; i++) {
@@ -570,10 +572,9 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     manPositions[i * 3] = cluster.centerX + randomRange(-1.5, 1.5);
     manPositions[i * 3 + 1] = cluster.centerY + randomRange(-1.0, 1.0);
     manPositions[i * 3 + 2] = randomRange(-2.0, 2.0);
-    const c = new THREE.Color(cluster.color);
-    manColors[i * 3] = c.r * 0.6;
-    manColors[i * 3 + 1] = c.g * 0.6;
-    manColors[i * 3 + 2] = c.b * 0.6;
+    manColors[i * 3] = cluster.r * 0.6;
+    manColors[i * 3 + 1] = cluster.g * 0.6;
+    manColors[i * 3 + 2] = cluster.b * 0.6;
   }
 
   // ═══════════════════════════════════════════
@@ -588,6 +589,21 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
 
   let forwardPassTimer = 0.6;
   const FORWARD_PASS_INTERVAL = 0.6;
+
+  // ── Dirty flags: skip frame work when data hasn't changed ──
+  // neuronActivations changes every ~0.6s (forward pass)
+  // dropout.dropped changes every ~3.0s (dropout cycle)
+  let neuronsDirty = true;
+  let edgeColorsDirty = true;
+
+  // ── Pre-built dissolve array (avoid group.traverse per frame) ──
+
+  const dissolveObjects: readonly THREE.Object3D[] = Object.freeze([
+    neurons, edgeLines, fwdPoints, bwdPoints, attnMesh, lossLine, gradBar, manPoints,
+    ...ripples.map((r) => r.ring),
+    ...arcLines,
+    ...spikeRings.map((r) => r.mesh),
+  ]);
 
   // ═══════════════════════════════════════════
   // UPDATE FUNCTION
@@ -739,38 +755,41 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     // Apply dropout + update neuron glow (activation-mapped)
     const isDropped = (globalIdx: number): boolean => dropout.dropped.has(globalIdx);
 
-    for (let i = 0; i < TOTAL_NEURONS; i++) {
-      const pos = nPositions[i];
-      dummy.position.copy(pos);
+    if (neuronsDirty) {
+      for (let i = 0; i < TOTAL_NEURONS; i++) {
+        const pos = nPositions[i];
+        dummy.position.copy(pos);
 
-      if (isDropped(i)) {
-        dummy.scale.setScalar(0.05);
-        dummy.updateMatrix();
-        neurons.setMatrixAt(i, dummy.matrix);
-        nColor.setRGB(
-          neuronBaseColors[i * 3] * 0.06,
-          neuronBaseColors[i * 3 + 1] * 0.06,
-          neuronBaseColors[i * 3 + 2] * 0.06,
-        );
-      } else {
-        dummy.scale.setScalar(1.0);
-        dummy.updateMatrix();
-        neurons.setMatrixAt(i, dummy.matrix);
-        const a = neuronActivations[i];
-        const glow = 0.4 + a * 0.6;
-        nColor.setRGB(
-          neuronBaseColors[i * 3] * glow,
-          neuronBaseColors[i * 3 + 1] * glow,
-          neuronBaseColors[i * 3 + 2] * glow,
-        );
+        if (isDropped(i)) {
+          dummy.scale.setScalar(0.05);
+          dummy.updateMatrix();
+          neurons.setMatrixAt(i, dummy.matrix);
+          nColor.setRGB(
+            neuronBaseColors[i * 3] * 0.06,
+            neuronBaseColors[i * 3 + 1] * 0.06,
+            neuronBaseColors[i * 3 + 2] * 0.06,
+          );
+        } else {
+          dummy.scale.setScalar(1.0);
+          dummy.updateMatrix();
+          neurons.setMatrixAt(i, dummy.matrix);
+          const a = neuronActivations[i];
+          const glow = 0.4 + a * 0.6;
+          nColor.setRGB(
+            neuronBaseColors[i * 3] * glow,
+            neuronBaseColors[i * 3 + 1] * glow,
+            neuronBaseColors[i * 3 + 2] * glow,
+          );
+        }
+        neurons.setColorAt(i, nColor);
       }
-      neurons.setColorAt(i, nColor);
+      neurons.instanceMatrix.needsUpdate = true;
+      if (neurons.instanceColor) neurons.instanceColor.needsUpdate = true;
+      neuronsDirty = false;
     }
-    neurons.instanceMatrix.needsUpdate = true;
-    if (neurons.instanceColor) neurons.instanceColor.needsUpdate = true;
 
     // Tensor edge brightness: weight × source activation
-    {
+    if (edgeColorsDirty) {
       let ei = 0;
       const eColorArr = edgeGeo.attributes.color.array as Float32Array;
       for (let l = 0; l < TOTAL_LAYERS - 1; l++) {
@@ -798,14 +817,16 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         }
       }
       edgeGeo.attributes.color.needsUpdate = true;
+      edgeColorsDirty = false;
     }
 
     // ── E4: Normalization ripples ──
-    ripples.forEach((r) => {
+    for (let ri = 0; ri < ripples.length; ri++) {
+      const r = ripples[ri];
       const scale = 1.0 + Math.sin(time * 3 + r.layerIdx * 1.5) * 0.12;
       r.ring.scale.setScalar(scale);
       r.material.opacity = 0.25 + Math.sin(time * 4 + r.layerIdx) * 0.15;
-    });
+    }
 
     // ── E5: Attention matrix shimmer (every 4th frame) ──
     {
@@ -840,10 +861,11 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     }
 
     // ── E6: Activation arcs slow rotation ──
-    arcLines.forEach((line, i) => {
-      line.rotation.z = Math.sin(time * 0.3 + i) * 0.15;
-      line.rotation.y = Math.cos(time * 0.25 + i) * 0.2;
-    });
+    for (let ai = 0; ai < arcLines.length; ai++) {
+      const line = arcLines[ai];
+      line.rotation.z = Math.sin(time * 0.3 + ai) * 0.15;
+      line.rotation.y = Math.cos(time * 0.25 + ai) * 0.2;
+    }
 
     // ── E7: Loss chart re-generation ──
     lossResetTimer -= _delta;
@@ -864,8 +886,9 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     }
 
     // ── E8: Spike ring updates ──
-    spikeRings.forEach((r) => {
-      if (!r.active) return;
+    for (let si = 0; si < spikeRings.length; si++) {
+      const r = spikeRings[si];
+      if (!r.active) continue;
       r.timer += _delta;
       const t = clamp01(r.timer / r.maxTime);
       const scale = 0.5 + t * 2.5;
@@ -875,7 +898,7 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         r.active = false;
         r.mesh.visible = false;
       }
-    });
+    }
 
     // ── E10: Gradient bar (pulses during backprop) ──
     {
@@ -895,11 +918,10 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         manPositions[i * 3 + 1] += (cluster.centerY + Math.sin(time * 0.5 + i) * 0.3 - manPositions[i * 3 + 1]) * 0.01;
         manPositions[i * 3 + 2] += (Math.cos(time * 0.4 + i) * 0.5 - manPositions[i * 3 + 2]) * 0.01;
 
-        nColor.set(cluster.color);
         const dim = 0.3 + Math.sin(time * 2 + i) * 0.15;
-        manColors[i * 3] = nColor.r * dim;
-        manColors[i * 3 + 1] = nColor.g * dim;
-        manColors[i * 3 + 2] = nColor.b * dim;
+        manColors[i * 3] = cluster.r * dim;
+        manColors[i * 3 + 1] = cluster.g * dim;
+        manColors[i * 3 + 2] = cluster.b * dim;
       }
       manGeo.attributes.position.needsUpdate = true;
       manGeo.attributes.color.needsUpdate = true;
@@ -907,14 +929,14 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
 
     // ── Global entrance opacity for group ──
     if (entranceTimer >= 0 && entranceTimer <= ENTRANCE_DURATION) {
-      group.children.forEach((child) => {
-        if (child === neurons) return; // handled separately
+      const children = group.children;
+      for (let ci = 0; ci < children.length; ci++) {
+        const child = children[ci];
+        if (child === neurons) continue; // handled separately
         if (child instanceof THREE.Mesh || child instanceof THREE.Line || child instanceof THREE.Points || child instanceof THREE.LineSegments || child instanceof THREE.InstancedMesh) {
-          // Layer-based visibility
-          // For simplicity, fade in overall group
           group.scale.setScalar(entranceOpacity);
         }
-      });
+      }
     }
 
     void time;
@@ -938,27 +960,30 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     bwdGeo.dispose();
     bwdMat.dispose();
 
-    ripples.forEach((r) => {
-      r.ring.geometry.dispose();
-      r.material.dispose();
-    });
+    for (let ri = 0; ri < ripples.length; ri++) {
+      ripples[ri].ring.geometry.dispose();
+      ripples[ri].material.dispose();
+    }
+    ripples.length = 0;
 
     attnGeo.dispose();
     attnMat.dispose();
     attnMesh.dispose();
 
-    arcLines.forEach((l) => {
-      l.geometry.dispose();
-      (l.material as THREE.Material).dispose();
-    });
+    for (let ai = 0; ai < arcLines.length; ai++) {
+      arcLines[ai].geometry.dispose();
+      (arcLines[ai].material as THREE.Material).dispose();
+    }
+    arcLines.length = 0;
 
     lossGeo.dispose();
     lossMat.dispose();
 
-    spikeRings.forEach((r) => {
-      r.mesh.geometry.dispose();
-      (r.mesh.material as THREE.Material).dispose();
-    });
+    for (let si = 0; si < spikeRings.length; si++) {
+      spikeRings[si].mesh.geometry.dispose();
+      (spikeRings[si].mesh.material as THREE.Material).dispose();
+    }
+    spikeRings.length = 0;
 
     gradBarGeo.dispose();
     gradBarMat.dispose();
@@ -980,9 +1005,9 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
     bwdMat.opacity = 0.8 * t;
     lossMat.opacity = 0.5 * t;
     manMat.opacity = 0.5 * t;
-    ripples.forEach((r) => { r.material.opacity = 0.4 * t; });
+    for (let ri = 0; ri < ripples.length; ri++) { ripples[ri].material.opacity = 0.4 * t; }
     attnMat.opacity = 0.7 * t;
-    arcLines.forEach((l) => { (l.material as THREE.LineBasicMaterial).opacity = 0.25 * t; });
+    for (let ai = 0; ai < arcLines.length; ai++) { (arcLines[ai].material as THREE.LineBasicMaterial).opacity = 0.25 * t; }
     gradBarMat.opacity = 0.6 * t;
   };
 
@@ -991,14 +1016,10 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
   // ═══════════════════════════════════════════
 
   const dissolve = (progress: number): void => {
-    const objs: THREE.Object3D[] = [];
-    group.traverse((child) => {
-      if (child instanceof THREE.Mesh || child instanceof THREE.Line || child instanceof THREE.Points || child instanceof THREE.LineSegments || child instanceof THREE.InstancedMesh) {
-        objs.push(child);
-      }
-    });
-    objs.forEach((obj, i) => {
-      const seed = i / (objs.length - 1 + 0.001);
+    const len = dissolveObjects.length;
+    for (let i = 0; i < len; i++) {
+      const obj = dissolveObjects[i];
+      const seed = i / (len - 1 + 0.001);
       if (progress > seed) {
         const localP = clamp01((progress - seed) / (1 - seed + 0.001));
         obj.scale.setScalar(1 - localP);
@@ -1009,17 +1030,17 @@ export const createAIScene = (config: SceneConfig): SceneHandle => {
         };
         if (obj instanceof THREE.Mesh) {
           const mats = obj.material;
-          if (Array.isArray(mats)) mats.forEach(applyFade);
+          if (Array.isArray(mats)) { for (let mi = 0; mi < mats.length; mi++) applyFade(mats[mi]); }
           else applyFade(mats);
         } else if (obj instanceof THREE.InstancedMesh) {
           applyFade(obj.material as THREE.Material);
         } else {
           const mats = (obj as THREE.Line | THREE.Points | THREE.LineSegments).material;
-          if (Array.isArray(mats)) mats.forEach(applyFade);
+          if (Array.isArray(mats)) { for (let mi = 0; mi < mats.length; mi++) applyFade(mats[mi]); }
           else applyFade(mats);
         }
       }
-    });
+    }
   };
 
   // ═══════════════════════════════════════════

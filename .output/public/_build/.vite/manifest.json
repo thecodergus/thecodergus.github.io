@@ -3,8 +3,15 @@
     "file": "assets/Footer-D4bL0TYP.js",
     "name": "Footer"
   },
-  "_index-Co_ZCjXo.js": {
-    "file": "assets/index-Co_ZCjXo.js",
+  "_index-DO01bAoj.js": {
+    "file": "assets/index-DO01bAoj.js",
+    "name": "index",
+    "imports": [
+      "_Footer-D4bL0TYP.js"
+    ]
+  },
+  "_index-NvL93cse.js": {
+    "file": "assets/index-NvL93cse.js",
     "name": "index",
     "isDynamicEntry": true,
     "imports": [
@@ -16,13 +23,6 @@
       "src/themes/blockchain/index.ts",
       "src/themes/software/index.ts",
       "src/themes/web/index.ts"
-    ]
-  },
-  "_index-DO01bAoj.js": {
-    "file": "assets/index-DO01bAoj.js",
-    "name": "index",
-    "imports": [
-      "_Footer-D4bL0TYP.js"
     ]
   },
   "_preload-helper-ug3pwPZ1.js": {
@@ -45,66 +45,66 @@
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-qPZjdjPJ.js",
+    "file": "assets/index-CVl0akiX.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "imports": [
       "_Footer-D4bL0TYP.js",
-      "_index-Co_ZCjXo.js",
+      "_index-NvL93cse.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/ai/index.ts": {
-    "file": "assets/index-CiwRMTkL.js",
+    "file": "assets/index-D008ugTD.js",
     "name": "index",
     "src": "src/themes/ai/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-Co_ZCjXo.js",
+      "_index-NvL93cse.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/blockchain/index.ts": {
-    "file": "assets/index-aCHIESul.js",
+    "file": "assets/index-OyQIc89e.js",
     "name": "index",
     "src": "src/themes/blockchain/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-Co_ZCjXo.js",
+      "_index-NvL93cse.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/software/index.ts": {
-    "file": "assets/index-CMtvIuA6.js",
+    "file": "assets/index-xYJyvev4.js",
     "name": "index",
     "src": "src/themes/software/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-Co_ZCjXo.js",
+      "_index-NvL93cse.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/web/index.ts": {
-    "file": "assets/index-DJFC26OT.js",
+    "file": "assets/index-Bno4K-ui.js",
     "name": "index",
     "src": "src/themes/web/index.ts",
     "isDynamicEntry": true,
     "imports": [
       "_types-BJuT0aSC.js",
-      "_index-Co_ZCjXo.js",
+      "_index-NvL93cse.js",
       "_Footer-D4bL0TYP.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-BHKYJtRo.js",
+    "file": "assets/client-BHaDSC-I.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,

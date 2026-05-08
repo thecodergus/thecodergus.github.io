@@ -7,13 +7,13 @@ export interface CardNode {
   readonly position: THREE.Vector3;
   readonly spokeIndex: number;
   readonly ringIndex: number;
+  readonly phaseOffset: number;
 }
 
 export interface Thread {
-  readonly line: THREE.Line;
   readonly mat: THREE.LineBasicMaterial;
   readonly baseOpacity: number;
-  readonly kind: "spoke" | "ring";
+  readonly amp: number;
 }
 
 export interface Traveler {
