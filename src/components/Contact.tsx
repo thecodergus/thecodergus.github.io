@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, onMount, onCleanup } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import { Github, Mail, ExternalLink, Linkedin } from "lucide-solid";
 
@@ -8,7 +8,7 @@ export default function Contact() {
 
   let sectionRef: HTMLDivElement | undefined;
 
-  createEffect(() => {
+  onMount(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
@@ -17,7 +17,7 @@ export default function Contact() {
     );
 
     if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
+    onCleanup(() => observer.disconnect());
   });
 
   const sectionName = () => t("basic_info.section_name.contact", "");

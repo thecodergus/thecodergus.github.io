@@ -22,25 +22,11 @@ export default function Stats() {
   ];
 
   onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-  });
-
-  onMount(() => {
     const stats = STATS();
     const duration = 2000;
-    const startTime = performance.now();
+    let rafId = 0;
 
-    const animate = (now: number) => {
+    const animate = (now: number, startTime: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
@@ -48,21 +34,26 @@ export default function Stats() {
       setCounts(stats.map((s) => Math.floor(s.value * eased)));
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        rafId = requestAnimationFrame((n) => animate(n, startTime));
       }
     };
 
-    let rafId = 0;
-    const startOnVisible = () => {
-      if (isVisible()) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        rafId = requestAnimationFrame(startOnVisible);
-      }
-    };
-    rafId = requestAnimationFrame(startOnVisible);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+          const startTime = performance.now();
+          rafId = requestAnimationFrame((n) => animate(n, startTime));
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef) observer.observe(sectionRef);
 
     onCleanup(() => {
+      observer.disconnect();
       if (rafId) cancelAnimationFrame(rafId);
     });
   });

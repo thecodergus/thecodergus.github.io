@@ -175,6 +175,8 @@ export const createEngine = (
 
   let orbitAngle = 0;
 
+  const _orbitTarget = new THREE.Vector3();
+
   const bloomTarget = { value: 0.8 };
 
   // ── Scene helpers ──
@@ -273,7 +275,8 @@ export const createEngine = (
     const cx = Math.sin(orbitAngle) * p.orbitRadius;
     const cz = Math.cos(orbitAngle) * p.orbitRadius;
 
-    camera.position.lerp(new THREE.Vector3(cx, orbitH, cz), 0.03);
+    _orbitTarget.set(cx, orbitH, cz);
+    camera.position.lerp(_orbitTarget, 0.03);
     camera.lookAt(0, 0, 0);
   };
 
@@ -328,7 +331,7 @@ export const createEngine = (
     }
   };
 
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", resize, { passive: true });
 
   // ── Animation loop ──
 

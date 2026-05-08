@@ -108,7 +108,7 @@ export default function Hero() {
                     <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": th.background}} />
                   </div>
                   <Show when={t(`hero.themes_${th.id}`, "")}>
-                    <span class="text-[10px] leading-tight text-text-muted">{t(`hero.themes_${th.id}`, "")}</span>
+                    {(label) => <span class="text-[10px] leading-tight text-text-muted">{label()}</span>}
                   </Show>
                 </button>
               );

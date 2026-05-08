@@ -36,7 +36,7 @@ export default createHandler(() => (
           </script>
         </head>
         <body>
-          <a href="#main" class="skip-link">Pular para o conteúdo</a>
+          <a href="#main" class="skip-link" data-i18n-skip>Pular para o conteúdo</a>
           <div id="app">{children}</div>
           {scripts}
         </body>

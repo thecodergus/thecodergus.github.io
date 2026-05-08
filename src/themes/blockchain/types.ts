@@ -23,10 +23,10 @@ export interface ChainLink {
 }
 
 export interface HashParticle {
-  readonly from: THREE.Vector3;
-  readonly to: THREE.Vector3;
+  readonly from: [number, number, number];
+  readonly to: [number, number, number];
   progress: number;
-  readonly speed: number;
+  speed: number;
 }
 
 import type * as THREE from "three";

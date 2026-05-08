@@ -1,4 +1,4 @@
-import { createSignal, createEffect, For, Show } from "solid-js";
+import { createSignal, onMount, onCleanup, For, Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 
 export default function Experience() {
@@ -7,7 +7,7 @@ export default function Experience() {
 
   let sectionRef: HTMLDivElement | undefined;
 
-  createEffect(() => {
+  onMount(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
@@ -16,7 +16,7 @@ export default function Experience() {
     );
 
     if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
+    onCleanup(() => observer.disconnect());
   });
 
   const experiences = () => messages()?.experience || [];

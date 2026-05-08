@@ -18,7 +18,7 @@
 
 import * as THREE from "three";
 import type { SceneHandle, SceneConfig } from "../../engine/types";
-import { range, randomRange, clamp01 } from "../../engine/math";
+import { range, randomRange, random, clamp01 } from "../../engine/math";
 import type { LayerDef, FlowParticle, SpikeRing, DropoutState } from "./types";
 
 const LAYERS: readonly LayerDef[] = Object.freeze([
@@ -380,7 +380,6 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
   const attnMesh = new THREE.InstancedMesh(attnGeo, attnMat, attnCells);
   const attnDummy = new THREE.Object3D();
   const attnColor = new THREE.Color();
-  const attnCellValues: number[] = new Array(attnCells).fill(0);
 
   const attnZ = (LAYERS[4].z + LAYERS[5].z) / 2; // Between Attention and H4
   const attnSpan = 5.0;
@@ -583,7 +582,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
   let entranceTimer = -1; // -1 = done/not started
   let entranceOpacity = 1.0;
-  const ENTRANCE_DURATION = 900; // ms for full cascade
+  const ENTRANCE_RAMP_MS = 300; // ms for full cascade
 
   // ── Tensor forward pass timer ──
 
@@ -614,7 +613,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
     // ── Entrance cascade ──
     if (entranceTimer >= 0) {
-      entranceOpacity = clamp01(entranceTimer / 300);
+      entranceOpacity = clamp01(entranceTimer / ENTRANCE_RAMP_MS);
       if (entranceOpacity >= 1.0) entranceTimer = -1;
     }
 
@@ -630,7 +629,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
     // ── E1: Forward pass particles ──
     // Spawn continuously
-    if (fwdParticles.length < FORWARD_PARTICLES && Math.random() < 0.6) {
+    if (fwdParticles.length < FORWARD_PARTICLES && random() < 0.6) {
       spawnFwd();
     }
 
@@ -697,7 +696,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     }
 
     if (backpropActive) {
-      if (bwdParticles.length < BACKWARD_PARTICLES && Math.random() < 0.5) {
+      if (bwdParticles.length < BACKWARD_PARTICLES && random() < 0.5) {
         spawnBwd();
       }
     } else {
@@ -839,7 +838,6 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
             let val = Math.exp(-diag * 0.4) * 0.7; // Strong diagonal
             val += Math.sin(time * 5 + row * 0.7 + col * 0.9) * 0.15; // Shimmer
             val = clamp01(val + 0.1);
-            attnCellValues[idx] = val;
 
             attnDummy.position.set(
               (col / (ATTENTION_MATRIX_SIZE - 1) - 0.5) * attnSpan,
@@ -928,7 +926,7 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
     }
 
     // ── Entrance opacity: fade each material individually ──
-    if (entranceTimer >= 0 && entranceTimer <= ENTRANCE_DURATION) {
+    if (entranceTimer >= 0) {
       neuronMat.opacity = 0.92 * entranceOpacity;
       edgeMat.opacity = 0.8 * entranceOpacity;
       fwdMat.opacity = 0.9 * entranceOpacity;

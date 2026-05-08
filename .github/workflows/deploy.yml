@@ -52,6 +52,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Restore Vinxi cache
+        uses: actions/cache@v4
+        with:
+          path: .vinxi
+          key: vinxi-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: vinxi-${{ runner.os }}-
+
       - name: Build
         run: npm run build
 

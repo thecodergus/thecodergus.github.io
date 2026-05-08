@@ -23,7 +23,6 @@ interface TransitionState {
   current: SceneHandle | null;
   next: SceneHandle | null;
   timer: number;
-  transitionStart: number;
 }
 
 // ── Factory ──
@@ -41,7 +40,6 @@ export const createTransitionManager = (
     current: null,
     next: null,
     timer: 0,
-    transitionStart: 0,
   };
 
   const transition = (from: SceneHandle | null, to: SceneHandle): void => {
@@ -53,7 +51,6 @@ export const createTransitionManager = (
     state.phase = TransitionPhase.FadingOut;
     state.next = to;
     state.timer = 0;
-    state.transitionStart = 0;
 
     to.setOpacity(0);
 
@@ -66,7 +63,6 @@ export const createTransitionManager = (
     if (state.phase === TransitionPhase.Idle) return;
 
     state.timer += dt;
-    state.transitionStart += dt;
 
     if (state.phase === TransitionPhase.FadingOut) {
       const progress = Math.min(state.timer / FADE_HALF, 1);

@@ -14,7 +14,7 @@ export default function ScrollProgress() {
       bar.style.transform = `scaleX(${progress})`;
     };
 
-    window.addEventListener("scroll", updateProgress);
+    window.addEventListener("scroll", updateProgress, { passive: true });
     onCleanup(() => window.removeEventListener("scroll", updateProgress));
   });
 

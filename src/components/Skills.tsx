@@ -1,4 +1,4 @@
-import { createSignal, onMount, For } from "solid-js";
+import { createSignal, onMount, onCleanup, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import type { Skill } from "~/types";
 
@@ -29,7 +29,7 @@ export default function Skills() {
     );
 
     if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
+    onCleanup(() => observer.disconnect());
   });
 
   const skills = () => sharedData()?.skills?.icons || [];
@@ -43,7 +43,8 @@ export default function Skills() {
     for (const s of icons) {
       const cat = s.category || "other";
       if (!grouped.has(cat)) grouped.set(cat, []);
-      grouped.get(cat)!.push(s);
+      const catSkills = grouped.get(cat);
+      if (catSkills) catSkills.push(s);
     }
 
     const result: SkillCategory[] = [];

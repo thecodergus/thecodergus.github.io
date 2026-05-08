@@ -7,9 +7,10 @@ Portfolio pessoal de Gustavo M Camargo — Especialista em Automação com IA, L
 | Camada  | Tecnologia                              |
 | ------- | --------------------------------------- |
 | Runtime | Node.js >=20                            |
-| UI      | SolidJS 1.9 + SolidStart 1.0 + Vite 7   |
-| Estilo  | Tailwind CSS v4 + data-theme scoping     |
-| 3D      | Three.js 0.184 (raw API, sem R3F)       |
+| UI      | SolidJS 1.9.12 + SolidStart 1.0.11          |
+| Bundler | Vite 7.3.2 + Vinxi 0.5.11                 |
+| Estilo  | Tailwind CSS v4 + data-theme scoping       |
+| 3D      | Three.js ^0.184.0 (raw API, sem R3F)      |
 | Icons   | Lucide Solid + Devicon                  |
 | A11y    | Kobalte Core                            |
 
@@ -23,7 +24,7 @@ npm start           # Preview do build
 npm run typecheck   # Verificação de tipos (tsc --noEmit)
 npm run lint        # ESLint
 npm run lint:fix    # ESLint com correção automática
-npm run test        # Vitest
+npm run test        # Vitest (4 arquivos, 121 testes)
 npm run test:watch  # Vitest em modo watch
 ```
 
@@ -42,7 +43,11 @@ src/
 │   ├── engine.ts           # Orquestrador: renderer, câmera, post-process
 │   ├── transition.ts       # Crossfade manager (800ms)
 │   ├── math.ts             # Vec3, easing, Lehmer PRNG
-│   └── types.ts            # SceneHandle, ThemeModule, SceneKind enum
+│   ├── quality.ts          # GPU tier detection (low/medium/high)
+│   ├── types.ts            # SceneHandle, ThemeModule, SceneKind enum
+│   ├── math.test.ts        # 93 testes — Vec3, easings, PRNG
+│   ├── transition.test.ts  # 15 testes — máquina de estados
+│   └── quality.test.ts     # 10 testes — detecção de GPU
 ├── themes/                 # Sistema de temas plug-in
 │   ├── registry.ts         # REGISTRY: Record<ThemeId, ThemeModule>
 │   ├── ai/                 # Rede neural 3D (9 camadas, 44 neurônios)
@@ -51,6 +56,7 @@ src/
 │   └── web/                # Topologia hyperlink spiderweb
 ├── stores/
 │   ├── themeStore.ts       # Sinal theme + localStorage (AI sempre inicial)
+│   ├── themeStore.test.ts  # 3 testes — signal inicial, THEMES, REGISTRY
 │   └── i18nStore.tsx       # pt-br/en, fetch JSON, context, t() helper
 └── types.ts                # Interfaces compartilhadas (Language enum, Messages)
 ```
@@ -66,9 +72,22 @@ Cada tema é um diretório com **4 arquivos**:
 
 Troca de tema usa **crossfade de 800ms** (400ms fade out + 400ms fade in).
 
+## Testes
+
+Vitest 4 com jsdom environment e globals mode. 4 arquivos, 121 testes:
+
+| Arquivo                  | Testes | Foco                                            |
+| ------------------------ | ------ | ----------------------------------------------- |
+| `math.test.ts`           | 93     | Vec3, easings, PRNG, array utilities            |
+| `transition.test.ts`     | 15     | Máquina de estados, timing, abort               |
+| `quality.test.ts`        | 10     | GPU tier detection, pixelRatio cap               |
+| `themeStore.test.ts`     | 3      | Signal inicial, THEMES, REGISTRY                |
+
+CI: `typecheck → lint → test` (ordem de falha mais rápida primeiro).
+
 ## Post-processing
 
-Shaders personalizados aplicados via `EffectComposer`:
+Shaders personalizados aplicados via `EffectComposer` (GLSL 3.0 ES):
 
 - **Scanlines** — linhas horizontais animadas por `uTime`
 - **Vignette** — escurecimento radial nas bordas

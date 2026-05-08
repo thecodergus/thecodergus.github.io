@@ -1,4 +1,4 @@
-import { createSignal, createEffect, For } from "solid-js";
+import { createSignal, createEffect, onMount, onCleanup, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import type { Project } from "~/types";
 import ProjectModal from "~/components/ProjectModal";
@@ -17,16 +17,17 @@ export default function Projects() {
 
   let sectionRef: HTMLDivElement | undefined;
 
-  createEffect(() => {
+  onMount(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
       },
       { threshold: 0.1 }
+
     );
 
     if (sectionRef) observer.observe(sectionRef);
-    return () => observer.disconnect();
+    onCleanup(() => observer.disconnect());
   });
 
   createEffect(() => {

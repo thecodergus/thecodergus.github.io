@@ -12,14 +12,14 @@ export const REGISTRY: Readonly<Record<ThemeId, ThemeLoader>> = Object.freeze({
   web: () => import("./web").then((m) => m.default),
 });
 
-const moduleCache = new Map<ThemeId, ThemeModule>();
+const moduleCache = new Map<ThemeId, Promise<ThemeModule>>();
 
 export async function loadTheme(id: ThemeId): Promise<ThemeModule> {
   const cached = moduleCache.get(id);
   if (cached) return cached;
 
   const loader = REGISTRY[id];
-  const mod = await loader();
-  moduleCache.set(id, mod);
-  return mod;
+  const promise = loader();
+  moduleCache.set(id, promise);
+  return promise;
 }

@@ -11,6 +11,8 @@ const SPOKES = 10;
 const RINGS = 3;
 const RING_RADII = [2.5, 5.0, 7.5];
 const RING_Z_OFFSET = -0.3;
+const MAX_RADIUS = RING_RADII[RINGS - 1];
+const MAX_Z = RINGS * RING_Z_OFFSET;
 const TRAVELER_COUNT = 14;
 const FLOATING_SPRITE_COUNT = 10;
 const URL_TEXTS = [
@@ -36,7 +38,8 @@ const createCanvasTexture = (size: CanvasSize, draw: (ctx: CanvasRenderingContex
   const canvas = document.createElement("canvas");
   canvas.width = size.w;
   canvas.height = size.h;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Failed to get 2d context");
   draw(ctx);
   const tex = new THREE.CanvasTexture(canvas);
   tex.minFilter = THREE.LinearFilter;
@@ -334,9 +337,6 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
     }
 
     // Update travelers
-    const maxRadius = RING_RADII[RINGS - 1];
-    const maxZ = RINGS * RING_Z_OFFSET;
-
     for (let i = 0; i < travelers.length; i++) {
       const t = travelers[i];
       t.progress += t.speed;
@@ -348,9 +348,9 @@ export const createWebScene = (config: SceneConfig): SceneHandle => {
         (t.sprite.material as THREE.SpriteMaterial).map = urlTex;
       }
 
-      const radius = t.progress * maxRadius;
+      const radius = t.progress * MAX_RADIUS;
       const angle = (t.spokeIndex / SPOKES) * Math.PI * 2;
-      const z = t.progress * maxZ;
+      const z = t.progress * MAX_Z;
       const arc = Math.sin(t.progress * Math.PI) * 0.55;
 
       t.sprite.position.set(

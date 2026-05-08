@@ -33,7 +33,8 @@ const createGlowTexture = (): THREE.CanvasTexture => {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Failed to get 2d context");
 
   const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
   gradient.addColorStop(0, "rgba(255, 179, 71, 1)");
@@ -304,8 +305,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
     _toVec.copy(blocks[fromBlock + 1].position);
     _toVec.x -= BLOCK_SIZE * 0.55;
     hashParticles.push({
-      from: _fromVec.clone(),
-      to: _toVec.clone(),
+      from: [_fromVec.x, _fromVec.y, _fromVec.z],
+      to: [_toVec.x, _toVec.y, _toVec.z],
       progress: 0,
       speed: randomRange(0.01, 0.025),
     });
@@ -323,20 +324,21 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
   const _fromVec = new THREE.Vector3();
   const _toVec = new THREE.Vector3();
 
-  // ── Camera state getter ──
+  const _cameraPos = new THREE.Vector3();
+  const _lookAt = new THREE.Vector3();
+  const _cameraState: CameraState = { position: _cameraPos, lookAt: _lookAt, lerpFactor: 4 };
 
   const getCameraState = (): CameraState | null => {
     if (phase !== ChainPhase.Checking) return null;
     const block = blocks[checkIndex];
     if (!block) return null;
-    const pos = block.position.clone();
-    pos.y += 0;
-    const cameraPos = new THREE.Vector3(
+    _lookAt.copy(block.position);
+    _cameraPos.set(
       Math.sin(INITIAL_ANGLE) * CHECK_RADIUS,
       CHECK_HEIGHT,
-      pos.z + Math.cos(INITIAL_ANGLE) * CHECK_RADIUS,
+      _lookAt.z + Math.cos(INITIAL_ANGLE) * CHECK_RADIUS,
     );
-    return { position: cameraPos, lookAt: pos.clone(), lerpFactor: 4 };
+    return _cameraState;
   };
 
   // ── Update ──
@@ -370,7 +372,7 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
 
     // ── Hash particles ──
 
-    if (Math.random() < 0.15) spawnHash();
+    if (randomRange(0, 1) < 0.15) spawnHash();
 
     for (let i = hashParticles.length - 1; i >= 0; i--) {
       const p = hashParticles[i];
@@ -383,9 +385,9 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
       if (i < hashParticles.length) {
         const p = hashParticles[i];
         const t = p.progress;
-        pPositions[i * 3] = p.from.x + (p.to.x - p.from.x) * t;
-        pPositions[i * 3 + 1] = p.from.y + (p.to.y - p.from.y) * t;
-        pPositions[i * 3 + 2] = p.from.z + (p.to.z - p.from.z) * t;
+        pPositions[i * 3] = p.from[0] + (p.to[0] - p.from[0]) * t;
+        pPositions[i * 3 + 1] = p.from[1] + (p.to[1] - p.from[1]) * t;
+        pPositions[i * 3 + 2] = p.from[2] + (p.to[2] - p.from[2]) * t;
         const opacity = Math.sin(t * Math.PI);
         const rgb = t < 0.5 ? primaryRGB : secondaryRGB;
         pColors[i * 3] = rgb[0] * opacity;
@@ -485,7 +487,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
 
           // Remove blocks beyond initial
           while (blocks.length > INITIAL_BLOCKS) {
-            const removed = blocks.pop()!;
+            const removed = blocks.pop();
+            if (!removed) continue;
             group.remove(removed.mesh);
             removed.mesh.traverse((child) => {
               if (child instanceof THREE.Mesh || child instanceof THREE.Line) {
@@ -497,7 +500,8 @@ export const createBlockchainScene = (config: SceneConfig): SceneHandle => {
 
           // Remove extra chain links
           while (chainLinks.length > INITIAL_BLOCKS - 1) {
-            const removed = chainLinks.pop()!;
+            const removed = chainLinks.pop();
+            if (!removed) continue;
             group.remove(removed.line);
             removed.line.geometry.dispose();
             removed.material.dispose();

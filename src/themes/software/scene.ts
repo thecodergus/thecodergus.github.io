@@ -120,7 +120,8 @@ const createCharTexture = (char: string, color: string): THREE.CanvasTexture => 
   const canvas = document.createElement("canvas");
   canvas.width = 32;
   canvas.height = 32;
-  const ctx = canvas.getContext("2d")!;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Failed to get 2d context");
   ctx.font = "bold 20px 'JetBrains Mono', monospace";
   ctx.fillStyle = color;
   ctx.textAlign = "center";
@@ -291,7 +292,8 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
   const fogCanvas = document.createElement("canvas");
   fogCanvas.width = 256;
   fogCanvas.height = 64;
-  const fctx = fogCanvas.getContext("2d")!;
+  const fctx = fogCanvas.getContext("2d");
+  if (!fctx) throw new Error("Failed to get fog 2d context");
   const vGrad = fctx.createLinearGradient(0, 0, 0, fogCanvas.height);
   vGrad.addColorStop(0, cs.primary);
   vGrad.addColorStop(0.45, cs.primary);
@@ -323,12 +325,14 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
   const glitch: GlitchState = { active: false, framesRemaining: 0, intensity: 0 };
   let glitchTimer = 0;
+  let nextGlitch = randomRange(GLITCH_INTERVAL_MIN, GLITCH_INTERVAL_MAX);
 
   // ── Freeze state ──
 
   const freeze: FreezeState = { column: -1, plane: -1, timer: 0, active: false };
   let freezeTimer = 0;
-  let freezeSpriteData: Array<{ sprite: THREE.Sprite; plane: PlaneState; idx: number }> = [];
+  let nextFreeze = randomRange(FREEZE_INTERVAL_MIN, FREEZE_INTERVAL_MAX);
+  let freezeSpriteData: Array<{ sprite: THREE.Sprite; plane: PlaneState }> = [];
 
   // ── Keyboard char sprites ──
 
@@ -444,11 +448,12 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
       }
     } else {
       glitchTimer += _delta * 1000;
-      if (glitchTimer > randomRange(GLITCH_INTERVAL_MIN, GLITCH_INTERVAL_MAX)) {
+      if (glitchTimer > nextGlitch) {
         glitch.active = true;
         glitch.framesRemaining = GLITCH_FRAMES;
         glitch.intensity = randomRange(1.0, 2.5);
         glitchTimer = 0;
+        nextGlitch = randomRange(GLITCH_INTERVAL_MIN, GLITCH_INTERVAL_MAX);
       }
     }
 
@@ -456,7 +461,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
 
     if (!freeze.active) {
       freezeTimer += _delta * 1000;
-      if (freezeTimer > randomRange(FREEZE_INTERVAL_MIN, FREEZE_INTERVAL_MAX)) {
+      if (freezeTimer > nextFreeze) {
         const rPlane = Math.floor(Math.random() * planes.length);
         const pState = planes[rPlane];
         const rCol = Math.floor(Math.random() * pState.config.columns);
@@ -466,8 +471,8 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
         freeze.active = true;
         freeze.plane = rPlane;
         freeze.column = rCol;
-        freeze.timer = 0;
         freezeTimer = 0;
+        nextFreeze = randomRange(FREEZE_INTERVAL_MIN, FREEZE_INTERVAL_MAX);
 
         // Freeze all drops in that column
         for (let i = 0; i < drops.length; i++) {
@@ -492,7 +497,7 @@ export const createSoftwareScene = (config: SceneConfig): SceneHandle => {
           sprite.scale.set(pConfig.charSize * 1.3, pConfig.charSize * 1.3, 1);
           sprite.position.set(x, startY - ci * pConfig.charSize * 1.1, 0);
           pState.group.add(sprite);
-          freezeSpriteData.push({ sprite, plane: pState, idx: -1 });
+          freezeSpriteData.push({ sprite, plane: pState });
         }
       }
     } else {

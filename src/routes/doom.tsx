@@ -12,7 +12,9 @@ export default function DoomPage() {
 
     if (containerRef && "Dos" in window) {
       const win = window as unknown as { Dos: (el: HTMLDivElement) => { run: (path: string) => void } };
-      win.Dos(containerRef!).run("dos/files/doom.jsdos");
+      if (containerRef) {
+        win.Dos(containerRef).run("dos/files/doom.jsdos");
+      }
     }
 
     onCleanup(() => {

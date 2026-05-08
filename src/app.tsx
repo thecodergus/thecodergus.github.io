@@ -19,7 +19,11 @@ const LANG_SCRIPT = `
 (function() {
   try {
     var l = localStorage.getItem('portfolio-language');
-    if (l === 'pt-br' || l === 'en') document.documentElement.lang = l;
+    if (l === 'pt-br' || l === 'en') {
+      document.documentElement.lang = l;
+      var skip = document.querySelector('[data-i18n-skip]');
+      if (skip) skip.textContent = l === 'en' ? 'Skip to content' : 'Pular para o conte\\u00fado';
+    }
   } catch(e) {}
 })();
 `.trim();
@@ -47,9 +51,8 @@ export default function App() {
           <Meta name="twitter:image" content="https://thecodergus.github.io/images/myProfile.jpg" />
           <script innerHTML={THEME_SCRIPT} />
           <script innerHTML={LANG_SCRIPT} />
-          <Link rel="preconnect" href="https://fonts.googleapis.com" />
-          <Link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-          <Link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+          <Link rel="preload" href="/fonts/fonts.css" as="style" />
+          <Link href="/fonts/fonts.css" rel="stylesheet" />
           <I18nProvider>
             <Suspense>{props.children}</Suspense>
           </I18nProvider>
