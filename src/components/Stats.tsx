@@ -1,4 +1,4 @@
-import { createSignal, onMount, For } from "solid-js";
+import { createSignal, onMount, onCleanup, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 
 interface Stat {
@@ -8,18 +8,17 @@ interface Stat {
 }
 
 export default function Stats() {
-  const { messages } = useI18n();
+  const { t } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
   const [counts, setCounts] = createSignal<number[]>([0, 0, 0, 0]);
 
   let sectionRef: HTMLDivElement | undefined;
 
-  const statsLabels = () => messages()?.stats;
   const STATS = (): Stat[] => [
-    { label: statsLabels()?.projects || "Projetos", value: 10, suffix: "+" },
-    { label: statsLabels()?.years || "Anos Exp.", value: 5, suffix: "" },
-    { label: statsLabels()?.languages || "Linguagens", value: 8, suffix: "" },
-    { label: statsLabels()?.deploys || "Deploys", value: 50, suffix: "+" },
+    { label: t("stats.projects", "Projetos"), value: 10, suffix: "+" },
+    { label: t("stats.years", "Anos Exp."), value: 5, suffix: "" },
+    { label: t("stats.languages", "Linguagens"), value: 8, suffix: "" },
+    { label: t("stats.deploys", "Deploys"), value: 50, suffix: "+" },
   ];
 
   onMount(() => {
@@ -62,6 +61,10 @@ export default function Stats() {
       }
     };
     rafId = requestAnimationFrame(startOnVisible);
+
+    onCleanup(() => {
+      if (rafId) cancelAnimationFrame(rafId);
+    });
   });
 
   return (

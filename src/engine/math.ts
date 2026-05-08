@@ -7,7 +7,6 @@ import type { Vec2 } from "./types";
 export type Vec3 = Readonly<{ x: number; y: number; z: number }>;
 
 const ZERO: Vec3 = Object.freeze({ x: 0, y: 0, z: 0 });
-const IDENTITY_QUAT: Readonly<{ x: number; y: number; z: number; w: number }> = Object.freeze({ x: 0, y: 0, z: 0, w: 1 });
 
 // ── Vector construction (immutable factory) ──
 

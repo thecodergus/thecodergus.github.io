@@ -7,10 +7,10 @@ import RotatingTypewriter from "~/components/RotatingTypewriter";
 import { Brain, Blocks, Terminal, Globe, Palette, Check, ChevronDown, Github, Linkedin, Mail, ExternalLink } from "lucide-solid";
 
 export default function Hero() {
-  const { sharedData, messages, language } = useI18n();
+  const { sharedData, messages, t } = useI18n();
   const name = () => sharedData()?.basic_info?.name || "";
   const titles = () => messages()?.hero?.titles || sharedData()?.basic_info?.titles || [];
-  const subtitle = () => messages()?.hero?.subtitle || "";
+  const subtitle = () => t("hero.subtitle", "");
 
   const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
@@ -69,16 +69,16 @@ export default function Hero() {
           <Show when={messages()}>
             <p class="text-text-muted text-xs font-mono mb-3 flex items-center justify-center gap-2">
               <Palette size={14} />
-              <span>{messages()?.hero?.themes_label || "Explorar temas"}</span>
+              <span>{t("hero.themes_label", "Explorar temas")}</span>
             </p>
           </Show>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-lg mx-auto">
-            {THEMES.map((t) => {
-              const isActive = () => theme() === t.id;
+            {THEMES.map((th) => {
+              const isActive = () => theme() === th.id;
               return (
                 <button
-                  onClick={() => setTheme(t.id)}
-                  onKeyDown={(e) => handleThemeKeyDown(e, t.id)}
+                  onClick={() => setTheme(th.id)}
+                  onKeyDown={(e) => handleThemeKeyDown(e, th.id)}
                   class="relative flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/50 active:scale-95"
                   classList={{
                     "text-accent-primary bg-accent-primary/10 border-2 border-accent-primary/50 shadow-[var(--shadow-glow-primary)] scale-105":
@@ -87,30 +87,28 @@ export default function Hero() {
                       !isActive(),
                   }}
                   aria-pressed={isActive()}
-                  aria-label={`${t.label} — ${messages()?.hero?.[`themes_${t.id}`] || ""}`}
+                  aria-label={`${th.label} — ${t(`hero.themes_${th.id}`, "")}`}
                 >
                   <Show when={isActive()}>
                     <span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-accent-primary flex items-center justify-center">
                       <Check size={10} class="text-bg" />
                     </span>
                   </Show>
-                  {t.id === "ai" ? <Brain size={24} /> :
-                   t.id === "blockchain" ? <Blocks size={24} /> :
-                   t.id === "software" ? <Terminal size={24} /> :
+                  {th.id === "ai" ? <Brain size={24} /> :
+                   th.id === "blockchain" ? <Blocks size={24} /> :
+                   th.id === "software" ? <Terminal size={24} /> :
                    <Globe size={24} />}
                   <span class="text-xs font-mono font-bold">
-                    {t.label}
+                    {th.label}
                   </span>
                   <div class="flex items-center gap-1">
-                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": t.primary}} />
-                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": t.secondary}} />
-                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": t.tertiary}} />
-                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": t.background}} />
+                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": th.primary}} />
+                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": th.secondary}} />
+                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": th.tertiary}} />
+                    <span class="w-2.5 h-2.5 rounded-full border border-text-muted/20" style={{"background-color": th.background}} />
                   </div>
-                  <Show when={messages()?.hero?.[`themes_${t.id}`]}>
-                    {(desc) => (
-                      <span class="text-[10px] leading-tight text-text-muted">{desc()}</span>
-                    )}
+                  <Show when={t(`hero.themes_${th.id}`, "")}>
+                    <span class="text-[10px] leading-tight text-text-muted">{t(`hero.themes_${th.id}`, "")}</span>
                   </Show>
                 </button>
               );

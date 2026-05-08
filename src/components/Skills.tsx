@@ -15,7 +15,7 @@ const CATEGORY_ORDER: Record<string, number> = {
 };
 
 export default function Skills() {
-  const { sharedData, messages } = useI18n();
+  const { sharedData, messages, t } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
@@ -33,7 +33,7 @@ export default function Skills() {
   });
 
   const skills = () => sharedData()?.skills?.icons || [];
-  const sectionName = () => messages()?.basic_info?.section_name?.skills || "";
+  const sectionName = () => t("basic_info.section_name.skills", "");
   const catNames = () => messages()?.skills_categories;
 
   const categories = (): SkillCategory[] => {

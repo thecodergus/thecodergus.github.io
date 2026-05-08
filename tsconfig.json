@@ -9,12 +9,11 @@
     "jsxImportSource": "solid-js",
     "strict": true,
     "noEmit": true,
-    "types": ["vinxi/client", "vite/client"],
+    "types": ["vinxi/types/client", "vitest/globals"],
     "isolatedModules": true,
     "paths": {
       "~/*": ["./src/*"]
     },
-    "baseUrl": ".",
     "resolveJsonModule": true,
     "skipLibCheck": true
   },

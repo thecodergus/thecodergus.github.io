@@ -27,21 +27,24 @@ const SCANLINE_SHADER = {
     uVignetteStrength: { value: 0.35 },
     uChromaticStrength: { value: 0.003 },
   },
-  vertexShader: `varying vec2 vUv;
+  vertexShader: `#version 300 es
+out vec2 vUv;
 void main() {
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }`,
-  fragmentShader: `varying vec2 vUv;
+  fragmentShader: `#version 300 es
+in vec2 vUv;
 uniform sampler2D tDiffuse;
 uniform float uTime;
 uniform vec2 uResolution;
 uniform float uScanlineIntensity;
 uniform float uVignetteStrength;
 uniform float uChromaticStrength;
+out vec4 fragColor;
 
 void main() {
-  vec4 tex = texture2D(tDiffuse, vUv);
+  vec4 tex = texture(tDiffuse, vUv);
 
   // Scanlines
   float scanlineY = gl_FragCoord.y - uTime * 30.0;
@@ -54,10 +57,10 @@ void main() {
   // Chromatic aberration at edges
   float edgeDist = length(uvCenter) * 2.0;
   float chromaShift = edgeDist * uChromaticStrength;
-  float r = texture2D(tDiffuse, vUv + vec2(chromaShift, 0.0)).r;
+  float r = texture(tDiffuse, vUv + vec2(chromaShift, 0.0)).r;
 
   vec3 result = vec3(r, tex.g, tex.b) * scanline * vignette;
-  gl_FragColor = vec4(result, tex.a);
+  fragColor = vec4(result, tex.a);
 }`,
 };
 
@@ -129,9 +132,12 @@ export const createEngine = (
     },
   );
   scanlinePass.renderToScreen = false;
+  scanlinePass.material.glslVersion = THREE.GLSL3;
 
   const composer = new EffectComposer(renderer);
   composer.addPass(renderScenePass);
+
+  const useComposer = quality.tier !== "low";
 
   if (quality.bloomEnabled) {
     composer.addPass(bloomPass);
@@ -141,20 +147,24 @@ export const createEngine = (
     composer.addPass(scanlinePass);
   }
 
-  // FXAA — replaces non-functional MSAA; cheap, high visual quality
-  const fxaaPass = new ShaderPass(
-    FXAAShader as unknown as {
-      uniforms: Record<string, THREE.IUniform>;
-      vertexShader: string;
-      fragmentShader: string;
-    },
-  );
-  fxaaPass.uniforms.resolution.value.set(
-    1 / (container.clientWidth * renderer.getPixelRatio()),
-    1 / (container.clientHeight * renderer.getPixelRatio()),
-  );
-  composer.addPass(fxaaPass);
-  fxaaPass.renderToScreen = true;
+  let fxaaPass: ShaderPass | null = null;
+
+  if (useComposer) {
+    // FXAA — replaces non-functional MSAA; cheap, high visual quality
+    fxaaPass = new ShaderPass(
+      FXAAShader as unknown as {
+        uniforms: Record<string, THREE.IUniform>;
+        vertexShader: string;
+        fragmentShader: string;
+      },
+    );
+    fxaaPass.uniforms.resolution.value.set(
+      1 / (container.clientWidth * renderer.getPixelRatio()),
+      1 / (container.clientHeight * renderer.getPixelRatio()),
+    );
+    composer.addPass(fxaaPass);
+    fxaaPass.renderToScreen = true;
+  }
 
   // ── State ──
 
@@ -271,7 +281,22 @@ export const createEngine = (
 
   // ── Keyboard routing (generic: routes to active scene) ──
 
+  const EDITABLE_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"]);
+  const NON_EDITABLE_INPUTS = new Set(["checkbox", "radio", "button", "submit", "reset", "range", "color"]);
+
   const onKeyDown = (e: KeyboardEvent): void => {
+    const target = e.target as HTMLElement | null;
+    const tag = target?.tagName;
+    if (tag && EDITABLE_TAGS.has(tag)) {
+      if (tag === "INPUT") {
+        const type = (target as HTMLInputElement).type?.toLowerCase();
+        if (!NON_EDITABLE_INPUTS.has(type)) return;
+      } else {
+        return;
+      }
+    }
+    if (target?.isContentEditable) return;
+
     if (e.key.length !== 1) return;
     const active = transitionManager.getActive();
     if (active?.onKeyPress) {
@@ -297,10 +322,12 @@ export const createEngine = (
       );
     }
     scanlinePass.uniforms.uResolution.value.set(w, h);
-    fxaaPass.uniforms.resolution.value.set(
-      1 / (w * renderer.getPixelRatio()),
-      1 / (h * renderer.getPixelRatio()),
-    );
+    if (useComposer && fxaaPass) {
+      fxaaPass.uniforms.resolution.value.set(
+        1 / (w * renderer.getPixelRatio()),
+        1 / (h * renderer.getPixelRatio()),
+      );
+    }
   };
 
   window.addEventListener("resize", resize);
@@ -334,11 +361,14 @@ export const createEngine = (
       }
     }
 
-    // Scanline time
-    scanlinePass.uniforms.uTime.value = time * 0.001;
-
-    // Render
-    composer.render();
+    // Render — use composer for medium/high tiers, direct for low tier
+    if (useComposer) {
+      // Scanline time
+      scanlinePass.uniforms.uTime.value = time * 0.001;
+      composer.render();
+    } else {
+      renderer.render(mainScene, camera);
+    }
 
     // Dev logging: draw call statistics every 60 frames
     if (import.meta.env.DEV) {

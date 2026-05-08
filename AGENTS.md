@@ -28,6 +28,13 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **LSP** (via `.opencode/opencode.json`): vtsls, eslint-language-server, ganko-lsp, tailwindcss-language-server, json
 - **MCP** (via `.opencode/opencode.json`): eslint, vitest testing, shadcn/ui, radix primitives, lighthouse, perf-tools
 
+### Test Architecture
+- **`src/engine/math.test.ts`** — 93 tests covering all pure functions: Vec3 construction, arithmetic, normalization, dot/length/dist, lerp, easings, PRNG determinism, array utilities.
+- **`src/engine/transition.test.ts`** — 15 tests: state machine (Idle→FadingOut→FadingIn→Idle), opacity/dissolve/entrance callbacks, abort handling, timing (800ms total).
+- **`src/engine/quality.test.ts`** — 10 tests: GPU tier detection (WebGL2 unavailable, integrated+lowRAM=low, integrated+sufficient=medium, Apple Silicon=medium, dedicated=high), pixelRatio cap, config freezing.
+- **`src/stores/themeStore.test.ts`** — 3 tests: initial theme signal, THEMES array, REGISTRY keys.
+- Test mocking: `localStorage` via closure mock in themeStore test; `HTMLCanvasElement.prototype.getContext` and `navigator.deviceMemory` in quality test.
+
 ## Architecture
 
 ### Routing
@@ -41,7 +48,7 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - Languages: `Language.PtBr = "pt-br"`, `Language.En = "en"` (default `PtBr`).
 - localStorage key: `"portfolio-language"`.
 - Data: `/data/languages/${lang}.json` (messages) + `/data/portfolio_shared_data.json` (shared).
-- `t(key)` helper uses nested dot-notation lookup (e.g., `t("navbar.home")`). **NOTE: `t()` is defined and wired into context but NOT used by any component.** All components destructure `messages()` from `useI18n()` and manually access properties (e.g. `messages()?.navbar?.about || "Sobre"`).
+- `t(key, defaultValue?)` helper uses nested dot-notation lookup (e.g., `t("navbar.home", "Início")`). Now used by all components; the optional `defaultValue` parameter provides fallback when messages aren't loaded or key is missing.
 - `<I18nProvider>` wraps entire app in `app.tsx`.
 - **I18nProvider.onMount** fetches `sharedData` and `messages` for the default language. It also checks `localStorage` for a stored preference and syncs the `language` signal accordingly before fetching.
 - **`setLanguage(lang)`** (exported directly from the module, also in context) updates the signal, persists to `localStorage`, and re-fetches messages for the new language.
@@ -54,9 +61,11 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 
 ### 3D Engine (`src/engine/`)
 Pure functional engine, zero SolidJS imports. No classes — all state in closures via factory functions.
-- **`engine.ts`** — Orchestrator: creates scene/camera/renderer/composer, manages disposal and theme switching. Entry point via `createEngine()` factory.
+- **`engine.ts`** — Orchestrator: creates scene/camera/renderer/composer, manages disposal and theme switching. Entry point via `createEngine()` factory. GLSL 3.0 ES scanline shader with per-theme uniform controls. Global keydown handler skips events from editable elements (INPUT, TEXTAREA, SELECT, contentEditable) to prevent interference with form fields.
 - **`transition.ts`** — Crossfade manager: receives `onDispose: (SceneHandle) => void` callback. Handles FadeOut (old scene dissolve) → FadeIn (new scene entrance). `FADE_DURATION = 800ms`, `TransitionPhase` enum (Idle, FadingOut, FadingIn). Import `easeInOutCubic` from `math.ts`.
 - **`math.ts`** — Pure easing functions: `easeInOutCubic`, `clamp01`, etc.
+- **`quality.ts`** — GPU tier detection: low/medium/high based on renderer string and device memory. Controls pixelRatio, bloom, scanline, software planes. On `low` tier, EffectComposer and FXAA are disabled — rendering goes directly to default framebuffer.
+
 - **`types.ts`** — Shared interfaces: `SceneHandle`, `SceneConfig`, `ThemeModule`, `ColorScheme`, `CameraPreset`, `PostProcessPreset`. `SceneKind` enum.
 
 ### Theme System (`src/themes/`)
@@ -123,7 +132,7 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - **`antialias: true` on WebGLRenderer has NO effect with EffectComposer.** MSAA only works when rendering directly to the default framebuffer. If antialiasing is needed, use an FXAA or SMAA pass at the end of the chain.
 - `pixelRatio` capped at `Math.min(devicePixelRatio, 2)`.
 - Bloom breathing: modulates `bloomStrength` by `baseStrength * (0.5 + density)` where `baseStrength` comes from the theme's `postPreset.bloomStrength`. Only works for scenes that export `getDensity()` — **AI** and **Software** have it; **Blockchain** and **Web** do NOT.
-- Resize order should be: `camera.aspect = w/h` → `camera.updateProjectionMatrix()` → `renderer.setSize(w, h)` → `composer.setSize(w, h)`. Current code sets renderer size before camera update.
+- Resize order: `camera.aspect = w/h` → `camera.updateProjectionMatrix()` → `renderer.setSize(w, h)` → `composer.setSize(w, h)`. This is the correct order and is already followed in the code.
 
 ## Build & Deploy
 - Static preset (`server: { preset: "static" }`).

@@ -614,7 +614,6 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
 
     // ── Entrance cascade ──
     if (entranceTimer >= 0) {
-      entranceTimer += _delta * 1000;
       entranceOpacity = clamp01(entranceTimer / 300);
     }
 
@@ -927,19 +926,19 @@ export const createAIScene = (_config: SceneConfig): SceneHandle => {
       manGeo.attributes.color.needsUpdate = true;
     }
 
-    // ── Global entrance opacity for group ──
+    // ── Entrance opacity: fade each material individually ──
     if (entranceTimer >= 0 && entranceTimer <= ENTRANCE_DURATION) {
-      const children = group.children;
-      for (let ci = 0; ci < children.length; ci++) {
-        const child = children[ci];
-        if (child === neurons) continue; // handled separately
-        if (child instanceof THREE.Mesh || child instanceof THREE.Line || child instanceof THREE.Points || child instanceof THREE.LineSegments || child instanceof THREE.InstancedMesh) {
-          group.scale.setScalar(entranceOpacity);
-        }
-      }
+      neuronMat.opacity = 0.92 * entranceOpacity;
+      edgeMat.opacity = 0.8 * entranceOpacity;
+      fwdMat.opacity = 0.9 * entranceOpacity;
+      bwdMat.opacity = 0.8 * entranceOpacity;
+      lossMat.opacity = 0.5 * entranceOpacity;
+      manMat.opacity = 0.5 * entranceOpacity;
+      for (let ri = 0; ri < ripples.length; ri++) { ripples[ri].material.opacity = 0.4 * entranceOpacity; }
+      attnMat.opacity = 0.7 * entranceOpacity;
+      for (let ai = 0; ai < arcLines.length; ai++) { (arcLines[ai].material as THREE.LineBasicMaterial).opacity = 0.25 * entranceOpacity; }
+      gradBarMat.opacity = 0.6 * entranceOpacity;
     }
-
-    void time;
   };
 
   // ═══════════════════════════════════════════

@@ -4,7 +4,7 @@ import type { Project } from "~/types";
 import ProjectModal from "~/components/ProjectModal";
 
 export default function Projects() {
-  const { messages, language } = useI18n();
+  const { messages, language, t } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
   const [activeFilter, setActiveFilter] = createSignal<string>("all");
   const [selectedProject, setSelectedProject] = createSignal<Project | null>(null);
@@ -36,9 +36,9 @@ export default function Projects() {
   });
 
   const projects = () => messages()?.projects || [];
-  const sectionName = () => messages()?.basic_info?.section_name?.projects || "";
-  const filterAll = () => messages()?.projects_filter?.all || "Todos";
-  const viewProject = () => messages()?.projects_filter?.view_project || "Ver projeto";
+  const sectionName = () => t("basic_info.section_name.projects", "");
+  const filterAll = () => t("projects_filter.all", "Todos");
+  const viewProject = () => t("projects_filter.view_project", "Ver projeto");
 
   const allTechnologies = () => {
     const techs = new Set<string>();

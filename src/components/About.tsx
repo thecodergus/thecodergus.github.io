@@ -1,9 +1,9 @@
 import { createSignal, createEffect } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import { Code, Terminal, Database, Container, Cpu } from "lucide-solid";
+import { Code, Terminal, Database, Cpu } from "lucide-solid";
 
 export default function About() {
-  const { messages, sharedData } = useI18n();
+  const { sharedData, t } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
@@ -25,8 +25,7 @@ export default function About() {
     return img ? `/images/${img}` : "";
   };
 
-  const aboutData = () => messages()?.basic_info;
-  const heading = () => aboutData()?.section_name?.about || "Sobre Mim";
+  const heading = () => t("basic_info.section_name.about", "Sobre Mim");
 
   return (
     <section
@@ -82,10 +81,10 @@ export default function About() {
             </div>
             <div class="p-6 md:p-8">
               <p class="font-mono text-lg font-semibold text-accent-primary mb-4">
-                {aboutData()?.description_header} :)
+                {t("basic_info.description_header")} :)
               </p>
               <p class="text-text-secondary leading-relaxed text-sm md:text-base whitespace-pre-line">
-                {aboutData()?.description}
+                {t("basic_info.description")}
               </p>
             </div>
           </div>

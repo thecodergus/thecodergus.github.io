@@ -3,7 +3,7 @@ import { useI18n } from "~/stores/i18nStore";
 import { Github, Mail, ExternalLink, Linkedin } from "lucide-solid";
 
 export default function Contact() {
-  const { messages, sharedData } = useI18n();
+  const { sharedData, t } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
@@ -20,8 +20,8 @@ export default function Contact() {
     return () => observer.disconnect();
   });
 
-  const sectionName = () => messages()?.basic_info?.section_name?.contact || "";
-  const contactText = () => messages()?.contact_message?.paragraph || "";
+  const sectionName = () => t("basic_info.section_name.contact", "");
+  const contactText = () => t("contact_message.paragraph", "");
   const socials = () => sharedData()?.basic_info?.social || [];
 
   const iconMap: Record<string, typeof Github> = {

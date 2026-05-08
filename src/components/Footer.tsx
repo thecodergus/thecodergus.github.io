@@ -2,9 +2,9 @@ import { useI18n } from "~/stores/i18nStore";
 import { Github, Heart } from "lucide-solid";
 
 export default function Footer(props: { hideDoomLink?: boolean }) {
-  const { sharedData, messages } = useI18n();
+  const { sharedData, t } = useI18n();
   const name = () => sharedData()?.basic_info?.name || "";
-  const madeWith = () => messages()?.footer?.made_with || "";
+  const madeWith = () => t("footer.made_with", "");
 
   return (
     <footer class="py-8 bg-bg border-t border-border">
@@ -12,7 +12,7 @@ export default function Footer(props: { hideDoomLink?: boolean }) {
         <div class="flex items-center gap-2 text-sm text-text-muted">
           <span>{madeWith()}</span>
           <Heart size={14} class="text-accent-red fill-accent-red" />
-          <span>{messages()?.footer?.by || "por"} {name()}</span>
+          <span>{t("footer.by", "por")} {name()}</span>
         </div>
 
         <div class="flex items-center gap-6">

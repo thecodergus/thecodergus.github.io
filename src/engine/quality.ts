@@ -39,7 +39,7 @@ const detectGPU = (): GpuInfo => {
 
   const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
   const renderer = debugInfo
-    ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL).toLowerCase()
+    ? (gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) ?? "").toLowerCase()
     : "";
 
   const isIntegrated = /intel.*(hd|uhd|iris|gma)|mali|adreno|powervr/i.test(renderer);

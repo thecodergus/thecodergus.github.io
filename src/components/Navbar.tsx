@@ -39,7 +39,7 @@ const LangSwitcher = (props: {
 };
 
 export default function Navbar(props: { standalone?: boolean }) {
-  const { language, messages } = useI18n();
+  const { language, t } = useI18n();
   const [scrolled, setScrolled] = createSignal(false);
   const [mobileOpen, setMobileOpen] = createSignal(false);
 
@@ -49,21 +49,20 @@ export default function Navbar(props: { standalone?: boolean }) {
     return "Início";
   };
   const navLinks = () => {
-    const nav = messages()?.navbar;
     if (props.standalone) {
       return [{ href: "/", label: homeLabel() }];
     }
     return [
-      { href: "#about", label: nav?.about || "Sobre" },
-      { href: "#skills", label: nav?.skills || "Habilidades" },
-      { href: "#experience", label: nav?.experience || "Experiência" },
-      { href: "#projects", label: nav?.projects || "Projetos" },
-      { href: "#contact", label: nav?.contact || "Contato" },
+      { href: "#about", label: t("navbar.about", "Sobre") },
+      { href: "#skills", label: t("navbar.skills", "Habilidades") },
+      { href: "#experience", label: t("navbar.experience", "Experiência") },
+      { href: "#projects", label: t("navbar.projects", "Projetos") },
+      { href: "#contact", label: t("navbar.contact", "Contato") },
     ];
   };
 
-  const langLabel = () => messages()?.navbar?.language || "Idioma";
-  const menuLabel = () => messages()?.navbar?.menu_open || "Abrir menu";
+  const langLabel = () => t("navbar.language", "Idioma");
+  const menuLabel = () => t("navbar.menu_open", "Abrir menu");
 
   onMount(() => {
     const handleScroll = () => {

@@ -1,9 +1,8 @@
 import { createSignal, createEffect, For, Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import type { Experience as ExperienceType, Messages } from "~/types";
 
 export default function Experience() {
-  const { messages } = useI18n();
+  const { messages, t } = useI18n();
   const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
@@ -21,7 +20,7 @@ export default function Experience() {
   });
 
   const experiences = () => messages()?.experience || [];
-  const sectionName = () => messages()?.basic_info?.section_name?.experience || "";
+  const sectionName = () => t("basic_info.section_name.experience", "");
 
   return (
     <section

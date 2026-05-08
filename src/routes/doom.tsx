@@ -1,13 +1,10 @@
 import { onMount, onCleanup } from "solid-js";
 import { Link } from "@solidjs/meta";
-import { useI18n } from "~/stores/i18nStore";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
 
 export default function DoomPage() {
   let containerRef: HTMLDivElement | undefined;
-  const { messages } = useI18n();
-  const backLabel = () => messages()?.doom?.back_to_portfolio || "Voltar ao Portfolio";
 
   onMount(() => {
     const prevTheme = document.documentElement.getAttribute("data-theme");

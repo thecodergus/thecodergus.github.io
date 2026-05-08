@@ -38,9 +38,9 @@ const fetchSharedData = async (): Promise<SharedData> => {
   return response.json() as Promise<SharedData>;
 };
 
-export function t(key: string): string {
+export function t(key: string, defaultValue?: string): string {
   const msgs = messages();
-  if (!msgs) return key;
+  if (!msgs) return defaultValue ?? key;
 
   const keys = key.split(".");
   let value: unknown = msgs;
@@ -48,10 +48,10 @@ export function t(key: string): string {
     if (value && typeof value === "object" && k in value) {
       value = (value as Record<string, unknown>)[k];
     } else {
-      return key;
+      return defaultValue ?? key;
     }
   }
-  return typeof value === "string" ? value : key;
+  return typeof value === "string" ? value : defaultValue ?? key;
 }
 
 export { language, messages, sharedData, fetchError };
@@ -59,7 +59,7 @@ export { language, messages, sharedData, fetchError };
 interface I18nContextValue {
   language: () => Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, defaultValue?: string) => string;
   messages: () => Messages | undefined;
   sharedData: () => SharedData | undefined;
   fetchError: () => string | null;

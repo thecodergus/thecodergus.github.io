@@ -11,13 +11,12 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal(props: ProjectModalProps) {
-  const { messages } = useI18n();
+  const { messages, t } = useI18n();
   const [currentImageIndex, setCurrentImageIndex] = createSignal(0);
 
-  const modalMsgs = () => messages()?.projects_modal;
-  const prevImgLabel = () => modalMsgs()?.prev_image || "Previous image";
-  const nextImgLabel = () => modalMsgs()?.next_image || "Next image";
-  const imgLabel = (i: number) => `${modalMsgs()?.image || "Image"} ${i + 1}`;
+  const prevImgLabel = () => t("projects_modal.prev_image", "Previous image");
+  const nextImgLabel = () => t("projects_modal.next_image", "Next image");
+  const imgLabel = (i: number) => `${t("projects_modal.image", "Image")} ${i + 1}`;
 
   const hasMultipleImages = () =>
     (props.project?.images?.length ?? 0) > 1;
@@ -106,10 +105,10 @@ export default function ProjectModal(props: ProjectModalProps) {
                 </h2>
 
                 {/* Period */}
-                <Show when={modalMsgs()}>
+                <Show when={messages()}>
                   <p class="text-sm text-text-muted font-mono mb-4">
                     <span class="text-accent-primary">
-                      {modalMsgs()?.period}:
+                      {t("projects_modal.period")}:
                     </span>{" "}
                     {project().startDate}
                     {project().endDate ? ` - ${project().endDate}` : ""}
@@ -125,7 +124,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                 <Show when={(project().technologies?.length ?? 0) > 0}>
                   <div class="mb-6">
                     <h3 class="text-sm font-medium text-text-muted uppercase tracking-wider mb-3">
-                      {modalMsgs()?.technologies}
+                      {t("projects_modal.technologies")}
                     </h3>
                     <div class="flex flex-wrap gap-3">
                       <For each={project().technologies}>
@@ -152,7 +151,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-primary text-white font-medium text-sm hover:bg-accent-primary/90 transition-colors"
                   >
                     <ExternalLink size={16} />
-                    {modalMsgs()?.view_project ?? "Ver projeto"}
+                    {t("projects_modal.view_project", "Ver projeto")}
                   </a>
                 </Show>
               </div>
