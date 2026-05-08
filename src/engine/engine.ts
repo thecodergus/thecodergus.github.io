@@ -89,6 +89,22 @@ export const createEngine = (
   renderer.toneMappingExposure = 1.2;
   container.appendChild(renderer.domElement);
 
+  // ── WebGL context lost/restored ──
+
+  let contextLost = false;
+
+  const onContextLost = (e: Event): void => {
+    e.preventDefault();
+    contextLost = true;
+  };
+
+  const onContextRestored = (): void => {
+    contextLost = false;
+  };
+
+  renderer.domElement.addEventListener("webglcontextlost", onContextLost);
+  renderer.domElement.addEventListener("webglcontextrestored", onContextRestored);
+
   // ── Scene ──
 
   const mainScene = new THREE.Scene();
@@ -338,6 +354,8 @@ export const createEngine = (
   const animate = (time: number): void => {
     animationId = requestAnimationFrame(animate);
 
+    if (contextLost) return;
+
     const delta = lastTime === 0 ? 16 : Math.min(time - lastTime, 50);
     lastTime = time;
 
@@ -397,6 +415,8 @@ export const createEngine = (
 
     window.removeEventListener("resize", resize);
     window.removeEventListener("keydown", onKeyDown);
+    renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
+    renderer.domElement.removeEventListener("webglcontextrestored", onContextRestored);
 
     renderer.dispose();
     if (renderer.domElement.parentNode === container) {

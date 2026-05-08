@@ -1,6 +1,9 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import { Github, Mail, ExternalLink, Linkedin } from "lucide-solid";
+import Github from "lucide-solid/icons/github";
+import Mail from "lucide-solid/icons/mail";
+import ExternalLink from "lucide-solid/icons/external-link";
+import Linkedin from "lucide-solid/icons/linkedin";
 
 export default function Contact() {
   const { sharedData, t } = useI18n();

@@ -1,6 +1,9 @@
 import { createSignal, Show, For } from "solid-js";
 import { Dialog } from "@kobalte/core/dialog";
-import { X, ExternalLink, ChevronLeft, ChevronRight } from "lucide-solid";
+import X from "lucide-solid/icons/x";
+import ExternalLink from "lucide-solid/icons/external-link";
+import ChevronLeft from "lucide-solid/icons/chevron-left";
+import ChevronRight from "lucide-solid/icons/chevron-right";
 import { useI18n } from "~/stores/i18nStore";
 import type { Project } from "~/types";
 

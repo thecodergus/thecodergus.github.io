@@ -12,14 +12,20 @@ export const REGISTRY: Readonly<Record<ThemeId, ThemeLoader>> = Object.freeze({
   web: () => import("./web").then((m) => m.default),
 });
 
-const moduleCache = new Map<ThemeId, Promise<ThemeModule>>();
+const moduleCache = new Map<ThemeId, Promise<ThemeModule | null>>();
 
-export async function loadTheme(id: ThemeId): Promise<ThemeModule> {
+export async function loadTheme(id: ThemeId): Promise<ThemeModule | null> {
   const cached = moduleCache.get(id);
   if (cached) return cached;
 
   const loader = REGISTRY[id];
-  const promise = loader();
+  if (!loader) return null;
+
+  const promise: Promise<ThemeModule | null> = loader().catch((err) => {
+    moduleCache.delete(id);
+    console.error(`[theme] Failed to load theme "${id}":`, err);
+    return null;
+  });
   moduleCache.set(id, promise);
   return promise;
 }

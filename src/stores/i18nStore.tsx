@@ -89,11 +89,16 @@ export function I18nProvider(props: { children: JSX.Element }) {
       }
     }
 
-    fetchMessages(language())
-      .then((data) => { setMessages(data); setFetchError(null); })
+    const lang = language();
+
+    fetchMessages(lang)
+      .then((data) => {
+        setMessages(data);
+        setFetchError(null);
+      })
       .catch((err) => {
         console.error("[i18n] Failed to load messages:", err);
-        setFetchError(`Falha ao carregar idioma: ${language()}`);
+        setFetchError(`Falha ao carregar idioma: ${lang}`);
       });
   });
 

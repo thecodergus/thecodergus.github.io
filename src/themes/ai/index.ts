@@ -1,19 +1,19 @@
 // ── AI Theme Module ──
 
-import type { ThemeModule } from "../../engine/types";
 import { SceneKind } from "../../engine/types";
 import { createAIScene } from "./scene";
+import { createThemeModule } from "../create-theme-module";
 
-const aiModule: ThemeModule = Object.freeze({
+export default createThemeModule({
   sceneKind: SceneKind.AI,
-  colorScheme: Object.freeze({
+  colorScheme: {
     primary: "#00E5FF",
     secondary: "#10A37F",
     tertiary: "#8B5CF6",
     background: "#080012",
-  }),
+  },
   createScene: createAIScene,
-  cameraPreset: Object.freeze({
+  cameraPreset: {
     orbitRadius: 14,
     orbitSpeed: 0.02,
     heightAmplitude: 5,
@@ -22,15 +22,13 @@ const aiModule: ThemeModule = Object.freeze({
     pauseOnHover: false,
     autoRotate: true,
     fov: 55,
-  }),
-  postPreset: Object.freeze({
+  },
+  postPreset: {
     bloomStrength: 0.4,
     bloomRadius: 0.4,
     bloomThreshold: 0.1,
     scanlineIntensity: 0.15,
     vignetteStrength: 0.35,
     chromaticStrength: 0.003,
-  }),
+  },
 });
-
-export default aiModule;

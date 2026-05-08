@@ -1,5 +1,6 @@
 import { useI18n } from "~/stores/i18nStore";
-import { Github, Heart } from "lucide-solid";
+import Github from "lucide-solid/icons/github";
+import Heart from "lucide-solid/icons/heart";
 
 export default function Footer(props: { hideDoomLink?: boolean }) {
   const { sharedData, t } = useI18n();

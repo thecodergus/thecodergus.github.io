@@ -62,6 +62,8 @@ export const lerpVec3 = (a: Vec3, b: Vec3, t: number): Vec3 =>
   vec3(lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t));
 
 export const lerpColor = (a: string, b: string, t: number): string => {
+  // NOTE: only supports 6-char hex (#RRGGBB), not 3-char short (#RGB).
+  // All theme colors in this project use long hex format.
   const ah = parseInt(a.slice(1), 16);
   const bh = parseInt(b.slice(1), 16);
   const ar = (ah >> 16) & 0xff;

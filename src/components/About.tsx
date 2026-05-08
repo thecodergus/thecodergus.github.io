@@ -1,6 +1,9 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import { Code, Terminal, Database, Cpu } from "lucide-solid";
+import Code from "lucide-solid/icons/code";
+import Terminal from "lucide-solid/icons/terminal";
+import Database from "lucide-solid/icons/database";
+import Cpu from "lucide-solid/icons/cpu";
 
 export default function About() {
   const { sharedData, t } = useI18n();

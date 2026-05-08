@@ -1,7 +1,8 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import { setLanguage, useI18n } from "~/stores/i18nStore";
 import { Language } from "~/types";
-import { Menu, X } from "lucide-solid";
+import Menu from "lucide-solid/icons/menu";
+import X from "lucide-solid/icons/x";
 
 const LangSwitcher = (props: {
   language: () => Language;

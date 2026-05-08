@@ -4,7 +4,17 @@ import { theme, setTheme, THEMES, type ThemeId } from "~/stores/themeStore";
 import NeuralCanvas from "~/components/NeuralCanvas";
 import TypewriterText from "~/components/TypewriterText";
 import RotatingTypewriter from "~/components/RotatingTypewriter";
-import { Brain, Blocks, Terminal, Globe, Palette, Check, ChevronDown, Github, Linkedin, Mail, ExternalLink } from "lucide-solid";
+import Brain from "lucide-solid/icons/brain";
+import Blocks from "lucide-solid/icons/blocks";
+import Terminal from "lucide-solid/icons/terminal";
+import Globe from "lucide-solid/icons/globe";
+import Palette from "lucide-solid/icons/palette";
+import Check from "lucide-solid/icons/check";
+import ChevronDown from "lucide-solid/icons/chevron-down";
+import Github from "lucide-solid/icons/github";
+import Linkedin from "lucide-solid/icons/linkedin";
+import Mail from "lucide-solid/icons/mail";
+import ExternalLink from "lucide-solid/icons/external-link";
 
 export default function Hero() {
   const { sharedData, messages, t } = useI18n();

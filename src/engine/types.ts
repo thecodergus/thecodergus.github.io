@@ -87,6 +87,14 @@ export interface ThemeModule {
   readonly postPreset: PostProcessPreset;
 }
 
+export interface ThemeConfig {
+  sceneKind: SceneKind;
+  colorScheme: ColorScheme;
+  createScene: (config: SceneConfig) => SceneHandle;
+  cameraPreset: CameraPreset;
+  postPreset: PostProcessPreset;
+}
+
 // ── Three.js type aliases (tree-shake friendly) ──
 
 export type ThreeScene = THREE.Scene;
