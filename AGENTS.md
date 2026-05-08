@@ -18,6 +18,7 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - `npm run dev` — Start dev server (http://localhost:3000)
 - `npm run build` — Static build (output: `.output/public`)
 - `npm start` — Preview production build
+- `npm run test:coverage` — Coverage report via `@vitest/coverage-v8`
 - CI uses `npm ci` (not `npm install`); local development uses `npm install`
 
 ## Tooling
@@ -74,28 +75,33 @@ Pure functional engine, zero SolidJS imports. No classes — all state in closur
 Modular plug-in architecture. Each theme is a self-contained directory:
 ```
 src/themes/
-├── registry.ts        — frozen `REGISTRY: Readonly<Record<ThemeId, ThemeModule>>`
+├── registry.ts                  — frozen REGISTRY; loadTheme() with Promise cache + error handling
+├── create-theme-module.ts       — factory: createThemeModule(config: ThemeConfig) => ThemeModule
 ├── ai/
-│   ├── index.ts       — exports ThemeModule (sceneKind, colorScheme, createScene, cameraPreset, postPreset)
-│   ├── scene.ts       — Three.js scene factory (3D neural network)
-│   ├── types.ts       — theme-specific types
-│   └── theme.css      — `[data-theme="ai"]` CSS custom properties
+│   ├── index.ts                 — createThemeModule({...}) — pure data, no logic
+│   ├── scene.ts                 — Three.js scene factory (3D neural network)
+│   ├── types.ts                 — theme-specific types
+│   └── theme.css                — `[data-theme="ai"]` CSS custom properties
 ├── blockchain/
-│   ├── index.ts       — force-directed graph (chain nodes, wallet nodes, transaction particles)
+│   ├── index.ts                 — force-directed graph (chain nodes, wallet nodes, transaction particles)
 │   ├── scene.ts
 │   ├── types.ts
 │   └── theme.css
 ├── software/
-│   ├── index.ts       — data pipeline (processing stages, Bezier curves, data flow)
+│   ├── index.ts                 — data pipeline (processing stages, Bezier curves, data flow)
 │   ├── scene.ts
 │   ├── types.ts
 │   └── theme.css
 └── web/
-    ├── index.ts       — network topology (hub, satellites, request/response packets)
+    ├── index.ts                 — network topology (hub, satellites, request/response packets)
     ├── scene.ts
     ├── types.ts
     └── theme.css
 ```
+
+All 4 theme `index.ts` files use `createThemeModule()` from `src/themes/create-theme-module.ts`. They are ~33 lines each of pure data (colorScheme, cameraPreset, postPreset, createScene function reference) — no logic. The factory handles `Object.freeze`.
+
+`loadTheme(id)` in `registry.ts` returns `Promise<ThemeModule | null>` — caches the promise (not the resolved value) so concurrent calls share the same import. Errors clear the cache entry and return `null`.
 
 **ThemeModule contract** (defined in `src/engine/types.ts`):
 ```ts
@@ -139,11 +145,12 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 ## Build & Deploy
 - Static preset (`server: { preset: "static" }`).
 - CI runs on push to `main`: quality job (`typecheck → lint → test`) → deploy job (`build → gh-pages`).
-- PWA via `vite-plugin-pwa` (autoUpdate, runtime caching for Google Fonts). Three.js bundles are excluded from precaching (`globIgnores` in `app.config.ts`) because they're large static assets.
+- PWA via `vite-plugin-pwa` (autoUpdate). Three.js bundles are excluded from precaching (`globIgnores` in `app.config.ts`).
 - Build artifact deployed from `.output/public`; `_server` artifacts cleaned before deploy; `.nojekyll` file added.
 - **Vite manual chunks** (`vite.config.ts`): Three.js is split into separate chunks (`three`, `three-examples`, `vendor`) to improve caching and avoid monolithic bundles.
 
 ## Conventions
+- **Lucide Solid imports must use deep imports** (`lucide-solid/icons/component-name`), never barrel imports (`from "lucide-solid"`). Deep imports tree-shake to ~2KB per icon vs ~400KB for the full library.
 - JSX import source is `solid-js`.
 - Strict TypeScript, no emit, bundler module resolution.
 
@@ -189,7 +196,11 @@ Three.js `PerspectiveCamera` uses **vertical FOV**. With FOV=55°, aspect=16:9: 
 - Transition kills pending scene on rapid theme switching — may cause visual glitch.
 - `--color-accent-red: #FE4450` is universal (not theme-specific) — used for semantic elements like heart icon, status dots.
 - Lehmer PRNG in `math.ts` has a module-level mutable seed (initially 42) shared across all scenes — re-instantiating scenes doesn't reset it.
-- Fonts are loaded via `<Link>` in `app.tsx` (Inter, JetBrains Mono, Space Grotesk: `400;500;600;700`). `entry-server.tsx` does not load fonts — no duplication risk.
+- **Fonts are self-hosted** via 16 `.woff2` files in `public/fonts/` with `@font-face` rules in `public/fonts/fonts.css`. No external font requests. Linked via `<Link>` in `app.tsx`. `entry-server.tsx` does not load fonts — no duplication risk.
 - `disposeScene` callback must be defined before `createTransitionManager(disposeScene)` in `engine.ts` — order matters due to closure capture in the transition manager.
-- **AI scene entranceTimer/spike rings**: `entranceTimer` is driven by the transition manager's FadeIn phase (0–400ms), never reaching `ENTRANCE_DURATION` (900ms). Comparing `entranceTimer > ENTRANCE_DURATION` is a bug — the condition is never true, spike rings are permanently suppressed. The spike ring gate should check `entranceTimer < 0` (entrance completed). Reset `entranceTimer` to -1 when `entranceOpacity >= 1.0` (timer ≥ 300ms), not by comparing against `ENTRANCE_DURATION`. See `src/themes/ai/scene.ts:616-618` and `:643`.
+- **AI scene entranceTimer/spike rings**: `entranceTimer` is driven by the transition manager's FadeIn phase (0–400ms). The spike ring gate now checks `entranceTimer >= 0` instead of `> ENTRANCE_DURATION` (fixed). Timer resets to -1 when `entranceOpacity >= 1.0` (at 300ms). See `src/themes/ai/scene.ts:616-618`.
 - **Module-level `createSignal` MUST NOT read `localStorage` during init.** During SSR, `typeof window === "undefined"` forces a default, but on client hydration the module re-executes in the browser and `getInitialLanguage()` reads `localStorage` — producing a different initial value than SSR. This caused the bug where SSR HTML renders Portuguese ("Sobre", "Habilidades") but the client signal starts as `Language.En` (from a prior EN click), so `onMount` fetches `en.json` and the page flips to English. **Fix**: `getInitialLanguage()` always returns `Language.PtBr`; the `I18nProvider.onMount` syncs the signal with `localStorage` *before* fetching messages. Same pattern applies to `themeStore.ts` — `getInitialTheme()` already does this correctly (always returns `"ai"`).
+- **WebGL context loss**: Engine registers `webglcontextlost`/`webglcontextrestored` handlers on `canvas` (not renderer). When context is lost, the render loop skips all WebGL calls. Context lost listeners are cleaned up in `dispose()`.
+- **CSS theme colors ≠ TypeScript colorScheme**: CSS `[data-theme="x"]` custom properties control UI component colors (Navbar, cards, buttons). TypeScript `ColorScheme` properties control 3D scene element colors. They are intentionally separate systems — changing one does not affect the other.
+- **`lerpColor()` in `math.ts` only supports 6-character hex strings** (`#RRGGBB`). Short hex (#RGB, #RGBA, #RRGGBBAA) are not parsed.
+- **ESLint `solid/reactivity` in i18nStore**: Signal accesses inside async callbacks (`.then()`, `.catch()`) are invisible to the reactivity tracker. To fix: read the signal synchronously before the promise chain: `const lang = language();` then `fetch(...).then(() => /* use lang */)`.

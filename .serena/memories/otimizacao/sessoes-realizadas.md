@@ -42,3 +42,50 @@
 
 ### Arquivo modificado:
 - `src/themes/blockchain/scene.ts` — todas as otimizações acima
+
+## Sessão 4: Code review — Bugs, Code Quality, Global Optimization
+
+### Bugs corrigidos (5):
+1. **Skills.tsx**: IntersectionObserver desconectado via `onCleanup` (vazamento)
+2. **Stats.tsx**: Dois blocos `onMount` unificados, sem polling rAF
+3. **registry.ts**: Cache de Promise (não valor resolvido) — race condition em loadTheme
+4. **engine.ts**: `_orbitTarget` pré-alocado, reusado com `.set()`
+5. **blockchain/scene.ts**: `getCameraState()` reusa vectors — zero alocações/frame
+
+### Code Quality (13):
+- transition.ts: removido campo morto `transitionStart`
+- ai/scene.ts: `ENTRANCE_RAMP_MS = 300`, removido `attnCellValues` morto
+- software/scene.ts: glitch/freeze thresholds em `nextGlitch`/`nextFreeze`, removido `idx` morto
+- blockchain/scene.ts: `Math.random()` → `randomRange()` (PRNG)
+- web/scene.ts: `MAX_RADIUS`/`MAX_Z` como constantes de módulo
+- 9 non-null assertions removidas em 7 arquivos
+- 4 componentes: `createEffect` → `onMount` + `onCleanup`
+- blockchain/theme.css: primary alinhado com engine config
+
+### Otimizações (6):
+- O7: devicon movido para devDependencies
+- A7: npm audit fix → 0 vulnerabilidades
+- O1: Navbar scroll com rAF debounce + passive
+- O2: ScrollProgress + engine resize com passive
+- O3: ai/scene hot-path Math.random → PRNG
+- O6: HashParticle Vector3 → tuplas [x,y,z]
+
+### Arquitetura (5):
+- A1: Hero t() chamado 1x via callback do Show
+- A4: CI cache .vinxi
+- A5: Fontes self-hosted (16 woff2, 352KB)
+- A6: PWA icons 192x192 + 512x512
+- Google Fonts referências removidas (PWA + app.tsx)
+
+### Auditoria follow-up (8):
+- Lucide deep imports em 6 arquivos
+- WebGL context lost/restored no engine.ts
+- Error handling no loadTheme
+- Theme index.ts factory (create-theme-module.ts)
+- Diretórios vazios removidos
+- ESLint solid/reactivity corrigido (i18nStore)
+- @vitest/coverage-v8 + script test:coverage
+- lerpColor JSDoc limitação
+
+### Verificação final:
+typecheck 0 erros, lint 0 warnings, test 121/121 passed.

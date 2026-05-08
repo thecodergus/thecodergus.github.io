@@ -73,20 +73,22 @@ With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0.
 | Web        | #0000EE | #551A8B   | #CC0000  | #F8F9FA    |
 
 ## Gotchas
-- GLSL 3.0 ES: NEVER include `#version 300 es` in `ShaderMaterial` source. Three.js hardcodes it at the top. Set `material.glslVersion = THREE.GLSL3`, declare `out vec4 fragColor;` explicitly.
+- GLSL 3.0 ES: NEVER include `#version 300 es` in `ShaderMaterial` source. Set `material.glslVersion = THREE.GLSL3`, declare `out vec4 fragColor;` explicitly.
 - `quality.ts`: `getParameter(UNMASKED_RENDERER_WEBGL)` returns `null` in Firefox/Safari — use `(getParameter(...) ?? "").toLowerCase()`.
-- Global keydown handler in `engine.ts` skips events from editable elements (INPUT, TEXTAREA, SELECT, contentEditable).
-- `camera.lookAt(0,0,0)` every frame in render loop — if moving lookAt, update engine.ts
+- Global keydown handler skips editable elements (INPUT, TEXTAREA, SELECT, contentEditable).
+- `camera.lookAt(0,0,0)` every frame — if moving lookAt, update engine.ts
 - `body { overflow-x: hidden }` — full-bleed elements need explicit width
-- AI scene `onKeyPress` exists but NOT exported — keyboard routing only works for Software
-- `createEngine()` forces `camera.lookAt(0, 0, 0)` each frame
-- Fonts loaded at different weights in entry-server.tsx (JetBrains Mono `400;500`) vs app.tsx (`400;500;600;700`)
-- `antialias: true` has NO effect with EffectComposer — MSAA only works on default framebuffer
-- Resize sequence: camera.aspect → updateProjectionMatrix → renderer.setSize → composer.setSize (correct order, already followed in code)
+- `antialias: true` has NO effect with EffectComposer — MSAA only on default framebuffer
 - Transition kills pending scene on rapid theme switching
 - `--color-accent-red: #FE4450` universal, not theme-scoped
-- Lehmer PRNG global seed (42) shared across all scenes, not reset on re-instantiation
+- Lehmer PRNG global seed (42) shared, not reset on re-instantiation
 - Bloom breathing only for AI and Software (themes with `getDensity()`)
+- **Fonts self-hosted**: 16 `.woff2` in `public/fonts/` via `fonts.css`, zero external requests
+- **Lucide Solid**: deep imports only (`lucide-solid/icons/icon-name`), never barrel import
+- **CSS theme colors vs TypeScript colorScheme**: separate systems — UI vs 3D
+- **WebGL context loss**: `webglcontextlost`/`webglcontextrestored` handlers pause render loop
+- **lerpColor()**: only 6-char hex (`#RRGGBB`), not short hex
+- **i18n ESLint reactivity**: read signal synchronously before fetch chain: `const lang = language();` then `fetch(...).then(...)`
 
 ## Build & Deploy
 - CI: `.github/workflows/deploy.yml` — push/PR to main, Node 20, `npm ci`, `npm run build`

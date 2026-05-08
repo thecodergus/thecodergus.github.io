@@ -1,21 +1,25 @@
 {
-  "_Footer-CV_Rz88Q.js": {
-    "file": "assets/Footer-CV_Rz88Q.js",
+  "_Footer-DahKxp4s.js": {
+    "file": "assets/Footer-DahKxp4s.js",
     "name": "Footer"
   },
-  "_index-BUAobrxW.js": {
-    "file": "assets/index-BUAobrxW.js",
+  "_create-theme-module-BxoSEL1S.js": {
+    "file": "assets/create-theme-module-BxoSEL1S.js",
+    "name": "create-theme-module"
+  },
+  "_index-B2BFM2z2.js": {
+    "file": "assets/index-B2BFM2z2.js",
     "name": "index",
     "imports": [
-      "_Footer-CV_Rz88Q.js"
+      "_Footer-DahKxp4s.js"
     ]
   },
-  "_index-CnVyNnAr.js": {
-    "file": "assets/index-CnVyNnAr.js",
+  "_index-CmdaeGbv.js": {
+    "file": "assets/index-CmdaeGbv.js",
     "name": "index",
     "isDynamicEntry": true,
     "imports": [
-      "_Footer-CV_Rz88Q.js",
+      "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ],
     "dynamicImports": [
@@ -29,88 +33,84 @@
     "file": "assets/preload-helper-ug3pwPZ1.js",
     "name": "preload-helper"
   },
-  "_types-BJuT0aSC.js": {
-    "file": "assets/types-BJuT0aSC.js",
-    "name": "types"
-  },
   "src/routes/doom.tsx?pick=default&pick=$css": {
-    "file": "assets/doom-BCkYrGOX.js",
+    "file": "assets/doom-CZ1D-TIk.js",
     "name": "doom",
     "src": "src/routes/doom.tsx?pick=default&pick=$css",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_Footer-CV_Rz88Q.js",
-      "_index-BUAobrxW.js"
+      "_Footer-DahKxp4s.js",
+      "_index-B2BFM2z2.js"
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-DFksm2xj.js",
+    "file": "assets/index-CkzgpRvm.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "imports": [
-      "_Footer-CV_Rz88Q.js",
-      "_index-CnVyNnAr.js",
+      "_Footer-DahKxp4s.js",
+      "_index-CmdaeGbv.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/ai/index.ts": {
-    "file": "assets/index-Q9VcU1Sw.js",
+    "file": "assets/index-B68bBEJN.js",
     "name": "index",
     "src": "src/themes/ai/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_types-BJuT0aSC.js",
-      "_index-CnVyNnAr.js",
-      "_Footer-CV_Rz88Q.js",
+      "_create-theme-module-BxoSEL1S.js",
+      "_index-CmdaeGbv.js",
+      "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/blockchain/index.ts": {
-    "file": "assets/index-DEM-uZxJ.js",
+    "file": "assets/index-Bs4ORsXI.js",
     "name": "index",
     "src": "src/themes/blockchain/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_types-BJuT0aSC.js",
-      "_index-CnVyNnAr.js",
-      "_Footer-CV_Rz88Q.js",
+      "_create-theme-module-BxoSEL1S.js",
+      "_index-CmdaeGbv.js",
+      "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/software/index.ts": {
-    "file": "assets/index-DmRJSJgS.js",
+    "file": "assets/index-EVVtwP3E.js",
     "name": "index",
     "src": "src/themes/software/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_types-BJuT0aSC.js",
-      "_index-CnVyNnAr.js",
-      "_Footer-CV_Rz88Q.js",
+      "_create-theme-module-BxoSEL1S.js",
+      "_index-CmdaeGbv.js",
+      "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/web/index.ts": {
-    "file": "assets/index-C2g0wSm5.js",
+    "file": "assets/index-CtuRz93u.js",
     "name": "index",
     "src": "src/themes/web/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_types-BJuT0aSC.js",
-      "_index-CnVyNnAr.js",
-      "_Footer-CV_Rz88Q.js",
+      "_create-theme-module-BxoSEL1S.js",
+      "_index-CmdaeGbv.js",
+      "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-CAJeRu1t.js",
+    "file": "assets/client-BMXIN7Pg.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
     "imports": [
-      "_Footer-CV_Rz88Q.js",
-      "_index-BUAobrxW.js",
+      "_Footer-DahKxp4s.js",
+      "_index-B2BFM2z2.js",
       "_preload-helper-ug3pwPZ1.js"
     ],
     "dynamicImports": [
@@ -118,7 +118,7 @@
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-NjtOsW42.css"
+      "assets/client-DY8mH3CO.css"
     ]
   }
 }

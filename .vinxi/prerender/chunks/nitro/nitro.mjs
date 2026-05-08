@@ -872,7 +872,7 @@ async function errorHandler(error, event) {
 }
 
 const appConfig = {"name":"vinxi","routers":[{"name":"public","type":"static","base":"/","dir":"./public","root":"/home/gus/thecodergus.github.io","order":0,"outDir":"/home/gus/thecodergus.github.io/.vinxi/build/public"},{"name":"ssr","type":"http","link":{"client":"client"},"handler":"src/entry-server.tsx","extensions":["js","jsx","ts","tsx"],"target":"server","root":"/home/gus/thecodergus.github.io","base":"/","outDir":"/home/gus/thecodergus.github.io/.vinxi/build/ssr","order":1},{"name":"client","type":"client","base":"/_build","handler":"src/entry-client.tsx","extensions":["js","jsx","ts","tsx"],"target":"browser","root":"/home/gus/thecodergus.github.io","outDir":"/home/gus/thecodergus.github.io/.vinxi/build/client","order":2},{"name":"server-fns","type":"http","base":"/_server","handler":"node_modules/@solidjs/start/dist/runtime/server-handler.js","target":"server","root":"/home/gus/thecodergus.github.io","outDir":"/home/gus/thecodergus.github.io/.vinxi/build/server-fns","order":3}],"server":{"compressPublicAssets":{"brotli":true},"routeRules":{"/_build/assets/**":{"headers":{"cache-control":"public, immutable, max-age=31536000"}}},"experimental":{"asyncContext":true},"preset":"static","prerender":{"crawlLinks":true}},"root":"/home/gus/thecodergus.github.io"};
-					const buildManifest = {"ssr":{"_Footer-B82HcKY_.js":{"file":"assets/Footer-B82HcKY_.js","name":"Footer"},"_index-BxCjfHsv.js":{"file":"assets/index-BxCjfHsv.js","name":"index"},"_types-Bal2VZJY.js":{"file":"assets/types-Bal2VZJY.js","name":"types"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_index-BxCjfHsv.js","_Footer-B82HcKY_.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Footer-B82HcKY_.js"],"dynamicImports":["src/themes/ai/index.ts","src/themes/blockchain/index.ts","src/themes/software/index.ts","src/themes/web/index.ts"]},"src/themes/ai/index.ts":{"file":"assets/index-C8jUO9Sb.js","name":"index","src":"src/themes/ai/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"src/themes/blockchain/index.ts":{"file":"assets/index-BJPmkBWK.js","name":"index","src":"src/themes/blockchain/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"src/themes/software/index.ts":{"file":"assets/index-BWZFBK7A.js","name":"index","src":"src/themes/software/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"src/themes/web/index.ts":{"file":"assets/index-CtE7D_Lm.js","name":"index","src":"src/themes/web/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"virtual:$vinxi/handler/ssr":{"file":"ssr.js","name":"ssr","src":"virtual:$vinxi/handler/ssr","isEntry":true,"imports":["_index-BxCjfHsv.js","_Footer-B82HcKY_.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/ssr-B0nhBw37.css"]}},"client":{"_Footer-CV_Rz88Q.js":{"file":"assets/Footer-CV_Rz88Q.js","name":"Footer"},"_index-BUAobrxW.js":{"file":"assets/index-BUAobrxW.js","name":"index","imports":["_Footer-CV_Rz88Q.js"]},"_index-CnVyNnAr.js":{"file":"assets/index-CnVyNnAr.js","name":"index","isDynamicEntry":true,"imports":["_Footer-CV_Rz88Q.js","_preload-helper-ug3pwPZ1.js"],"dynamicImports":["src/themes/ai/index.ts","src/themes/blockchain/index.ts","src/themes/software/index.ts","src/themes/web/index.ts"]},"_preload-helper-ug3pwPZ1.js":{"file":"assets/preload-helper-ug3pwPZ1.js","name":"preload-helper"},"_types-BJuT0aSC.js":{"file":"assets/types-BJuT0aSC.js","name":"types"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"assets/doom-BCkYrGOX.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Footer-CV_Rz88Q.js","_index-BUAobrxW.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"assets/index-DFksm2xj.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"imports":["_Footer-CV_Rz88Q.js","_index-CnVyNnAr.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/ai/index.ts":{"file":"assets/index-Q9VcU1Sw.js","name":"index","src":"src/themes/ai/index.ts","isDynamicEntry":true,"imports":["_types-BJuT0aSC.js","_index-CnVyNnAr.js","_Footer-CV_Rz88Q.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/blockchain/index.ts":{"file":"assets/index-DEM-uZxJ.js","name":"index","src":"src/themes/blockchain/index.ts","isDynamicEntry":true,"imports":["_types-BJuT0aSC.js","_index-CnVyNnAr.js","_Footer-CV_Rz88Q.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/software/index.ts":{"file":"assets/index-DmRJSJgS.js","name":"index","src":"src/themes/software/index.ts","isDynamicEntry":true,"imports":["_types-BJuT0aSC.js","_index-CnVyNnAr.js","_Footer-CV_Rz88Q.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/web/index.ts":{"file":"assets/index-C2g0wSm5.js","name":"index","src":"src/themes/web/index.ts","isDynamicEntry":true,"imports":["_types-BJuT0aSC.js","_index-CnVyNnAr.js","_Footer-CV_Rz88Q.js","_preload-helper-ug3pwPZ1.js"]},"virtual:$vinxi/handler/client":{"file":"assets/client-CAJeRu1t.js","name":"client","src":"virtual:$vinxi/handler/client","isEntry":true,"imports":["_Footer-CV_Rz88Q.js","_index-BUAobrxW.js","_preload-helper-ug3pwPZ1.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/client-NjtOsW42.css"]}},"server-fns":{"_Footer-K7RwrD4o.js":{"file":"assets/Footer-K7RwrD4o.js","name":"Footer"},"_index-BxCjfHsv.js":{"file":"assets/index-BxCjfHsv.js","name":"index"},"_server-fns-CMJ-Y0pp.js":{"file":"assets/server-fns-CMJ-Y0pp.js","name":"server-fns","dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/app.tsx"]},"_types-Bal2VZJY.js":{"file":"assets/types-Bal2VZJY.js","name":"types"},"src/app.tsx":{"file":"assets/app-C_XX7FWC.js","name":"app","src":"src/app.tsx","isDynamicEntry":true,"imports":["_index-BxCjfHsv.js","_server-fns-CMJ-Y0pp.js","_Footer-K7RwrD4o.js"],"css":["assets/app-B0nhBw37.css"]},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_index-BxCjfHsv.js","_Footer-K7RwrD4o.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Footer-K7RwrD4o.js"],"dynamicImports":["src/themes/ai/index.ts","src/themes/blockchain/index.ts","src/themes/software/index.ts","src/themes/web/index.ts"]},"src/themes/ai/index.ts":{"file":"assets/index-C8jUO9Sb.js","name":"index","src":"src/themes/ai/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"src/themes/blockchain/index.ts":{"file":"assets/index-BJPmkBWK.js","name":"index","src":"src/themes/blockchain/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"src/themes/software/index.ts":{"file":"assets/index-BWZFBK7A.js","name":"index","src":"src/themes/software/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"src/themes/web/index.ts":{"file":"assets/index-CtE7D_Lm.js","name":"index","src":"src/themes/web/index.ts","isDynamicEntry":true,"imports":["_types-Bal2VZJY.js"]},"virtual:$vinxi/handler/server-fns":{"file":"server-fns.js","name":"server-fns","src":"virtual:$vinxi/handler/server-fns","isEntry":true,"imports":["_server-fns-CMJ-Y0pp.js"]}}};
+					const buildManifest = {"ssr":{"_Footer-h9CRRv8A.js":{"file":"assets/Footer-h9CRRv8A.js","name":"Footer"},"_create-theme-module-DCB20cu9.js":{"file":"assets/create-theme-module-DCB20cu9.js","name":"create-theme-module"},"_index-BxCjfHsv.js":{"file":"assets/index-BxCjfHsv.js","name":"index"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_index-BxCjfHsv.js","_Footer-h9CRRv8A.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Footer-h9CRRv8A.js"],"dynamicImports":["src/themes/ai/index.ts","src/themes/blockchain/index.ts","src/themes/software/index.ts","src/themes/web/index.ts"]},"src/themes/ai/index.ts":{"file":"assets/index-X_6PC9_3.js","name":"index","src":"src/themes/ai/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"src/themes/blockchain/index.ts":{"file":"assets/index-CawLu9ce.js","name":"index","src":"src/themes/blockchain/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"src/themes/software/index.ts":{"file":"assets/index-D5yV4t64.js","name":"index","src":"src/themes/software/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"src/themes/web/index.ts":{"file":"assets/index-DvFroc-i.js","name":"index","src":"src/themes/web/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"virtual:$vinxi/handler/ssr":{"file":"ssr.js","name":"ssr","src":"virtual:$vinxi/handler/ssr","isEntry":true,"imports":["_index-BxCjfHsv.js","_Footer-h9CRRv8A.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/ssr-DxTp3QgC.css"]}},"client":{"_Footer-DahKxp4s.js":{"file":"assets/Footer-DahKxp4s.js","name":"Footer"},"_create-theme-module-BxoSEL1S.js":{"file":"assets/create-theme-module-BxoSEL1S.js","name":"create-theme-module"},"_index-B2BFM2z2.js":{"file":"assets/index-B2BFM2z2.js","name":"index","imports":["_Footer-DahKxp4s.js"]},"_index-CmdaeGbv.js":{"file":"assets/index-CmdaeGbv.js","name":"index","isDynamicEntry":true,"imports":["_Footer-DahKxp4s.js","_preload-helper-ug3pwPZ1.js"],"dynamicImports":["src/themes/ai/index.ts","src/themes/blockchain/index.ts","src/themes/software/index.ts","src/themes/web/index.ts"]},"_preload-helper-ug3pwPZ1.js":{"file":"assets/preload-helper-ug3pwPZ1.js","name":"preload-helper"},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"assets/doom-CZ1D-TIk.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Footer-DahKxp4s.js","_index-B2BFM2z2.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"assets/index-CkzgpRvm.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"imports":["_Footer-DahKxp4s.js","_index-CmdaeGbv.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/ai/index.ts":{"file":"assets/index-B68bBEJN.js","name":"index","src":"src/themes/ai/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-BxoSEL1S.js","_index-CmdaeGbv.js","_Footer-DahKxp4s.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/blockchain/index.ts":{"file":"assets/index-Bs4ORsXI.js","name":"index","src":"src/themes/blockchain/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-BxoSEL1S.js","_index-CmdaeGbv.js","_Footer-DahKxp4s.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/software/index.ts":{"file":"assets/index-EVVtwP3E.js","name":"index","src":"src/themes/software/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-BxoSEL1S.js","_index-CmdaeGbv.js","_Footer-DahKxp4s.js","_preload-helper-ug3pwPZ1.js"]},"src/themes/web/index.ts":{"file":"assets/index-CtuRz93u.js","name":"index","src":"src/themes/web/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-BxoSEL1S.js","_index-CmdaeGbv.js","_Footer-DahKxp4s.js","_preload-helper-ug3pwPZ1.js"]},"virtual:$vinxi/handler/client":{"file":"assets/client-BMXIN7Pg.js","name":"client","src":"virtual:$vinxi/handler/client","isEntry":true,"imports":["_Footer-DahKxp4s.js","_index-B2BFM2z2.js","_preload-helper-ug3pwPZ1.js"],"dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css"],"css":["assets/client-DY8mH3CO.css"]}},"server-fns":{"_Footer-uBDNt4_X.js":{"file":"assets/Footer-uBDNt4_X.js","name":"Footer"},"_create-theme-module-DCB20cu9.js":{"file":"assets/create-theme-module-DCB20cu9.js","name":"create-theme-module"},"_index-BxCjfHsv.js":{"file":"assets/index-BxCjfHsv.js","name":"index"},"_server-fns-CbWz8Lsd.js":{"file":"assets/server-fns-CbWz8Lsd.js","name":"server-fns","dynamicImports":["src/routes/doom.tsx?pick=default&pick=$css","src/routes/doom.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/routes/index.tsx?pick=default&pick=$css","src/app.tsx"]},"src/app.tsx":{"file":"assets/app-_i5vrCyN.js","name":"app","src":"src/app.tsx","isDynamicEntry":true,"imports":["_index-BxCjfHsv.js","_server-fns-CbWz8Lsd.js","_Footer-uBDNt4_X.js"],"css":["assets/app-DxTp3QgC.css"]},"src/routes/doom.tsx?pick=default&pick=$css":{"file":"doom.js","name":"doom","src":"src/routes/doom.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_index-BxCjfHsv.js","_Footer-uBDNt4_X.js"]},"src/routes/index.tsx?pick=default&pick=$css":{"file":"index.js","name":"index","src":"src/routes/index.tsx?pick=default&pick=$css","isEntry":true,"isDynamicEntry":true,"imports":["_Footer-uBDNt4_X.js"],"dynamicImports":["src/themes/ai/index.ts","src/themes/blockchain/index.ts","src/themes/software/index.ts","src/themes/web/index.ts"]},"src/themes/ai/index.ts":{"file":"assets/index-X_6PC9_3.js","name":"index","src":"src/themes/ai/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"src/themes/blockchain/index.ts":{"file":"assets/index-CawLu9ce.js","name":"index","src":"src/themes/blockchain/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"src/themes/software/index.ts":{"file":"assets/index-D5yV4t64.js","name":"index","src":"src/themes/software/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"src/themes/web/index.ts":{"file":"assets/index-DvFroc-i.js","name":"index","src":"src/themes/web/index.ts","isDynamicEntry":true,"imports":["_create-theme-module-DCB20cu9.js"]},"virtual:$vinxi/handler/server-fns":{"file":"server-fns.js","name":"server-fns","src":"virtual:$vinxi/handler/server-fns","isEntry":true,"imports":["_server-fns-CbWz8Lsd.js"]}}};
 
 					const routeManifest = {"ssr":{},"client":{},"server-fns":{}};
 
@@ -911,7 +911,7 @@ const assets = {
     "type": "text/html; charset=utf-8",
     "encoding": null,
     "etag": "\"1af0-mNs9jBKIo3mkdKKucLpSPsoUetE\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
+    "mtime": "2026-05-08T22:50:02.589Z",
     "size": 6896,
     "path": "../../.output/public/404.html"
   },
@@ -919,123 +919,37 @@ const assets = {
     "type": "text/html; charset=utf-8",
     "encoding": "br",
     "etag": "\"6dd-Nd7Ie19OTIKHSqQBWXxfzLu4/5U\"",
-    "mtime": "2026-05-08T21:20:14.775Z",
+    "mtime": "2026-05-08T22:50:02.745Z",
     "size": 1757,
     "path": "../../.output/public/404.html.br"
-  },
-  "/manifest.json": {
-    "type": "application/json",
-    "etag": "\"18e-SxupswRtfpbff7nneLkZ59G3I9g\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 398,
-    "path": "../../.output/public/manifest.json"
   },
   "/404.html.gz": {
     "type": "text/html; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"877-EwQelpcI2pLhcaH9DFt7KCmC8l0\"",
-    "mtime": "2026-05-08T21:20:14.775Z",
+    "mtime": "2026-05-08T22:50:02.735Z",
     "size": 2167,
     "path": "../../.output/public/404.html.gz"
+  },
+  "/manifest.json": {
+    "type": "application/json",
+    "etag": "\"258-grUpRKXFiG0H2p9Gj1gccP9qrF4\"",
+    "mtime": "2026-05-08T22:50:02.589Z",
+    "size": 600,
+    "path": "../../.output/public/manifest.json"
   },
   "/robots.txt": {
     "type": "text/plain; charset=utf-8",
     "etag": "\"43-BEzmj4PuhUNHX+oW9uOnPSihxtU\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
+    "mtime": "2026-05-08T22:50:02.599Z",
     "size": 67,
     "path": "../../.output/public/robots.txt"
-  },
-  "/_build/registerSW.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"94-cci5Bilset1FDW+Y3OFpEe4JMyM\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 148,
-    "path": "../../.output/public/_build/registerSW.js"
-  },
-  "/_build/sw.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"74a-jneZYqIxwk1yIqqPPf8mV8Y+9HE\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 1866,
-    "path": "../../.output/public/_build/sw.js"
-  },
-  "/favicon.ico": {
-    "type": "image/vnd.microsoft.icon",
-    "etag": "\"28f5b-+HJ/8feXwjqDwG8zs4HR07QMTCM\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 167771,
-    "path": "../../.output/public/favicon.ico"
-  },
-  "/_build/sw.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"2fd-K3DOIcZ/9xpscDTVolJjNYPXjDM\"",
-    "mtime": "2026-05-08T21:20:14.775Z",
-    "size": 765,
-    "path": "../../.output/public/_build/sw.js.br"
-  },
-  "/_build/sw.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"37d-fAA1xYevNWMIA5Vr4cypT4evqhU\"",
-    "mtime": "2026-05-08T21:20:14.775Z",
-    "size": 893,
-    "path": "../../.output/public/_build/sw.js.gz"
-  },
-  "/_build/workbox-dcde9eb3.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"53ba-KbDbgVopUEj+Y5Dr2vBzUV5X3hU\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 21434,
-    "path": "../../.output/public/_build/workbox-dcde9eb3.js"
-  },
-  "/_build/workbox-dcde9eb3.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"19e8-XlK4RWJ6+2StV9hkuTPCNBrH5cM\"",
-    "mtime": "2026-05-08T21:20:14.784Z",
-    "size": 6632,
-    "path": "../../.output/public/_build/workbox-dcde9eb3.js.br"
-  },
-  "/_build/workbox-dcde9eb3.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"1c8c-1App7DlVI5SuflAwzsfDbXa1EPs\"",
-    "mtime": "2026-05-08T21:20:14.775Z",
-    "size": 7308,
-    "path": "../../.output/public/_build/workbox-dcde9eb3.js.gz"
-  },
-  "/assets/ssr-B0nhBw37.css": {
-    "type": "text/css; charset=utf-8",
-    "encoding": null,
-    "etag": "\"9067-x8sb7oVcuSyKvYIPRs4N9RfMKyE\"",
-    "mtime": "2026-05-08T21:20:14.759Z",
-    "size": 36967,
-    "path": "../../.output/public/assets/ssr-B0nhBw37.css"
-  },
-  "/assets/ssr-B0nhBw37.css.br": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"1865-AKMvobQQmAR40fFWcAOdnqTkxks\"",
-    "mtime": "2026-05-08T21:20:14.816Z",
-    "size": 6245,
-    "path": "../../.output/public/assets/ssr-B0nhBw37.css.br"
-  },
-  "/assets/ssr-B0nhBw37.css.gz": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"1c43-usVZbcUitEmHKOoijRTQSJiMZSk\"",
-    "mtime": "2026-05-08T21:20:14.784Z",
-    "size": 7235,
-    "path": "../../.output/public/assets/ssr-B0nhBw37.css.gz"
   },
   "/data/portfolio_shared_data.json": {
     "type": "application/json",
     "encoding": null,
     "etag": "\"c09-NEqwlE4Z87h8QAyLynMk2GgstNI\"",
-    "mtime": "2026-05-08T21:20:14.632Z",
+    "mtime": "2026-05-08T22:50:02.579Z",
     "size": 3081,
     "path": "../../.output/public/data/portfolio_shared_data.json"
   },
@@ -1043,7 +957,7 @@ const assets = {
     "type": "application/json",
     "encoding": "br",
     "etag": "\"27b-+tZ8MNtElSzb/eNUiPXEol1xe+Y\"",
-    "mtime": "2026-05-08T21:20:14.792Z",
+    "mtime": "2026-05-08T22:50:02.736Z",
     "size": 635,
     "path": "../../.output/public/data/portfolio_shared_data.json.br"
   },
@@ -1051,333 +965,656 @@ const assets = {
     "type": "application/json",
     "encoding": "gzip",
     "etag": "\"2ce-Cp1KfCAMLdhlhhM8C4hFXp2upWU\"",
-    "mtime": "2026-05-08T21:20:14.787Z",
+    "mtime": "2026-05-08T22:50:02.736Z",
     "size": 718,
     "path": "../../.output/public/data/portfolio_shared_data.json.gz"
+  },
+  "/favicon.ico": {
+    "type": "image/vnd.microsoft.icon",
+    "etag": "\"28f5b-+HJ/8feXwjqDwG8zs4HR07QMTCM\"",
+    "mtime": "2026-05-08T22:50:02.589Z",
+    "size": 167771,
+    "path": "../../.output/public/favicon.ico"
+  },
+  "/assets/ssr-DxTp3QgC.css.br": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"1874-iU65Bl5Oc8DbaF9y+SWY86jEWwI\"",
+    "mtime": "2026-05-08T22:50:02.802Z",
+    "size": 6260,
+    "path": "../../.output/public/assets/ssr-DxTp3QgC.css.br"
+  },
+  "/assets/ssr-DxTp3QgC.css": {
+    "type": "text/css; charset=utf-8",
+    "encoding": null,
+    "etag": "\"9067-D+kzOsNoIE+pLwvCb2ihUVO86CY\"",
+    "mtime": "2026-05-08T22:50:02.718Z",
+    "size": 36967,
+    "path": "../../.output/public/assets/ssr-DxTp3QgC.css"
+  },
+  "/assets/ssr-DxTp3QgC.css.gz": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"1c43-Lrc22RqOY41vBF/Of2QlvPUwsOM\"",
+    "mtime": "2026-05-08T22:50:02.750Z",
+    "size": 7235,
+    "path": "../../.output/public/assets/ssr-DxTp3QgC.css.gz"
+  },
+  "/_build/registerSW.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"94-cci5Bilset1FDW+Y3OFpEe4JMyM\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 148,
+    "path": "../../.output/public/_build/registerSW.js"
+  },
+  "/_build/sw.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"5dc-D73T7tpGwaSnTYHm5SdKXobrAsQ\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 1500,
+    "path": "../../.output/public/_build/sw.js"
+  },
+  "/_build/sw.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"291-P9cXIpWOG1RsidngVUVS+JhWOWw\"",
+    "mtime": "2026-05-08T22:50:02.736Z",
+    "size": 657,
+    "path": "../../.output/public/_build/sw.js.br"
+  },
+  "/_build/sw.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"2fb-ggID8/yAendK6+8cAt/4/z3dyqI\"",
+    "mtime": "2026-05-08T22:50:02.736Z",
+    "size": 763,
+    "path": "../../.output/public/_build/sw.js.gz"
+  },
+  "/_build/workbox-9c191d2f.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"3b08-FESaFuRU1G+tiFaqJ5mU8aDzyWU\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 15112,
+    "path": "../../.output/public/_build/workbox-9c191d2f.js"
+  },
+  "/_build/workbox-9c191d2f.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"1251-i0SSOuCJdvAes+CuwX2eodf94e0\"",
+    "mtime": "2026-05-08T22:50:02.745Z",
+    "size": 4689,
+    "path": "../../.output/public/_build/workbox-9c191d2f.js.br"
+  },
+  "/_build/workbox-9c191d2f.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"1447-PKR5OTzyHRe4XJuVvQMG9e0TyJk\"",
+    "mtime": "2026-05-08T22:50:02.736Z",
+    "size": 5191,
+    "path": "../../.output/public/_build/workbox-9c191d2f.js.gz"
+  },
+  "/images/icon-192.png": {
+    "type": "image/png",
+    "etag": "\"13081-et3Q/GVSR1u53NpyvPyEnuTrx5Y\"",
+    "mtime": "2026-05-08T22:50:02.579Z",
+    "size": 77953,
+    "path": "../../.output/public/images/icon-192.png"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2": {
+    "type": "font/woff2",
+    "etag": "\"493c-n3Oy9D6jvzfMjpClqox+Zo7ERQQ\"",
+    "mtime": "2026-05-08T22:50:02.579Z",
+    "size": 18748,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2": {
+    "type": "font/woff2",
+    "etag": "\"4a34-xor/hj4YNqI52zFecXnUbzQ4Xs4\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 18996,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2": {
+    "type": "font/woff2",
+    "etag": "\"bc80-8R1ym7Ck2DUNLqPQ/AYs9u8tUpg\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 48256,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2"
+  },
+  "/images/icon-512.png": {
+    "type": "image/png",
+    "etag": "\"6f6e3-1eFTL99DQog32E+RF5R3LE1A0Ls\"",
+    "mtime": "2026-05-08T22:50:02.582Z",
+    "size": 456419,
+    "path": "../../.output/public/images/icon-512.png"
   },
   "/images/myProfile.jpg": {
     "type": "image/jpeg",
     "etag": "\"85959-iF5M3WpBNfzVmCJclZFaL3uP+oM\"",
-    "mtime": "2026-05-08T21:20:14.632Z",
+    "mtime": "2026-05-08T22:50:02.582Z",
     "size": 547161,
     "path": "../../.output/public/images/myProfile.jpg"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2": {
+    "type": "font/woff2",
+    "etag": "\"6568-cF1iUGbboMFZ8TfnP5HiMgl9II0\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 25960,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2": {
+    "type": "font/woff2",
+    "etag": "\"2be0-BP5iTzJeB8nLqYAgKpWNi5o1Zm8\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 11232,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2": {
+    "type": "font/woff2",
+    "etag": "\"280c-nBythjoDQ0+5wVAendJ6wU7Xz2M\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 10252,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2"
+  },
+  "/fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2": {
+    "type": "font/woff2",
+    "etag": "\"1a38-xA/sTKWi+gmM69jUei5Rxd5DXqY\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 6712,
+    "path": "../../.output/public/fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2"
+  },
+  "/fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2": {
+    "type": "font/woff2",
+    "etag": "\"49fc-F0LVbRNUJhx55ziZ6erFdGulAH0\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 18940,
+    "path": "../../.output/public/fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2"
+  },
+  "/fonts/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2": {
+    "type": "font/woff2",
+    "etag": "\"5710-wHgeovKQE4JtweuNtA9NQA2d9xA\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 22288,
+    "path": "../../.output/public/fonts/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2"
+  },
+  "/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2": {
+    "type": "font/woff2",
+    "etag": "\"14c4c-zz61D7IQFMB9QxHvTAOk/Vh4ibQ\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 85068,
+    "path": "../../.output/public/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2"
+  },
+  "/fonts/fonts.css": {
+    "type": "text/css; charset=utf-8",
+    "encoding": null,
+    "etag": "\"5900-k+IXneN0u97LiW49nHsGw7eQ2cA\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 22784,
+    "path": "../../.output/public/fonts/fonts.css"
+  },
+  "/fonts/fonts.css.br": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"321-PdczxOgAQGaVR3+TDsLThsrC7xo\"",
+    "mtime": "2026-05-08T22:50:02.802Z",
+    "size": 801,
+    "path": "../../.output/public/fonts/fonts.css.br"
+  },
+  "/fonts/fonts.css.gz": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"40e-Sp2UPxAZtmpXLSdjnNeNFKKyGBU\"",
+    "mtime": "2026-05-08T22:50:02.758Z",
+    "size": 1038,
+    "path": "../../.output/public/fonts/fonts.css.gz"
+  },
+  "/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwhsk.woff2": {
+    "type": "font/woff2",
+    "etag": "\"668-/q5XIShVD2LrOrPzUnYqfwzlWQM\"",
+    "mtime": "2026-05-08T22:50:02.580Z",
+    "size": 1640,
+    "path": "../../.output/public/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwhsk.woff2"
+  },
+  "/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwhsk.woff2": {
+    "type": "font/woff2",
+    "etag": "\"2d68-Bq02AAzYneyT5DmMW2JWWrHRseI\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 11624,
+    "path": "../../.output/public/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwhsk.woff2"
+  },
+  "/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2": {
+    "type": "font/woff2",
+    "etag": "\"7ac8-TycgbEscr4t4BVl/y8aSL/WAXao\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 31432,
+    "path": "../../.output/public/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2"
+  },
+  "/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwhsk.woff2": {
+    "type": "font/woff2",
+    "etag": "\"1ab4-vO254uUoPBuIhSU0jLwsXwe94+w\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 6836,
+    "path": "../../.output/public/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwhsk.woff2"
+  },
+  "/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwhsk.woff2": {
+    "type": "font/woff2",
+    "etag": "\"22a8-nY2y6MzZcjPCL0AMJxGhJCw1tRI\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 8872,
+    "path": "../../.output/public/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwhsk.woff2"
+  },
+  "/_server/assets/app-DxTp3QgC.css": {
+    "type": "text/css; charset=utf-8",
+    "encoding": null,
+    "etag": "\"9067-D+kzOsNoIE+pLwvCb2ihUVO86CY\"",
+    "mtime": "2026-05-08T22:50:02.722Z",
+    "size": 36967,
+    "path": "../../.output/public/_server/assets/app-DxTp3QgC.css"
+  },
+  "/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwhsk.woff2": {
+    "type": "font/woff2",
+    "etag": "\"1700-MmqItN278TJfbGZhTwO2+NPcKys\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 5888,
+    "path": "../../.output/public/fonts/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwhsk.woff2"
+  },
+  "/_server/assets/app-DxTp3QgC.css.br": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"1874-iU65Bl5Oc8DbaF9y+SWY86jEWwI\"",
+    "mtime": "2026-05-08T22:50:02.943Z",
+    "size": 6260,
+    "path": "../../.output/public/_server/assets/app-DxTp3QgC.css.br"
   },
   "/fonts/devicon.ttf.br": {
     "type": "font/ttf",
     "encoding": "br",
     "etag": "\"8cfc2-FfNDvPo63iszzpwL46oeloozxwA\"",
-    "mtime": "2026-05-08T21:20:17.279Z",
+    "mtime": "2026-05-08T22:50:05.707Z",
     "size": 577474,
     "path": "../../.output/public/fonts/devicon.ttf.br"
-  },
-  "/fonts/devicon.svg.br": {
-    "type": "image/svg+xml",
-    "encoding": "br",
-    "etag": "\"1c5b14-3muxeNrnPy7YUeXUCm6d0JUjYMk\"",
-    "mtime": "2026-05-08T21:20:23.408Z",
-    "size": 1858324,
-    "path": "../../.output/public/fonts/devicon.svg.br"
-  },
-  "/_build/.vite/manifest.json": {
-    "type": "application/json",
-    "encoding": null,
-    "etag": "\"c5e-Yt5G7T+OdDUmhwmdQI8SZubq+K4\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 3166,
-    "path": "../../.output/public/_build/.vite/manifest.json"
-  },
-  "/_build/.vite/manifest.json.br": {
-    "type": "application/json",
-    "encoding": "br",
-    "etag": "\"1dd-RxQ6N+b5C+JAGaaZAXcr5rJtWyc\"",
-    "mtime": "2026-05-08T21:20:14.814Z",
-    "size": 477,
-    "path": "../../.output/public/_build/.vite/manifest.json.br"
-  },
-  "/_build/.vite/manifest.json.gz": {
-    "type": "application/json",
-    "encoding": "gzip",
-    "etag": "\"232-Mr590KEHcxP46cMb/wqvnKhgpDM\"",
-    "mtime": "2026-05-08T21:20:14.794Z",
-    "size": 562,
-    "path": "../../.output/public/_build/.vite/manifest.json.gz"
-  },
-  "/_build/assets/Footer-CV_Rz88Q.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"9536-hzahv8/FVH0IF9taAxnjMi377Lk\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 38198,
-    "path": "../../.output/public/_build/assets/Footer-CV_Rz88Q.js"
-  },
-  "/_build/assets/Footer-CV_Rz88Q.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"34b9-vp5JAiW57NI+v+iobFxfeB4q46k\"",
-    "mtime": "2026-05-08T21:20:14.837Z",
-    "size": 13497,
-    "path": "../../.output/public/_build/assets/Footer-CV_Rz88Q.js.br"
-  },
-  "/_build/assets/Footer-CV_Rz88Q.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"3a4e-++73sgX/HuxNsauDKgeQRroyRnA\"",
-    "mtime": "2026-05-08T21:20:14.814Z",
-    "size": 14926,
-    "path": "../../.output/public/_build/assets/Footer-CV_Rz88Q.js.gz"
-  },
-  "/_build/assets/client-CAJeRu1t.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"626e-buZoOr1mIkRxhqDx1Uuy5kiI92A\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 25198,
-    "path": "../../.output/public/_build/assets/client-CAJeRu1t.js"
-  },
-  "/_build/assets/client-CAJeRu1t.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"2363-hhvlCFrJSyRuTnIP7LCgBU3Lr0Y\"",
-    "mtime": "2026-05-08T21:20:14.819Z",
-    "size": 9059,
-    "path": "../../.output/public/_build/assets/client-CAJeRu1t.js.br"
-  },
-  "/_build/assets/client-CAJeRu1t.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"2768-xW6r8+2GU9aOXK51EnfGJmyJm2o\"",
-    "mtime": "2026-05-08T21:20:14.816Z",
-    "size": 10088,
-    "path": "../../.output/public/_build/assets/client-CAJeRu1t.js.gz"
-  },
-  "/_build/assets/client-NjtOsW42.css": {
-    "type": "text/css; charset=utf-8",
-    "encoding": null,
-    "etag": "\"a179-oyBXVG5IfYLmTGTydrdjn4/bC3Y\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 41337,
-    "path": "../../.output/public/_build/assets/client-NjtOsW42.css"
-  },
-  "/_build/assets/client-NjtOsW42.css.gz": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"1f8e-LQPkcM5K4EoLdcmR1enfDFgwVAU\"",
-    "mtime": "2026-05-08T21:20:14.819Z",
-    "size": 8078,
-    "path": "../../.output/public/_build/assets/client-NjtOsW42.css.gz"
-  },
-  "/_build/assets/doom-BCkYrGOX.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"3fa-JWFO64Z7DBzSvWo0YO2HbpcD/+4\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 1018,
-    "path": "../../.output/public/_build/assets/doom-BCkYrGOX.js"
-  },
-  "/_build/assets/client-NjtOsW42.css.br": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"1b4f-6KyarFQyttLDUWgNrw90g5JD57k\"",
-    "mtime": "2026-05-08T21:20:14.869Z",
-    "size": 6991,
-    "path": "../../.output/public/_build/assets/client-NjtOsW42.css.br"
-  },
-  "/_build/assets/index-BUAobrxW.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"812-AkVCaWsaHYBuzjNKGgsWzYO16uE\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 2066,
-    "path": "../../.output/public/_build/assets/index-BUAobrxW.js"
-  },
-  "/_build/assets/index-BUAobrxW.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"37e-YqaL/F+Q7n0tLSYySCnhKfhhTyw\"",
-    "mtime": "2026-05-08T21:20:14.859Z",
-    "size": 894,
-    "path": "../../.output/public/_build/assets/index-BUAobrxW.js.br"
-  },
-  "/_build/assets/index-BUAobrxW.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"3fe-pCQ/N5C2PUzNeF1lqaeHbYlA4iU\"",
-    "mtime": "2026-05-08T21:20:14.859Z",
-    "size": 1022,
-    "path": "../../.output/public/_build/assets/index-BUAobrxW.js.gz"
-  },
-  "/_build/assets/index-C2g0wSm5.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"181d-mzog1n7T6kQc/XlLQTPS8+HdQlo\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 6173,
-    "path": "../../.output/public/_build/assets/index-C2g0wSm5.js"
-  },
-  "/fonts/devicon.ttf": {
-    "type": "font/ttf",
-    "encoding": null,
-    "etag": "\"12d594-QLLCGd5h5vxXD2lm47ERHhlQ7YE\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 1234324,
-    "path": "../../.output/public/fonts/devicon.ttf"
-  },
-  "/_build/assets/index-C2g0wSm5.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"8b7-+0EO1u4enIFB6K31jYmw7bh6p1k\"",
-    "mtime": "2026-05-08T21:20:14.865Z",
-    "size": 2231,
-    "path": "../../.output/public/_build/assets/index-C2g0wSm5.js.br"
   },
   "/fonts/devicon.ttf.gz": {
     "type": "font/ttf",
     "encoding": "gzip",
     "etag": "\"9f957-OEUXjdkHP/AZqbES8Nt6de58uLU\"",
-    "mtime": "2026-05-08T21:20:15.865Z",
+    "mtime": "2026-05-08T22:50:03.979Z",
     "size": 653655,
     "path": "../../.output/public/fonts/devicon.ttf.gz"
+  },
+  "/fonts/devicon.ttf": {
+    "type": "font/ttf",
+    "encoding": null,
+    "etag": "\"12d594-QLLCGd5h5vxXD2lm47ERHhlQ7YE\"",
+    "mtime": "2026-05-08T22:50:02.581Z",
+    "size": 1234324,
+    "path": "../../.output/public/fonts/devicon.ttf"
+  },
+  "/fonts/devicon.woff": {
+    "type": "font/woff",
+    "etag": "\"12d5e0-+k9k5/b7tqusPwZyqOnNnwL+Aqw\"",
+    "mtime": "2026-05-08T22:50:02.582Z",
+    "size": 1234400,
+    "path": "../../.output/public/fonts/devicon.woff"
+  },
+  "/fonts/devicon.svg.br": {
+    "type": "image/svg+xml",
+    "encoding": "br",
+    "etag": "\"1c5b14-3muxeNrnPy7YUeXUCm6d0JUjYMk\"",
+    "mtime": "2026-05-08T22:50:15.230Z",
+    "size": 1858324,
+    "path": "../../.output/public/fonts/devicon.svg.br"
+  },
+  "/_server/assets/app-DxTp3QgC.css.gz": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"1c43-Lrc22RqOY41vBF/Of2QlvPUwsOM\"",
+    "mtime": "2026-05-08T22:50:02.943Z",
+    "size": 7235,
+    "path": "../../.output/public/_server/assets/app-DxTp3QgC.css.gz"
+  },
+  "/data/languages/en.json": {
+    "type": "application/json",
+    "encoding": null,
+    "etag": "\"35fd-ALlMUZ0hDGEL8GwC+m4XkUMX6jU\"",
+    "mtime": "2026-05-08T22:50:02.579Z",
+    "size": 13821,
+    "path": "../../.output/public/data/languages/en.json"
+  },
+  "/data/languages/en.json.br": {
+    "type": "application/json",
+    "encoding": "br",
+    "etag": "\"c62-3m9dKrPUEyzX444gYLVGl5jTvX0\"",
+    "mtime": "2026-05-08T22:50:04.058Z",
+    "size": 3170,
+    "path": "../../.output/public/data/languages/en.json.br"
+  },
+  "/data/languages/en.json.gz": {
+    "type": "application/json",
+    "encoding": "gzip",
+    "etag": "\"f6c-H5O1XHAOhJDuxIXbqua+k42NOMk\"",
+    "mtime": "2026-05-08T22:50:04.058Z",
+    "size": 3948,
+    "path": "../../.output/public/data/languages/en.json.gz"
+  },
+  "/data/languages/pt-br.json": {
+    "type": "application/json",
+    "encoding": null,
+    "etag": "\"39a1-LsA3vM7NDfu524Q7kGrdQI7sidk\"",
+    "mtime": "2026-05-08T22:50:02.582Z",
+    "size": 14753,
+    "path": "../../.output/public/data/languages/pt-br.json"
+  },
+  "/data/languages/pt-br.json.br": {
+    "type": "application/json",
+    "encoding": "br",
+    "etag": "\"f08-pftNbUpjOybgj1cKbdCNYIsPuts\"",
+    "mtime": "2026-05-08T22:50:04.059Z",
+    "size": 3848,
+    "path": "../../.output/public/data/languages/pt-br.json.br"
+  },
+  "/data/languages/pt-br.json.gz": {
+    "type": "application/json",
+    "encoding": "gzip",
+    "etag": "\"10f0-NaAQhXMJwZpKGKLDwHcumqCG8k0\"",
+    "mtime": "2026-05-08T22:50:04.059Z",
+    "size": 4336,
+    "path": "../../.output/public/data/languages/pt-br.json.gz"
+  },
+  "/_build/.vite/manifest.json": {
+    "type": "application/json",
+    "encoding": null,
+    "etag": "\"cc0-4z+vUAY7ItMBz9iX72/av4LCmoE\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 3264,
+    "path": "../../.output/public/_build/.vite/manifest.json"
+  },
+  "/_build/.vite/manifest.json.br": {
+    "type": "application/json",
+    "encoding": "br",
+    "etag": "\"1e8-1mH2rEnaiwBOXbad0uZStgKL/lM\"",
+    "mtime": "2026-05-08T22:50:02.769Z",
+    "size": 488,
+    "path": "../../.output/public/_build/.vite/manifest.json.br"
+  },
+  "/_build/.vite/manifest.json.gz": {
+    "type": "application/json",
+    "encoding": "gzip",
+    "etag": "\"23a-KUNUHESeHTZ1EvjBrkc7+46TFAY\"",
+    "mtime": "2026-05-08T22:50:02.769Z",
+    "size": 570,
+    "path": "../../.output/public/_build/.vite/manifest.json.gz"
+  },
+  "/_build/assets/Footer-DahKxp4s.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"34d0-GqkgHj76Qso2+Ly98TOkAFEbu8E\"",
+    "mtime": "2026-05-08T22:50:02.811Z",
+    "size": 13520,
+    "path": "../../.output/public/_build/assets/Footer-DahKxp4s.js.br"
+  },
+  "/_build/assets/Footer-DahKxp4s.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"957f-CXSvHzdCfbploMQhWZwRb9p89ak\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 38271,
+    "path": "../../.output/public/_build/assets/Footer-DahKxp4s.js"
+  },
+  "/_build/assets/Footer-DahKxp4s.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"3a79-gKw65CDer+/qqf9JYcMZrkXCq8Q\"",
+    "mtime": "2026-05-08T22:50:02.802Z",
+    "size": 14969,
+    "path": "../../.output/public/_build/assets/Footer-DahKxp4s.js.gz"
+  },
+  "/_build/assets/client-BMXIN7Pg.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"6241-+qbVzrSJr72AWzjd6+GkffUGUmA\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 25153,
+    "path": "../../.output/public/_build/assets/client-BMXIN7Pg.js"
+  },
+  "/_build/assets/client-BMXIN7Pg.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"236c-8IV+WlB+vfQMx/+XgbyA+dFDhwU\"",
+    "mtime": "2026-05-08T22:50:02.806Z",
+    "size": 9068,
+    "path": "../../.output/public/_build/assets/client-BMXIN7Pg.js.br"
+  },
+  "/_build/assets/client-BMXIN7Pg.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"2760-y44/WF2VKc/byNsJf5QN1azSRsw\"",
+    "mtime": "2026-05-08T22:50:02.802Z",
+    "size": 10080,
+    "path": "../../.output/public/_build/assets/client-BMXIN7Pg.js.gz"
+  },
+  "/_build/assets/client-DY8mH3CO.css": {
+    "type": "text/css; charset=utf-8",
+    "encoding": null,
+    "etag": "\"a179-3+dKhCb9gdHF5tfqc3/VxMRjZz0\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 41337,
+    "path": "../../.output/public/_build/assets/client-DY8mH3CO.css"
   },
   "/fonts/devicon.svg.gz": {
     "type": "image/svg+xml",
     "encoding": "gzip",
     "etag": "\"200376-rY3IYTSWkRYQs7z6p/0cavV2HkQ\"",
-    "mtime": "2026-05-08T21:20:17.264Z",
+    "mtime": "2026-05-08T22:50:05.693Z",
     "size": 2098038,
     "path": "../../.output/public/fonts/devicon.svg.gz"
   },
-  "/fonts/devicon.woff": {
-    "type": "font/woff",
-    "etag": "\"12d5e0-+k9k5/b7tqusPwZyqOnNnwL+Aqw\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 1234400,
-    "path": "../../.output/public/fonts/devicon.woff"
+  "/_build/assets/client-DY8mH3CO.css.br": {
+    "type": "text/css; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"1b3c-zgk4nrIiofu6QmM90PSYg+C/tp8\"",
+    "mtime": "2026-05-08T22:50:02.829Z",
+    "size": 6972,
+    "path": "../../.output/public/_build/assets/client-DY8mH3CO.css.br"
   },
-  "/_build/assets/index-C2g0wSm5.js.gz": {
-    "type": "text/javascript; charset=utf-8",
+  "/_build/assets/client-DY8mH3CO.css.gz": {
+    "type": "text/css; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"9d4-hl3e1F72IDsJ2aHFDh5+JoJqUdU\"",
-    "mtime": "2026-05-08T21:20:14.865Z",
-    "size": 2516,
-    "path": "../../.output/public/_build/assets/index-C2g0wSm5.js.gz"
+    "etag": "\"1f8f-DUtaPuFDoBXhNNWmFObk3/P71s8\"",
+    "mtime": "2026-05-08T22:50:02.806Z",
+    "size": 8079,
+    "path": "../../.output/public/_build/assets/client-DY8mH3CO.css.gz"
   },
-  "/_build/assets/index-DEM-uZxJ.js": {
+  "/_build/assets/create-theme-module-BxoSEL1S.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"144-x0CkpChKg2gTHLkR91KKX46+BJ8\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 324,
+    "path": "../../.output/public/_build/assets/create-theme-module-BxoSEL1S.js"
+  },
+  "/_build/assets/doom-CZ1D-TIk.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"3fd-PpSGO+szcat7RG71X4mkbkLiJdU\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 1021,
+    "path": "../../.output/public/_build/assets/doom-CZ1D-TIk.js"
+  },
+  "/_build/assets/index-B2BFM2z2.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"1d8d-IQQ93e88gypVabzruhYT2Nxy3O4\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 7565,
-    "path": "../../.output/public/_build/assets/index-DEM-uZxJ.js"
+    "etag": "\"812-wfkSOdsrPbVVKgW3ISQznRuz+dA\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 2066,
+    "path": "../../.output/public/_build/assets/index-B2BFM2z2.js"
   },
-  "/_build/assets/index-DEM-uZxJ.js.br": {
+  "/_build/assets/index-B2BFM2z2.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"b36-1o0B8r72cYwhaddSlm461teNoKU\"",
-    "mtime": "2026-05-08T21:20:14.869Z",
-    "size": 2870,
-    "path": "../../.output/public/_build/assets/index-DEM-uZxJ.js.br"
+    "etag": "\"378-BI9nsGc+A8cEWXvpLYDbE9oBOPY\"",
+    "mtime": "2026-05-08T22:50:02.826Z",
+    "size": 888,
+    "path": "../../.output/public/_build/assets/index-B2BFM2z2.js.br"
   },
-  "/_build/assets/index-DEM-uZxJ.js.gz": {
+  "/_build/assets/index-B2BFM2z2.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"c59-0ZI8ZL6Xe8TXM14jVhTuaa5c7+M\"",
-    "mtime": "2026-05-08T21:20:14.869Z",
-    "size": 3161,
-    "path": "../../.output/public/_build/assets/index-DEM-uZxJ.js.gz"
+    "etag": "\"3fa-9X/JUld6n+GNIcPjwoZVs+cHKzg\"",
+    "mtime": "2026-05-08T22:50:02.826Z",
+    "size": 1018,
+    "path": "../../.output/public/_build/assets/index-B2BFM2z2.js.gz"
   },
-  "/_build/assets/index-CnVyNnAr.js.br": {
+  "/_build/assets/index-B68bBEJN.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"1fd6f-ifPTqokESp7crqKY4V0zk/UJkck\"",
-    "mtime": "2026-05-08T21:20:15.956Z",
-    "size": 130415,
-    "path": "../../.output/public/_build/assets/index-CnVyNnAr.js.br"
+    "etag": "\"111d-2LKO4F8yXEBXEaRzufir0JlvZAU\"",
+    "mtime": "2026-05-08T22:50:02.847Z",
+    "size": 4381,
+    "path": "../../.output/public/_build/assets/index-B68bBEJN.js.br"
   },
-  "/_build/assets/index-DFksm2xj.js": {
+  "/_build/assets/index-B68bBEJN.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"80-CIs+6/6Qokna2gNu7tAh6UR2WuI\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
+    "encoding": null,
+    "etag": "\"3486-MvsPtcjidQBkouDvWphgqRmrdVs\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 13446,
+    "path": "../../.output/public/_build/assets/index-B68bBEJN.js"
+  },
+  "/_build/assets/index-B68bBEJN.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"1356-DRF4EuNCj4KSC3wnkqVv9Ci6YCs\"",
+    "mtime": "2026-05-08T22:50:02.829Z",
+    "size": 4950,
+    "path": "../../.output/public/_build/assets/index-B68bBEJN.js.gz"
+  },
+  "/_build/assets/index-Bs4ORsXI.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"c9b-kMe+sudI4slkF9yFyRj3eClP8Pk\"",
+    "mtime": "2026-05-08T22:50:02.830Z",
+    "size": 3227,
+    "path": "../../.output/public/_build/assets/index-Bs4ORsXI.js.gz"
+  },
+  "/_build/assets/index-Bs4ORsXI.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"1db6-DrTRgYMxrNk5+ql2FktuG19/pOU\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 7606,
+    "path": "../../.output/public/_build/assets/index-Bs4ORsXI.js"
+  },
+  "/_build/assets/index-Bs4ORsXI.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"b64-G95mS5QW6ClL6CG/ycEKLSygOLc\"",
+    "mtime": "2026-05-08T22:50:02.830Z",
+    "size": 2916,
+    "path": "../../.output/public/_build/assets/index-Bs4ORsXI.js.br"
+  },
+  "/_build/assets/index-CkzgpRvm.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"80-wJF2GuD9OczUdP1TqnHyPOcQqd8\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
     "size": 128,
-    "path": "../../.output/public/_build/assets/index-DFksm2xj.js"
+    "path": "../../.output/public/_build/assets/index-CkzgpRvm.js"
   },
-  "/_build/assets/index-DmRJSJgS.js": {
+  "/_build/assets/index-CtuRz93u.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"2440-PbzhVkLrq9kOUfZ7REiKSezaF/M\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 9280,
-    "path": "../../.output/public/_build/assets/index-DmRJSJgS.js"
+    "etag": "\"1822-X8fzxt3e75dua8j1TMy+hthmrO4\"",
+    "mtime": "2026-05-08T22:50:02.720Z",
+    "size": 6178,
+    "path": "../../.output/public/_build/assets/index-CtuRz93u.js"
   },
-  "/_build/assets/index-CnVyNnAr.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"265b0-xiB7l0Abt7YFoVcHOiA0Y1Vw4Hw\"",
-    "mtime": "2026-05-08T21:20:14.977Z",
-    "size": 157104,
-    "path": "../../.output/public/_build/assets/index-CnVyNnAr.js.gz"
-  },
-  "/_build/assets/index-DmRJSJgS.js.br": {
+  "/_build/assets/index-CtuRz93u.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"e54-/SZaB38xEBd75YhbsBg1ulp2edQ\"",
-    "mtime": "2026-05-08T21:20:14.898Z",
-    "size": 3668,
-    "path": "../../.output/public/_build/assets/index-DmRJSJgS.js.br"
+    "etag": "\"8d5-1/Id5MuYCYi/9izmd1H8vlk9SYA\"",
+    "mtime": "2026-05-08T22:50:02.864Z",
+    "size": 2261,
+    "path": "../../.output/public/_build/assets/index-CtuRz93u.js.br"
   },
-  "/_build/assets/index-DmRJSJgS.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"103f-vp28EOCRRvPZ5Xo3J2wjcdcnnr4\"",
-    "mtime": "2026-05-08T21:20:14.898Z",
-    "size": 4159,
-    "path": "../../.output/public/_build/assets/index-DmRJSJgS.js.gz"
-  },
-  "/_build/assets/index-Q9VcU1Sw.js.br": {
+  "/_build/assets/index-CmdaeGbv.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"112d-DcdE+YxSrFH0/PUF4Q4D/h5J+Wg\"",
-    "mtime": "2026-05-08T21:20:14.905Z",
-    "size": 4397,
-    "path": "../../.output/public/_build/assets/index-Q9VcU1Sw.js.br"
+    "etag": "\"1fe8a-8nsqhK92XTqDy+Oz5j3tqL61urc\"",
+    "mtime": "2026-05-08T22:50:04.059Z",
+    "size": 130698,
+    "path": "../../.output/public/_build/assets/index-CmdaeGbv.js.br"
   },
-  "/_build/assets/index-Q9VcU1Sw.js": {
+  "/_build/assets/index-CmdaeGbv.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"266ae-8Jz+JRPxjzU+HJnEe3OoCaJxuuo\"",
+    "mtime": "2026-05-08T22:50:02.968Z",
+    "size": 157358,
+    "path": "../../.output/public/_build/assets/index-CmdaeGbv.js.gz"
+  },
+  "/_build/assets/index-CtuRz93u.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"9fa-ytAoUw3DKOEc7IPEEPlBXY/wi9o\"",
+    "mtime": "2026-05-08T22:50:02.864Z",
+    "size": 2554,
+    "path": "../../.output/public/_build/assets/index-CtuRz93u.js.gz"
+  },
+  "/_build/assets/index-EVVtwP3E.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"34db-vinzChGpbjbhyM7GWNo7EFHzWOE\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 13531,
-    "path": "../../.output/public/_build/assets/index-Q9VcU1Sw.js"
+    "etag": "\"249f-a29h7flB3p8y8/PASH5qWY6VVTg\"",
+    "mtime": "2026-05-08T22:50:02.721Z",
+    "size": 9375,
+    "path": "../../.output/public/_build/assets/index-EVVtwP3E.js"
+  },
+  "/_build/assets/index-EVVtwP3E.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"e67-83JkVQ2ZaAr2pioAE00AJ/pbeYw\"",
+    "mtime": "2026-05-08T22:50:02.871Z",
+    "size": 3687,
+    "path": "../../.output/public/_build/assets/index-EVVtwP3E.js.br"
+  },
+  "/_build/assets/index-EVVtwP3E.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"106b-s+ktlbbC7neCe4uPi0rirtwkpBg\"",
+    "mtime": "2026-05-08T22:50:02.871Z",
+    "size": 4203,
+    "path": "../../.output/public/_build/assets/index-EVVtwP3E.js.gz"
   },
   "/_build/assets/preload-helper-ug3pwPZ1.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
     "etag": "\"45d-XiQMNpbVR2X0xJL+SxLhHj6mxQk\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
+    "mtime": "2026-05-08T22:50:02.721Z",
     "size": 1117,
     "path": "../../.output/public/_build/assets/preload-helper-ug3pwPZ1.js"
   },
-  "/_build/assets/index-Q9VcU1Sw.js.gz": {
+  "/_build/assets/index-CmdaeGbv.js": {
     "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"1362-wSjpUd3+x3xKMp/QFU3kmLEFyKQ\"",
-    "mtime": "2026-05-08T21:20:14.905Z",
-    "size": 4962,
-    "path": "../../.output/public/_build/assets/index-Q9VcU1Sw.js.gz"
-  },
-  "/_build/assets/preload-helper-ug3pwPZ1.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"28d-BF/Ad7CrRweCdBw6M6MBzDYbt5k\"",
-    "mtime": "2026-05-08T21:20:14.917Z",
-    "size": 653,
-    "path": "../../.output/public/_build/assets/preload-helper-ug3pwPZ1.js.gz"
+    "encoding": null,
+    "etag": "\"93b8e-hCheFkj8vQVJssgkoRg7MY604ns\"",
+    "mtime": "2026-05-08T22:50:02.721Z",
+    "size": 605070,
+    "path": "../../.output/public/_build/assets/index-CmdaeGbv.js"
   },
   "/_build/assets/preload-helper-ug3pwPZ1.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
     "etag": "\"219-M4m9Tmf23DzC7fqfeE0YouucbAc\"",
-    "mtime": "2026-05-08T21:20:14.917Z",
+    "mtime": "2026-05-08T22:50:02.886Z",
     "size": 537,
     "path": "../../.output/public/_build/assets/preload-helper-ug3pwPZ1.js.br"
+  },
+  "/_build/assets/preload-helper-ug3pwPZ1.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"28d-BF/Ad7CrRweCdBw6M6MBzDYbt5k\"",
+    "mtime": "2026-05-08T22:50:02.885Z",
+    "size": 653,
+    "path": "../../.output/public/_build/assets/preload-helper-ug3pwPZ1.js.gz"
   },
   "/dos/files/.gitkeep": {
     "type": "text/plain; charset=utf-8",
@@ -1386,18 +1623,11 @@ const assets = {
     "size": 0,
     "path": "../../.output/public/dos/files/.gitkeep"
   },
-  "/_build/assets/types-BJuT0aSC.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"6c-wpAxqyn7TORhWDEN9pKEaxvLICo\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 108,
-    "path": "../../.output/public/_build/assets/types-BJuT0aSC.js"
-  },
   "/dos/files/digger.jsdos": {
     "type": "text/plain; charset=utf-8",
     "encoding": null,
     "etag": "\"713a-mKZ7VpZRDpj2ITd+FxpRCoX4H6g\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
+    "mtime": "2026-05-08T22:50:02.582Z",
     "size": 28986,
     "path": "../../.output/public/dos/files/digger.jsdos"
   },
@@ -1405,7 +1635,7 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "br",
     "etag": "\"6ec7-Zp6KSxb8tnsI7gNJLBCwZS33AYQ\"",
-    "mtime": "2026-05-08T21:20:15.184Z",
+    "mtime": "2026-05-08T22:50:03.290Z",
     "size": 28359,
     "path": "../../.output/public/dos/files/digger.jsdos.br"
   },
@@ -1413,22 +1643,14 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"6f77-8K4rugXg8bfFWJzTwx1BJcwajAw\"",
-    "mtime": "2026-05-08T21:20:15.184Z",
+    "mtime": "2026-05-08T22:50:03.290Z",
     "size": 28535,
     "path": "../../.output/public/dos/files/digger.jsdos.gz"
-  },
-  "/_build/assets/index-CnVyNnAr.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"93a09-KyQvK2/sD6pqGYV5EklNRAbW5h0\"",
-    "mtime": "2026-05-08T21:20:14.761Z",
-    "size": 604681,
-    "path": "../../.output/public/_build/assets/index-CnVyNnAr.js"
   },
   "/dos/js-dos/emulators-ui-loader.png": {
     "type": "image/png",
     "etag": "\"e3e-jhsY+CUyGvQjta2ZSHYCnq6ERso\"",
-    "mtime": "2026-05-08T21:20:14.659Z",
+    "mtime": "2026-05-08T22:50:02.656Z",
     "size": 3646,
     "path": "../../.output/public/dos/js-dos/emulators-ui-loader.png"
   },
@@ -1436,7 +1658,7 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": null,
     "etag": "\"9390-HHcXYBvRBOSY7kdKiJw95q1ni1Y\"",
-    "mtime": "2026-05-08T21:20:14.659Z",
+    "mtime": "2026-05-08T22:50:02.608Z",
     "size": 37776,
     "path": "../../.output/public/dos/js-dos/js-dos.css"
   },
@@ -1444,7 +1666,7 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": "br",
     "etag": "\"1f69-espehF7fD0j+rbwxOIOfJmefTd8\"",
-    "mtime": "2026-05-08T21:20:15.585Z",
+    "mtime": "2026-05-08T22:50:03.655Z",
     "size": 8041,
     "path": "../../.output/public/dos/js-dos/js-dos.css.br"
   },
@@ -1452,7 +1674,7 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"24ad-ig2GXHjdTrrGuk2RKNhxlVpCkB4\"",
-    "mtime": "2026-05-08T21:20:15.585Z",
+    "mtime": "2026-05-08T22:50:03.655Z",
     "size": 9389,
     "path": "../../.output/public/dos/js-dos/js-dos.css.gz"
   },
@@ -1460,7 +1682,7 @@ const assets = {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
     "etag": "\"1cfe7-DM/vb+CiNIRbCnoTpMFPHwySbO8\"",
-    "mtime": "2026-05-08T21:20:15.978Z",
+    "mtime": "2026-05-08T22:50:04.064Z",
     "size": 118759,
     "path": "../../.output/public/dos/js-dos/js-dos.js.br"
   },
@@ -1468,31 +1690,31 @@ const assets = {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"26e2a-Am20jIzZArxx+uAALQb4YC6f0XI\"",
-    "mtime": "2026-05-08T21:20:15.962Z",
+    "mtime": "2026-05-08T22:50:04.064Z",
     "size": 159274,
     "path": "../../.output/public/dos/js-dos/js-dos.js.gz"
-  },
-  "/dos/js-dos/wdosbox.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"714b-s1NOOboxedot9QSUm91WvEkOeOU\"",
-    "mtime": "2026-05-08T21:20:15.865Z",
-    "size": 29003,
-    "path": "../../.output/public/dos/js-dos/wdosbox.js.br"
   },
   "/dos/js-dos/wdosbox.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
     "etag": "\"1ec0a-sdbAYwKl3+RPs4a37WerQYLszNk\"",
-    "mtime": "2026-05-08T21:20:14.659Z",
+    "mtime": "2026-05-08T22:50:02.619Z",
     "size": 125962,
     "path": "../../.output/public/dos/js-dos/wdosbox.js"
+  },
+  "/dos/js-dos/wdosbox.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"714b-s1NOOboxedot9QSUm91WvEkOeOU\"",
+    "mtime": "2026-05-08T22:50:03.978Z",
+    "size": 29003,
+    "path": "../../.output/public/dos/js-dos/wdosbox.js.br"
   },
   "/dos/js-dos/wdosbox.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"819a-atb5t3ZzN9uOWqyV+swl7ESNjiM\"",
-    "mtime": "2026-05-08T21:20:15.865Z",
+    "mtime": "2026-05-08T22:50:03.980Z",
     "size": 33178,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.gz"
   },
@@ -1500,31 +1722,47 @@ const assets = {
     "type": "text/plain; charset=utf-8",
     "encoding": "br",
     "etag": "\"723a-6PmYCH4jRsN7igSd1L4zNogc0rE\"",
-    "mtime": "2026-05-08T21:20:15.948Z",
+    "mtime": "2026-05-08T22:50:04.066Z",
     "size": 29242,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols.br"
-  },
-  "/dos/js-dos/wdosbox.js.symbols.gz": {
-    "type": "text/plain; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"92ee-D+SH4kY8DOfwdIaX/utznt6tGo4\"",
-    "mtime": "2026-05-08T21:20:15.948Z",
-    "size": 37614,
-    "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols.gz"
   },
   "/dos/js-dos/wdosbox.js.symbols": {
     "type": "text/plain; charset=utf-8",
     "encoding": null,
     "etag": "\"3a7c1-HPfp6OFcRif11/E5oHXZJ1m+9Tw\"",
-    "mtime": "2026-05-08T21:20:14.659Z",
+    "mtime": "2026-05-08T22:50:02.619Z",
     "size": 239553,
     "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols"
+  },
+  "/dos/js-dos/wdosbox.js.symbols.gz": {
+    "type": "text/plain; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"92ee-D+SH4kY8DOfwdIaX/utznt6tGo4\"",
+    "mtime": "2026-05-08T22:50:03.983Z",
+    "size": 37614,
+    "path": "../../.output/public/dos/js-dos/wdosbox.js.symbols.gz"
+  },
+  "/fonts/devicon.svg": {
+    "type": "image/svg+xml",
+    "encoding": null,
+    "etag": "\"53e688-6audWvp5ZxP3TDZ16BRQ2F8JZec\"",
+    "mtime": "2026-05-08T22:50:02.585Z",
+    "size": 5498504,
+    "path": "../../.output/public/fonts/devicon.svg"
+  },
+  "/dos/js-dos/js-dos.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"88b59-jUIV2DJizVWNO4XqpyUkmPbosAI\"",
+    "mtime": "2026-05-08T22:50:02.608Z",
+    "size": 559961,
+    "path": "../../.output/public/dos/js-dos/js-dos.js"
   },
   "/dos/js-dos/wdosbox.wasm.br": {
     "type": "application/wasm",
     "encoding": "br",
     "etag": "\"618e2-3/r1TSyCxN9mxbNPYDPVkPA5cTQ\"",
-    "mtime": "2026-05-08T21:20:18.198Z",
+    "mtime": "2026-05-08T22:50:06.621Z",
     "size": 399586,
     "path": "../../.output/public/dos/js-dos/wdosbox.wasm.br"
   },
@@ -1532,505 +1770,417 @@ const assets = {
     "type": "application/wasm",
     "encoding": "gzip",
     "etag": "\"7abfe-+CSl07PpWMe4dF/nM7vykhxPByk\"",
-    "mtime": "2026-05-08T21:20:16.685Z",
+    "mtime": "2026-05-08T22:50:05.230Z",
     "size": 502782,
     "path": "../../.output/public/dos/js-dos/wdosbox.wasm.gz"
   },
-  "/_server/assets/app-B0nhBw37.css": {
-    "type": "text/css; charset=utf-8",
-    "encoding": null,
-    "etag": "\"9067-x8sb7oVcuSyKvYIPRs4N9RfMKyE\"",
-    "mtime": "2026-05-08T21:20:14.763Z",
-    "size": 36967,
-    "path": "../../.output/public/_server/assets/app-B0nhBw37.css"
+  "/images/projects/adventure/p1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"42acb-bepxaxsEwaHUwmzr5xiUa0rEGKw\"",
+    "mtime": "2026-05-08T22:50:02.656Z",
+    "size": 273099,
+    "path": "../../.output/public/images/projects/adventure/p1.jpg"
   },
-  "/dos/js-dos/js-dos.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"88b59-jUIV2DJizVWNO4XqpyUkmPbosAI\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
-    "size": 559961,
-    "path": "../../.output/public/dos/js-dos/js-dos.js"
+  "/images/projects/adventure/p2.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"44b32-9K3UBSZ8fMyukMzJPJ7avodJhlw\"",
+    "mtime": "2026-05-08T22:50:02.582Z",
+    "size": 281394,
+    "path": "../../.output/public/images/projects/adventure/p2.jpg"
   },
-  "/fonts/devicon.svg": {
-    "type": "image/svg+xml",
-    "encoding": null,
-    "etag": "\"53e688-6audWvp5ZxP3TDZ16BRQ2F8JZec\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 5498504,
-    "path": "../../.output/public/fonts/devicon.svg"
-  },
-  "/_server/assets/app-B0nhBw37.css.br": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"1865-AKMvobQQmAR40fFWcAOdnqTkxks\"",
-    "mtime": "2026-05-08T21:20:14.967Z",
-    "size": 6245,
-    "path": "../../.output/public/_server/assets/app-B0nhBw37.css.br"
-  },
-  "/_server/assets/app-B0nhBw37.css.gz": {
-    "type": "text/css; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"1c43-usVZbcUitEmHKOoijRTQSJiMZSk\"",
-    "mtime": "2026-05-08T21:20:14.967Z",
-    "size": 7235,
-    "path": "../../.output/public/_server/assets/app-B0nhBw37.css.gz"
-  },
-  "/data/languages/en.json": {
-    "type": "application/json",
-    "encoding": null,
-    "etag": "\"35fd-ALlMUZ0hDGEL8GwC+m4XkUMX6jU\"",
-    "mtime": "2026-05-08T21:20:14.632Z",
-    "size": 13821,
-    "path": "../../.output/public/data/languages/en.json"
+  "/images/projects/animal-shelter/p2.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"4dc5f-z/Rsf2aegwTuLZhfzhp0IElq/dQ\"",
+    "mtime": "2026-05-08T22:50:02.670Z",
+    "size": 318559,
+    "path": "../../.output/public/images/projects/animal-shelter/p2.jpg"
   },
   "/dos/js-dos/wdosbox.wasm": {
     "type": "application/wasm",
     "encoding": null,
     "etag": "\"1650d5-/eSIYkIAgIEtn5MVjcOQSw2Yfug\"",
-    "mtime": "2026-05-08T21:20:14.659Z",
+    "mtime": "2026-05-08T22:50:02.620Z",
     "size": 1462485,
     "path": "../../.output/public/dos/js-dos/wdosbox.wasm"
-  },
-  "/dos/js-dos/js-dos.js.map": {
-    "type": "application/json",
-    "etag": "\"1c1f43-8EePJwNs7LUus35iC4CVXGbcSRs\"",
-    "mtime": "2026-05-08T21:20:14.659Z",
-    "size": 1843011,
-    "path": "../../.output/public/dos/js-dos/js-dos.js.map"
-  },
-  "/data/languages/en.json.br": {
-    "type": "application/json",
-    "encoding": "br",
-    "etag": "\"c62-3m9dKrPUEyzX444gYLVGl5jTvX0\"",
-    "mtime": "2026-05-08T21:20:15.066Z",
-    "size": 3170,
-    "path": "../../.output/public/data/languages/en.json.br"
-  },
-  "/data/languages/en.json.gz": {
-    "type": "application/json",
-    "encoding": "gzip",
-    "etag": "\"f6c-H5O1XHAOhJDuxIXbqua+k42NOMk\"",
-    "mtime": "2026-05-08T21:20:15.066Z",
-    "size": 3948,
-    "path": "../../.output/public/data/languages/en.json.gz"
-  },
-  "/data/languages/pt-br.json.br": {
-    "type": "application/json",
-    "encoding": "br",
-    "etag": "\"f08-pftNbUpjOybgj1cKbdCNYIsPuts\"",
-    "mtime": "2026-05-08T21:20:15.142Z",
-    "size": 3848,
-    "path": "../../.output/public/data/languages/pt-br.json.br"
-  },
-  "/data/languages/pt-br.json": {
-    "type": "application/json",
-    "encoding": null,
-    "etag": "\"39a1-LsA3vM7NDfu524Q7kGrdQI7sidk\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 14753,
-    "path": "../../.output/public/data/languages/pt-br.json"
-  },
-  "/data/languages/pt-br.json.gz": {
-    "type": "application/json",
-    "encoding": "gzip",
-    "etag": "\"10f0-NaAQhXMJwZpKGKLDwHcumqCG8k0\"",
-    "mtime": "2026-05-08T21:20:15.142Z",
-    "size": 4336,
-    "path": "../../.output/public/data/languages/pt-br.json.gz"
-  },
-  "/images/projects/adventure/p1.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"42acb-bepxaxsEwaHUwmzr5xiUa0rEGKw\"",
-    "mtime": "2026-05-08T21:20:14.633Z",
-    "size": 273099,
-    "path": "../../.output/public/images/projects/adventure/p1.jpg"
-  },
-  "/images/projects/laplacian-edge/ovo1.jpeg": {
-    "type": "image/jpeg",
-    "etag": "\"8079-ss8hOG6fFU+5xzWd+QqTIbKf82c\"",
-    "mtime": "2026-05-08T21:20:14.641Z",
-    "size": 32889,
-    "path": "../../.output/public/images/projects/laplacian-edge/ovo1.jpeg"
-  },
-  "/images/projects/laplacian-edge/ovo2.jpeg": {
-    "type": "image/jpeg",
-    "etag": "\"3390-nbPBzQyX/GR7lPm+d5PqQp8ouCA\"",
-    "mtime": "2026-05-08T21:20:14.733Z",
-    "size": 13200,
-    "path": "../../.output/public/images/projects/laplacian-edge/ovo2.jpeg"
-  },
-  "/images/projects/adventure/p2.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"44b32-9K3UBSZ8fMyukMzJPJ7avodJhlw\"",
-    "mtime": "2026-05-08T21:20:14.672Z",
-    "size": 281394,
-    "path": "../../.output/public/images/projects/adventure/p2.jpg"
-  },
-  "/images/projects/laplacian-edge/ovo3.jpeg": {
-    "type": "image/jpeg",
-    "etag": "\"cd8a-q8oYFcYhqIKBdQLt2pvS0pwD0Mg\"",
-    "mtime": "2026-05-08T21:20:14.672Z",
-    "size": 52618,
-    "path": "../../.output/public/images/projects/laplacian-edge/ovo3.jpeg"
-  },
-  "/images/projects/animal-shelter/p2.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"4dc5f-z/Rsf2aegwTuLZhfzhp0IElq/dQ\"",
-    "mtime": "2026-05-08T21:20:14.672Z",
-    "size": 318559,
-    "path": "../../.output/public/images/projects/animal-shelter/p2.jpg"
-  },
-  "/images/projects/photography/p1.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"38a0f-c73zM5JUqgYdjhkUn7y8Amnomfk\"",
-    "mtime": "2026-05-08T21:20:14.641Z",
-    "size": 231951,
-    "path": "../../.output/public/images/projects/photography/p1.jpg"
-  },
-  "/images/projects/photography/p2.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"6db39-t+wV8xn5xJs+dqrU/jUr92khl04\"",
-    "mtime": "2026-05-08T21:20:14.734Z",
-    "size": 449337,
-    "path": "../../.output/public/images/projects/photography/p2.jpg"
   },
   "/images/projects/julia-course/IMG_20221018_174932.jpg": {
     "type": "image/jpeg",
     "etag": "\"62eea-rqPhg/0XA2a7+eIEZloFVmCqop8\"",
-    "mtime": "2026-05-08T21:20:14.641Z",
+    "mtime": "2026-05-08T22:50:02.599Z",
     "size": 405226,
     "path": "../../.output/public/images/projects/julia-course/IMG_20221018_174932.jpg"
   },
   "/images/projects/julia-course/IMG_20221019_183914.jpg": {
     "type": "image/jpeg",
     "etag": "\"6318a-sRgzm3yMhLEEmxAUFzJuimnPIE0\"",
-    "mtime": "2026-05-08T21:20:14.672Z",
+    "mtime": "2026-05-08T22:50:02.670Z",
     "size": 405898,
     "path": "../../.output/public/images/projects/julia-course/IMG_20221019_183914.jpg"
   },
-  "/images/projects/animal-shelter/p1.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"96f8a-iVY3NYceNfom2eeBtQb5GGux/zs\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
-    "size": 618378,
-    "path": "../../.output/public/images/projects/animal-shelter/p1.jpg"
-  },
-  "/images/projects/genicam/genicam1.png": {
-    "type": "image/png",
-    "etag": "\"1357db-EUw22SI72VqfwIpSKz44qqH6RVo\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
-    "size": 1267675,
-    "path": "../../.output/public/images/projects/genicam/genicam1.png"
+  "/dos/js-dos/js-dos.js.map": {
+    "type": "application/json",
+    "etag": "\"1c1f43-8EePJwNs7LUus35iC4CVXGbcSRs\"",
+    "mtime": "2026-05-08T22:50:02.609Z",
+    "size": 1843011,
+    "path": "../../.output/public/dos/js-dos/js-dos.js.map"
   },
   "/images/projects/santista/santista2.jpeg": {
     "type": "image/jpeg",
     "etag": "\"4a582-DTCW740hJ/tsMloSNNcCLIoFOAQ\"",
-    "mtime": "2026-05-08T21:20:14.734Z",
+    "mtime": "2026-05-08T22:50:02.684Z",
     "size": 304514,
     "path": "../../.output/public/images/projects/santista/santista2.jpeg"
   },
-  "/images/projects/genicam/genicam2.png": {
-    "type": "image/png",
-    "etag": "\"1cfbf4-CsId1Y60wV3ly/1CdURylLc1H0Q\"",
-    "mtime": "2026-05-08T21:20:14.672Z",
-    "size": 1899508,
-    "path": "../../.output/public/images/projects/genicam/genicam2.png"
+  "/images/projects/laplacian-edge/ovo1.jpeg": {
+    "type": "image/jpeg",
+    "etag": "\"8079-ss8hOG6fFU+5xzWd+QqTIbKf82c\"",
+    "mtime": "2026-05-08T22:50:02.602Z",
+    "size": 32889,
+    "path": "../../.output/public/images/projects/laplacian-edge/ovo1.jpeg"
+  },
+  "/images/projects/animal-shelter/p1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"96f8a-iVY3NYceNfom2eeBtQb5GGux/zs\"",
+    "mtime": "2026-05-08T22:50:02.599Z",
+    "size": 618378,
+    "path": "../../.output/public/images/projects/animal-shelter/p1.jpg"
+  },
+  "/images/projects/laplacian-edge/ovo2.jpeg": {
+    "type": "image/jpeg",
+    "etag": "\"3390-nbPBzQyX/GR7lPm+d5PqQp8ouCA\"",
+    "mtime": "2026-05-08T22:50:02.671Z",
+    "size": 13200,
+    "path": "../../.output/public/images/projects/laplacian-edge/ovo2.jpeg"
+  },
+  "/images/projects/laplacian-edge/ovo3.jpeg": {
+    "type": "image/jpeg",
+    "etag": "\"cd8a-q8oYFcYhqIKBdQLt2pvS0pwD0Mg\"",
+    "mtime": "2026-05-08T22:50:02.684Z",
+    "size": 52618,
+    "path": "../../.output/public/images/projects/laplacian-edge/ovo3.jpeg"
+  },
+  "/images/projects/photography/p1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"38a0f-c73zM5JUqgYdjhkUn7y8Amnomfk\"",
+    "mtime": "2026-05-08T22:50:02.599Z",
+    "size": 231951,
+    "path": "../../.output/public/images/projects/photography/p1.jpg"
+  },
+  "/images/projects/photography/p2.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"6db39-t+wV8xn5xJs+dqrU/jUr92khl04\"",
+    "mtime": "2026-05-08T22:50:02.684Z",
+    "size": 449337,
+    "path": "../../.output/public/images/projects/photography/p2.jpg"
   },
   "/dos/js-dos/types/src/dom.d.ts": {
     "type": "video/mp2t",
     "etag": "\"2b0-PFL63ySFIrRIxEPpz6sQNYtTUoM\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
+    "mtime": "2026-05-08T22:50:02.714Z",
     "size": 688,
     "path": "../../.output/public/dos/js-dos/types/src/dom.d.ts"
+  },
+  "/images/projects/genicam/genicam1.png": {
+    "type": "image/png",
+    "etag": "\"1357db-EUw22SI72VqfwIpSKz44qqH6RVo\"",
+    "mtime": "2026-05-08T22:50:02.600Z",
+    "size": 1267675,
+    "path": "../../.output/public/images/projects/genicam/genicam1.png"
+  },
+  "/images/projects/usiminas/usiminas1.png": {
+    "type": "image/png",
+    "etag": "\"134c05-aK5mfEf7zJogvwdqslFRAxX5q3w\"",
+    "mtime": "2026-05-08T22:50:02.603Z",
+    "size": 1264645,
+    "path": "../../.output/public/images/projects/usiminas/usiminas1.png"
+  },
+  "/images/projects/usiminas/usminas2.png": {
+    "type": "image/png",
+    "etag": "\"151a4c-lYF0+qUb7JTaPSB7oyiilVvDA8w\"",
+    "mtime": "2026-05-08T22:50:02.699Z",
+    "size": 1382988,
+    "path": "../../.output/public/images/projects/usiminas/usminas2.png"
   },
   "/dos/js-dos/types/src/hardware-transport-layer.d.ts": {
     "type": "video/mp2t",
     "etag": "\"300-Yy5ftkj3E3DSV5axsnmwPXOnSIE\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.714Z",
     "size": 768,
     "path": "../../.output/public/dos/js-dos/types/src/hardware-transport-layer.d.ts"
   },
   "/dos/js-dos/types/src/icons.d.ts": {
     "type": "video/mp2t",
     "etag": "\"e9d-9kUnkzEIcyscmgfDv1Cy12OQmSc\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.709Z",
     "size": 3741,
     "path": "../../.output/public/dos/js-dos/types/src/icons.d.ts"
   },
-  "/dos/js-dos/types/src/player-app.d.ts": {
-    "type": "video/mp2t",
-    "etag": "\"84e-9QJiXOKMw0g8ojvzpDAaRLrA6sA\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
-    "size": 2126,
-    "path": "../../.output/public/dos/js-dos/types/src/player-app.d.ts"
-  },
-  "/dos/js-dos/types/src/request.d.ts": {
-    "type": "video/mp2t",
-    "etag": "\"6a-PcNO+FOpms3wshqYgk2gOpoMZ/s\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
-    "size": 106,
-    "path": "../../.output/public/dos/js-dos/types/src/request.d.ts"
-  },
-  "/dos/js-dos/types/src/player.d.ts": {
-    "type": "video/mp2t",
-    "etag": "\"48e-wVh33zUR6qN5hj7FzXWGtDuEQPw\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
-    "size": 1166,
-    "path": "../../.output/public/dos/js-dos/types/src/player.d.ts"
-  },
-  "/dos/js-dos/types/src/xhr.d.ts": {
-    "type": "video/mp2t",
-    "etag": "\"239-ioKyqCLZSuoID1j70IjjRQjDQrI\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
-    "size": 569,
-    "path": "../../.output/public/dos/js-dos/types/src/xhr.d.ts"
+  "/images/projects/genicam/genicam2.png": {
+    "type": "image/png",
+    "etag": "\"1cfbf4-CsId1Y60wV3ly/1CdURylLc1H0Q\"",
+    "mtime": "2026-05-08T22:50:02.657Z",
+    "size": 1899508,
+    "path": "../../.output/public/images/projects/genicam/genicam2.png"
   },
   "/images/projects/genicam/genicam3.png": {
     "type": "image/png",
     "etag": "\"1ded45-TuhQqz7CiXPhDA75zQHWdH7aQfM\"",
-    "mtime": "2026-05-08T21:20:14.672Z",
+    "mtime": "2026-05-08T22:50:02.672Z",
     "size": 1961285,
     "path": "../../.output/public/images/projects/genicam/genicam3.png"
+  },
+  "/images/projects/sparkeyes/spark1.png": {
+    "type": "image/png",
+    "etag": "\"18f649-iBlThjLEqgwEmLPWlPC4QlT4dvk\"",
+    "mtime": "2026-05-08T22:50:02.603Z",
+    "size": 1635913,
+    "path": "../../.output/public/images/projects/sparkeyes/spark1.png"
+  },
+  "/images/projects/sparkeyes/spark2.png": {
+    "type": "image/png",
+    "etag": "\"1cc3c9-U3z7PmDAA7z0CD9llLvzLWTlTkg\"",
+    "mtime": "2026-05-08T22:50:02.699Z",
+    "size": 1885129,
+    "path": "../../.output/public/images/projects/sparkeyes/spark2.png"
+  },
+  "/dos/js-dos/types/src/player-app.d.ts": {
+    "type": "video/mp2t",
+    "etag": "\"84e-9QJiXOKMw0g8ojvzpDAaRLrA6sA\"",
+    "mtime": "2026-05-08T22:50:02.714Z",
+    "size": 2126,
+    "path": "../../.output/public/dos/js-dos/types/src/player-app.d.ts"
+  },
+  "/dos/js-dos/types/src/player.d.ts": {
+    "type": "video/mp2t",
+    "etag": "\"48e-wVh33zUR6qN5hj7FzXWGtDuEQPw\"",
+    "mtime": "2026-05-08T22:50:02.714Z",
+    "size": 1166,
+    "path": "../../.output/public/dos/js-dos/types/src/player.d.ts"
+  },
+  "/dos/js-dos/types/src/request.d.ts": {
+    "type": "video/mp2t",
+    "etag": "\"6a-PcNO+FOpms3wshqYgk2gOpoMZ/s\"",
+    "mtime": "2026-05-08T22:50:02.714Z",
+    "size": 106,
+    "path": "../../.output/public/dos/js-dos/types/src/request.d.ts"
+  },
+  "/dos/js-dos/types/src/xhr.d.ts": {
+    "type": "video/mp2t",
+    "etag": "\"239-ioKyqCLZSuoID1j70IjjRQjDQrI\"",
+    "mtime": "2026-05-08T22:50:02.714Z",
+    "size": 569,
+    "path": "../../.output/public/dos/js-dos/types/src/xhr.d.ts"
+  },
+  "/images/projects/santista/santista1.png": {
+    "type": "image/png",
+    "etag": "\"25ec90-ii1O2TNbaqWKyGLU42p7Sq7NGtM\"",
+    "mtime": "2026-05-08T22:50:02.603Z",
+    "size": 2485392,
+    "path": "../../.output/public/images/projects/santista/santista1.png"
   },
   "/dos/js-dos/types/v7-services/src/personal.d.ts": {
     "type": "video/mp2t",
     "etag": "\"14e-TKNQtwJ2xnbH9+/Q21Kz4fbI0bo\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
+    "mtime": "2026-05-08T22:50:02.702Z",
     "size": 334,
     "path": "../../.output/public/dos/js-dos/types/v7-services/src/personal.d.ts"
   },
   "/dos/js-dos/types/src/components/action-bar.d.ts": {
     "type": "video/mp2t",
     "etag": "\"95-VOf8qZ9ePt8l8ufFdSlJgHNqqqQ\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
+    "mtime": "2026-05-08T22:50:02.713Z",
     "size": 149,
     "path": "../../.output/public/dos/js-dos/types/src/components/action-bar.d.ts"
+  },
+  "/images/projects/sparkeyes/spark3.png": {
+    "type": "image/png",
+    "etag": "\"221ee6-iYBYfZODalHbNJmIfpryqy4D2WQ\"",
+    "mtime": "2026-05-08T22:50:02.701Z",
+    "size": 2236134,
+    "path": "../../.output/public/images/projects/sparkeyes/spark3.png"
   },
   "/dos/js-dos/types/src/components/action-hide.d.ts": {
     "type": "video/mp2t",
     "etag": "\"af-iH5Z/2DAv/76BeXUqz/my9+Xf64\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 175,
     "path": "../../.output/public/dos/js-dos/types/src/components/action-hide.d.ts"
   },
   "/dos/js-dos/types/src/components/action-save-or-exit.d.ts": {
     "type": "video/mp2t",
     "etag": "\"b5-MtPGAUDHxY6rFaMiYTEnDTdPezo\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.714Z",
     "size": 181,
     "path": "../../.output/public/dos/js-dos/types/src/components/action-save-or-exit.d.ts"
   },
   "/dos/js-dos/types/src/components/client.d.ts": {
     "type": "video/mp2t",
     "etag": "\"df-peTt0KuJBzE54HhdyKmsHinEs9s\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.714Z",
     "size": 223,
     "path": "../../.output/public/dos/js-dos/types/src/components/client.d.ts"
-  },
-  "/images/projects/santista/santista1.png": {
-    "type": "image/png",
-    "etag": "\"25ec90-ii1O2TNbaqWKyGLU42p7Sq7NGtM\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
-    "size": 2485392,
-    "path": "../../.output/public/images/projects/santista/santista1.png"
   },
   "/dos/js-dos/types/src/components/controls.d.ts": {
     "type": "video/mp2t",
     "etag": "\"110-n/W6GtWUZC3rbadG6VBN8xtmti4\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 272,
     "path": "../../.output/public/dos/js-dos/types/src/components/controls.d.ts"
-  },
-  "/images/projects/sparkeyes/spark1.png": {
-    "type": "image/png",
-    "etag": "\"18f649-iBlThjLEqgwEmLPWlPC4QlT4dvk\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
-    "size": 1635913,
-    "path": "../../.output/public/images/projects/sparkeyes/spark1.png"
-  },
-  "/images/projects/usiminas/usiminas1.png": {
-    "type": "image/png",
-    "etag": "\"134c05-aK5mfEf7zJogvwdqslFRAxX5q3w\"",
-    "mtime": "2026-05-08T21:20:14.642Z",
-    "size": 1264645,
-    "path": "../../.output/public/images/projects/usiminas/usiminas1.png"
   },
   "/dos/js-dos/types/src/components/cpu-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9d-tS598h6CGMe+CxJ+sS4V+sX2zRo\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.714Z",
     "size": 157,
     "path": "../../.output/public/dos/js-dos/types/src/components/cpu-control.d.ts"
-  },
-  "/images/projects/sparkeyes/spark2.png": {
-    "type": "image/png",
-    "etag": "\"1cc3c9-U3z7PmDAA7z0CD9llLvzLWTlTkg\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
-    "size": 1885129,
-    "path": "../../.output/public/images/projects/sparkeyes/spark2.png"
-  },
-  "/images/projects/usiminas/usminas2.png": {
-    "type": "image/png",
-    "etag": "\"151a4c-lYF0+qUb7JTaPSB7oyiilVvDA8w\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
-    "size": 1382988,
-    "path": "../../.output/public/images/projects/usiminas/usminas2.png"
   },
   "/dos/js-dos/types/src/components/horizontal-slider.d.ts": {
     "type": "video/mp2t",
     "etag": "\"1f4-9VDnlq23FycSu3msxrSyM8peqkM\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.714Z",
     "size": 500,
     "path": "../../.output/public/dos/js-dos/types/src/components/horizontal-slider.d.ts"
   },
   "/dos/js-dos/types/src/components/region.d.ts": {
     "type": "video/mp2t",
     "etag": "\"df-weJkEGh27ziqbiLBdj1oA6Ieevo\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 223,
     "path": "../../.output/public/dos/js-dos/types/src/components/region.d.ts"
   },
   "/dos/js-dos/types/src/components/scale-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"119-8W1vDJ3kBcTmvbt0QJ0+sR07VSw\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 281,
     "path": "../../.output/public/dos/js-dos/types/src/components/scale-control.d.ts"
   },
   "/dos/js-dos/types/src/components/sensitivity-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"125-aLj8c0nTcaz3BA2CR88LOymtOmg\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 293,
     "path": "../../.output/public/dos/js-dos/types/src/components/sensitivity-control.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar.d.ts": {
     "type": "video/mp2t",
     "etag": "\"93-gC0SL3stv9ikRvCGl+QoMpx5hg8\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 147,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar.d.ts"
   },
   "/dos/js-dos/types/src/components/sync-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9c-JJ0GGLl5L+U42cy74ghlsLxvKM4\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 156,
     "path": "../../.output/public/dos/js-dos/types/src/components/sync-control.d.ts"
   },
   "/dos/js-dos/types/src/components/tip.d.ts": {
     "type": "video/mp2t",
     "etag": "\"90-k/2A23wIwvvw12SciX9tFZk7x+k\"",
-    "mtime": "2026-05-08T21:20:14.752Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 144,
     "path": "../../.output/public/dos/js-dos/types/src/components/tip.d.ts"
   },
   "/dos/js-dos/types/src/components/vertical-slider.d.ts": {
     "type": "video/mp2t",
     "etag": "\"1d7-abnLFIBfBdhrx9jusMPXZSgi95k\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 471,
     "path": "../../.output/public/dos/js-dos/types/src/components/vertical-slider.d.ts"
   },
   "/dos/js-dos/types/src/components/volume-control.d.ts": {
     "type": "video/mp2t",
     "etag": "\"11b-0YevICNiQcVb8YTYGL1e1C69rqc\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 283,
     "path": "../../.output/public/dos/js-dos/types/src/components/volume-control.d.ts"
-  },
-  "/images/projects/sparkeyes/spark3.png": {
-    "type": "image/png",
-    "etag": "\"221ee6-iYBYfZODalHbNJmIfpryqy4D2WQ\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
-    "size": 2236134,
-    "path": "../../.output/public/images/projects/sparkeyes/spark3.png"
   },
   "/dos/js-dos/types/src/backend/v7/latency.d.ts": {
     "type": "video/mp2t",
     "etag": "\"f5-lCzD2ZWr5bwof0LRU9OWrT5JBe8\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
+    "mtime": "2026-05-08T22:50:02.700Z",
     "size": 245,
     "path": "../../.output/public/dos/js-dos/types/src/backend/v7/latency.d.ts"
   },
   "/dos/js-dos/types/src/backend/v7/personal.d.ts": {
     "type": "video/mp2t",
     "etag": "\"e6-KrG0AvI/Gn7pFOgS6UacN8GKexs\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 230,
     "path": "../../.output/public/dos/js-dos/types/src/backend/v7/personal.d.ts"
   },
   "/dos/js-dos/types/src/backend/v7/v7-config.d.ts": {
     "type": "video/mp2t",
     "etag": "\"2ae-3IcV+f+Mg/b9DioAyhsZEmtOvdc\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 686,
     "path": "../../.output/public/dos/js-dos/types/src/backend/v7/v7-config.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/latency-info.d.ts": {
     "type": "video/mp2t",
     "etag": "\"109-eMwAlRuR60nxALpalD7df/+nbfA\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 265,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/latency-info.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/main.d.ts": {
     "type": "video/mp2t",
     "etag": "\"93-wqsXz+bL9+yFodtN5zMCEq6I0ug\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 147,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/main.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/networking.d.ts": {
     "type": "video/mp2t",
     "etag": "\"99-cSlzdDypYBn3ZXnUMXaIuLI1RsI\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 153,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/networking.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/token/token-add-time.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9c-5WESNrInkZZXzFv8D/uHdKr0aUk\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 156,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/token/token-add-time.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/token/token-select.d.ts": {
     "type": "video/mp2t",
     "etag": "\"9b-7hnfnWeTg2aRA47KtRNeVRhy5hc\"",
-    "mtime": "2026-05-08T21:20:14.735Z",
+    "mtime": "2026-05-08T22:50:02.702Z",
     "size": 155,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/token/token-select.d.ts"
   },
   "/dos/js-dos/types/src/components/sidebar/token/token.d.ts": {
     "type": "video/mp2t",
     "etag": "\"265-KmAJJGcEFeqFRQQJbXyPXfWqrtY\"",
-    "mtime": "2026-05-08T21:20:14.757Z",
+    "mtime": "2026-05-08T22:50:02.715Z",
     "size": 613,
     "path": "../../.output/public/dos/js-dos/types/src/components/sidebar/token/token.d.ts"
-  },
-  "/dos/files/doom.jsdos.br": {
-    "type": "text/plain; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"cab44c-DRbrj1jhmyo79opfi2w58GB28+U\"",
-    "mtime": "2026-05-08T21:20:37.486Z",
-    "size": 13284428,
-    "path": "../../.output/public/dos/files/doom.jsdos.br"
   },
   "/dos/files/doom.jsdos": {
     "type": "text/plain; charset=utf-8",
     "encoding": null,
     "etag": "\"ce38d8-R5ULl/ZX8gS8nly1++g8RcdZIlM\"",
-    "mtime": "2026-05-08T21:20:14.663Z",
+    "mtime": "2026-05-08T22:50:02.628Z",
     "size": 13514968,
     "path": "../../.output/public/dos/files/doom.jsdos"
+  },
+  "/dos/files/doom.jsdos.br": {
+    "type": "text/plain; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"cab44c-DRbrj1jhmyo79opfi2w58GB28+U\"",
+    "mtime": "2026-05-08T22:50:37.552Z",
+    "size": 13284428,
+    "path": "../../.output/public/dos/files/doom.jsdos.br"
   },
   "/dos/files/doom.jsdos.gz": {
     "type": "text/plain; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"cd3169-8zzZ8h3NeOw+CdWOk6WHEtp+2TM\"",
-    "mtime": "2026-05-08T21:20:17.511Z",
+    "mtime": "2026-05-08T22:50:05.988Z",
     "size": 13447529,
     "path": "../../.output/public/dos/files/doom.jsdos.gz"
   }
@@ -2128,14 +2278,14 @@ var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, 
 var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
 function _e$1(e) {
   let n;
-  const t = _(e), s = { duplex: "half", method: e.method, headers: e.headers };
+  const t = _$1(e), s = { duplex: "half", method: e.method, headers: e.headers };
   return e.node.req.body instanceof ArrayBuffer ? new Request(t, { ...s, body: e.node.req.body }) : new Request(t, { ...s, get body() {
     return n || (n = Ge(e), n);
   } });
 }
 function Ne$1(e) {
   var _a;
-  return (_a = e.web) != null ? _a : e.web = { request: _e$1(e), url: _(e) }, e.web.request;
+  return (_a = e.web) != null ? _a : e.web = { request: _e$1(e), url: _$1(e) }, e.web.request;
 }
 function Me$1() {
   return Qe();
@@ -2157,7 +2307,7 @@ function u$2(e) {
     return e(...n);
   };
 }
-const _ = u$2(getRequestURL), De = u$2(getRequestIP), S$1 = u$2(setResponseStatus), q$1 = u$2(getResponseStatus), We = u$2(getResponseStatusText), y$1 = u$2(getResponseHeaders), H$2 = u$2(getResponseHeader), Be$1 = u$2(setResponseHeader), N$1 = u$2(appendResponseHeader), ze = u$2(parseCookies), Je = u$2(getCookie), Xe = u$2(setCookie), h$1 = u$2(setHeader), Ge = u$2(getRequestWebStream), Ke = u$2(removeResponseHeader), Ve = u$2(Ne$1);
+const _$1 = u$2(getRequestURL), De = u$2(getRequestIP), S$1 = u$2(setResponseStatus), q$1 = u$2(getResponseStatus), We$1 = u$2(getResponseStatusText), y = u$2(getResponseHeaders), H$2 = u$2(getResponseHeader), Be = u$2(setResponseHeader), N$1 = u$2(appendResponseHeader), ze = u$2(parseCookies), Je = u$2(getCookie), Xe = u$2(setCookie), h$1 = u$2(setHeader), Ge = u$2(getRequestWebStream), Ke = u$2(removeResponseHeader), Ve = u$2(Ne$1);
 function Ze() {
   var _a;
   return getContext("nitro-app", { asyncContext: !!((_a = globalThis.app.config.server.experimental) == null ? void 0 : _a.asyncContext), AsyncLocalStorage: AsyncLocalStorage });
@@ -2209,7 +2359,7 @@ class st {
     return this.get(n) !== null;
   }
   set(n, t) {
-    return Be$1(this.event, n, t);
+    return Be(this.event, n, t);
   }
   delete(n) {
     return Ke(this.event, n);
@@ -2222,16 +2372,16 @@ class st {
     return Array.isArray(n) ? n : [n];
   }
   forEach(n) {
-    return Object.entries(y$1(this.event)).forEach(([t, s]) => n(Array.isArray(s) ? s.join(", ") : s, t, this));
+    return Object.entries(y(this.event)).forEach(([t, s]) => n(Array.isArray(s) ? s.join(", ") : s, t, this));
   }
   entries() {
-    return Object.entries(y$1(this.event)).map(([n, t]) => [n, Array.isArray(t) ? t.join(", ") : t])[Symbol.iterator]();
+    return Object.entries(y(this.event)).map(([n, t]) => [n, Array.isArray(t) ? t.join(", ") : t])[Symbol.iterator]();
   }
   keys() {
-    return Object.keys(y$1(this.event))[Symbol.iterator]();
+    return Object.keys(y(this.event))[Symbol.iterator]();
   }
   values() {
-    return Object.values(y$1(this.event)).map((n) => Array.isArray(n) ? n.join(", ") : n)[Symbol.iterator]();
+    return Object.values(y(this.event)).map((n) => Array.isArray(n) ? n.join(", ") : n)[Symbol.iterator]();
   }
   [Symbol.iterator]() {
     return this.entries()[Symbol.iterator]();
@@ -2243,7 +2393,7 @@ function ot(e) {
   }, set status(n) {
     S$1(e, n);
   }, get statusText() {
-    return We(e);
+    return We$1(e);
   }, set statusText(n) {
     S$1(e, q$1(e), n);
   }, headers: new st(e) };
@@ -2312,14 +2462,14 @@ const mt = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
 function Rt(e) {
   return e.status && mt.has(e.status) ? e.status : 302;
 }
-const yt = {}, E$2 = [AbortSignalPlugin, CustomEventPlugin, DOMExceptionPlugin, EventPlugin, FormDataPlugin, HeadersPlugin, ReadableStreamPlugin, RequestPlugin, ResponsePlugin, URLSearchParamsPlugin, URLPlugin], St = 64, D = Feature.RegExp;
+const yt = {}, E = [AbortSignalPlugin, CustomEventPlugin, DOMExceptionPlugin, EventPlugin, FormDataPlugin, HeadersPlugin, ReadableStreamPlugin, RequestPlugin, ResponsePlugin, URLSearchParamsPlugin, URLPlugin], St = 64, D = Feature.RegExp;
 function W$1(e) {
   const n = new TextEncoder().encode(e), t = n.length, s = t.toString(16), o = "00000000".substring(0, 8 - s.length) + s, a = new TextEncoder().encode(`;0x${o};`), i = new Uint8Array(12 + t);
   return i.set(a), i.set(n, 12), i;
 }
 function C$1(e, n) {
   return new ReadableStream({ start(t) {
-    crossSerializeStream(n, { scopeId: e, plugins: E$2, onSerialize(s, o) {
+    crossSerializeStream(n, { scopeId: e, plugins: E, onSerialize(s, o) {
       t.enqueue(W$1(o ? `(${getCrossReferenceHeader(e)},${s})` : s));
     }, onDone() {
       t.close();
@@ -2330,7 +2480,7 @@ function C$1(e, n) {
 }
 function wt(e) {
   return new ReadableStream({ start(n) {
-    toCrossJSONStream(e, { disabledFeatures: D, depthLimit: St, plugins: E$2, onParse(t) {
+    toCrossJSONStream(e, { disabledFeatures: D, depthLimit: St, plugins: E, onParse(t) {
       n.enqueue(W$1(JSON.stringify(t)));
     }, onDone() {
       n.close();
@@ -2339,8 +2489,8 @@ function wt(e) {
     } });
   } });
 }
-async function P(e) {
-  return fromJSON(JSON.parse(e), { plugins: E$2, disabledFeatures: D });
+async function P$1(e) {
+  return fromJSON(JSON.parse(e), { plugins: E, disabledFeatures: D });
 }
 async function bt(e) {
   const n = rt(e), t = n.request, s = t.headers.get("X-Server-Id"), o = t.headers.get("X-Server-Instance"), a = t.headers.has("X-Single-Flight"), i = new URL(t.url);
@@ -2356,13 +2506,13 @@ async function bt(e) {
   if (!o || e.method === "GET") {
     const r = i.searchParams.get("args");
     if (r) {
-      const d = await P(r);
+      const d = await P$1(r);
       for (const m of d) f.push(m);
     }
   }
   if (e.method === "POST") {
     const r = t.headers.get("content-type"), d = e.node.req, m = d instanceof ReadableStream, z = d.body instanceof ReadableStream, J = m && d.locked || z && d.body.locked, X = m ? d : d.body, w = J ? t : new Request(t, { ...t, body: X });
-    t.headers.get("x-serialized") ? f = await P(await w.text()) : (r == null ? void 0 : r.startsWith("multipart/form-data")) || (r == null ? void 0 : r.startsWith("application/x-www-form-urlencoded")) ? f.push(await w.formData()) : (r == null ? void 0 : r.startsWith("application/json")) && (f = await w.json());
+    t.headers.get("x-serialized") ? f = await P$1(await w.text()) : (r == null ? void 0 : r.startsWith("multipart/form-data")) || (r == null ? void 0 : r.startsWith("application/x-www-form-urlencoded")) ? f.push(await w.formData()) : (r == null ? void 0 : r.startsWith("application/json")) && (f = await w.json());
   }
   try {
     let r = await provideRequestEvent(n, async () => (sharedConfig.context = { event: n }, n.locals.serverFunctionMeta = { id: c + "#" + p }, B(...f)));
@@ -2414,7 +2564,7 @@ async function L$2(e, n) {
   n instanceof Response && (n.headers.has("X-Revalidate") && (t = n.headers.get("X-Revalidate").split(",")), n.headers.has("Location") && (s = new URL(n.headers.get("Location"), new URL(e.request.url).origin + "").toString()));
   const o = nt(e);
   return o.request = new Request(s, { headers: $t(e) }), await provideRequestEvent(o, async () => {
-    await gt(o), v$2 || (v$2 = (await import('../build/app-C_XX7FWC.mjs')).default), o.router.dataOnly = t || true, o.router.previousUrl = e.request.headers.get("referer");
+    await gt(o), v$2 || (v$2 = (await import('../build/app-_i5vrCyN.mjs')).default), o.router.dataOnly = t || true, o.router.previousUrl = e.request.headers.get("referer");
     try {
       renderToString(() => {
         sharedConfig.context.event = o, v$2();
@@ -2515,52 +2665,53 @@ function S(r) {
 const I$1 = (r) => u$1("title", r, { escape: true, close: true }), L$1 = (r) => u$1("meta", r), H$1 = (r) => u$1("link", r);
 
 var h = ((e) => (e.PtBr = "pt-br", e.En = "en", e))(h || {});
-function O() {
+function G() {
   return h.PtBr;
 }
-const [g, E$1] = createSignal(O()), [j, F] = createSignal(void 0), [G, K$1] = createSignal(void 0), [Y, u] = createSignal(null);
-function T(e) {
-  E$1(e);
+const [v, j] = createSignal(G()), [F, I] = createSignal(void 0), [K$1, Y$1] = createSignal(void 0), [T, u] = createSignal(null);
+function U(e) {
+  j(e);
 }
-const I = async (e) => {
+const L = async (e) => {
   const t = await fetch(`/data/languages/${e}.json`);
   if (!t.ok) throw new Error("Failed to load messages");
   return t.json();
-}, U = async () => {
+}, Z = async () => {
   const e = await fetch("/data/portfolio_shared_data.json");
   if (!e.ok) throw new Error("Failed to load shared data");
   return e.json();
 };
-function Z$1(e, t) {
-  const r = j();
-  if (!r) return t != null ? t : e;
-  const o = e.split(".");
-  let n = r;
-  for (const f of o) if (n && typeof n == "object" && f in n) n = n[f];
+function q(e, t) {
+  const a = F();
+  if (!a) return t != null ? t : e;
+  const r = e.split(".");
+  let n = a;
+  for (const f of r) if (n && typeof n == "object" && f in n) n = n[f];
   else return t != null ? t : e;
   return typeof n == "string" ? n : t != null ? t : e;
 }
-const L = createContext();
-function N() {
-  const e = useContext(L);
+const N = createContext();
+function P() {
+  const e = useContext(N);
   if (!e) throw new Error("useI18n must be used within I18nProvider");
   return e;
 }
-function we$1(e) {
+function ye$1(e) {
   onMount(() => {
-    if (U().then((r) => {
-      r && K$1(r);
+    if (Z().then((r) => {
+      r && Y$1(r);
     }).catch((r) => {
       console.error("[i18n] Failed to load shared data:", r), u("Falha ao carregar dados compartilhados");
     }), "undefined" < "u") ;
-    I(g()).then((r) => {
-      F(r), u(null);
+    const a = v();
+    L(a).then((r) => {
+      I(r), u(null);
     }).catch((r) => {
-      console.error("[i18n] Failed to load messages:", r), u(`Falha ao carregar idioma: ${g()}`);
+      console.error("[i18n] Failed to load messages:", r), u(`Falha ao carregar idioma: ${a}`);
     });
   });
-  const t = { language: g, setLanguage: T, t: Z$1, messages: j, sharedData: G, fetchError: Y };
-  return createComponent$1(L.Provider, { value: t, get children() {
+  const t = { language: v, setLanguage: U, t: q, messages: F, sharedData: K$1, fetchError: T };
+  return createComponent$1(N.Provider, { value: t, get children() {
     return e.children;
   } });
 }
@@ -2570,11 +2721,11 @@ function we$1(e) {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var R = { xmlns: "http://www.w3.org/2000/svg", width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }, i = R, y = (e) => e.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase(), X = (e) => e.replace(/^([A-Z])|[\s-_]+(\w)/g, (t, r, o) => o ? o.toUpperCase() : r.toLowerCase()), q = (e) => {
+var R = { xmlns: "http://www.w3.org/2000/svg", width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }, i = R, $ = (e) => e.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase(), X = (e) => e.replace(/^([A-Z])|[\s-_]+(\w)/g, (t, a, r) => r ? r.toUpperCase() : a.toLowerCase()), J$1 = (e) => {
   const t = X(e);
   return t.charAt(0).toUpperCase() + t.slice(1);
-}, J$1 = (...e) => e.filter((t, r, o) => !!t && t.trim() !== "" && o.indexOf(t) === r).join(" ").trim(), Q$1 = (e) => {
-  const [t, r] = splitProps(e, ["color", "size", "strokeWidth", "children", "class", "name", "iconNode", "absoluteStrokeWidth"]);
+}, Q$1 = (...e) => e.filter((t, a, r) => !!t && t.trim() !== "" && r.indexOf(t) === a).join(" ").trim(), V = (e) => {
+  const [t, a] = splitProps(e, ["color", "size", "strokeWidth", "children", "class", "name", "iconNode", "absoluteStrokeWidth"]);
   return ssrElement("svg", mergeProps(i, { get width() {
     var _a;
     return (_a = t.size) != null ? _a : i.width;
@@ -2588,31 +2739,34 @@ var R = { xmlns: "http://www.w3.org/2000/svg", width: 24, height: 24, viewBox: "
     var _a, _b;
     return t.absoluteStrokeWidth ? Number((_a = t.strokeWidth) != null ? _a : i["stroke-width"]) * 24 / Number(t.size) : Number((_b = t.strokeWidth) != null ? _b : i["stroke-width"]);
   }, get class() {
-    return J$1("lucide", "lucide-icon", ...t.name != null ? [`lucide-${y(q(t.name))}`, `lucide-${y(t.name)}`] : [], t.class != null ? t.class : "");
-  } }, r), () => escape(createComponent$1(For, { get each() {
+    return Q$1("lucide", "lucide-icon", ...t.name != null ? [`lucide-${$(J$1(t.name))}`, `lucide-${$(t.name)}`] : [], t.class != null ? t.class : "");
+  } }, a), () => escape(createComponent$1(For, { get each() {
     return t.iconNode;
-  }, children: ([o, n]) => createComponent$1(Dynamic, mergeProps({ component: o }, n)) })), true);
-}, v = Q$1, V = [["path", { d: "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4", key: "tonef" }], ["path", { d: "M9 18c-4.51 2-5-2-7-2", key: "9comsn" }]], ee = (e) => createComponent$1(v, mergeProps(e, { iconNode: V, name: "github" })), te$1 = ee, re$1 = [["path", { d: "M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5", key: "mvr1a0" }]], ae$1 = (e) => createComponent$1(v, mergeProps(e, { iconNode: re$1, name: "heart" })), oe$1 = ae$1, ne$1 = [["path", { d: "M4 5h16", key: "1tepv9" }], ["path", { d: "M4 12h16", key: "1lakjw" }], ["path", { d: "M4 19h16", key: "1djgab" }]], se = (e) => createComponent$1(v, mergeProps(e, { iconNode: ne$1, name: "menu" })), le = se, ce = [["path", { d: "M18 6 6 18", key: "1bl5f8" }], ["path", { d: "m6 6 12 12", key: "d8bk6v" }]], ie = (e) => createComponent$1(v, mergeProps(e, { iconNode: ce, name: "x" })), de$1 = ie, ue = ["<div", ' class="', '"><span class="text-xs text-text-muted font-mono">', '</span><div class="flex items-center rounded-lg border border-border overflow-hidden"><button class="', '" aria-label="Portugu\xEAs (Brasil)">\u{1F1E7}\u{1F1F7} PT</button><button class="', '" aria-label="English">\u{1F1FA}\u{1F1F8} EN</button></div></div>'], be$1 = ["<nav", ' class="', '"><div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><a', ' class="font-mono text-accent-primary font-bold text-lg tracking-wider">&lt;thecodergus/&gt;</a><div class="hidden md:flex items-center gap-8"><!--$-->', "<!--/--><!--$-->", '<!--/--></div><button class="md:hidden text-text-secondary hover:text-accent-secondary"', ">", "</button></div><!--$-->", "<!--/--></nav>"], me$1 = ["<a", ' class="text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors relative group"><!--$-->', '<!--/--><span class="absolute -bottom-1 left-0 w-0 h-px bg-accent-secondary transition-all group-hover:w-full"></span></a>'], he$1 = ["<div", ' class="md:hidden bg-surface/95 backdrop-blur-md border-b border-border px-6 py-4 flex flex-col gap-4"><!--$-->', "<!--/--><!--$-->", "<!--/--></div>"], fe$1 = ["<a", ' class="text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors">', "</a>"];
-const $ = (e) => {
-  const t = "bg-accent-secondary text-bg border-accent-secondary", r = "bg-transparent text-text-muted border-border hover:border-accent-secondary hover:text-accent-secondary";
-  return ssr(ue, ssrHydrationKey(), `flex items-center gap-2 ${e.mobile ? "pt-2 border-t border-border" : ""}`, escape(e.label()), `px-3 py-1.5 text-sm font-medium transition-colors border-r border-border ${e.language() === h.PtBr ? escape(t, true) : escape(r, true)}`, `px-3 py-1.5 text-sm font-medium transition-colors ${e.language() === h.En ? escape(t, true) : escape(r, true)}`);
+  }, children: ([r, n]) => createComponent$1(Dynamic, mergeProps({ component: r }, n)) })), true);
+}, g = V, ee$1 = [["path", { d: "M4 5h16", key: "1tepv9" }], ["path", { d: "M4 12h16", key: "1lakjw" }], ["path", { d: "M4 19h16", key: "1djgab" }]], te$1 = (e) => createComponent$1(g, mergeProps(e, { iconNode: ee$1, name: "menu" })), re$1 = te$1, ae = [["path", { d: "M18 6 6 18", key: "1bl5f8" }], ["path", { d: "m6 6 12 12", key: "d8bk6v" }]], oe = (e) => createComponent$1(g, mergeProps(e, { iconNode: ae, name: "x" })), ne$1 = oe, se$1 = ["<div", ' class="', '"><span class="text-xs text-text-muted font-mono">', '</span><div class="flex items-center rounded-lg border border-border overflow-hidden"><button class="', '" aria-label="Portugu\xEAs (Brasil)">\u{1F1E7}\u{1F1F7} PT</button><button class="', '" aria-label="English">\u{1F1FA}\u{1F1F8} EN</button></div></div>'], le = ["<nav", ' class="', '"><div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><a', ' class="font-mono text-accent-primary font-bold text-lg tracking-wider">&lt;thecodergus/&gt;</a><div class="hidden md:flex items-center gap-8"><!--$-->', "<!--/--><!--$-->", '<!--/--></div><button class="md:hidden text-text-secondary hover:text-accent-secondary"', ">", "</button></div><!--$-->", "<!--/--></nav>"], ce = ["<a", ' class="text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors relative group"><!--$-->', '<!--/--><span class="absolute -bottom-1 left-0 w-0 h-px bg-accent-secondary transition-all group-hover:w-full"></span></a>'], ie = ["<div", ' class="md:hidden bg-surface/95 backdrop-blur-md border-b border-border px-6 py-4 flex flex-col gap-4"><!--$-->', "<!--/--><!--$-->", "<!--/--></div>"], de$1 = ["<a", ' class="text-sm font-medium text-text-secondary hover:text-accent-secondary transition-colors">', "</a>"];
+const k = (e) => {
+  const t = "bg-accent-secondary text-bg border-accent-secondary", a = "bg-transparent text-text-muted border-border hover:border-accent-secondary hover:text-accent-secondary";
+  return ssr(se$1, ssrHydrationKey(), `flex items-center gap-2 ${e.mobile ? "pt-2 border-t border-border" : ""}`, escape(e.label()), `px-3 py-1.5 text-sm font-medium transition-colors border-r border-border ${e.language() === h.PtBr ? escape(t, true) : escape(a, true)}`, `px-3 py-1.5 text-sm font-medium transition-colors ${e.language() === h.En ? escape(t, true) : escape(a, true)}`);
 };
-function ye$1(e) {
-  const { language: t, t: r } = N(), [o, n] = createSignal(false), [f, ge] = createSignal(false), P = () => t() === h.En ? "Home" : "In\xEDcio", x = () => e.standalone ? [{ href: "/", label: P() }] : [{ href: "#about", label: r("navbar.about", "Sobre") }, { href: "#skills", label: r("navbar.skills", "Habilidades") }, { href: "#experience", label: r("navbar.experience", "Experi\xEAncia") }, { href: "#projects", label: r("navbar.projects", "Projetos") }, { href: "#contact", label: r("navbar.contact", "Contato") }], w = () => r("navbar.language", "Idioma"), S = () => r("navbar.menu_open", "Abrir menu");
-  return onMount(() => {
-    const l = () => {
-      n(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", l), onCleanup(() => window.removeEventListener("scroll", l));
-  }), ssr(be$1, ssrHydrationKey(), `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${o() ? "bg-bg/80 backdrop-blur-md border-b border-border" : ""} ${o() ? "" : "bg-transparent"}`, ssrAttribute("href", e.standalone ? "/" : "#", false), escape(x().map((l) => ssr(me$1, ssrHydrationKey() + ssrAttribute("href", escape(l.href, true), false), escape(l.label)))), escape(createComponent$1($, { language: t, label: w })), ssrAttribute("aria-label", escape(S(), true), false), f() ? escape(createComponent$1(de$1, { size: 24 })) : escape(createComponent$1(le, { size: 24 })), f() && ssr(he$1, ssrHydrationKey(), escape(x().map((l) => ssr(fe$1, ssrHydrationKey() + ssrAttribute("href", escape(l.href, true), false), escape(l.label)))), escape(createComponent$1($, { language: t, label: w, mobile: true }))));
-}
-var pe$1 = ["<footer", ' class="py-8 bg-bg border-t border-border"><div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-2 text-sm text-text-muted"><span>', "</span><!--$-->", "<!--/--><span><!--$-->", "<!--/--> <!--$-->", '<!--/--></span></div><div class="flex items-center gap-6"><a href="https://github.com/thecodergus" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-accent-primary transition-colors" aria-label="GitHub">', "</a><!--$-->", '<!--/--></div><p class="text-xs text-text-muted font-mono">&copy; <!--$-->', "<!--/--> <!--$-->", "<!--/--></p></div></footer>"], k = ["<a", ' href="/doom" class="text-xs font-mono text-text-muted hover:text-accent-primary transition-colors border border-border px-3 py-1 rounded hover:border-accent-primary">/doom</a>'];
 function $e(e) {
-  const { sharedData: t, t: r } = N(), o = () => {
+  const { language: t, t: a } = P(), [r, n] = createSignal(false), [f, ve] = createSignal(false), S = () => t() === h.En ? "Home" : "In\xEDcio", x = () => e.standalone ? [{ href: "/", label: S() }] : [{ href: "#about", label: a("navbar.about", "Sobre") }, { href: "#skills", label: a("navbar.skills", "Habilidades") }, { href: "#experience", label: a("navbar.experience", "Experi\xEAncia") }, { href: "#projects", label: a("navbar.projects", "Projetos") }, { href: "#contact", label: a("navbar.contact", "Contato") }], w = () => a("navbar.language", "Idioma"), M = () => a("navbar.menu_open", "Abrir menu");
+  return onMount(() => {
+    let l = false;
+    const y = () => {
+      l || (requestAnimationFrame(() => {
+        n(window.scrollY > 50), l = false;
+      }), l = true);
+    };
+    window.addEventListener("scroll", y, { passive: true }), onCleanup(() => window.removeEventListener("scroll", y));
+  }), ssr(le, ssrHydrationKey(), `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${r() ? "bg-bg/80 backdrop-blur-md border-b border-border" : ""} ${r() ? "" : "bg-transparent"}`, ssrAttribute("href", e.standalone ? "/" : "#", false), escape(x().map((l) => ssr(ce, ssrHydrationKey() + ssrAttribute("href", escape(l.href, true), false), escape(l.label)))), escape(createComponent$1(k, { language: t, label: w })), ssrAttribute("aria-label", escape(M(), true), false), f() ? escape(createComponent$1(ne$1, { size: 24 })) : escape(createComponent$1(re$1, { size: 24 })), f() && ssr(ie, ssrHydrationKey(), escape(x().map((l) => ssr(de$1, ssrHydrationKey() + ssrAttribute("href", escape(l.href, true), false), escape(l.label)))), escape(createComponent$1(k, { language: t, label: w, mobile: true }))));
+}
+var ue = [["path", { d: "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4", key: "tonef" }], ["path", { d: "M9 18c-4.51 2-5-2-7-2", key: "9comsn" }]], me$1 = (e) => createComponent$1(g, mergeProps(e, { iconNode: ue, name: "github" })), be$1 = me$1, he$1 = [["path", { d: "M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5", key: "mvr1a0" }]], fe$1 = (e) => createComponent$1(g, mergeProps(e, { iconNode: he$1, name: "heart" })), pe$1 = fe$1, ge$1 = ["<footer", ' class="py-8 bg-bg border-t border-border"><div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4"><div class="flex items-center gap-2 text-sm text-text-muted"><span>', "</span><!--$-->", "<!--/--><span><!--$-->", "<!--/--> <!--$-->", '<!--/--></span></div><div class="flex items-center gap-6"><a href="https://github.com/thecodergus" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-accent-primary transition-colors" aria-label="GitHub">', "</a><!--$-->", '<!--/--></div><p class="text-xs text-text-muted font-mono">&copy; <!--$-->', "<!--/--> <!--$-->", "<!--/--></p></div></footer>"], _ = ["<a", ' href="/doom" class="text-xs font-mono text-text-muted hover:text-accent-primary transition-colors border border-border px-3 py-1 rounded hover:border-accent-primary">/doom</a>'];
+function ke$1(e) {
+  const { sharedData: t, t: a } = P(), r = () => {
     var _a, _b;
     return ((_b = (_a = t()) == null ? void 0 : _a.basic_info) == null ? void 0 : _b.name) || "";
-  }, n = () => r("footer.made_with", "");
-  return ssr(pe$1, ssrHydrationKey(), escape(n()), escape(createComponent$1(oe$1, { size: 14, class: "text-accent-red fill-accent-red" })), escape(r("footer.by", "por")), escape(o()), escape(createComponent$1(te$1, { size: 20 })), !e.hideDoomLink && k[0] + ssrHydrationKey() + k[1], escape((/* @__PURE__ */ new Date()).getFullYear()), escape(o()));
+  }, n = () => a("footer.made_with", "");
+  return ssr(ge$1, ssrHydrationKey(), escape(n()), escape(createComponent$1(pe$1, { size: 14, class: "text-accent-red fill-accent-red" })), escape(a("footer.by", "por")), escape(r()), escape(createComponent$1(be$1, { size: 20 })), !e.hideDoomLink && _[0] + ssrHydrationKey() + _[1], escape((/* @__PURE__ */ new Date()).getFullYear()), escape(r()));
 }
 
 var __defProp = Object.defineProperty;
@@ -2629,27 +2783,27 @@ function Nt(e) {
   var _a;
   return (_a = e.web) != null ? _a : e.web = { request: Ut(e), url: Te(e) }, e.web.request;
 }
-function Bt() {
+function Wt() {
   return tn();
 }
 const Ce = /* @__PURE__ */ Symbol("$HTTPEvent");
-function Wt(e) {
+function Bt(e) {
   return typeof e == "object" && (e instanceof H3Event || (e == null ? void 0 : e[Ce]) instanceof H3Event || (e == null ? void 0 : e.__is_event__) === true);
 }
-function E(e) {
+function x(e) {
   return function(...t) {
     var _a;
     let n = t[0];
-    if (Wt(n)) t[0] = n instanceof H3Event || n.__is_event__ ? n : n[Ce];
+    if (Bt(n)) t[0] = n instanceof H3Event || n.__is_event__ ? n : n[Ce];
     else {
       if (!((_a = globalThis.app.config.server.experimental) == null ? void 0 : _a.asyncContext)) throw new Error("AsyncLocalStorage was not enabled. Use the `server.experimental.asyncContext: true` option in your app configuration to enable it. Or, pass the instance of HTTPEvent that you have as the first argument to the function.");
-      if (n = Bt(), !n) throw new Error("No HTTPEvent found in AsyncLocalStorage. Make sure you are using the function within the server runtime.");
+      if (n = Wt(), !n) throw new Error("No HTTPEvent found in AsyncLocalStorage. Make sure you are using the function within the server runtime.");
       t.unshift(n);
     }
     return e(...t);
   };
 }
-const Te = E(getRequestURL), Dt = E(getRequestIP), te = E(setResponseStatus), de = E(getResponseStatus), Gt = E(getResponseStatusText), K = E(getResponseHeaders), he = E(getResponseHeader), Vt = E(setResponseHeader), zt = E(appendResponseHeader), pe = E(sendRedirect), Kt = E(getCookie), Jt = E(setCookie), Xt = E(setHeader), Yt = E(getRequestWebStream), Qt = E(removeResponseHeader), Zt = E(Nt);
+const Te = x(getRequestURL), Dt = x(getRequestIP), ee = x(setResponseStatus), de = x(getResponseStatus), Gt = x(getResponseStatusText), K = x(getResponseHeaders), he = x(getResponseHeader), Vt = x(setResponseHeader), zt = x(appendResponseHeader), pe = x(sendRedirect), Kt = x(getCookie), Jt = x(setCookie), Xt = x(setHeader), Yt = x(getRequestWebStream), Qt = x(removeResponseHeader), Zt = x(Nt);
 function en() {
   var _a;
   return getContext("nitro-app", { asyncContext: !!((_a = globalThis.app.config.server.experimental) == null ? void 0 : _a.asyncContext), AsyncLocalStorage: AsyncLocalStorage });
@@ -2683,16 +2837,16 @@ const an = createRouter({ routes: Le.reduce((e, t) => {
   if (/:[^/]*\?/g.test(n)) throw new Error(`Optional parameters are not supported in API routes: ${n}`);
   if (e[n]) throw new Error(`Duplicate API routes for "${n}" found at "${e[n].route.path}" and "${t.path}"`);
   return e[n] = { route: t }, e;
-}, {}) }), Q = "solidFetchEvent";
+}, {}) }), Y = "solidFetchEvent";
 function cn(e) {
   return { request: Zt(e), response: dn(e), clientAddress: Dt(e), locals: {}, nativeEvent: e };
 }
 function un(e) {
-  if (!e.context[Q]) {
+  if (!e.context[Y]) {
     const t = cn(e);
-    e.context[Q] = t;
+    e.context[Y] = t;
   }
-  return e.context[Q];
+  return e.context[Y];
 }
 class ln {
   constructor(t) {
@@ -2739,18 +2893,18 @@ function dn(e) {
   return { get status() {
     return de(e);
   }, set status(t) {
-    te(e, t);
+    ee(e, t);
   }, get statusText() {
     return Gt(e);
   }, set statusText(t) {
-    te(e, de(e), t);
+    ee(e, de(e), t);
   }, headers: new ln(e) };
 }
 var pn = " ";
 const fn = { style: (e) => ssrElement("style", e.attrs, () => e.children, true), link: (e) => ssrElement("link", e.attrs, void 0, true), script: (e) => e.attrs.src ? ssrElement("script", mergeProps(() => e.attrs, { get id() {
   return e.key;
 } }), () => ssr(pn), true) : null, noscript: (e) => ssrElement("noscript", e.attrs, () => escape(e.children), true) };
-function ne(e, t) {
+function te(e, t) {
   let { tag: n, attrs: { key: o, ...r } = { key: void 0 }, children: s } = e;
   return fn[n]({ attrs: { ...r, nonce: t }, key: o, children: s });
 }
@@ -2759,7 +2913,7 @@ function mn(e, t, n, o = "default") {
     var _a;
     {
       const s = (await e.import())[o], i = (await ((_a = t.inputs) == null ? void 0 : _a[e.src].assets())).filter((u) => u.tag === "style" || u.attrs.rel === "stylesheet");
-      return { default: (u) => [...i.map((h) => ne(h)), createComponent(s, u)] };
+      return { default: (u) => [...i.map((h) => te(h)), createComponent(s, u)] };
     }
   });
 }
@@ -2789,7 +2943,7 @@ async function wn(e) {
   return globalThis.MANIFEST.ssr, e.response.headers.set("Content-Type", "text/html"), Object.assign(e, { manifest: await t.json(), assets: [...await t.inputs[t.handler].assets()], router: { submission: yn(e) }, routes: ke(), complete: false, $islands: /* @__PURE__ */ new Set() });
 }
 const bn = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
-function re(e) {
+function ne(e) {
   return e.status && bn.has(e.status) ? e.status : 302;
 }
 function vn(e, t, n = {}, o) {
@@ -2809,7 +2963,7 @@ function vn(e, t, n = {}, o) {
       if (c.nonce && (i.nonce = c.nonce), u === "sync") {
         const p = renderToString(() => (sharedConfig.context.event = i, e(i)), c);
         if (i.complete = true, i.response && i.response.headers.get("Location")) {
-          const y = re(i.response);
+          const y = ne(i.response);
           return pe(r, i.response.headers.get("Location"), y);
         }
         return p;
@@ -2828,7 +2982,7 @@ function vn(e, t, n = {}, o) {
       } else c.onCompleteShell = me(i, r);
       const h = renderToStream(() => (sharedConfig.context.event = i, e(i)), c);
       if (i.response && i.response.headers.get("Location")) {
-        const p = re(i.response);
+        const p = ne(i.response);
         return pe(r, i.response.headers.get("Location"), p);
       }
       if (u === "async") return h;
@@ -2840,8 +2994,8 @@ function vn(e, t, n = {}, o) {
 function me(e, t) {
   return () => {
     if (e.response && e.response.headers.get("Location")) {
-      const n = re(e.response);
-      te(t, n), Xt(t, "Location", e.response.headers.get("Location"));
+      const n = ne(e.response);
+      ee(t, n), Xt(t, "Location", e.response.headers.get("Location"));
     }
   };
 }
@@ -2871,20 +3025,20 @@ function Ie() {
   }
   return { subscribe: t, confirm: o };
 }
-let oe;
-function ae() {
-  (!window.history.state || window.history.state._depth == null) && window.history.replaceState({ ...window.history.state, _depth: window.history.length - 1 }, ""), oe = window.history.state._depth;
+let re;
+function se() {
+  (!window.history.state || window.history.state._depth == null) && window.history.replaceState({ ...window.history.state, _depth: window.history.length - 1 }, ""), re = window.history.state._depth;
 }
-isServer || ae();
-function En(e) {
+isServer || se();
+function xn(e) {
   return { ...e, _depth: window.history.state && window.history.state._depth };
 }
-function xn(e, t) {
+function En(e, t) {
   let n = false;
   return () => {
-    const o = oe;
-    ae();
-    const r = o == null ? null : oe - o;
+    const o = re;
+    se();
+    const r = o == null ? null : re - o;
     if (n) {
       n = false;
       return;
@@ -2893,18 +3047,18 @@ function xn(e, t) {
   };
 }
 const An = /^(?:[a-z0-9]+:)?\/\//i, Sn = /^\/+|(\/)\/+$/g, He = "http://sr";
-function B(e, t = false) {
+function W(e, t = false) {
   const n = e.replace(Sn, "$1");
   return n ? t || /^[?#]/.test(n) ? n : "/" + n : "";
 }
 function J(e, t, n) {
   if (An.test(t)) return;
-  const o = B(e), r = n && B(n);
+  const o = W(e), r = n && W(n);
   let s = "";
-  return !r || t.startsWith("/") ? s = o : r.toLowerCase().indexOf(o.toLowerCase()) !== 0 ? s = o + r : s = r, (s || "/") + B(t, !s);
+  return !r || t.startsWith("/") ? s = o : r.toLowerCase().indexOf(o.toLowerCase()) !== 0 ? s = o + r : s = r, (s || "/") + W(t, !s);
 }
-function $n(e, t) {
-  return B(e).replace(/\/*(\*.*)?$/g, "") + B(t);
+function Pn(e, t) {
+  return W(e).replace(/\/*(\*.*)?$/g, "") + W(t);
 }
 function qe(e) {
   const t = {};
@@ -2912,7 +3066,7 @@ function qe(e) {
     o in t ? Array.isArray(t[o]) ? t[o].push(n) : t[o] = [t[o], n] : t[o] = n;
   }), t;
 }
-function Pn(e, t, n) {
+function $n(e, t, n) {
   const [o, r] = e.split("/*", 2), s = o.split("/").filter(Boolean), a = s.length;
   return (i) => {
     const c = i.split("/").filter(Boolean), u = c.length - a;
@@ -2920,19 +3074,19 @@ function Pn(e, t, n) {
     const h = { path: a ? "" : "/", params: {} }, b = (g) => n === void 0 ? void 0 : n[g];
     for (let g = 0; g < a; g++) {
       const p = s[g], y = p[0] === ":", d = y ? c[g] : c[g].toLowerCase(), f = y ? p.slice(1) : p.toLowerCase();
-      if (y && Z(d, b(f))) h.params[f] = d;
-      else if (y || !Z(d, f)) return null;
+      if (y && Q(d, b(f))) h.params[f] = d;
+      else if (y || !Q(d, f)) return null;
       h.path += `/${d}`;
     }
     if (r) {
       const g = u ? c.slice(-u).join("/") : "";
-      if (Z(g, b(r))) h.params[r] = g;
+      if (Q(g, b(r))) h.params[r] = g;
       else return null;
     }
     return h;
   };
 }
-function Z(e, t) {
+function Q(e, t) {
   const n = (o) => o === e;
   return t === void 0 ? true : typeof t == "string" ? n(t) : typeof t == "function" ? t(e) : Array.isArray(t) ? t.some(n) : t instanceof RegExp ? t.test(e) : false;
 }
@@ -2960,14 +3114,14 @@ function _e(e) {
   for (; t = /^(\/\:[^\/]+)\?/.exec(o); ) r.push(n += t[1]), o = o.slice(t[0].length);
   return _e(o).reduce((s, a) => [...s, ...r.map((i) => i + a)], []);
 }
-const Tn = 100, Ln = createContext(), Me = createContext();
+const Tn = 100, Ln = createContext(), Fe = createContext();
 function kn(e, t = "") {
   const { component: n, preload: o, load: r, children: s, info: a } = e, i = !s || Array.isArray(s) && !s.length, c = { key: e, component: n, preload: o || r, info: a };
-  return Fe(e.path).reduce((u, h) => {
+  return Me(e.path).reduce((u, h) => {
     for (const b of _e(h)) {
-      const g = $n(t, b);
+      const g = Pn(t, b);
       let p = i ? g : g.split("/*", 1)[0];
-      p = p.split("/").map((y) => y.startsWith(":") || y.startsWith("*") ? y : encodeURIComponent(y)).join("/"), u.push({ ...c, originalPath: h, pattern: p, matcher: Pn(p, !i, e.matchFilters) });
+      p = p.split("/").map((y) => y.startsWith(":") || y.startsWith("*") ? y : encodeURIComponent(y)).join("/"), u.push({ ...c, originalPath: h, pattern: p, matcher: $n(p, !i, e.matchFilters) });
     }
     return u;
   }, []);
@@ -2983,11 +3137,11 @@ function In(e, t = 0) {
     return o;
   } };
 }
-function Fe(e) {
+function Me(e) {
   return Array.isArray(e) ? e : [e];
 }
 function je(e, t = "", n = [], o = []) {
-  const r = Fe(e);
+  const r = Me(e);
   for (let s = 0, a = r.length; s < a; s++) {
     const i = r[s];
     if (i && typeof i == "object") {
@@ -3007,7 +3161,7 @@ function je(e, t = "", n = [], o = []) {
   }
   return n.length ? o : o.sort((s, a) => a.score - s.score);
 }
-function W(e, t) {
+function B(e, t) {
   for (let n = 0, o = e.length; n < o; n++) {
     const r = e[n].matcher(t);
     if (r) return r;
@@ -3053,45 +3207,45 @@ function On(e, t, n, o = {}) {
         H = void 0, m === "navigate" && Ve(p), g(false), p = void 0;
       });
     }));
-  }, [d, f] = createSignal(r().value), [R, v] = createSignal(r().state), k = Hn(d, R, a.queryWrapper), P = [], I = createSignal(isServer ? Ke() : []), U = createMemo(() => typeof o.transformUrl == "function" ? W(t(), o.transformUrl(k.pathname)) : W(t(), k.pathname)), ie = () => {
+  }, [d, f] = createSignal(r().value), [R, v] = createSignal(r().state), k = Hn(d, R, a.queryWrapper), $ = [], I = createSignal(isServer ? Ke() : []), U = createMemo(() => typeof o.transformUrl == "function" ? B(t(), o.transformUrl(k.pathname)) : B(t(), k.pathname)), ae = () => {
     const m = U(), w = {};
     for (let S = 0; S < m.length; S++) Object.assign(w, m[S].params);
     return w;
-  }, We = a.paramsWrapper ? a.paramsWrapper(ie, t) : Oe(ie), ce = { pattern: h, path: () => h, outlet: () => null, resolvePath(m) {
+  }, Be = a.paramsWrapper ? a.paramsWrapper(ae, t) : Oe(ae), ie = { pattern: h, path: () => h, outlet: () => null, resolvePath(m) {
     return J(h, m);
   } };
-  return createRenderEffect(on$1(r, (m) => y("native", m), { defer: true })), { base: ce, location: k, params: We, isRouting: b, renderPath: c, parsePath: i, navigatorFactory: Ge, matches: U, beforeLeave: u, preloadRoute: ze, singleFlight: o.singleFlight === void 0 ? true : o.singleFlight, submissions: I };
+  return createRenderEffect(on$1(r, (m) => y("native", m), { defer: true })), { base: ie, location: k, params: Be, isRouting: b, renderPath: c, parsePath: i, navigatorFactory: Ge, matches: U, beforeLeave: u, preloadRoute: ze, singleFlight: o.singleFlight === void 0 ? true : o.singleFlight, submissions: I };
   function De(m, w, S) {
     untrack(() => {
       if (typeof w == "number") {
         w && (a.go ? a.go(w) : console.warn("Router integration does not support relative routing"));
         return;
       }
-      const O = !w || w[0] === "?", { replace: D, resolve: _, scroll: G, state: M } = { replace: false, resolve: !O, scroll: true, ...S }, F = _ ? m.resolvePath(w) : J(O && k.pathname || "", w);
-      if (F === void 0) throw new Error(`Path '${w}' is not a routable path`);
-      if (P.length >= Tn) throw new Error("Too many redirects");
-      const ue = d();
-      if (F !== ue || M !== R()) if (isServer) {
-        const le = getRequestEvent();
-        le && (le.response = { status: 302, headers: new Headers({ Location: F }) }), s({ value: F, replace: D, scroll: G, state: M });
-      } else u.confirm(F, S) && (P.push({ value: ue, replace: D, scroll: G, state: R() }), y("navigate", { value: F, state: M }));
+      const O = !w || w[0] === "?", { replace: D, resolve: _, scroll: G, state: F } = { replace: false, resolve: !O, scroll: true, ...S }, M = _ ? m.resolvePath(w) : J(O && k.pathname || "", w);
+      if (M === void 0) throw new Error(`Path '${w}' is not a routable path`);
+      if ($.length >= Tn) throw new Error("Too many redirects");
+      const ce = d();
+      if (M !== ce || F !== R()) if (isServer) {
+        const ue = getRequestEvent();
+        ue && (ue.response = { status: 302, headers: new Headers({ Location: M }) }), s({ value: M, replace: D, scroll: G, state: F });
+      } else u.confirm(M, S) && ($.push({ value: ce, replace: D, scroll: G, state: R() }), y("navigate", { value: M, state: F }));
     });
   }
   function Ge(m) {
-    return m = m || useContext(Me) || ce, (w, S) => De(m, w, S);
+    return m = m || useContext(Fe) || ie, (w, S) => De(m, w, S);
   }
   function Ve(m) {
-    const w = P[0];
-    w && (s({ ...m, replace: w.replace, scroll: w.scroll }), P.length = 0);
+    const w = $[0];
+    w && (s({ ...m, replace: w.replace, scroll: w.scroll }), $.length = 0);
   }
   function ze(m, w) {
-    const S = W(t(), m.pathname), O = H;
+    const S = B(t(), m.pathname), O = H;
     H = "preload";
     for (let D in S) {
       const { route: _, params: G } = S[D];
       _.component && _.component.preload && _.component.preload();
-      const { preload: M } = _;
-      w && M && runWithOwner(n(), () => M({ params: G, location: { pathname: m.pathname, search: m.search, hash: m.hash, query: qe(m), state: null, key: "" }, intent: "preload" }));
+      const { preload: F } = _;
+      w && F && runWithOwner(n(), () => F({ params: G, location: { pathname: m.pathname, search: m.search, hash: m.hash, query: qe(m), state: null, key: "" }, intent: "preload" }));
     }
     H = O;
   }
@@ -3115,18 +3269,18 @@ const Ue = (e) => (t) => {
   let s;
   const a = On(e, r, () => s, { base: n, singleFlight: t.singleFlight, transformUrl: t.transformUrl });
   return e.create && e.create(a), createComponent$1(Ln.Provider, { value: a, get children() {
-    return createComponent$1(Mn, { routerState: a, get root() {
+    return createComponent$1(Fn, { routerState: a, get root() {
       return t.root;
     }, get preload() {
       return t.rootPreload || t.rootLoad;
     }, get children() {
-      return [(s = getOwner()) && null, createComponent$1(Fn, { routerState: a, get branches() {
+      return [(s = getOwner()) && null, createComponent$1(Mn, { routerState: a, get branches() {
         return r();
       } })];
     } });
   } });
 };
-function Mn(e) {
+function Fn(e) {
   const t = e.routerState.location, n = e.routerState.params, o = createMemo(() => e.preload && untrack(() => {
     e.preload({ params: n, location: t, intent: qn() || "initial" });
   }));
@@ -3140,7 +3294,7 @@ function Mn(e) {
     return e.children;
   } }) });
 }
-function Fn(e) {
+function Mn(e) {
   if (isServer) {
     const r = getRequestEvent();
     if (r && r.router && r.router.dataOnly) {
@@ -3170,7 +3324,7 @@ function Fn(e) {
 }
 const ye = (e) => () => createComponent$1(Show, { get when() {
   return e();
-}, keyed: true, children: (t) => createComponent$1(Me.Provider, { value: t, get children() {
+}, keyed: true, children: (t) => createComponent$1(Fe.Provider, { value: t, get children() {
   return t.outlet();
 } }) }), jn = (e) => {
   const t = children(() => e.children);
@@ -3179,7 +3333,7 @@ const ye = (e) => () => createComponent$1(Show, { get when() {
   } });
 };
 function Un(e, t, n) {
-  const o = new URL(e.request.url), r = W(n, new URL(e.router.previousUrl || e.request.url).pathname), s = W(n, o.pathname);
+  const o = new URL(e.request.url), r = B(n, new URL(e.router.previousUrl || e.request.url).pathname), s = B(n, o.pathname);
   for (let a = 0; a < s.length; a++) {
     (!r[a] || s[a].route !== r[a].route) && (e.router.dataOnly = true);
     const { route: i, params: c } = s[a];
@@ -3189,14 +3343,14 @@ function Un(e, t, n) {
 function Nn([e, t], n, o) {
   return [e, o ? (r) => t(o(r)) : t];
 }
-function Bn(e) {
+function Wn(e) {
   let t = false;
   const n = (r) => typeof r == "string" ? { value: r } : r, o = Nn(createSignal(n(e.get()), { equals: (r, s) => r.value === s.value && r.state === s.state }), void 0, (r) => (!t && e.set(r), sharedConfig.registry && !sharedConfig.done && (sharedConfig.done = true), r));
   return e.init && onCleanup(e.init((r = e.get()) => {
     t = true, o[1](n(r)), t = false;
   })), Ue({ signal: o, create: e.create, utils: e.utils });
 }
-function Wn(e, t, n) {
+function Bn(e, t, n) {
   return e.addEventListener(t, n), () => e.removeEventListener(t, n);
 }
 function Dn(e, t) {
@@ -3226,16 +3380,16 @@ function Kn({ preload: e = true, explicitLinks: t = false, actionBase: n = "/_se
       if (!f || t && !f.hasAttribute("link")) return;
       const R = u(f), v = R ? f.href.baseVal : f.href;
       if ((R ? f.target.baseVal : f.target) || !v && !f.hasAttribute("state")) return;
-      const P = (f.getAttribute("rel") || "").split(/\s+/);
-      if (f.hasAttribute("download") || P && P.includes("external")) return;
+      const $ = (f.getAttribute("rel") || "").split(/\s+/);
+      if (f.hasAttribute("download") || $ && $.includes("external")) return;
       const I = R ? new URL(v, document.baseURI) : new URL(v);
       if (!(I.origin !== window.location.origin || s && I.pathname && !I.pathname.toLowerCase().startsWith(s.toLowerCase()))) return [f, I];
     }
     function b(d) {
       const f = h(d);
       if (!f) return;
-      const [R, v] = f, k = r.parsePath(v.pathname + v.search + v.hash), P = R.getAttribute("state");
-      d.preventDefault(), a(k, { resolve: false, replace: R.hasAttribute("replace"), scroll: !R.hasAttribute("noscroll"), state: P ? JSON.parse(P) : void 0 });
+      const [R, v] = f, k = r.parsePath(v.pathname + v.search + v.hash), $ = R.getAttribute("state");
+      d.preventDefault(), a(k, { resolve: false, replace: R.hasAttribute("replace"), scroll: !R.hasAttribute("noscroll"), state: $ ? JSON.parse($) : void 0 });
     }
     function g(d) {
       const f = h(d);
@@ -3279,9 +3433,9 @@ function Jn(e) {
     const o = window.location.pathname.replace(/^\/+/, "/") + window.location.search, r = window.history.state && window.history.state._depth && Object.keys(window.history.state).length === 1 ? void 0 : window.history.state;
     return { value: o + window.location.hash, state: r };
   }, n = Ie();
-  return Bn({ get: t, set({ value: o, replace: r, scroll: s, state: a }) {
-    r ? window.history.replaceState(En(a), "", o) : window.history.pushState(a, "", o), Dn(decodeURIComponent(window.location.hash.slice(1)), s), ae();
-  }, init: (o) => Wn(window, "popstate", xn(o, (r) => {
+  return Wn({ get: t, set({ value: o, replace: r, scroll: s, state: a }) {
+    r ? window.history.replaceState(xn(a), "", o) : window.history.pushState(a, "", o), Dn(decodeURIComponent(window.location.hash.slice(1)), s), se();
+  }, init: (o) => Bn(window, "popstate", En(o, (r) => {
     if (r) return !n.confirm(r);
     {
       const s = t();
@@ -3301,7 +3455,7 @@ var Xn = ["<main", ' id="main" class="min-h-screen bg-bg pt-16 flex flex-col ite
     V V</pre><h2 class="text-2xl md:text-3xl font-bold text-accent-primary mb-4">`, '</h2><p class="text-text-secondary text-lg mb-8 max-w-lg mx-auto">', '</p><a href="/" class="inline-block px-8 py-3 border border-accent-primary text-accent-primary font-semibold font-mono uppercase tracking-wider text-sm hover:bg-accent-primary hover:text-bg hover:shadow-glow-primary transition-all">', '</a><p class="mt-6 text-sm text-text-muted">', "</p></div></main>"];
 function Yn() {
   var _a, _b, _c, _d, _e2;
-  const { messages: e } = N(), t = () => {
+  const { messages: e } = P(), t = () => {
     var _a2;
     return (_a2 = e()) == null ? void 0 : _a2.not_found;
   };
@@ -3310,7 +3464,7 @@ function Yn() {
     document.documentElement.setAttribute("data-theme", "doom"), onCleanup(() => {
       n ? document.documentElement.setAttribute("data-theme", n) : document.documentElement.removeAttribute("data-theme");
     });
-  }), [createComponent$1(ye$1, { standalone: true }), ssr(Xn, ssrHydrationKey(), escape(((_a = t()) == null ? void 0 : _a.status) || "404"), escape(((_b = t()) == null ? void 0 : _b.heading) || "Voc\xEA entrou no inferno errado."), escape(((_c = t()) == null ? void 0 : _c.description) || "Esta p\xE1gina foi perdida nas profundezas. O caminho que voc\xEA busca n\xE3o existe mais \u2014 ou nunca existiu."), escape(((_d = t()) == null ? void 0 : _d.back_home) || "Voltar ao Mundo dos Vivos"), escape(((_e2 = t()) == null ? void 0 : _e2.subtext) || "Este n\xE3o \xE9 o caminho que voc\xEA procura.")), createComponent$1($e, { hideDoomLink: true })];
+  }), [createComponent$1($e, { standalone: true }), ssr(Xn, ssrHydrationKey(), escape(((_a = t()) == null ? void 0 : _a.status) || "404"), escape(((_b = t()) == null ? void 0 : _b.heading) || "Voc\xEA entrou no inferno errado."), escape(((_c = t()) == null ? void 0 : _c.description) || "Esta p\xE1gina foi perdida nas profundezas. O caminho que voc\xEA busca n\xE3o existe mais \u2014 ou nunca existiu."), escape(((_d = t()) == null ? void 0 : _d.back_home) || "Voltar ao Mundo dos Vivos"), escape(((_e2 = t()) == null ? void 0 : _e2.subtext) || "Este n\xE3o \xE9 o caminho que voc\xEA procura.")), createComponent$1(ke$1, { hideDoomLink: true })];
 }
 var we = ["<script", ">", "<\/script>"];
 const Qn = `
@@ -3324,13 +3478,17 @@ const Qn = `
 (function() {
   try {
     var l = localStorage.getItem('portfolio-language');
-    if (l === 'pt-br' || l === 'en') document.documentElement.lang = l;
+    if (l === 'pt-br' || l === 'en') {
+      document.documentElement.lang = l;
+      var skip = document.querySelector('[data-i18n-skip]');
+      if (skip) skip.textContent = l === 'en' ? 'Skip to content' : 'Pular para o conte\\u00fado';
+    }
   } catch(e) {}
 })();
 `.trim();
 function er() {
   return createComponent$1(Jn, { root: (e) => createComponent$1(K$2, { get children() {
-    return [createComponent$1(I$1, { children: "Gustavo M Camargo | AI & Software Engineer" }), createComponent$1(L$1, { name: "description", content: "Portfolio de Gustavo M Camargo \u2014 Especialista em Automa\xE7\xE3o com IA, LangGraph & AI Agents. Python, C++, Rust, React. Experi\xEAncia em agentes inteligentes e sistemas full-stack." }), createComponent$1(L$1, { name: "keywords", content: "AI engineer, LangGraph, Python, C++, Rust, React, automa\xE7\xE3o, software engineer, portfolio, Gustavo Camargo" }), createComponent$1(L$1, { name: "author", content: "Gustavo M Camargo" }), createComponent$1(L$1, { name: "robots", content: "index, follow" }), createComponent$1(L$1, { name: "theme-color", content: "#080012" }), createComponent$1(L$1, { property: "og:title", content: "Gustavo M Camargo | AI & Software Engineer" }), createComponent$1(L$1, { property: "og:description", content: "Especialista em Automa\xE7\xE3o com IA, LangGraph & AI Agents. Python, C++, Rust, React." }), createComponent$1(L$1, { property: "og:type", content: "website" }), createComponent$1(L$1, { property: "og:url", content: "https://thecodergus.github.io" }), createComponent$1(L$1, { property: "og:image", content: "https://thecodergus.github.io/images/myProfile.jpg" }), createComponent$1(L$1, { property: "og:locale", content: "pt_BR" }), createComponent$1(L$1, { name: "twitter:card", content: "summary" }), createComponent$1(L$1, { name: "twitter:title", content: "Gustavo M Camargo | AI & Software Engineer" }), createComponent$1(L$1, { name: "twitter:description", content: "Especialista em Automa\xE7\xE3o com IA, LangGraph & AI Agents." }), createComponent$1(L$1, { name: "twitter:image", content: "https://thecodergus.github.io/images/myProfile.jpg" }), ssr(we, ssrHydrationKey(), Qn), ssr(we, ssrHydrationKey(), Zn), createComponent$1(H$1, { rel: "preconnect", href: "https://fonts.googleapis.com" }), createComponent$1(H$1, { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" }), createComponent$1(H$1, { href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap", rel: "stylesheet" }), createComponent$1(we$1, { get children() {
+    return [createComponent$1(I$1, { children: "Gustavo M Camargo | AI & Software Engineer" }), createComponent$1(L$1, { name: "description", content: "Portfolio de Gustavo M Camargo \u2014 Especialista em Automa\xE7\xE3o com IA, LangGraph & AI Agents. Python, C++, Rust, React. Experi\xEAncia em agentes inteligentes e sistemas full-stack." }), createComponent$1(L$1, { name: "keywords", content: "AI engineer, LangGraph, Python, C++, Rust, React, automa\xE7\xE3o, software engineer, portfolio, Gustavo Camargo" }), createComponent$1(L$1, { name: "author", content: "Gustavo M Camargo" }), createComponent$1(L$1, { name: "robots", content: "index, follow" }), createComponent$1(L$1, { name: "theme-color", content: "#080012" }), createComponent$1(L$1, { property: "og:title", content: "Gustavo M Camargo | AI & Software Engineer" }), createComponent$1(L$1, { property: "og:description", content: "Especialista em Automa\xE7\xE3o com IA, LangGraph & AI Agents. Python, C++, Rust, React." }), createComponent$1(L$1, { property: "og:type", content: "website" }), createComponent$1(L$1, { property: "og:url", content: "https://thecodergus.github.io" }), createComponent$1(L$1, { property: "og:image", content: "https://thecodergus.github.io/images/myProfile.jpg" }), createComponent$1(L$1, { property: "og:locale", content: "pt_BR" }), createComponent$1(L$1, { name: "twitter:card", content: "summary" }), createComponent$1(L$1, { name: "twitter:title", content: "Gustavo M Camargo | AI & Software Engineer" }), createComponent$1(L$1, { name: "twitter:description", content: "Especialista em Automa\xE7\xE3o com IA, LangGraph & AI Agents." }), createComponent$1(L$1, { name: "twitter:image", content: "https://thecodergus.github.io/images/myProfile.jpg" }), ssr(we, ssrHydrationKey(), Qn), ssr(we, ssrHydrationKey(), Zn), createComponent$1(H$1, { rel: "preload", href: "/fonts/fonts.css", as: "style" }), createComponent$1(H$1, { href: "/fonts/fonts.css", rel: "stylesheet" }), createComponent$1(ye$1, { get children() {
       return createComponent$1(Suspense, { get children() {
         return e.children;
       } });
@@ -3358,14 +3516,14 @@ const rr = (e) => {
 };
 var be = ["<script", ">", "<\/script>"], sr = ["<script", ' type="module"', " async", "><\/script>"], ar = ["<script", ' type="module" async', "><\/script>"];
 const ir = ssr("<!DOCTYPE html>");
-function Be(e, t, n = []) {
+function We(e, t, n = []) {
   for (let o = 0; o < t.length; o++) {
     const r = t[o];
     if (r.path !== e[0].path) continue;
     let s = [...n, r];
     if (r.children) {
       const a = e.slice(1);
-      if (a.length === 0 || (s = Be(a, r.children, s), !s)) continue;
+      if (a.length === 0 || (s = We(a, r.children, s), !s)) continue;
     }
     return s;
   }
@@ -3378,7 +3536,7 @@ function cr(e) {
     if (t.router && t.router.matches) {
       const s = [...t.router.matches];
       for (; s.length && (!s[0].info || !s[0].info.filesystem); ) s.shift();
-      const a = s.length && Be(s, t.routes);
+      const a = s.length && We(s, t.routes);
       if (a) {
         const i = globalThis.MANIFEST.client.inputs;
         for (let c = 0; c < a.length; c++) {
@@ -3388,10 +3546,10 @@ function cr(e) {
       }
     }
     o = await Promise.all(r).then((s) => [...new Map(s.flat().map((a) => [a.attrs.key, a])).values()].filter((a) => a.attrs.rel === "modulepreload" && !t.assets.find((i) => i.attrs.key === a.attrs.key)));
-  }), useAssets(() => o.length ? o.map((r) => ne(r)) : void 0), createComponent$1(NoHydration, { get children() {
+  }), useAssets(() => o.length ? o.map((r) => te(r)) : void 0), createComponent$1(NoHydration, { get children() {
     return [ir, createComponent$1(or, { get children() {
       return createComponent$1(e.document, { get assets() {
-        return [createComponent$1(HydrationScript, {}), t.assets.map((r) => ne(r, n))];
+        return [createComponent$1(HydrationScript, {}), t.assets.map((r) => te(r, n))];
       }, get scripts() {
         return n ? [ssr(be, ssrHydrationKey() + ssrAttribute("nonce", escape(n, true), false), `window.manifest = ${JSON.stringify(t.manifest)}`), ssr(sr, ssrHydrationKey(), ssrAttribute("nonce", escape(n, true), false), ssrAttribute("src", escape(globalThis.MANIFEST.client.inputs[globalThis.MANIFEST.client.handler].output.path, true), false))] : [ssr(be, ssrHydrationKey(), `window.manifest = ${JSON.stringify(t.manifest)}`), ssr(ar, ssrHydrationKey(), ssrAttribute("src", escape(globalThis.MANIFEST.client.inputs[globalThis.MANIFEST.client.handler].output.path, true), false))];
       }, get children() {
@@ -3404,7 +3562,7 @@ function cr(e) {
     } })];
   } });
 }
-var ur = ['<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080012"><link rel="icon" href="/favicon.ico"><link rel="manifest" href="/manifest.json">', '<script type="application/ld+json">', "<\/script></head>"], lr = ["<html", ' lang="pt-br" data-theme="ai">', '<body><a href="#main" class="skip-link">Pular para o conte\xFAdo</a><div id="app">', "</div><!--$-->", "<!--/--></body></html>"];
+var ur = ['<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080012"><link rel="icon" href="/favicon.ico"><link rel="manifest" href="/manifest.json">', '<script type="application/ld+json">', "<\/script></head>"], lr = ["<html", ' lang="pt-br" data-theme="ai">', '<body><a href="#main" class="skip-link" data-i18n-skip>Pular para o conte\xFAdo</a><div id="app">', "</div><!--$-->", "<!--/--></body></html>"];
 const vr = Rn(() => createComponent$1(cr, { document: ({ assets: e, children: t, scripts: n }) => ssr(lr, ssrHydrationKey(), createComponent$1(NoHydration, { get children() {
   return ssr(ur, escape(e), JSON.stringify({ "@context": "https://schema.org", "@type": "Person", name: "Gustavo M Camargo", url: "https://thecodergus.github.io", jobTitle: "AI & Software Engineer", sameAs: ["https://github.com/thecodergus", "https://www.linkedin.com/in/thecodergus"], knowsAbout: ["Artificial Intelligence", "LangGraph", "Python", "C++", "Rust", "React", "TypeScript", "Full-Stack Development"] }));
 } }), escape(t), escape(n)) }));
@@ -3568,5 +3726,5 @@ const localFetch = nitroApp.localFetch;
 const closePrerenderer = () => nitroApp.hooks.callHook("close");
 trapUnhandledNodeErrors();
 
-export { $e as $, Ft as F, H$1 as H, N, closePrerenderer as c, de$1 as d, localFetch as l, te$1 as t, v, ye$1 as y };
+export { $e as $, Ft as F, H$1 as H, P, be$1 as b, closePrerenderer as c, g, ke$1 as k, localFetch as l, ne$1 as n };
 //# sourceMappingURL=nitro.mjs.map

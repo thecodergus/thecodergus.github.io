@@ -11,7 +11,7 @@ Portfolio pessoal de Gustavo M Camargo — Especialista em Automação com IA, L
 | Bundler | Vite 7.3.2 + Vinxi 0.5.11                 |
 | Estilo  | Tailwind CSS v4 + data-theme scoping       |
 | 3D      | Three.js ^0.184.0 (raw API, sem R3F)      |
-| Icons   | Lucide Solid + Devicon                  |
+| Icons   | Lucide Solid (deep imports) + Devicon (build-time) |
 | A11y    | Kobalte Core                            |
 
 ## Scripts
@@ -24,8 +24,9 @@ npm start           # Preview do build
 npm run typecheck   # Verificação de tipos (tsc --noEmit)
 npm run lint        # ESLint
 npm run lint:fix    # ESLint com correção automática
-npm run test        # Vitest (4 arquivos, 121 testes)
-npm run test:watch  # Vitest em modo watch
+npm run test         # Vitest (4 arquivos, 121 testes)
+npm run test:watch   # Vitest em modo watch
+npm run test:coverage # Relatório de cobertura (@vitest/coverage-v8)
 ```
 
 ## Arquitetura
@@ -49,7 +50,8 @@ src/
 │   ├── transition.test.ts  # 15 testes — máquina de estados
 │   └── quality.test.ts     # 10 testes — detecção de GPU
 ├── themes/                 # Sistema de temas plug-in
-│   ├── registry.ts         # REGISTRY: Record<ThemeId, ThemeModule>
+│   ├── registry.ts         # REGISTRY + loadTheme() com cache de Promise
+│   ├── create-theme-module.ts # Factory createThemeModule(config) => ThemeModule
 │   ├── ai/                 # Rede neural 3D (9 camadas, 44 neurônios)
 │   ├── blockchain/         # Grafo force-directed (chain + carteiras)
 │   ├── software/           # Matrix digital rain + glitch
@@ -109,6 +111,18 @@ Shaders personalizados aplicados via `EffectComposer` (GLSL 3.0 ES):
 - Zero classes — estado em closures (factory functions)
 - Animações usam `onMount` + `setInterval`, nunca `createEffect`
 - TypeScript strict, nunca `any`
+- Lucide Solid usa deep imports (`lucide-solid/icons/icon-name`), nunca barrel import
+
+## Gotchas
+
+- **GLSL 3.0 ES**: NUNCA inclua `#version 300 es` — Three.js injeta no topo. Use `material.glslVersion = THREE.GLSL3`.
+- **`quality.ts`**: `getParameter` retorna `null` no Firefox/Safari — use `(getParameter(...) ?? "").toLowerCase()`.
+- **Fontes self-hosted**: 16 `.woff2` em `public/fonts/` — zero requisições externas.
+- **CSS colors vs TypeScript colorScheme**: sistemas independentes — um controla a UI, outro controla as cores 3D.
+- **`lerpColor()`** só aceita hex 6 caracteres (`#RRGGBB`), não short hex (`#RGB`).
+- **WebGL context loss**: handlers em `webglcontextlost`/`webglcontextrestored` pausam o render loop.
+- **Bloom breathing** só funciona em AI e Software (temas com `getDensity()`).
+- **`camera.lookAt(0,0,0)`** chamado todo frame. Se mudar o target, atualize `engine.ts`.
 
 ## Deploy
 
