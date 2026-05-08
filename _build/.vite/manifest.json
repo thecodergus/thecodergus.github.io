@@ -3,8 +3,15 @@
     "file": "assets/Footer-DahKxp4s.js",
     "name": "Footer"
   },
-  "_create-theme-module-BxoSEL1S.js": {
-    "file": "assets/create-theme-module-BxoSEL1S.js",
+  "_canvasTexture-DzuKp8Mc.js": {
+    "file": "assets/canvasTexture-DzuKp8Mc.js",
+    "name": "canvasTexture",
+    "imports": [
+      "_index-Cu1Ap1ac.js"
+    ]
+  },
+  "_create-theme-module-DELPPpDb.js": {
+    "file": "assets/create-theme-module-DELPPpDb.js",
     "name": "create-theme-module"
   },
   "_index-B2BFM2z2.js": {
@@ -14,8 +21,8 @@
       "_Footer-DahKxp4s.js"
     ]
   },
-  "_index-CmdaeGbv.js": {
-    "file": "assets/index-CmdaeGbv.js",
+  "_index-Cu1Ap1ac.js": {
+    "file": "assets/index-Cu1Ap1ac.js",
     "name": "index",
     "isDynamicEntry": true,
     "imports": [
@@ -45,66 +52,69 @@
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-CkzgpRvm.js",
+    "file": "assets/index-Cw9uipnH.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "imports": [
       "_Footer-DahKxp4s.js",
-      "_index-CmdaeGbv.js",
+      "_index-Cu1Ap1ac.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/ai/index.ts": {
-    "file": "assets/index-B68bBEJN.js",
+    "file": "assets/index-UJwn3GnR.js",
     "name": "index",
     "src": "src/themes/ai/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_create-theme-module-BxoSEL1S.js",
-      "_index-CmdaeGbv.js",
+      "_index-Cu1Ap1ac.js",
+      "_create-theme-module-DELPPpDb.js",
       "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/blockchain/index.ts": {
-    "file": "assets/index-Bs4ORsXI.js",
+    "file": "assets/index-DROED1tm.js",
     "name": "index",
     "src": "src/themes/blockchain/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_create-theme-module-BxoSEL1S.js",
-      "_index-CmdaeGbv.js",
+      "_index-Cu1Ap1ac.js",
+      "_canvasTexture-DzuKp8Mc.js",
+      "_create-theme-module-DELPPpDb.js",
       "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/software/index.ts": {
-    "file": "assets/index-EVVtwP3E.js",
+    "file": "assets/index-D3EhOlsz.js",
     "name": "index",
     "src": "src/themes/software/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_create-theme-module-BxoSEL1S.js",
-      "_index-CmdaeGbv.js",
+      "_index-Cu1Ap1ac.js",
+      "_canvasTexture-DzuKp8Mc.js",
+      "_create-theme-module-DELPPpDb.js",
       "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/web/index.ts": {
-    "file": "assets/index-CtuRz93u.js",
+    "file": "assets/index-B7tlVE7p.js",
     "name": "index",
     "src": "src/themes/web/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_create-theme-module-BxoSEL1S.js",
-      "_index-CmdaeGbv.js",
+      "_index-Cu1Ap1ac.js",
+      "_canvasTexture-DzuKp8Mc.js",
+      "_create-theme-module-DELPPpDb.js",
       "_Footer-DahKxp4s.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-BMXIN7Pg.js",
+    "file": "assets/client-BuNo5JW-.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,

@@ -1,0 +1,1 @@
+function r(e){return Object.freeze({sceneKind:e.sceneKind,colorScheme:Object.freeze(e.colorScheme),createScene:e.createScene,cameraPreset:Object.freeze(e.cameraPreset),postPreset:Object.freeze(e.postPreset)})}export{r as c};
