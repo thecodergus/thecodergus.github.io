@@ -27,14 +27,12 @@ const SCANLINE_SHADER = {
     uVignetteStrength: { value: 0.35 },
     uChromaticStrength: { value: 0.003 },
   },
-  vertexShader: `#version 300 es
-out vec2 vUv;
+  vertexShader: `out vec2 vUv;
 void main() {
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }`,
-  fragmentShader: `#version 300 es
-in vec2 vUv;
+  fragmentShader: `in vec2 vUv;
 uniform sampler2D tDiffuse;
 uniform float uTime;
 uniform vec2 uResolution;
