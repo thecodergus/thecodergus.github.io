@@ -12,6 +12,8 @@ touch .output/public/.nojekyll
 
 WORKTREE="/tmp/gh-pages-deploy"
 
+git worktree prune
+
 if git worktree list | grep -q "$WORKTREE"; then
   echo "[4/5] Reusing existing worktree at $WORKTREE"
 else
