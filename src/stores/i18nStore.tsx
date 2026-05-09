@@ -56,7 +56,7 @@ export function t(key: string, defaultValue?: string): string {
 
 export { language, messages, sharedData, fetchError };
 
-interface I18nContextValue {
+export interface I18nContextValue {
   language: () => Language;
   setLanguage: (lang: Language) => void;
   t: (key: string, defaultValue?: string) => string;
@@ -65,7 +65,7 @@ interface I18nContextValue {
   fetchError: () => string | null;
 }
 
-const I18nContext = createContext<I18nContextValue>();
+export const I18nContext = createContext<I18nContextValue>();
 
 export function useI18n() {
   const context = useContext(I18nContext);

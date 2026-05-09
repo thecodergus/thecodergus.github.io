@@ -1,23 +1,12 @@
-import { createSignal, onMount, onCleanup, For, Show } from "solid-js";
+import { For, Show } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
+import { createVisibilityObserver } from "~/hooks/createVisibilityObserver";
 
 export default function Experience() {
   const { messages, t } = useI18n();
-  const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    onCleanup(() => observer.disconnect());
-  });
+  const isVisible = createVisibilityObserver(() => sectionRef, 0.1);
 
   const experiences = () => messages()?.experience || [];
   const sectionName = () => t("basic_info.section_name.experience", "");
@@ -58,7 +47,7 @@ export default function Experience() {
                 }`}>
                   <div class="bg-bg rounded-xl p-6 border border-border hover:border-accent-primary/50 transition-colors">
                     <div class="flex items-center gap-3 mb-2 md:justify-start">
-                      <i class={`${exp.icon} text-2xl text-accent-primary`} />
+                      <i class={`${exp.icon} text-2xl text-accent-primary`} aria-hidden="true" />
                       <div>
                         <h3 class="font-semibold text-text">{exp.title}</h3>
                         <p class="text-accent-secondary text-sm">{exp.company}</p>

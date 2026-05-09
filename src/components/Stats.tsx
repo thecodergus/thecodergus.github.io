@@ -76,7 +76,7 @@ export default function Stats() {
                   transition: `opacity 0.5s ease-out ${index() * 0.1}s, transform 0.5s ease-out ${index() * 0.1}s`,
                 }}
               >
-                <div class="text-4xl md:text-5xl font-bold font-display text-accent-primary mb-2">
+                <div class="text-4xl md:text-5xl font-bold font-display text-accent-primary mb-2" aria-live="polite">
                   {counts()[index()]}{stat.suffix}
                 </div>
                 <div class="text-sm text-text-muted font-medium uppercase tracking-wider">

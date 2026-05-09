@@ -57,7 +57,7 @@ export default function RotatingTypewriter(props: RotatingTypewriterProps) {
   return (
     <span class={props.class}>
       {displayed()}
-      <span class="animate-pulse">|</span>
+      <span class="animate-pulse" aria-hidden="true">|</span>
     </span>
   );
 }

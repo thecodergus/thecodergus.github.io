@@ -83,7 +83,7 @@
             "endDate": "Mar 2026",
             "description": "Pipeline de inteligência artificial para análise automatizada de interações de atendimento ao cliente, calculando o NPS e extraindo insights sem intervenção manual. A arquitetura de microsserviços utiliza LangGraph para orquestração de agentes de IA, RabbitMQ para processamento assíncrono de mensagens, FastAPI para exposição da API e PostgreSQL para persistência, todo o ambiente containerizado com Docker.",
             "url": "",
-            "images": ["images/projects/nps/nps1.png"],
+            "images": ["images/projects/nps/nps1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-fastapi-plain", "name": "FastAPI" },
@@ -97,7 +97,7 @@
             "endDate": "Mar 2026",
             "description": "Sistema de conversão em lote de documentos PDF contábeis em Markdown estruturado utilizando Modelos de Visão-Linguagem (VLMs). A solução emprega a biblioteca Docling com VlmPipeline, processando documentos em paralelo via ProcessPoolExecutor com 25 workers.",
             "url": "",
-            "images": ["images/projects/pdf/pdf1.png"],
+            "images": ["images/projects/pdf/pdf1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-docker-plain", "name": "Docker" }
@@ -109,7 +109,7 @@
             "endDate": "Ago 2025",
             "description": "Sistema de inteligência artificial que permite a executivos e analistas realizarem consultas complexas a um banco de dados PostgreSQL usando linguagem natural. Implementado na plataforma n8n com Ollama e OpenAI, traduz perguntas em português para consultas SQL otimizadas.",
             "url": "",
-            "images": ["images/projects/multiagent/multi1.png"],
+            "images": ["images/projects/multiagent/multi1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-postgresql-plain", "name": "PostgreSQL" }
@@ -121,7 +121,7 @@
             "endDate": "Ago 2025",
             "description": "Arquitetura completa para rastreabilidade na cadeia de suprimentos do agronegócio brasileiro. Utiliza Hyperledger Besu, Smart Contracts e sistema de indexação off-chain para garantir integridade e rastreamento de ponta a ponta. Alinhado às diretrizes DREX (Real Digital).",
             "url": "",
-            "images": ["images/projects/blockchain/block1.png"],
+            "images": ["images/projects/blockchain/block1.webp"],
             "technologies": [
                 { "class": "devicon-solidity-plain", "name": "Solidity" },
                 { "class": "devicon-react-plain", "name": "React" },
@@ -135,8 +135,8 @@
             "description": "Sistema automatizado para inspeção de pontos de solda na indústria automotiva, desenvolvido com C++, TensorFlow e OpenCV. Módulos de comunicação em tempo real e monitoramento, utilizando a biblioteca SKM-Genicam para controle de câmeras industriais.",
             "url": "",
             "images": [
-                "images/projects/sparkeyes/spark1.png",
-                "images/projects/sparkeyes/spark2.png"
+                "images/projects/sparkeyes/spark1.webp",
+                "images/projects/sparkeyes/spark2.webp"
             ],
             "technologies": [
                 { "class": "devicon-cplusplus-plain", "name": "C++" },
@@ -151,7 +151,7 @@
             "endDate": "Nov 2023",
             "description": "Biblioteca para controle de câmeras industriais, 100% desenvolvida com ponteiros inteligentes, garantindo segurança de memória. Resolveu limitações de bibliotecas fornecidas por fabricantes, tornando-se padrão na organização.",
             "url": "",
-            "images": ["images/projects/genicam/genicam1.png"],
+            "images": ["images/projects/genicam/genicam1.webp"],
             "technologies": [
                 { "class": "devicon-c-plain", "name": "C" },
                 { "class": "devicon-cplusplus-plain", "name": "C++" }
@@ -162,7 +162,7 @@
             "startDate": "2024",
             "description": "Ferramenta baseada em RAG (Retrieval-Augmented Generation) para agentes de IA capazes de analisar repositórios no GitHub. Utiliza linguagem natural para responder perguntas sobre código, issues e pull requests.",
             "url": "https://github.com/thecodergus/github-rag-tool",
-            "images": ["images/projects/rag/rag1.png"],
+            "images": ["images/projects/rag/rag1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" }
             ]
@@ -172,7 +172,7 @@
             "startDate": "Abr 2023",
             "description": "Contribuições em Rust focadas em detecção de bordas Laplacian em imagens em tons de cinza. Implementação integrada com ferramentas open source.",
             "url": "https://github.com/image-rs/imageproc/pull/516",
-            "images": ["images/projects/laplacian-edge/ovo1.jpeg"],
+            "images": ["images/projects/laplacian-edge/ovo1.webp"],
             "technologies": [
                 { "class": "devicon-rust-plain", "name": "Rust" }
             ]
@@ -182,7 +182,7 @@
             "startDate": "2023",
             "description": "Sistema de coleta e análise de dados em tempo real para detectar corpos estranhos em chapas de aço. Aplicando redes neurais treinadas em Python e integrando processamento paralelo em C++, a solução aumentou a precisão da detecção em 35% e reduziu falhas de produção não planejadas.",
             "url": "",
-            "images": ["images/projects/steel/steel1.png"],
+            "images": ["images/projects/steel/steel1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-cplusplus-plain", "name": "C++" }
@@ -193,7 +193,7 @@
             "startDate": "2023",
             "description": "Dois sistemas interconectados que revolucionaram a eficiência no processo produtivo: um Sistema de Coleta de Dados com captura automatizada de imagens para treinar redes neurais (reduzindo defeitos em 20%), e um Sistema de Inferência Neural em C++ e Qt para detectar falhas em tempo real (aumentando a produtividade em 25%).",
             "url": "",
-            "images": ["images/projects/textile/textile1.png"],
+            "images": ["images/projects/textile/textile1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-cplusplus-plain", "name": "C++" },

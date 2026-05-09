@@ -2,6 +2,7 @@ import { onMount, onCleanup } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
+import I18nErrorBanner from "~/components/I18nErrorBanner";
 
 export default function NotFoundPage() {
   const { messages } = useI18n();
@@ -39,12 +40,12 @@ export default function NotFoundPage() {
           </div>
 
           {/* Glitch 404 */}
-          <div class="text-[10rem] md:text-[14rem] font-black text-accent-primary leading-none relative select-none">
+          <div class="text-[10rem] md:text-[14rem] font-black text-accent-primary leading-none relative select-none" aria-hidden="true">
             404
           </div>
 
           {/* Doomguy face */}
-          <pre class="text-[10px] leading-none text-accent-primary inline-block my-6 select-none opacity-80">
+              <pre class="text-[10px] leading-none text-accent-primary inline-block my-6 select-none opacity-80" aria-hidden="true">
             {`   .---.
   | RIP |
   |     |
@@ -80,6 +81,7 @@ export default function NotFoundPage() {
       </main>
 
       <Footer hideDoomLink />
+      <I18nErrorBanner />
     </>
   );
 }

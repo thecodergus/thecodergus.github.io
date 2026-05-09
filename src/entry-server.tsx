@@ -42,6 +42,9 @@ export default createHandler(() => (
           <meta name="theme-color" content="#080012" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
+          <link rel="canonical" href="https://thecodergus.github.io" />
+          <link rel="alternate" hreflang="pt-br" href="https://thecodergus.github.io/" />
+          <link rel="alternate" hreflang="en" href="https://thecodergus.github.io/" />
           {assets}
           <script type="application/ld+json">
             {JSON.stringify(structuredData)}

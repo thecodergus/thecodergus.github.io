@@ -43,12 +43,14 @@ export default function App() {
           <Meta property="og:description" content="Especialista em Automação com IA, LangGraph & AI Agents. Python, C++, Rust, React." />
           <Meta property="og:type" content="website" />
           <Meta property="og:url" content="https://thecodergus.github.io" />
-          <Meta property="og:image" content="https://thecodergus.github.io/images/myProfile.jpg" />
+          <Meta property="og:image" content="https://thecodergus.github.io/images/myProfile.webp" />
           <Meta property="og:locale" content="pt_BR" />
-          <Meta name="twitter:card" content="summary" />
+          <Meta property="og:locale:alternate" content="en_US" />
+          <Link rel="canonical" href="https://thecodergus.github.io" />
+          <Meta name="twitter:card" content="summary_large_image" />
           <Meta name="twitter:title" content="Gustavo M Camargo | AI & Software Engineer" />
           <Meta name="twitter:description" content="Especialista em Automação com IA, LangGraph & AI Agents." />
-          <Meta name="twitter:image" content="https://thecodergus.github.io/images/myProfile.jpg" />
+          <Meta name="twitter:image" content="https://thecodergus.github.io/images/myProfile.webp" />
           <script innerHTML={THEME_SCRIPT} />
           <script innerHTML={LANG_SCRIPT} />
           <Link rel="preload" href="/fonts/fonts.css" as="style" />

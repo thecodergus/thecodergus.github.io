@@ -1,11 +1,11 @@
-import { createSignal, createEffect, onMount, onCleanup, For } from "solid-js";
+import { createSignal, createEffect, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
+import { createVisibilityObserver } from "~/hooks/createVisibilityObserver";
 import type { Project } from "~/types";
 import ProjectModal from "~/components/ProjectModal";
 
 export default function Projects() {
   const { messages, language, t } = useI18n();
-  const [isVisible, setIsVisible] = createSignal(false);
   const [activeFilter, setActiveFilter] = createSignal<string>("all");
   const [selectedProject, setSelectedProject] = createSignal<Project | null>(null);
   const [modalOpen, setModalOpen] = createSignal(false);
@@ -16,19 +16,7 @@ export default function Projects() {
   };
 
   let sectionRef: HTMLDivElement | undefined;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    onCleanup(() => observer.disconnect());
-  });
+  const isVisible = createVisibilityObserver(() => sectionRef, 0.1);
 
   createEffect(() => {
     void language();
@@ -102,7 +90,16 @@ export default function Projects() {
             {(project, index) => (
               <article
                 class="group bg-surface rounded-2xl overflow-hidden border border-border hover:border-accent-secondary/50 transition-all hover:-translate-y-1 hover:shadow-glow-secondary/10 cursor-pointer"
+                role="button"
+                tabIndex={0}
                 onClick={() => openProjectModal(project)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openProjectModal(project);
+                  }
+                }}
+                aria-label={`${viewProject()}: ${project.title}`}
                 style={{
                   opacity: isVisible() ? 1 : 0,
                   transform: isVisible() ? "translateY(0)" : "translateY(20px)",
@@ -137,7 +134,7 @@ export default function Projects() {
                     <For each={project.technologies?.slice(0, 4)}>
                       {(tech) => (
                         <span class="text-lg" title={tech.name}>
-                          <i class={tech.class} />
+                          <i class={tech.class} aria-hidden="true" />
                         </span>
                       )}
                     </For>

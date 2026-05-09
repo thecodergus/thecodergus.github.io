@@ -1,5 +1,6 @@
-import { createSignal, onMount, onCleanup, For } from "solid-js";
+import { For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
+import { createVisibilityObserver } from "~/hooks/createVisibilityObserver";
 import type { Skill } from "~/types";
 
 interface SkillCategory {
@@ -16,21 +17,9 @@ const CATEGORY_ORDER: Record<string, number> = {
 
 export default function Skills() {
   const { sharedData, messages, t } = useI18n();
-  const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    onCleanup(() => observer.disconnect());
-  });
+  const isVisible = createVisibilityObserver(() => sectionRef, 0.1);
 
   const skills = () => sharedData()?.skills?.icons || [];
   const sectionName = () => t("basic_info.section_name.skills", "");
@@ -97,12 +86,19 @@ export default function Skills() {
                       >
                         <div class="flex items-center justify-between mb-1">
                           <div class="flex items-center gap-3">
-                            <i class={`${skill.class} text-lg text-text-secondary`} />
+                            <i class={`${skill.class} text-lg text-text-secondary`} aria-hidden="true" />
                             <span class="text-sm font-medium text-text">{skill.name}</span>
                           </div>
                           <span class="text-xs font-mono text-text-muted">{skill.level}%</span>
                         </div>
-                        <div class="h-2 bg-surface-elevated rounded-full overflow-hidden">
+                        <div
+                          class="h-2 bg-surface-elevated rounded-full overflow-hidden"
+                          role="progressbar"
+                          aria-valuenow={skill.level}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                          aria-label={`${skill.name}: ${skill.level}%`}
+                        >
                           <div
                             class="h-full rounded-full bg-accent-primary transition-all duration-1000 ease-out"
                             style={{

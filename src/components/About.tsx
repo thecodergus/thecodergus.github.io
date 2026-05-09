@@ -1,5 +1,5 @@
-import { createSignal, onMount, onCleanup } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
+import { createVisibilityObserver } from "~/hooks/createVisibilityObserver";
 import Code from "lucide-solid/icons/code";
 import Terminal from "lucide-solid/icons/terminal";
 import Database from "lucide-solid/icons/database";
@@ -7,21 +7,9 @@ import Cpu from "lucide-solid/icons/cpu";
 
 export default function About() {
   const { sharedData, t } = useI18n();
-  const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    onCleanup(() => observer.disconnect());
-  });
+  const isVisible = createVisibilityObserver(() => sectionRef, 0.2);
 
   const profilePic = () => {
     const img = sharedData()?.basic_info?.image;
@@ -58,7 +46,7 @@ export default function About() {
                 class="w-64 h-64 object-cover rounded-xl mb-4"
                 loading="lazy"
               />
-              <div class="flex justify-center gap-4 text-accent-primary">
+              <div class="flex justify-center gap-4 text-accent-primary" aria-hidden="true">
                 <Code size={28} />
                 <Terminal size={28} />
                 <Database size={28} />

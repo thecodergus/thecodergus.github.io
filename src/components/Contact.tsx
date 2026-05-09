@@ -1,37 +1,16 @@
-import { createSignal, onMount, onCleanup } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
-import Github from "lucide-solid/icons/github";
-import Mail from "lucide-solid/icons/mail";
-import ExternalLink from "lucide-solid/icons/external-link";
-import Linkedin from "lucide-solid/icons/linkedin";
+import { createVisibilityObserver } from "~/hooks/createVisibilityObserver";
+import { resolveSocialIcon } from "~/hooks/socialIcons";
 
 export default function Contact() {
   const { sharedData, t } = useI18n();
-  const [isVisible, setIsVisible] = createSignal(false);
 
   let sectionRef: HTMLDivElement | undefined;
-
-  onMount(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.3 }
-    );
-
-    if (sectionRef) observer.observe(sectionRef);
-    onCleanup(() => observer.disconnect());
-  });
+  const isVisible = createVisibilityObserver(() => sectionRef, 0.3);
 
   const sectionName = () => t("basic_info.section_name.contact", "");
   const contactText = () => t("contact_message.paragraph", "");
   const socials = () => sharedData()?.basic_info?.social || [];
-
-  const iconMap: Record<string, typeof Github> = {
-    github: Github,
-    gmail: Mail,
-    linkedin: Linkedin,
-  };
 
   return (
     <section
@@ -57,7 +36,7 @@ export default function Contact() {
           }}
         >
           {socials().map((item) => {
-            const Icon = iconMap[item.name] || ExternalLink;
+            const Icon = resolveSocialIcon(item.name);
             return (
               <a
                 href={item.url}

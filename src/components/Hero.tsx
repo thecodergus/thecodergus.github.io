@@ -5,6 +5,7 @@ import { theme, setTheme, THEMES } from "~/stores/themeStore";
 import NeuralCanvas from "~/components/NeuralCanvas";
 import TypewriterText from "~/components/TypewriterText";
 import RotatingTypewriter from "~/components/RotatingTypewriter";
+import { resolveSocialIcon } from "~/hooks/socialIcons";
 import Brain from "lucide-solid/icons/brain";
 import Blocks from "lucide-solid/icons/blocks";
 import Terminal from "lucide-solid/icons/terminal";
@@ -12,10 +13,6 @@ import Globe from "lucide-solid/icons/globe";
 import Palette from "lucide-solid/icons/palette";
 import Check from "lucide-solid/icons/check";
 import ChevronDown from "lucide-solid/icons/chevron-down";
-import Github from "lucide-solid/icons/github";
-import Linkedin from "lucide-solid/icons/linkedin";
-import Mail from "lucide-solid/icons/mail";
-import ExternalLink from "lucide-solid/icons/external-link";
 
 export default function Hero() {
   const { sharedData, messages, t } = useI18n();
@@ -32,12 +29,6 @@ export default function Hero() {
       e.preventDefault();
       setTheme(themeId);
     }
-  };
-
-  const socialIcons: Record<string, typeof Github> = {
-    github: Github,
-    linkedin: Linkedin,
-    gmail: Mail,
   };
 
   const socials = () => sharedData()?.basic_info?.social || [];
@@ -129,7 +120,7 @@ export default function Hero() {
 
         <div class="flex items-center justify-center gap-6 mb-12">
           {socials().map((s) => {
-            const Icon = socialIcons[s.name] || ExternalLink;
+            const Icon = resolveSocialIcon(s.name);
             const isEmail = s.url.startsWith("mailto:");
             return (
               <a

@@ -64,11 +64,12 @@ export default function ProjectModal(props: ProjectModalProps) {
 
                 {/* Image Gallery */}
                 <div class="relative aspect-video rounded-xl overflow-hidden mb-6 bg-surface-elevated">
-                  <img
-                    src={`/${project().images?.[currentImageIndex()]}`}
-                    alt={project().title}
-                    class="w-full h-full object-cover"
-                  />
+                    <img
+                      src={`/${project().images?.[currentImageIndex()]}`}
+                      alt={project().title}
+                      loading="lazy"
+                      class="w-full h-full object-cover"
+                    />
                   <Show when={hasMultipleImages()}>
                     <button
                       onClick={prevImage}
@@ -136,7 +137,7 @@ export default function ProjectModal(props: ProjectModalProps) {
                             class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-elevated border border-border text-sm text-text-secondary"
                             title={tech.name}
                           >
-                            <i class={`${tech.class} text-base`} />
+                            <i class={`${tech.class} text-base`} aria-hidden="true" />
                             {tech.name}
                           </span>
                         )}

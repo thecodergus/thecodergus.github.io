@@ -33,7 +33,7 @@ export default function TypewriterText(props: TypewriterTextProps) {
   return (
     <span class={props.class}>
       {displayed()}
-      {typing() && <span class="animate-pulse">|</span>}
+      {typing() && <span class="animate-pulse" aria-hidden="true">|</span>}
     </span>
   );
 }
