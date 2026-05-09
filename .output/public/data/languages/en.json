@@ -83,7 +83,7 @@
             "endDate": "Mar 2026",
             "description": "Artificial intelligence pipeline for automated analysis of customer service interactions, calculating NPS and extracting insights without manual intervention. The microservices architecture uses LangGraph for AI agent orchestration, RabbitMQ for asynchronous message processing, FastAPI for API exposure, and PostgreSQL for persistence, all containerized with Docker.",
             "url": "",
-            "images": ["images/projects/nps/nps1.png"],
+            "images": ["images/projects/nps/nps1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-fastapi-plain", "name": "FastAPI" },
@@ -97,7 +97,7 @@
             "endDate": "Mar 2026",
             "description": "Batch conversion system for accounting PDF documents to structured Markdown using Vision-Language Models (VLMs). The solution uses the Docling library with VlmPipeline, processing documents in parallel via ProcessPoolExecutor with 25 workers.",
             "url": "",
-            "images": ["images/projects/pdf/pdf1.png"],
+            "images": ["images/projects/pdf/pdf1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-docker-plain", "name": "Docker" }
@@ -109,7 +109,7 @@
             "endDate": "Aug 2025",
             "description": "Artificial intelligence system that allows executives and analysts to perform complex queries on a PostgreSQL database using natural language. Implemented on the n8n platform with Ollama and OpenAI, it translates questions in Portuguese into optimized SQL queries.",
             "url": "",
-            "images": ["images/projects/multiagent/multi1.png"],
+            "images": ["images/projects/multiagent/multi1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-postgresql-plain", "name": "PostgreSQL" }
@@ -121,7 +121,7 @@
             "endDate": "Aug 2025",
             "description": "Complete architecture for traceability in the Brazilian agribusiness supply chain. Uses Hyperledger Besu, Smart Contracts, and off-chain indexing system to ensure integrity and end-to-end tracking. Aligned with DREX (Digital Real) guidelines.",
             "url": "",
-            "images": ["images/projects/blockchain/block1.png"],
+            "images": ["images/projects/blockchain/block1.webp"],
             "technologies": [
                 { "class": "devicon-solidity-plain", "name": "Solidity" },
                 { "class": "devicon-react-plain", "name": "React" },
@@ -135,8 +135,8 @@
             "description": "Automated system for weld inspection in the automotive industry, developed with C++, TensorFlow, and OpenCV. Real-time communication and monitoring modules, using the SKM-Genicam library for industrial camera control.",
             "url": "",
             "images": [
-                "images/projects/sparkeyes/spark1.png",
-                "images/projects/sparkeyes/spark2.png"
+                "images/projects/sparkeyes/spark1.webp",
+                "images/projects/sparkeyes/spark2.webp"
             ],
             "technologies": [
                 { "class": "devicon-cplusplus-plain", "name": "C++" },
@@ -151,7 +151,7 @@
             "endDate": "Nov 2023",
             "description": "Library for industrial camera control, 100% developed with smart pointers, ensuring memory safety. Solved limitations of manufacturer-provided libraries, becoming the standard in the organization.",
             "url": "",
-            "images": ["images/projects/genicam/genicam1.png"],
+            "images": ["images/projects/genicam/genicam1.webp"],
             "technologies": [
                 { "class": "devicon-c-plain", "name": "C" },
                 { "class": "devicon-cplusplus-plain", "name": "C++" }
@@ -162,7 +162,7 @@
             "startDate": "2024",
             "description": "Tool based on RAG (Retrieval-Augmented Generation) for AI agents capable of analyzing GitHub repositories. Uses natural language to answer questions about code, issues, and pull requests.",
             "url": "https://github.com/thecodergus/github-rag-tool",
-            "images": ["images/projects/rag/rag1.png"],
+            "images": ["images/projects/rag/rag1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" }
             ]
@@ -172,7 +172,7 @@
             "startDate": "Apr 2023",
             "description": "Rust contributions focused on Laplacian edge detection in grayscale images. Integrated implementation with open source tools.",
             "url": "https://github.com/image-rs/imageproc/pull/516",
-            "images": ["images/projects/laplacian-edge/ovo1.jpeg"],
+            "images": ["images/projects/laplacian-edge/ovo1.webp"],
             "technologies": [
                 { "class": "devicon-rust-plain", "name": "Rust" }
             ]
@@ -182,7 +182,7 @@
             "startDate": "2023",
             "description": "Real-time data collection and analysis system to detect foreign bodies in steel plates. Applied trained neural networks in Python with parallel processing in C++, increasing detection precision by 35% and reducing unplanned production failures.",
             "url": "",
-            "images": ["images/projects/steel/steel1.png"],
+            "images": ["images/projects/steel/steel1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-cplusplus-plain", "name": "C++" }
@@ -193,7 +193,7 @@
             "startDate": "2023",
             "description": "Two interconnected systems that revolutionized production efficiency: a Data Collection System for automated image capture to train neural networks (reducing defects by 20%), and a Neural Inference System in C++ and Qt for real-time defect detection (increasing productivity by 25%).",
             "url": "",
-            "images": ["images/projects/textile/textile1.png"],
+            "images": ["images/projects/textile/textile1.webp"],
             "technologies": [
                 { "class": "devicon-python-plain", "name": "Python" },
                 { "class": "devicon-cplusplus-plain", "name": "C++" },

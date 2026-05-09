@@ -31,13 +31,17 @@ Personal portfolio site built with SolidStart (SolidJS) and Vinxi.
 - **MCP** (via `.opencode/opencode.json`): eslint, vitest testing, shadcn/ui, radix primitives, lighthouse, perf-tools
 - **TypeScript 6.0.3**: `baseUrl` is deprecated — use `paths` with explicit patterns. `vinxi/types/client` (not `vinxi/client` — the latter doesn't exist, SolidStart issue #1454). Include `"vitest/globals"` in `types` for test globals.
 
-### Test Architecture (143 tests across 5 files)
+### Test Architecture (163 tests across 8 files)
 - **`src/engine/math.test.ts`** — 93 tests: Vec3 construction, arithmetic, normalization, dot/length/dist, lerp, easings, PRNG determinism.
 - **`src/engine/transition.test.ts`** — 18 tests: state machine (Idle→FadingOut→FadingIn→Idle), opacity/dissolve/entrance callbacks, abort handling, timing (800ms total), `forceScene` method.
 - **`src/engine/quality.test.ts`** — 10 tests: GPU tier detection, pixelRatio cap, config freezing.
 - **`src/stores/themeStore.test.ts`** — 3 tests: initial theme signal (always SceneKind.AI), THEMES array, REGISTRY keys.
 - **`src/stores/i18nStore.test.tsx`** — 19 tests: module-level signal defaults, `t()` nested key resolution/fallbacks, `setLanguage` signal+localStorage, fetchError handling.
+- **`src/hooks/socialIcons.test.tsx`** — 11 tests: SOCIAL_ICON_MAP structure, resolveSocialIcon matching.
+- **`src/hooks/createVisibilityObserver.test.tsx`** — 6 tests: observer creation, threshold defaults, intersection detection, cleanup.
+- **`src/components/I18nErrorBanner.test.tsx`** — 4 tests: null state, error display, dismissal, signal reactivity.
 - Test mocking: `localStorage` via closure mock; `HTMLCanvasElement.prototype.getContext` and `navigator.deviceMemory` in quality test; `globalThis.fetch` in i18n tests.
+- **`vi.mock()` required for lucide-solid imports in tests** — lucide-solid triggers "Client-only API" SSR detection during module evaluation. Always mock icon components: `vi.mock("lucide-solid/icons/x", () => ({ default: () => {} }))`.
 
 ## Architecture
 
@@ -104,13 +108,27 @@ Blocking inline `<script>` in `app.tsx` `<head>` reads `localStorage.getItem('po
 ### SolidJS ↔ Engine Bridge
 - **`src/components/NeuralCanvas.tsx`** — Reads `theme()` signal, calls `engine.setTheme()` on changes. Owns `<canvas>`, runs `requestAnimationFrame` loop via `onMount`/`onCleanup`.
 
-### Camera / Post-process / Color Data
-**Camera Presets** (all FOV=55, heightFrequency=0.5, autoRotate=true):
-AI(orbit=14,spd=0.02,h=5,θ=π/2) Blockchain(12,0.02,3,π/4) Software(10,0.015,2,0) Web(11,0.015,1.5,0)
+### Shared Hooks (`src/hooks/`)
+- **`createVisibilityObserver.ts`** — Reusable `IntersectionObserver` via `onMount`/`onCleanup`. Accepts `threshold` (default 0.15), returns `isVisible` signal. Used by About, Contact, Projects, Experience, Skills, Stats.
+- **`socialIcons.ts`** — Shared `SOCIAL_ICON_MAP` (Record of platform → icon component) and `resolveSocialIcon(imgAlt)` helper. Used by Hero and Contact.
 
-**Post-process** (bloom/scanline/vignette/chromatic): AI(0.4/0.15/0.35/0.003) Blockchain(0.5/0.08/0.35/0.003) Software(1.0/0.18/0.4/0.004) Web(0.5/0.05/0.15/0.003)
+### Component Patterns
+- **`I18nErrorBanner.tsx`** — Dismissible alert banner. Reads `fetchError` signal from i18n context. Renders in `routes/index.tsx`, `doom.tsx`, `NotFoundPage.tsx` inside `<Show when={fetchError()}>`.
+- **ErrorBoundary** — All 7 section components in `routes/index.tsx` are wrapped in `<ErrorBoundary fallback={() => null}>`. Graceful degradation — section silently removed on error.
+- **DOOM page** (`routes/doom.tsx`) — JS-DOS **NOT loaded at page load**. User clicks "Launch DOOM" button → dynamic `<script>` element injected to fetch the ~4MB JS-DOS bundle. Loading spinner shown during fetch.
 
-**Color Schemes** (primary/secondary/tertiary/background): AI(#00E5FF/#10A37F/#8B5CF6/#080012) Blockchain(#F7931A/#00BFA5/#627EEA/#0D1117) Software(#00FF41/#006622/#FFFFFF/#000000) Web(#0000EE/#551A8B/#CC0000/#F8F9FA)
+### Image Pipeline
+- All images in `public/images/` are **WebP** (quality 82, ~79% smaller than PNG/JPG).
+- Conversion script: `scripts/convert-to-webp.mjs` (uses `sharp` dev dependency).
+- **i18n JSON references MUST use `.webp` extension** — `pt-br.json`, `en.json`, and `portfolio_shared_data.json` all reference `.webp` paths.
+
+### Vitest Configuration Gotchas
+- `vitest.config.ts` requires **both** `resolve.conditions: ["browser"]` and `plugins: [solid()]` with `transformMode: { web: [/.[jt]sx?$/] }` for component tests to work.
+- `vitest.setup.ts` needs `(globalThis as Record<string, unknown>).React = {}` — SolidJS dev build expects a global React object for devtools compatibility.
+- **`vi.mock()` for lucide-solid**: icon modules trigger "Client-only API" SSR detection during module evaluation in jsdom. Always mock: `vi.mock("lucide-solid/icons/x", () => ({ default: () => {} }))`.
+
+### Camera / Post-process / Color data
+See `.opencode/references/project-conventions.md` for full preset tables (camera, post-process, color schemes). Key facts:
 
 ### Post-Processing Notes
 - **`antialias: true` on WebGLRenderer has NO effect with EffectComposer.** MSAA only works rendering to default framebuffer. Use FXAA (already in engine).
@@ -168,3 +186,6 @@ AI(orbit=14,spd=0.02,h=5,θ=π/2) Blockchain(12,0.02,3,π/4) Software(10,0.015,2
 - **`canvasTexture.ts` filter types**: Three.js uses distinct `MinificationTextureFilter`/`MagnificationTextureFilter` types. Cast with `as` when assigning `LinearFilter` defaults.
 - **`@theme` block in `app.css`** intentionally duplicates `ai/theme.css` values — it's Tailwind v4 token registration. Other themes override via `[data-theme="..."]` selectors.
 - **AI scene now respects `config.colorScheme`** — LAYERS, neurons, edges, ripple rings, manifolds all derive colors from the passed scheme. Only attention yellow (`#F5C842`) is a scene-internal constant.
+- **ESLint config is `eslint.config.js`** (CommonJS-like `export default` syntax), not `.ts`. Includes `solid/reactivity: warn`, `solid/no-destructure: error`.
+- **WCAG AA `text-muted`**: changing a theme's color scheme may require updating `--color-text-muted` in all 4 theme CSS files (`src/themes/{ai,blockchain,software,web}/theme.css`) plus base `@theme` block in `app.css`.
+- **Images are WebP**: `public/images/` contains only `.webp` files. i18n JSON (`pt-br.json`, `en.json`, `portfolio_shared_data.json`) references `.webp` extensions. Use `sharp` + `scripts/convert-to-webp.mjs` to convert new images.

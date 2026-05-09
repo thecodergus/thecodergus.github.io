@@ -11,7 +11,7 @@
 ## Architecture
 
 ### Routing
-- Entry: `src/app.tsx` wraps with MetaProvider → ThemeProvider → I18nProvider → FileRoutes
+- Entry: `src/app.tsx` wraps with MetaProvider → I18nProvider → FileRoutes
 - Routes: `/` (index.tsx), `/doom` (doom.tsx)
 - Prerender: `app.config.ts` with `crawlLinks: true`, static preset → `.output/public`
 - Alias: `~/` → `./src/`
@@ -20,14 +20,24 @@
 - Context-based, `Language.PtBr` (default), `Language.En`
 - localStorage key: `"portfolio-language"`
 - Data: `/data/languages/${lang}.json` + `/data/portfolio_shared_data.json`
-- `t(key)` helper with dot-notation: `t("navbar.home")`
+- `t(key, defaultValue?)` helper with dot-notation: `t("navbar.home")`
+- `I18nErrorBanner` component reads `fetchError` signal, dismissible alert
 
 ### Stores
 - `themeStore.ts`: uses `SceneKind` enum from `types.ts`, localStorage `"portfolio-theme"`, initial always `SceneKind.AI`
 - `i18nStore.tsx`: language context with async `fetch` in `I18nProvider.onMount`, `t()` helper at 38 call sites
 
-### Test Architecture (143 tests, 5 files)
-- `math.test.ts` (93), `transition.test.ts` (18 — includes forceScene), `quality.test.ts` (10), `themeStore.test.ts` (3), `i18nStore.test.tsx` (19)
+### Hooks (`src/hooks/`)
+- `createVisibilityObserver.ts`: Reusable IntersectionObserver (threshold 0.15), used by 6 section components
+- `socialIcons.ts`: Shared SOCIAL_ICON_MAP + resolveSocialIcon(imgAlt), used by Hero and Contact
+
+### Components (17 .tsx files)
+- ErrorBoundary wraps all 7 section components in `routes/index.tsx` — graceful degradation
+- DOOM page: JS-DOS lazy-loaded on button click (~4MB download deferred)
+- `I18nErrorBanner.tsx`: fetchError alert, shown in index, doom, NotFoundPage
+
+### Test Architecture (163 tests, 8 files)
+- `math.test.ts` (93), `transition.test.ts` (18 — includes forceScene), `quality.test.ts` (10), `themeStore.test.ts` (3), `i18nStore.test.tsx` (19), `socialIcons.test.tsx` (11), `createVisibilityObserver.test.tsx` (6), `I18nErrorBanner.test.tsx` (4)
 
 ### 3D Engine (`src/engine/`)
 - Pure functional, no classes, closures with factory functions
@@ -94,10 +104,23 @@ With FOV=55°, aspect=16:9: **visibleWidth ≈ 1.85 × orbitRadius** at z=0.
 - **AI scene colorScheme**: LAYERS, neurons, edges, ripple rings, manifolds all derive from `config.colorScheme`. Only attention yellow (`#F5C842`) is scene-internal constant.
 - **lerpColor()**: only 6-char hex (`#RRGGBB`), not short hex
 - **i18n ESLint reactivity**: read signal synchronously before fetch chain: `const lang = language();` then `fetch(...).then(...)`
+- **Vitest**: needs `resolve.conditions: ["browser"]` + `plugins: [solid()]` + `transformMode: { web: [/.[jt]sx?$/] }` for component tests
+- **vitest.setup.ts**: needs `(globalThis as Record<string, unknown>).React = {}` for SolidJS dev build
+- **vi.mock() for lucide-solid**: icon modules trigger SSR detection in jsdom — always mock
+- **ESLint**: config is `eslint.config.js` (not `.ts`), includes `solid/reactivity: warn`, `solid/no-destructure: error`
+- **Images**: all WebP in `public/images/`, i18n JSON references `.webp` extensions, convert with `node scripts/convert-to-webp.mjs` (sharp, quality 82)
+- **text-muted contrast**: WCAG AA requires checking `--color-text-muted` in all 4 theme CSS + app.css @theme block when changing color schemes
+- **Module-level createSignal**: MUST NOT read localStorage during init — SSR/client hydration mismatch
+- **DOOM page**: JS-DOS NOT loaded at page load — dynamic script element injected on button click
 
 ## Build & Deploy
 - CI: `.github/workflows/deploy.yml` — push/PR to main, Node 20, `npm ci`, `npm run build`
 - Artifact: `.output/public` → `actions/deploy-pages@v4`
+
+## Image Pipeline
+- All `public/images/` are WebP (quality 82, ~79% smaller than PNG/JPG)
+- Convert: `node scripts/convert-to-webp.mjs` (uses `sharp` dev dependency)
+- i18n JSON files reference `.webp` extensions
 
 ## SSR Flash Prevention
 Blocking inline `<script>` in `app.tsx` reads `localStorage.getItem('portfolio-theme')` and sets `document.documentElement.setAttribute('data-theme', t)` before first paint.

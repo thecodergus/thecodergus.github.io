@@ -25,7 +25,7 @@ npm start           # Preview do build
 npm run typecheck   # Verificação de tipos (tsc --noEmit)
 npm run lint        # ESLint
 npm run lint:fix    # ESLint com correção automática
-npm run test         # Vitest (5 arquivos, 143 testes)
+npm run test         # Vitest (8 arquivos, 163 testes)
 npm run test:watch   # Vitest em modo watch
 npm run test:coverage # Relatório de cobertura (@vitest/coverage-v8)
 ```
@@ -40,7 +40,26 @@ src/
 ├── routes/
 │   ├── index.tsx           # Home — todas as seções do portfolio
 │   └── doom.tsx            # DOOM via JS-DOS (rota lazy-load)
-├── components/             # 15 componentes SolidJS
+├── components/             # 17 componentes SolidJS
+│   ├── Navbar.tsx
+│   ├── Hero.tsx
+│   ├── About.tsx
+│   ├── Stats.tsx
+│   ├── Skills.tsx
+│   ├── Experience.tsx
+│   ├── Projects.tsx
+│   ├── ProjectModal.tsx
+│   ├── Contact.tsx
+│   ├── Footer.tsx
+│   ├── NeuralCanvas.tsx
+│   ├── TypewriterText.tsx
+│   ├── RotatingTypewriter.tsx
+│   ├── ScrollProgress.tsx
+│   ├── NotFoundPage.tsx
+│   └── I18nErrorBanner.tsx
+├── hooks/                  # Hooks compartilhados
+│   ├── createVisibilityObserver.ts  # IntersectionObserver reutilizável
+│   └── socialIcons.ts      # Mapa de ícones sociais + resolveSocialIcon
 ├── engine/                 # Engine Three.js puro (zero SolidJS)
 │   ├── engine.ts           # Orquestrador: renderer, câmera, post-process
 │   ├── transition.ts       # Crossfade manager (800ms) + forceScene
@@ -77,17 +96,31 @@ Cada tema é um diretório com **4 arquivos**:
 
 Troca de tema usa **crossfade de 800ms** (400ms fade out + 400ms fade in).
 
+## Imagens
+
+Todas as imagens em `public/images/` são **WebP** (quality 82, ~79% menor que PNG/JPG).
+Para converter novas imagens:
+
+```bash
+node scripts/convert-to-webp.mjs
+```
+
+As referências nos JSONs de i18n (`pt-br.json`, `en.json`, `portfolio_shared_data.json`) usam extensão `.webp`.
+
 ## Testes
 
-Vitest 4 com jsdom environment e globals mode. 5 arquivos, 143 testes:
+Vitest 4 com jsdom environment e globals mode. 8 arquivos, 163 testes:
 
-| Arquivo                  | Testes | Foco                                            |
-| ------------------------ | ------ | ----------------------------------------------- |
-| `math.test.ts`           | 93     | Vec3, easings, PRNG, array utilities            |
-| `transition.test.ts`     | 18     | Máquina de estados, timing, abort, forceScene   |
-| `quality.test.ts`        | 10     | GPU tier detection, pixelRatio cap               |
-| `themeStore.test.ts`     | 3      | Signal inicial, THEMES, REGISTRY                |
-| `i18nStore.test.tsx`     | 19     | Signals, t() helper, setLanguage, fetchError     |
+| Arquivo                          | Testes | Foco                                            |
+| -------------------------------- | ------ | ----------------------------------------------- |
+| `engine/math.test.ts`            | 93     | Vec3, easings, PRNG, array utilities            |
+| `engine/transition.test.ts`      | 18     | Máquina de estados, timing, abort, forceScene   |
+| `engine/quality.test.ts`         | 10     | GPU tier detection, pixelRatio cap              |
+| `stores/themeStore.test.ts`      | 3      | Signal inicial, THEMES, REGISTRY                |
+| `stores/i18nStore.test.tsx`      | 19     | Signals, t() helper, setLanguage, fetchError    |
+| `hooks/socialIcons.test.tsx`     | 11     | Estrutura SOCIAL_ICON_MAP, resolveSocialIcon    |
+| `hooks/createVisibilityObserver.test.tsx` | 6 | Observer, threshold, interseção, cleanup   |
+| `components/I18nErrorBanner.test.tsx` | 4 | Estado nulo, exibição de erro, dismiss, reatividade |
 
 CI: `typecheck → lint → test` (ordem de falha mais rápida primeiro).
 
