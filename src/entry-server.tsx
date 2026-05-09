@@ -43,15 +43,17 @@ export default createHandler(() => (
           <link rel="icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
           <link rel="canonical" href="https://thecodergus.github.io" />
-          <link rel="alternate" hreflang="pt-br" href="https://thecodergus.github.io/" />
-          <link rel="alternate" hreflang="en" href="https://thecodergus.github.io/" />
+          {/* hreflang alternates intentionally absent — language is client-side via localStorage */}
           {assets}
           <script type="application/ld+json">
             {JSON.stringify(structuredData)}
           </script>
         </head>
         <body>
-          <a href="#main" class="skip-link" data-i18n-skip>Pular para o conteúdo</a>
+          <a href="#main" class="skip-link">
+            <span lang="pt-br">Pular para o conteúdo</span>
+            <span lang="en" class="skip-link-alt">Skip to content</span>
+          </a>
           <div id="app">{children}</div>
           {scripts}
         </body>

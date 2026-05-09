@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { Show, type Component } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import { SceneKind } from "~/engine/types";
 import { theme, setTheme, THEMES } from "~/stores/themeStore";
@@ -13,6 +13,13 @@ import Globe from "lucide-solid/icons/globe";
 import Palette from "lucide-solid/icons/palette";
 import Check from "lucide-solid/icons/check";
 import ChevronDown from "lucide-solid/icons/chevron-down";
+
+const SCENE_ICONS: Record<SceneKind, Component<{ size?: number | string }>> = {
+  [SceneKind.AI]: Brain,
+  [SceneKind.Blockchain]: Blocks,
+  [SceneKind.Software]: Terminal,
+  [SceneKind.Web]: Globe,
+};
 
 export default function Hero() {
   const { sharedData, messages, t } = useI18n();
@@ -77,6 +84,7 @@ export default function Hero() {
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-lg mx-auto">
             {THEMES.map((th) => {
               const isActive = () => theme() === th.id;
+              const Icon = SCENE_ICONS[th.id];
               return (
                 <button
                   onClick={() => setTheme(th.id)}
@@ -96,10 +104,7 @@ export default function Hero() {
                       <Check size={10} class="text-bg" />
                     </span>
                   </Show>
-                  {th.id === SceneKind.AI ? <Brain size={24} /> :
-                   th.id === SceneKind.Blockchain ? <Blocks size={24} /> :
-                   th.id === SceneKind.Software ? <Terminal size={24} /> :
-                   <Globe size={24} />}
+                  <Icon size={24} />
                   <span class="text-xs font-mono font-bold">
                     {th.label}
                   </span>

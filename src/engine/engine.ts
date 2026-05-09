@@ -92,6 +92,7 @@ export const createEngine = (
   // ── WebGL context lost/restored ──
 
   let contextLost = false;
+  let resizeTimeout: ReturnType<typeof setTimeout>;
 
   const onContextLost = (e: Event): void => {
     e.preventDefault();
@@ -353,7 +354,12 @@ export const createEngine = (
     }
   };
 
-  window.addEventListener("resize", resize, { passive: true });
+  const debouncedResize = (): void => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resize, 200);
+  };
+
+  window.addEventListener("resize", debouncedResize, { passive: true });
 
   // ── Animation loop ──
 
@@ -419,7 +425,8 @@ export const createEngine = (
     const active = transitionManager.getActive();
     if (active) disposeScene(active);
 
-    window.removeEventListener("resize", resize);
+    window.removeEventListener("resize", debouncedResize);
+    clearTimeout(resizeTimeout);
     window.removeEventListener("keydown", onKeyDown);
     renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
     renderer.domElement.removeEventListener("webglcontextrestored", onContextRestored);

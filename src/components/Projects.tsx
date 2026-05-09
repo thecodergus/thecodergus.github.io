@@ -1,11 +1,11 @@
-import { createSignal, createEffect, For } from "solid-js";
+import { createSignal, For } from "solid-js";
 import { useI18n } from "~/stores/i18nStore";
 import { createVisibilityObserver } from "~/hooks/createVisibilityObserver";
 import type { Project } from "~/types";
 import ProjectModal from "~/components/ProjectModal";
 
 export default function Projects() {
-  const { messages, language, t } = useI18n();
+  const { messages, t } = useI18n();
   const [activeFilter, setActiveFilter] = createSignal<string>("all");
   const [selectedProject, setSelectedProject] = createSignal<Project | null>(null);
   const [modalOpen, setModalOpen] = createSignal(false);
@@ -17,12 +17,6 @@ export default function Projects() {
 
   let sectionRef: HTMLDivElement | undefined;
   const isVisible = createVisibilityObserver(() => sectionRef, 0.1);
-
-  createEffect(() => {
-    void language();
-    setSelectedProject(null);
-    setModalOpen(false);
-  });
 
   const projects = () => messages()?.projects || [];
   const sectionName = () => t("basic_info.section_name.projects", "");

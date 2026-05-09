@@ -14,44 +14,51 @@ enum Phase {
 }
 
 export default function RotatingTypewriter(props: RotatingTypewriterProps) {
-  const [displayed, setDisplayed] = createSignal("");
+  const titles = () => props.titles.map((t) => t.toUpperCase());
+  const [displayed, setDisplayed] = createSignal(titles()[0] || "");
   const [phase, setPhase] = createSignal(Phase.Typing);
   const [index, setIndex] = createSignal(0);
   const [pauseRemaining, setPauseRemaining] = createSignal(0);
+  let intervalId: ReturnType<typeof setInterval> | null = null;
 
   onMount(() => {
-    const titles = props.titles.map((t) => t.toUpperCase());
-    if (titles.length === 0) return;
+    if (titles().length === 0) return;
 
-    const typeSpeed = props.speed || 80;
+    const tid = setTimeout(() => {
+      setDisplayed("");
+      const typeSpeed = props.speed || 80;
 
-    const timer = setInterval(() => {
-      const currentTitle = titles[index()];
+      intervalId = setInterval(() => {
+        const currentTitle = titles()[index()];
 
-      if (phase() === Phase.Typing) {
-        const next = currentTitle.substring(0, displayed().length + 1);
-        setDisplayed(next);
-        if (next === currentTitle) {
-          setPhase(Phase.Paused);
-          setPauseRemaining(Math.ceil((props.pauseMs || 2000) / typeSpeed));
-        }
-      } else if (phase() === Phase.Paused) {
-        if (pauseRemaining() <= 0) {
-          setPhase(Phase.Deleting);
+        if (phase() === Phase.Typing) {
+          const next = currentTitle.substring(0, displayed().length + 1);
+          setDisplayed(next);
+          if (next === currentTitle) {
+            setPhase(Phase.Paused);
+            setPauseRemaining(Math.ceil((props.pauseMs || 2000) / typeSpeed));
+          }
+        } else if (phase() === Phase.Paused) {
+          if (pauseRemaining() <= 0) {
+            setPhase(Phase.Deleting);
+          } else {
+            setPauseRemaining((p) => p - 1);
+          }
         } else {
-          setPauseRemaining((p) => p - 1);
+          const next = displayed().substring(0, displayed().length - 1);
+          setDisplayed(next);
+          if (next.length === 0) {
+            setPhase(Phase.Typing);
+            setIndex((i) => (i + 1) % titles().length);
+          }
         }
-      } else {
-        const next = displayed().substring(0, displayed().length - 1);
-        setDisplayed(next);
-        if (next.length === 0) {
-          setPhase(Phase.Typing);
-          setIndex((i) => (i + 1) % titles.length);
-        }
-      }
-    }, typeSpeed);
+      }, typeSpeed);
+    }, 0);
 
-    onCleanup(() => clearInterval(timer));
+    onCleanup(() => {
+      clearTimeout(tid);
+      if (intervalId) clearInterval(intervalId);
+    });
   });
 
   return (

@@ -21,8 +21,6 @@ const LANG_SCRIPT = `
     var l = localStorage.getItem('portfolio-language');
     if (l === 'pt-br' || l === 'en') {
       document.documentElement.lang = l;
-      var skip = document.querySelector('[data-i18n-skip]');
-      if (skip) skip.textContent = l === 'en' ? 'Skip to content' : 'Pular para o conte\\u00fado';
     }
   } catch(e) {}
 })();

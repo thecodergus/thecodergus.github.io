@@ -66,6 +66,11 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(var(--color-accent-primary), 0.4);
 }
+.skip-link-alt { display: none; }
+html[lang="pt-br"] .skip-link [lang="en"] { display: none; }
+html[lang="pt-br"] .skip-link [lang="pt-br"] { display: inline; }
+html[lang="en"] .skip-link [lang="pt-br"] { display: none; }
+html[lang="en"] .skip-link [lang="en"] { display: inline; }
 
 /* Global focus-visible */
 *:focus-visible {
