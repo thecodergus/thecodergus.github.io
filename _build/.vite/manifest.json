@@ -3,19 +3,19 @@
     "file": "assets/I18nErrorBanner-CNMRvU7u.js",
     "name": "I18nErrorBanner"
   },
-  "_canvasTexture-D56OoBSM.js": {
-    "file": "assets/canvasTexture-D56OoBSM.js",
+  "_canvasTexture-DBjnOQ9D.js": {
+    "file": "assets/canvasTexture-DBjnOQ9D.js",
     "name": "canvasTexture",
     "imports": [
-      "_index-CxkGlXTH.js"
+      "_index-B66Bievk.js"
     ]
   },
   "_create-theme-module-DELPPpDb.js": {
     "file": "assets/create-theme-module-DELPPpDb.js",
     "name": "create-theme-module"
   },
-  "_index-CxkGlXTH.js": {
-    "file": "assets/index-CxkGlXTH.js",
+  "_index-B66Bievk.js": {
+    "file": "assets/index-B66Bievk.js",
     "name": "index",
     "isDynamicEntry": true,
     "imports": [
@@ -34,7 +34,7 @@
     "name": "preload-helper"
   },
   "src/routes/doom.tsx?pick=default&pick=$css": {
-    "file": "assets/doom-BZ3apdT7.js",
+    "file": "assets/doom-Dy3REpDL.js",
     "name": "doom",
     "src": "src/routes/doom.tsx?pick=default&pick=$css",
     "isEntry": true,
@@ -44,69 +44,69 @@
     ]
   },
   "src/routes/index.tsx?pick=default&pick=$css": {
-    "file": "assets/index-CvF8r--V.js",
+    "file": "assets/index-FRVXLfna.js",
     "name": "index",
     "src": "src/routes/index.tsx?pick=default&pick=$css",
     "isEntry": true,
     "imports": [
       "_I18nErrorBanner-CNMRvU7u.js",
-      "_index-CxkGlXTH.js",
+      "_index-B66Bievk.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/ai/index.ts": {
-    "file": "assets/index-9HhTpfYv.js",
+    "file": "assets/index-zTnaKLW8.js",
     "name": "index",
     "src": "src/themes/ai/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_index-CxkGlXTH.js",
+      "_index-B66Bievk.js",
       "_create-theme-module-DELPPpDb.js",
       "_I18nErrorBanner-CNMRvU7u.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/blockchain/index.ts": {
-    "file": "assets/index-CXY6RLYB.js",
+    "file": "assets/index-BSi3UtLs.js",
     "name": "index",
     "src": "src/themes/blockchain/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_index-CxkGlXTH.js",
-      "_canvasTexture-D56OoBSM.js",
+      "_index-B66Bievk.js",
+      "_canvasTexture-DBjnOQ9D.js",
       "_create-theme-module-DELPPpDb.js",
       "_I18nErrorBanner-CNMRvU7u.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/software/index.ts": {
-    "file": "assets/index-qqr-NOv9.js",
+    "file": "assets/index-Bcu7Y0vC.js",
     "name": "index",
     "src": "src/themes/software/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_index-CxkGlXTH.js",
-      "_canvasTexture-D56OoBSM.js",
+      "_index-B66Bievk.js",
+      "_canvasTexture-DBjnOQ9D.js",
       "_create-theme-module-DELPPpDb.js",
       "_I18nErrorBanner-CNMRvU7u.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "src/themes/web/index.ts": {
-    "file": "assets/index-BP_aDJhZ.js",
+    "file": "assets/index-ZxPdIfdw.js",
     "name": "index",
     "src": "src/themes/web/index.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_index-CxkGlXTH.js",
-      "_canvasTexture-D56OoBSM.js",
+      "_index-B66Bievk.js",
+      "_canvasTexture-DBjnOQ9D.js",
       "_create-theme-module-DELPPpDb.js",
       "_I18nErrorBanner-CNMRvU7u.js",
       "_preload-helper-ug3pwPZ1.js"
     ]
   },
   "virtual:$vinxi/handler/client": {
-    "file": "assets/client-CtL8Au5X.js",
+    "file": "assets/client-BK1_J28s.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
@@ -119,7 +119,7 @@
       "src/routes/index.tsx?pick=default&pick=$css"
     ],
     "css": [
-      "assets/client-cH0E5nWh.css"
+      "assets/client-RXpWjGip.css"
     ]
   }
 }
