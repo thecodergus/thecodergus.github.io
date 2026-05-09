@@ -1,0 +1,1 @@
+import{n as i,q as n}from"./index-CxkGlXTH.js";const m=(e,c)=>{const t=document.createElement("canvas");t.width=e.width,t.height=e.height;const a=t.getContext("2d");if(!a)throw new Error(`Failed to get 2d context for ${e.width}x${e.height} canvas`);c(a);const r=new i(t);return r.minFilter=e.minFilter??n,r.magFilter=e.magFilter??n,r};export{m as c};
